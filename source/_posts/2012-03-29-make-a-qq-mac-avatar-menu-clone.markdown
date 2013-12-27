@@ -1,0 +1,134 @@
+---
+layout: post
+title: "山寨一下QQ for Mac样式的头像选择菜单"
+date: 2012-03-29 17:02
+comments: true
+categories: [NSMenu, "QQ for Mac", "Mouse Event"]
+---
+
+腾讯一直被大家吐槽山寨别人，这次我决定山寨一下腾讯，对象就是QQ for Mac的头像选择菜单。下面是原版的头像选择菜单：
+
+{% img center /images/posts/qq-avatar-menu-original.png %}
+
+<!-- more -->
+
+这个菜单，一眼望过去，基本上就是一个有自定义View的菜单项加上一个普通菜单项。菜单附着在一个“头像”上。“头像”本身也是一个自定义按钮，这里不多深究；我们实现的时候，可以把菜单作为一个快捷菜单附着在一个按钮上。
+
+菜单的自定义View，由一个Label（`NSTextField`），8个头像（行为类似`NSButton`）组成。另外，在鼠标悬停在头像上的时候还有一个Focus Ring。
+
+问题分析到这里，我们就可以开始实现了。首先，我们先来创建两个菜单项：
+
+``` objc
+#define IMAGES_COUNT 8
+
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
+{
+    // 一些变量
+    NSInteger sideMargin = 25., headMargin=10., \
+    seperateMargin = 2., imageWidth = 44., \
+    imagesPerLine = 4., menuTitleHeight = 20.,\
+    menuTitleLeftMargin = 20., menuTitleWidth = 180.;
+    
+    // 创建菜单
+    self.myMenuItem = [[NSMenuItem alloc] initWithTitle:@"My Menu" action:nil keyEquivalent:@""];
+    self.myMenuItem.target = self;
+    NSMenuItem *otherMenu = [[NSMenuItem alloc] initWithTitle:@"自定义头像..." action:@selector(doSomething:) keyEquivalent:@""];
+
+    // 创建菜单项的自定义视图
+    self.menuView = [[NSView alloc] initWithFrame:NSMakeRect(0, 0, \
+                                                                sideMargin*2+seperateMargin*(imagesPerLine - 1)+imageWidth*imagesPerLine, \
+                                                                imageWidth*(IMAGES_COUNT/imagesPerLine)+seperateMargin*(IMAGES_COUNT/imagesPerLine - 1)+headMargin*2+menuTitleHeight)];
+
+}
+```
+
+接着，在`-applicationDidFinishLaunching:`方法中继续加入Lebel：
+
+``` objc
+    ...
+
+    NSTextField *menuViewTitle = [[NSTextField alloc] initWithFrame:NSMakeRect(menuTitleLeftMargin, headMargin+(seperateMargin + imageWidth)*(IMAGES_COUNT/imagesPerLine), menuTitleWidth, menuTitleHeight)];
+    menuViewTitle.stringValue = @"系统头像";
+    menuViewTitle.textColor = [NSColor grayColor];
+    menuViewTitle.backgroundColor = [NSColor controlColor];
+    menuViewTitle.font = [NSFont systemFontOfSize:15];
+    [menuViewTitle setEditable:NO];
+    [menuViewTitle setBordered:NO];
+    
+    [self.menuView addSubview:menuViewTitle];
+
+```
+
+然后是8个头像按钮，这里我尽量地模仿QQ的大小尺寸，使用了一些变量来指定尺寸，以方便修改。对于尺寸的大小，如果你有疑问，可以简单的在纸上画一下就清楚了：
+
+``` objc
+    // 头像按钮
+    for (int i = 0; i < IMAGES_COUNT; i++) {
+        NSRect buttonRect = NSMakeRect(sideMargin + (imageWidth + seperateMargin) * (i % imagesPerLine), \
+                                        headMargin + ((IMAGES_COUNT / imagesPerLine) - ((i / imagesPerLine) + 1)) * (imageWidth + seperateMargin), \
+                                        imageWidth, imageWidth);
+        NSButton *button = [[NSButton alloc] initWithFrame:buttonRect];
+        [button setButtonType:NSSwitchButton];
+        [button setImagePosition:NSImageOnly];
+        button.image = [[NSImage imageNamed:[[NSString alloc] initWithFormat:@"avatar_small_%d", i + 1]] roundCornersImageCornerRadius:4];
+        // 用于实现FocusRing（并不是很好的方法）
+        button.alternateImage = [[NSImage imageNamed:[[NSString alloc] initWithFormat:@"avatar_small_%d_h", i + 1]] roundCornersImageCornerRadius:5];
+        [button.cell setHighlightsBy:NSNoCellMask];
+        button.tag = i;
+        button.target = self;
+        button.action = @selector(buttonClicked:);
+        [button setBordered:NO];
+        
+        // 增加鼠标跟踪区域
+        int options = NSTrackingMouseEnteredAndExited | NSTrackingActiveAlways | NSTrackingAssumeInside;
+        NSTrackingArea *trackingArea;
+        NSDictionary *userInfo = [[NSDictionary alloc] initWithObjectsAndKeys:button,@"button", nil];
+        trackingArea = [[NSTrackingArea alloc] initWithRect:buttonRect
+                                          options:options
+                                            owner:self
+                                         userInfo:userInfo];
+        [self.menuView addTrackingArea:trackingArea];
+        
+        [self.menuView addSubview:button];
+    }
+
+    self.myMenuItem.view = self.menuView;
+
+    // 然后把菜单项加入菜单
+    [self.attachedMenu addItem:self.myMenuItem];
+    [self.attachedMenu addItem:otherMenu];
+```
+
+关于如何将菜单附着到按钮上，我过去曾写过[文章](http://cocoa.venj.me/blog/open-menu-with-a-button/)讲述了，这里就不赘述了。另外，头像的图片有圆角显示，关于如何实现，我过去也曾写过[介绍文章](http://cocoa.venj.me/blog/draw-rounded-rectangle-nsimage-with-quartz/)。
+
+问题差不多解决了，最后用两个鼠标事件回调函数来处理鼠标悬停时的Focus Ring效果：
+
+``` objc
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
+{
+    // Insert code here to initialize your application
+    [[self window] setAcceptsMouseMovedEvents:YES]; // 注册接受鼠标事件
+
+    ... (其他代码)
+}
+
+- (void)mouseEntered:(NSEvent *)theEvent {
+    NSButton *currentButton = [(NSDictionary *)[theEvent userData] objectForKey:@"button"];
+    [currentButton setState:NSOnState];
+}
+
+- (void)mouseExited:(NSEvent *)theEvent {
+    NSButton *currentButton = [(NSDictionary *)[theEvent userData] objectForKey:@"button"];
+    [currentButton setState:NSOffState];
+}
+```
+
+山寨的效果效果如下：
+
+{% img center /images/posts/qq-avatar-menu-clone.png %}
+
+关于Focus Ring的实现我要说明一下，我这里用的方法比较粗糙，QQ应该是用Quartz绘制的Focus ring，而我是用了一张图片来“伪造”了一个Focus ring。我这里选择使用`NSSwitchButton`类型的按钮是为了利用`alternativeImage`来实现Focus ring效果。之所以这么做，是因为我一时间没有想到比较好的绘制Focus ring的方法 -- 基础不过关啊 -- 所以，如果谁知道怎么做，劳烦您能不吝赐教。
+
+示例代码我已经推送到[Github](https://github.com/venj/Cocoa-blog-code/tree/master/Custom%20Menu)上了，有兴趣的可以签出来看看，并提出宝贵意见。另外，我在示例代码中使用了QQ for Mac里面的头像图片，希望腾讯勿怪。
+
+(全文完)

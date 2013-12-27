@@ -1,0 +1,41 @@
+---
+layout: post
+title: "模拟低速网络，测试iOS程序的表现"
+date: 2012-03-29 11:56
+comments: true
+categories: ["iOS Simulator", "Network Link Connector"]
+---
+
+因为没有考虑程序在低速网络下的表现，昨天在测试公司的一个程序的时候出了点丑，于是痛定思痛，要解决模拟低速网络连接的问题。遗憾的是iOS Simulator并没有提供模拟低速网络的功能。
+
+经过一番STFW之后，发现原来苹果从Xcode 4.1开始提供了一款叫做“Network Link Connector”的工具。但是如今我已经升级到Xcode 4.3.2，用SpotLight搜索了一番之后也没有发现系统里已经安装了这样的一个工具。
+
+又经过一番搜索，我发现原来“Network Link Connector”是一个prefPane程序，从Xcode 4.3开始已经不再默认包含在程序里了，而是需要从developer.apple.com/download上单独下载，它位于“Hardware IO Tools”的一个包中。
+
+<!-- more -->
+
+下载安装之后，就可以在系统预置中找到，并使用它了。
+
+{% img center /images/posts/nlcui.png %}
+
+打开网速限制之后，会显示一个Menubar Adddon。
+
+{% img center /images/posts/nlcmenu.png %}
+
+这个程序默认包含了多种预置的网络设置，包括3G，WiFi，Edge，DSL等。
+
+{% img center /images/posts/nlcprofile.png %}
+
+你也可以自己创建网络Profile，对网速限制进行自定义。
+
+{% img center /images/posts/nlccustom.png %}
+
+因为这个网速限制是针对整个系统的，因此在测试完程序之后记得关掉网速限制。
+
+至此，问题解决。我也顺利的利用这个程序测试了程序的修改，感觉良好。
+
+不过我在使用中发现一个问题，就是打开了网速限制之后，Xcode在attach到Simulator的时候速度异常的慢，我怀疑是这个工具的影响，不过我无法确定。
+
+虽然这个工具已经足够我使用了，但是如果您有更好的工具的话，可以留言推荐给我。 :) 
+
+(全文完)

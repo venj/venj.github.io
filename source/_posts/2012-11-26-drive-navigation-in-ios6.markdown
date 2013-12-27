@@ -1,0 +1,65 @@
+---  
+layout: post
+title: "iOS 6下的驾车导航"
+date: 2012-11-26 11:18
+comments: true
+categories: [Mapkit, iOS 6]
+---
+
+好久没有写Blog了，今天正好碰上了一个问题，于是决定写一写博客简单描述下。情况是这样的：之前，在iOS 5下，要显示一个从当前为止到目标位置的驾车导航可以使用如下的代码来搞定（[参考这里](http://developer.apple.com/library/ios/#featuredarticles/iPhoneURLScheme_Reference/Articles/MapLinks.html)）：
+
+```objc
+//基于地名调用iOS自带的Google Maps导航
+NSString *urlEncodedCurrentPlaceName = [@"当前位置" stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]; //简单起见，没有考虑多语言*（注）*。
+NSString *mapLink = [[NSString alloc] initWithFormat:@"http://maps.google.com/maps?daddr=%@&saddr=%@", urlEncodedDestinationPlaceName, ];
+[[UIApplication sharedApplication] openURL:[[NSURL alloc] initWithString:mapLink]];
+```
+<!-- more -->
+但是假如我们只有起始位置和终点位置的经纬度地址怎么办？Google Maps还是很智能的，只需直接传入逗号分隔的经纬度坐标即可。如下：
+
+```objc
+//基于经纬度调用iOS自带的Google Maps导航
+NSString *urlEncodedCurrentPlaceName = [@"当前位置" stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+NSString *mapLink = [[NSString alloc] initWithFormat:@"http://maps.google.com/maps?daddr=%f,%f&saddr=%@", destLat, destLng, urlEncodedCurrentPlaceName];
+[[UIApplication sharedApplication] openURL:[[NSURL alloc] initWithString:mapLink]];
+```
+
+这招在iOS 6下有点问题的。因为大家都知道苹果把iOS 6的地图换成了自己的地图应用，所以使用上面的实现方法只能转跳到Mobile Safari中的Google Maps网站。虽然路线也是可以用的，但是总觉得有些不爽。
+
+后来查文档发现，要转跳Apple地图应用其实很简单，只需把上面代码里的google换成apple即可：
+
+```objc
+//基于地名调用iOS自带的Google Maps导航
+NSString *mapLink = [[NSString alloc] initWithFormat:@"http://maps.apple.com/maps?daddr=%@&saddr=%@", urlEncodedDestinationPlaceName, urlEncodedCurrentPlaceName];
+[[UIApplication sharedApplication] openURL:[[NSURL alloc] initWithString:mapLink]];
+```
+
+但是遗憾的是，这个实现方法不支持传入经纬度。如果传入经纬度值，虽然能够转跳Apple地图应用，但是总是提示“地图服务器不可用”。但事实上，你在地图应用里使用导航功能是没问题的，所以并非地图服务器不可用，而是Apple地图不支持直接传经纬度作为地名。而且，iOS 6的地图程序也不支持“当前位置”这个特殊地名。我尝试了把经纬度进行[反向地理位置解析](http://cocoa.venj.me/blog/geocoding-in-ios-5/)，再把解析到的地址用于地图导航。但是结果显示，反向地理位置解析实在是偏移太大了，因此这个方案显然是不可行的。
+
+经过Google搜索和查看Apple文档发现，MapKit在iOS 6里引入了一个新类：[MKMapItem](http://developer.apple.com/library/ios/#documentation/MapKit/Reference/MKMapItem_class/Reference/Reference.html)，这个类是解决这个问题的关键。其中最重要的方法是`-openMapsWithItems:launchOptions:`和`+mapItemForCurrentLocation`下面是从当前位置到目标经纬度的驾车导航在iOS 6中的实现。
+
+```objc
+Class mapItemClass = [MKMapItem class];
+if (mapItemClass && [mapItemClass respondsToSelector:@selector(openMapsWithItems:launchOptions:)]) { // For iOS 6
+    CLLocationCoordinate2D destCoord = CLLocationCoordinate2DMake(destLat, destLng); //目标经纬度坐标
+    MKPlacemark *destPlacemark = [[MKPlacemark alloc] initWithCoordinate:destCoord addressDictionary:nil];
+    MKMapItem *destMapItem = [[MKMapItem alloc] initWithPlacemark:destPlacemark];
+    MKMapItem *currentMapItem = [MKMapItem mapItemForCurrentLocation];
+    
+    [MKMapItem openMapsWithItems:@[currentMapItem, destMapItem] 
+    			   launchOptions:@{MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving}];
+}
+else { // For iOS 5 and before.
+    NSString *urlEncodedCurrentPlaceName = [@"当前位置" stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString *mapLink = [[NSString alloc] initWithFormat:@"http://maps.google.com/maps?daddr=%f,%f&saddr=%@", destLat, destLng, urlEncodedCurrentPlaceName];
+    [[UIApplication sharedApplication] openURL:[[NSURL alloc] initWithString:mapLink]];
+}
+```
+
+上面的实现能够同时兼容iOS 6以及iOS 5.x和更早版本。经测试，该方法能够很精确的显示定位和导航信息。至此，驾车导航的问题基本上完美解决。
+
+（Updated）iOS 5的实现中，使用maps.apple.com访问地图程序，会先转跳Safari，然后再转跳地图程序。因此还是改回maps.google.com，避免一次多余的浏览器转跳。
+
+（注）关于“当前位置”这个特殊地名的多语言支持参考[这里](http://www.martip.net/blog/localized-current-location-string-for-iphone-apps)。
+
+(全文完)
