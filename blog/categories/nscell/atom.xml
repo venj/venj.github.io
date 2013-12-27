@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: NSCell | Cocoa学习]]></title>
+  <link href="http://venj.github.io/blog/categories/nscell/atom.xml" rel="self"/>
+  <link href="http://venj.github.io/"/>
+  <updated>2013-12-27T13:33:43+08:00</updated>
+  <id>http://venj.github.io/</id>
+  <author>
+    <name><![CDATA[venj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[关于NSCell]]></title>
+    <link href="http://venj.github.io/blog/about-nscell/"/>
+    <updated>2011-04-28T22:29:00+08:00</updated>
+    <id>http://venj.github.io/blog/about-nscell</id>
+    <content type="html"><![CDATA[<p>作为一个初学者，我一直很弄不明白<code>NSCell</code>的子类，比如，<code>NSButtonCell</code>，<code>NSImageCell</code>及其对应的控件之间的关系。今天，在做一个TableView实现的时候，我终于开始有点悟了——好吧，你大可以鄙视我，我的脑袋是不灵光。尽管这是一个简单的问题，但是我还是简单的记录一下我的理解。</p>
+
+<p>问题的起源是“Cocoa Programming For Mac OS X”上一段关于<code>NSCell</code>的叙述：</p>
+
+<blockquote><p>NSControl inherits from NSView. With its graphics context, NSView is a relatively large and expensive object to create. When the NSButton class was created, the first thing someone did was to create a calculator with 10 rows and 10 columns of buttons. The performance was less than it could have been because of the 100 tiny views. Later, someone had the clever idea of moving the brains of the button into another object (not a view) and creating one big view (called an NSMatrix) that would act as the view for all 100 button brains. The class for the button brains was called NSButtonCell.<br/>
+<strong>&mdash; Chapter 17. Custom Views, “For the More Curious: Cells”</strong></p></blockquote>
+
+<p>现在在此阅读这句话，我似乎已经能够基本理解，不过当时那叫一个困惑啊。为什么用Cell就比Button性能高呢？为什么Cell可以替代Button呢？</p>
+
+<!-- more -->
+
+
+<p>
+我的理解如下（可能并不是很精确）：</p>
+
+<blockquote><ul>
+<li><code>NSButton</code>的继承关系是：<code>NSButton</code> &ndash;> <code>NSControl</code> &ndash;> <code>NSView</code> &ndash;> <code>NSResponder</code> &ndash;> <code>NSObject</code>。应该说，是一个很长的继承链了。</li>
+<li><code>NSButtonCell</code>的继承关系是：<code>NSButtonCell</code> &ndash;> <code>NSCell</code> &ndash;> <code>NSObject</code>。</li>
+</ul>
+</blockquote>
+
+<p>比之<code>NSButton</code>，少了两层继承关系。光凭这一点大致就能够解释为什么Cell的性能比Control高很多了。</p>
+
+<p>但是既然Cell和Control都代表了“控件”，那么两者又是怎样的关系呢？</p>
+
+<p>查阅了苹果的文档之后，就发现里面有这么一句话：<strong>“The NSButton class uses NSButtonCell to implement its user interface.” </strong></p>
+
+<p>这么一来，一切都清楚了，<code>NSCell</code>是控件的UI显示部分。但是<code>NSCell</code>不是<code>NSView</code>的子类，它又怎么显示自己呢？在<code>NSButton</code>的文档里，又有下面的一段话：</p>
+
+<blockquote><p><strong>NSButton and NSMatrix both provide a control view, which is needed to display an NSButtonCell object.</strong> However, while NSMatrix requires you to access the NSButtonCell objects directly, most of the NSButton class' methods are “covers” for identically declared methods in NSButtonCell. (In other words, <strong>the implementation of the NSButton method invokes the corresponding NSButtonCell method for you</strong>, allowing you to be unconcerned with the existence of the NSButtonCell.)</p></blockquote>
+
+<p>这段话的大意是：</p>
+
+<p><code>NSButton</code>和<code>NSMatrix</code>能够为<code>NSButtonCell</code>提供一个控制视图，用来实现Cell的显示。不过<code>NSMatrix</code>需要直接操作<code>NSButtonCell</code>对象，而<code>NSButton</code>则不需要。因为它已经“封装”了所有<code>NSButtonCell</code>的同名方法。也就是说，对<code>NSButton</code>调用方法（不是所有的方法），实际上是对<code>NSButtonCell</code>调用方法，调用的时候，我们甚至可以无需知道<code>NSButtonCell</code>的存在。</p>
+
+<p>至此，问题解决。甚至，以前没有联系起来的一个问题也解决了：那就是，为什么在Interface Builder中，<code>NSButton</code>总是和<code>NSButtonCell</code>同时存在的——原因，当然也是上面的那段话啦～另外，在Interface Builder里，<code>NSButton</code>和<code>NSButtonCell</code>的Inspector里的属性也基本相同，也是因为上述原因。</p>
+
+<p> 一点题外话：</p>
+
+<p>UIKit里没有<code>NSCell</code>的对应类。原因并不是很清楚。不过UIKit里的类的继承结构也与AppKit有所不同。比如，<code>NSTableView</code>的列：<code>NSTableColumn</code>采用的是Cell的显示机制；而<code>UITableView</code>则采用的是<code>UITableViewCell</code>。前者继承自<code>NSObject</code>，后者继承自<code>UIView</code>。</p>
+
+<p>关于这样的区别在性能上的差别，我不敢妄下结论，也没法随便比较——毕竟是两个不同平台。似乎在iOS平台上，<code>UITableView</code>的Cell会在离开显示区域的时候被<code>release</code>掉——这可能是为什么iOS平台没有采用<code>UICell</code>（没有这个类的！！！）的原因之一。</p>
+
+<p>不过，我感觉<code>UITableView</code>比<code>NSTableView</code>更加灵活，自定义也更加方便——因为每个<code>UITableViewCell</code>可以很方便的用一个<code>Custom View</code>来做界面；而<code>NSTableColumn</code>则依赖于<code>NSCell</code>，要自定义，需要用自定义<code>NSCell</code>的子类，这样会复杂很多。</p>
+
+<p>（全文完）</p>
+]]></content>
+  </entry>
+  
+</feed>

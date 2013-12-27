@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: NSMenu | Cocoa学习]]></title>
+  <link href="http://venj.github.io/blog/categories/nsmenu/atom.xml" rel="self"/>
+  <link href="http://venj.github.io/"/>
+  <updated>2013-12-27T13:33:43+08:00</updated>
+  <id>http://venj.github.io/</id>
+  <author>
+    <name><![CDATA[venj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[山寨一下QQ for Mac样式的头像选择菜单]]></title>
+    <link href="http://venj.github.io/blog/make-a-qq-mac-avatar-menu-clone/"/>
+    <updated>2012-03-29T17:02:00+08:00</updated>
+    <id>http://venj.github.io/blog/make-a-qq-mac-avatar-menu-clone</id>
+    <content type="html"><![CDATA[<p>腾讯一直被大家吐槽山寨别人，这次我决定山寨一下腾讯，对象就是QQ for Mac的头像选择菜单。下面是原版的头像选择菜单：</p>
+
+<p><img class="center" src="/images/posts/qq-avatar-menu-original.png"></p>
+
+<!-- more -->
+
+
+<p>这个菜单，一眼望过去，基本上就是一个有自定义View的菜单项加上一个普通菜单项。菜单附着在一个“头像”上。“头像”本身也是一个自定义按钮，这里不多深究；我们实现的时候，可以把菜单作为一个快捷菜单附着在一个按钮上。</p>
+
+<p>菜单的自定义View，由一个Label（<code>NSTextField</code>），8个头像（行为类似<code>NSButton</code>）组成。另外，在鼠标悬停在头像上的时候还有一个Focus Ring。</p>
+
+<p>问题分析到这里，我们就可以开始实现了。首先，我们先来创建两个菜单项：</p>
+
+<p>``` objc</p>
+
+<h1>define IMAGES_COUNT 8</h1>
+
+<ul>
+<li><p>(void)applicationDidFinishLaunching:(NSNotification *)aNotification
+{
+  // 一些变量
+  NSInteger sideMargin = 25., headMargin=10., \
+  seperateMargin = 2., imageWidth = 44., \
+  imagesPerLine = 4., menuTitleHeight = 20.,\
+  menuTitleLeftMargin = 20., menuTitleWidth = 180.;</p>
+
+<p>  // 创建菜单
+  self.myMenuItem = [[NSMenuItem alloc] initWithTitle:@&ldquo;My Menu&rdquo; action:nil keyEquivalent:@&ldquo;&rdquo;];
+  self.myMenuItem.target = self;
+  NSMenuItem *otherMenu = [[NSMenuItem alloc] initWithTitle:@&ldquo;自定义头像&hellip;&rdquo; action:@selector(doSomething:) keyEquivalent:@&ldquo;&rdquo;];</p>
+
+<p>  // 创建菜单项的自定义视图
+  self.menuView = [[NSView alloc] initWithFrame:NSMakeRect(0, 0, \
+                                                              sideMargin<em>2+seperateMargin</em>(imagesPerLine &ndash; 1)+imageWidth<em>imagesPerLine, \
+                                                              imageWidth</em>(IMAGES_COUNT/imagesPerLine)+seperateMargin<em>(IMAGES_COUNT/imagesPerLine &ndash; 1)+headMargin</em>2+menuTitleHeight)];</p></li>
+</ul>
+
+
+<p>}
+```</p>
+
+<p>接着，在<code>-applicationDidFinishLaunching:</code>方法中继续加入Lebel：</p>
+
+<p>``` objc</p>
+
+<pre><code>...
+
+NSTextField *menuViewTitle = [[NSTextField alloc] initWithFrame:NSMakeRect(menuTitleLeftMargin, headMargin+(seperateMargin + imageWidth)*(IMAGES_COUNT/imagesPerLine), menuTitleWidth, menuTitleHeight)];
+menuViewTitle.stringValue = @"系统头像";
+menuViewTitle.textColor = [NSColor grayColor];
+menuViewTitle.backgroundColor = [NSColor controlColor];
+menuViewTitle.font = [NSFont systemFontOfSize:15];
+[menuViewTitle setEditable:NO];
+[menuViewTitle setBordered:NO];
+
+[self.menuView addSubview:menuViewTitle];
+</code></pre>
+
+<p>```</p>
+
+<p>然后是8个头像按钮，这里我尽量地模仿QQ的大小尺寸，使用了一些变量来指定尺寸，以方便修改。对于尺寸的大小，如果你有疑问，可以简单的在纸上画一下就清楚了：</p>
+
+<p>``` objc</p>
+
+<pre><code>// 头像按钮
+for (int i = 0; i &lt; IMAGES_COUNT; i++) {
+    NSRect buttonRect = NSMakeRect(sideMargin + (imageWidth + seperateMargin) * (i % imagesPerLine), \
+                                    headMargin + ((IMAGES_COUNT / imagesPerLine) - ((i / imagesPerLine) + 1)) * (imageWidth + seperateMargin), \
+                                    imageWidth, imageWidth);
+    NSButton *button = [[NSButton alloc] initWithFrame:buttonRect];
+    [button setButtonType:NSSwitchButton];
+    [button setImagePosition:NSImageOnly];
+    button.image = [[NSImage imageNamed:[[NSString alloc] initWithFormat:@"avatar_small_%d", i + 1]] roundCornersImageCornerRadius:4];
+    // 用于实现FocusRing（并不是很好的方法）
+    button.alternateImage = [[NSImage imageNamed:[[NSString alloc] initWithFormat:@"avatar_small_%d_h", i + 1]] roundCornersImageCornerRadius:5];
+    [button.cell setHighlightsBy:NSNoCellMask];
+    button.tag = i;
+    button.target = self;
+    button.action = @selector(buttonClicked:);
+    [button setBordered:NO];
+
+    // 增加鼠标跟踪区域
+    int options = NSTrackingMouseEnteredAndExited | NSTrackingActiveAlways | NSTrackingAssumeInside;
+    NSTrackingArea *trackingArea;
+    NSDictionary *userInfo = [[NSDictionary alloc] initWithObjectsAndKeys:button,@"button", nil];
+    trackingArea = [[NSTrackingArea alloc] initWithRect:buttonRect
+                                      options:options
+                                        owner:self
+                                     userInfo:userInfo];
+    [self.menuView addTrackingArea:trackingArea];
+
+    [self.menuView addSubview:button];
+}
+
+self.myMenuItem.view = self.menuView;
+
+// 然后把菜单项加入菜单
+[self.attachedMenu addItem:self.myMenuItem];
+[self.attachedMenu addItem:otherMenu];
+</code></pre>
+
+<p>```</p>
+
+<p>关于如何将菜单附着到按钮上，我过去曾写过<a href="http://cocoa.venj.me/blog/open-menu-with-a-button/">文章</a>讲述了，这里就不赘述了。另外，头像的图片有圆角显示，关于如何实现，我过去也曾写过<a href="http://cocoa.venj.me/blog/draw-rounded-rectangle-nsimage-with-quartz/">介绍文章</a>。</p>
+
+<p>问题差不多解决了，最后用两个鼠标事件回调函数来处理鼠标悬停时的Focus Ring效果：</p>
+
+<p>``` objc
+&ndash; (void)applicationDidFinishLaunching:(NSNotification *)aNotification
+{</p>
+
+<pre><code>// Insert code here to initialize your application
+[[self window] setAcceptsMouseMovedEvents:YES]; // 注册接受鼠标事件
+
+... (其他代码)
+</code></pre>
+
+<p>}</p>
+
+<ul>
+<li><p>(void)mouseEntered:(NSEvent <em>)theEvent {
+  NSButton </em>currentButton = [(NSDictionary *)[theEvent userData] objectForKey:@&ldquo;button&rdquo;];
+  [currentButton setState:NSOnState];
+}</p></li>
+<li><p>(void)mouseExited:(NSEvent <em>)theEvent {
+  NSButton </em>currentButton = [(NSDictionary *)[theEvent userData] objectForKey:@&ldquo;button&rdquo;];
+  [currentButton setState:NSOffState];
+}
+```</p></li>
+</ul>
+
+
+<p>山寨的效果效果如下：</p>
+
+<p><img class="center" src="/images/posts/qq-avatar-menu-clone.png"></p>
+
+<p>关于Focus Ring的实现我要说明一下，我这里用的方法比较粗糙，QQ应该是用Quartz绘制的Focus ring，而我是用了一张图片来“伪造”了一个Focus ring。我这里选择使用<code>NSSwitchButton</code>类型的按钮是为了利用<code>alternativeImage</code>来实现Focus ring效果。之所以这么做，是因为我一时间没有想到比较好的绘制Focus ring的方法 &mdash; 基础不过关啊 &mdash; 所以，如果谁知道怎么做，劳烦您能不吝赐教。</p>
+
+<p>示例代码我已经推送到<a href="https://github.com/venj/Cocoa-blog-code/tree/master/Custom%20Menu">Github</a>上了，有兴趣的可以签出来看看，并提出宝贵意见。另外，我在示例代码中使用了QQ for Mac里面的头像图片，希望腾讯勿怪。</p>
+
+<p>(全文完)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[在程序中动态设置是否显示Dock图标]]></title>
+    <link href="http://venj.github.io/blog/dynamically-show-and-hide-dock-icon/"/>
+    <updated>2011-08-06T21:50:00+08:00</updated>
+    <id>http://venj.github.io/blog/dynamically-show-and-hide-dock-icon</id>
+    <content type="html"><![CDATA[<p>关于如何隐藏Dock图标的方法，相信大家都知道——即使没有没有编程经验的老用户都知道。那就是，在Application Bundle里的<code>Info.plist</code>中增加一个<code>LSUIElement</code>的键，设置值为<code>YES</code>。但是，在程序中往往要让用户选择是否启用或禁用Dock图标。而程序是不能修改Application Bundle里的<code>Info.plist</code>的，因为这样会破坏程序的数字签名，所以只能在程序代码中动态的设置Dock图标的状态。</p>
+
+<p>其实动态设置Dock图标的方法很简单严格的说只有两行代码：</p>
+
+<p><code>objc
+ProcessSerialNumber psn = { 0, kCurrentProcess };
+TransformProcessType(&amp;psn, kProcessTransformToForegroundApplication);
+</code></p>
+
+<p>在设置隐藏Dock图标的时候需要重启应用程序，无法在运行时动态完成的，而在显示Dock图标的时候则不需要。我做了一个简单的Demo程序。放到了Github上，有兴趣的可以看看。（以后在这里出现的其他示例代码也会放到那里。）</p>
+
+<p><img class="center" src="/images/posts/dynamic-dock-icon.png"></p>
+
+<p>程序很简单，就一个复选框，用来设置是否显示Dock图标。通过一个<code>-toggleDockIcon:</code>方法来设置是否显示Dock图标。并且在<code>-applicationDidFinishLaunching:</code>方法，设置在程序初始化的时候是否需要显示Dock图标。主要代码如下：</p>
+
+<!-- more -->
+
+
+<p>
+``` objc
+&ndash; (void)applicationDidFinishLaunching:(NSNotification *)aNotification
+{</p>
+
+<pre><code>// 读取用户设置，判断是否显示Dock图标，并且设置复选框的状态。
+defaults = [NSUserDefaults standardUserDefaults];
+BOOL iconInDock = [[NSUserDefaults standardUserDefaults] boolForKey:kShowDockIcon];
+
+if (iconInDock) {
+    ProcessSerialNumber psn = { 0, kCurrentProcess };
+    TransformProcessType(&amp;psn, kProcessTransformToForegroundApplication);
+    [self.dockIconSelector setState:NSOnState];
+}
+else {
+    [self.dockIconSelector setState:NSOffState];
+}
+</code></pre>
+
+<p>   // 省略其他用来处理Menulet的代码。
+}</p>
+
+<ul>
+<li><p>(IBAction)toggleDockIcon:(id)sender {
+  NSUInteger state = [sender state];
+  // 根据复选框是否选中，设置用户值，并且改变程序运行状态。
+  if (state == NSOnState) {
+      ProcessSerialNumber psn = { 0, kCurrentProcess };
+      TransformProcessType(&amp;psn, kProcessTransformToForegroundApplication);
+      self.infoText.hidden = YES;</p>
+
+<pre><code>  [defaults setBool:YES forKey:kShowDockIcon];
+  [defaults synchronize];
+</code></pre>
+
+<p>  }
+  else {
+      [defaults setBool:NO forKey:kShowDockIcon];
+      self.infoText.hidden = NO;
+      [defaults synchronize];
+  }
+}
+```</p></li>
+</ul>
+
+
+<p>虽然本文比较水，并且实际上只介绍了2行代码，但是这个技巧非常实用，所以推荐之。</p>
+
+<p>（全文完）</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[用Cocoa实现点击按钮打开快捷菜单]]></title>
+    <link href="http://venj.github.io/blog/open-menu-with-a-button/"/>
+    <updated>2011-04-16T11:41:00+08:00</updated>
+    <id>http://venj.github.io/blog/open-menu-with-a-button</id>
+    <content type="html"><![CDATA[<p>用一个自定义按钮打开菜单已经是一个很常见的需求的。不过<code>NSPopupButton</code>对于我们的这种需求来说显得有点不合适。最终的结果如下所示：</p>
+
+<p><img class="center" src="/images/posts/image-button-menu.png" title="和自定义按钮关联的弹出菜单" ></p>
+
+<p><img class="center" src="/images/posts/normal-button-menu.png" title="和普通按钮关联的弹出菜单" ></p>
+
+<p>实现的方法很简单，代码如下所示：</p>
+
+<!-- more -->
+
+
+<p>
+``` objc
+&ndash; (IBAction)showMenu:(id)sender {</p>
+
+<pre><code>NSRect frame = [(NSButton *)sender frame];
+NSPoint menuOrigin = [[(NSButton *)sender superview] convertPoint:NSMakePoint(frame.origin.x, frame.origin.y) toView:nil];
+
+NSEvent *event =  [NSEvent mouseEventWithType:NSLeftMouseDown
+                                     location:menuOrigin
+                                modifierFlags:NSLeftMouseDownMask
+                                    timestamp:0
+                                 windowNumber:[[(NSButton *)sender window] windowNumber]
+                                      context:[[(NSButton *)sender window] graphicsContext]
+                                  eventNumber:0
+                                   clickCount:1
+                                     pressure:1];
+
+// contextMenu可以直接在XIB里初始化一个菜单
+[NSMenu popUpContextMenu:contextMenu withEvent:event forView:(NSButton *)sender];
+</code></pre>
+
+<p>}
+```
+啰嗦一句，关于自定义按钮的设定问题。截图中的自定义按钮就是一个普通的push button，在IB里作如下设置：</p>
+
+<p><img class="center" src="/images/posts/button-menu-xcode.png"></p>
+
+<p>也就是取消掉Bordered，以及指定一个Image和Alternative (Image)。</p>
+
+<p><a href="http://praveenmatanam.wordpress.com/2008/09/05/how-to-popup-context-menu-when-clicked-on-button/">参考文章在此</a></p>
+
+<p>（全文完）</p>
+]]></content>
+  </entry>
+  
+</feed>

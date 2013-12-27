@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: UIApplication | Cocoa学习]]></title>
+  <link href="http://venj.github.io/blog/categories/uiapplication/atom.xml" rel="self"/>
+  <link href="http://venj.github.io/"/>
+  <updated>2013-12-27T13:33:43+08:00</updated>
+  <id>http://venj.github.io/</id>
+  <author>
+    <name><![CDATA[venj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[在iOS程序中调用Mobile Safari打开网址]]></title>
+    <link href="http://venj.github.io/blog/open-webpage-with-mobile-safari-in-ios-apps/"/>
+    <updated>2011-05-15T00:11:00+08:00</updated>
+    <id>http://venj.github.io/blog/open-webpage-with-mobile-safari-in-ios-apps</id>
+    <content type="html"><![CDATA[<p>在Cocoa中，我们可以用<code>NSWorkspace</code>的<code>-openURL:</code>来来打开系统的默认浏览器。</p>
+
+<p>``` objc
+&ndash; (IBAction)clickLink:(id)sender {</p>
+
+<pre><code>[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://google.com"]];
+</code></pre>
+
+<p>}
+```</p>
+
+<p>不过Cocoa Touch没有这个<code>NSWorkspace</code>。那么应该怎么做呢？事实上<code>UIApplication</code>提供了同样的方法：</p>
+
+<p>``` objc
+&ndash; (IBAction)clickLink:(id)sender {</p>
+
+<pre><code>[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://google.com"]];
+</code></pre>
+
+<p>}
+```</p>
+
+<p>很简单吧！<code>NSWorkspace</code>和<code>UIApplication</code>真是异曲同工啊。事实上，因为iOS独占式的程序运行方式，用<code>UIApplication</code>来取代<code>NSWorkspace</code>来执行这个任务其实是很贴切的。不是吗？</p>
+
+<p>（全文完）</p>
+]]></content>
+  </entry>
+  
+</feed>

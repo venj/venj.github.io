@@ -1,0 +1,417 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>用Quartz绘制NSImage圆角图像 - Cocoa学习</title>
+  <meta name="author" content="venj">
+
+  
+  <meta name="description" content="今天偶尔看到了用Quartz绘制UIImage圆角图像的源码的Snippet，因此心血来潮，简单的改了几行，把它移植到NSImage上了。也正是因为研究这个问题，我才发现了NSImage不能准确获得图片的实际像素大小的问题。说实话，那个代码片断我也是一知半解，因此我只是依样画葫芦，也直接把源码附上 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://venj.github.io/blog/draw-rounded-rectangle-nsimage-with-quartz">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Cocoa学习" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Cocoa学习</a></h1>
+  
+    <h2>我的Cocoa/Cocoa Touch学习笔记</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:venj.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">用Quartz绘制NSImage圆角图像</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-08-20T00:42:00+08:00" pubdate data-updated="true">Aug 20<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>今天偶尔看到了<a href="http://www.wattz.net/snippets/iphone_round_corners/">用Quartz绘制<code>UIImage</code>圆角图像的源码的Snippet</a>，因此心血来潮，简单的改了几行，把它移植到NSImage上了。也正是因为研究这个问题，我才发现了<a href="/blog/get-real-size-of-nsimage/"><code>NSImage</code>不能准确获得图片的实际像素大小的问题</a>。说实话，那个代码片断我也是一知半解，因此我只是依样画葫芦，也直接把源码附上，也不知道有没有更好的方法，仅供参考。</p>
+
+<!-- more -->
+
+
+<p>
+我把这个源码改成了<code>NSImage</code>的一个Category，从而方便日后自己使用。代码如下<strong>（更新了代码，修复了一个提前<code>release</code>的问题）</strong>：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cm">/* NSImage+RoundCorner.h */</span>
+</span><span class='line'><span class="cp">#import &lt;Foundation/Foundation.h&gt;</span>
+</span><span class='line'><span class="cm">/* C Prototypes */</span>
+</span><span class='line'><span class="kt">void</span> <span class="nf">addRoundedRectToPath</span><span class="p">(</span><span class="n">CGContextRef</span> <span class="n">context</span><span class="p">,</span> <span class="n">CGRect</span> <span class="n">rect</span><span class="p">,</span> <span class="kt">float</span> <span class="n">ovalWidth</span><span class="p">,</span> <span class="kt">float</span> <span class="n">ovalHeight</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@interface</span> <span class="nc">NSImage</span><span class="nl">(RoundCorner)</span>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSImage</span> <span class="o">*</span><span class="p">)</span><span class="nf">roundCornersImageCornerRadius:</span><span class="p">(</span><span class="n">NSInteger</span><span class="p">)</span><span class="nv">radius</span><span class="p">;</span>
+</span><span class='line'><span class="k">@end</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/* NSImage+RoundCorner.m */</span>
+</span><span class='line'><span class="cp">#import &quot;NSImage+RoundCorner.h&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@implementation</span> <span class="nc">NSImage</span> <span class="nl">(RoundCorner)</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">void</span> <span class="nf">addRoundedRectToPath</span><span class="p">(</span><span class="n">CGContextRef</span> <span class="n">context</span><span class="p">,</span> <span class="n">CGRect</span> <span class="n">rect</span><span class="p">,</span> <span class="kt">float</span> <span class="n">ovalWidth</span><span class="p">,</span> <span class="kt">float</span> <span class="n">ovalHeight</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="kt">float</span> <span class="n">fw</span><span class="p">,</span> <span class="n">fh</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">ovalWidth</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">ovalHeight</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">CGContextAddRect</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">rect</span><span class="p">);</span>
+</span><span class='line'>        <span class="k">return</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="n">CGContextSaveGState</span><span class="p">(</span><span class="n">context</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">CGContextTranslateCTM</span> <span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">CGRectGetMinX</span><span class="p">(</span><span class="n">rect</span><span class="p">),</span> <span class="n">CGRectGetMinY</span><span class="p">(</span><span class="n">rect</span><span class="p">));</span>
+</span><span class='line'>    <span class="n">CGContextScaleCTM</span> <span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">ovalWidth</span><span class="p">,</span> <span class="n">ovalHeight</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">fw</span> <span class="o">=</span> <span class="n">CGRectGetWidth</span> <span class="p">(</span><span class="n">rect</span><span class="p">)</span> <span class="o">/</span> <span class="n">ovalWidth</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">fh</span> <span class="o">=</span> <span class="n">CGRectGetHeight</span> <span class="p">(</span><span class="n">rect</span><span class="p">)</span> <span class="o">/</span> <span class="n">ovalHeight</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">CGContextMoveToPoint</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">fw</span><span class="p">,</span> <span class="n">fh</span><span class="o">/</span><span class="mi">2</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">CGContextAddArcToPoint</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">fw</span><span class="p">,</span> <span class="n">fh</span><span class="p">,</span> <span class="n">fw</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">fh</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">CGContextAddArcToPoint</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">fh</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">fh</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">CGContextAddArcToPoint</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">fw</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">CGContextAddArcToPoint</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">fw</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">fw</span><span class="p">,</span> <span class="n">fh</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">CGContextClosePath</span><span class="p">(</span><span class="n">context</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">CGContextRestoreGState</span><span class="p">(</span><span class="n">context</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSImage</span> <span class="o">*</span><span class="p">)</span><span class="nf">roundCornersImageCornerRadius:</span><span class="p">(</span><span class="n">NSInteger</span><span class="p">)</span><span class="nv">radius</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">w</span> <span class="o">=</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="n">self</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">;</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">h</span> <span class="o">=</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="n">self</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">CGColorSpaceRef</span> <span class="n">colorSpace</span> <span class="o">=</span> <span class="n">CGColorSpaceCreateDeviceRGB</span><span class="p">();</span>
+</span><span class='line'>    <span class="n">CGContextRef</span> <span class="n">context</span> <span class="o">=</span> <span class="n">CGBitmapContextCreate</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">w</span><span class="p">,</span> <span class="n">colorSpace</span><span class="p">,</span> <span class="n">kCGImageAlphaPremultipliedFirst</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">CGContextBeginPath</span><span class="p">(</span><span class="n">context</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">CGRect</span> <span class="n">rect</span> <span class="o">=</span> <span class="n">CGRectMake</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">addRoundedRectToPath</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">rect</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">radius</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">CGContextClosePath</span><span class="p">(</span><span class="n">context</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">CGContextClip</span><span class="p">(</span><span class="n">context</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">CGImageRef</span> <span class="n">cgImage</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSBitmapImageRep</span> <span class="nl">imageRepWithData:</span><span class="p">[</span><span class="n">self</span> <span class="n">TIFFRepresentation</span><span class="p">]]</span> <span class="n">CGImage</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">CGContextDrawImage</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">CGRectMake</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">),</span> <span class="n">cgImage</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">CGImageRef</span> <span class="n">imageMasked</span> <span class="o">=</span> <span class="n">CGBitmapContextCreateImage</span><span class="p">(</span><span class="n">context</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">CGContextRelease</span><span class="p">(</span><span class="n">context</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">CGColorSpaceRelease</span><span class="p">(</span><span class="n">colorSpace</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">NSImage</span> <span class="o">*</span><span class="n">tmpImage</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSImage</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithCGImage:</span><span class="n">imageMasked</span> <span class="nl">size:</span><span class="n">self</span><span class="p">.</span><span class="n">size</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">NSData</span> <span class="o">*</span><span class="n">imageData</span> <span class="o">=</span> <span class="p">[</span><span class="n">tmpImage</span> <span class="n">TIFFRepresentation</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">NSImage</span> <span class="o">*</span><span class="n">image</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSImage</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithData:</span><span class="n">imageData</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">tmpImage</span> <span class="n">release</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="p">[</span><span class="n">image</span> <span class="n">autorelease</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="k">@end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>测试效果如下：</p>
+
+<p><img class="center" src="/images/posts/round-corner-nsimgage.png"></p>
+
+<p>本例的源代码已经上传到<a href="https://github.com/venj/Cocoa-blog-code/tree/master/Round%20Corner%20Image">github</a>，顺便也测试了一下<a href="/blog/get-real-size-of-nsimage/">前文</a>所述的问题，你可以顺便简单的看一下。于是乎，iOS上也可以如法炮制一个<code>UIImage</code>的Catagory，方便使用。我在这里就不赘述了，有兴趣的可以自己试着改改。 :D</p>
+
+<p>(全文完)</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">venj</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-08-20T00:42:00+08:00" pubdate data-updated="true">Aug 20<span>th</span>, 2011</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/cgimage/'>CGImage</a>, <a class='category' href='/blog/categories/nsimage/'>NSImage</a>, <a class='category' href='/blog/categories/round-corner/'>Round Corner</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://venj.github.io/blog/draw-rounded-rectangle-nsimage-with-quartz/" data-via="" data-counturl="http://venj.github.io/blog/draw-rounded-rectangle-nsimage-with-quartz/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/get-real-size-of-nsimage/" title="Previous Post: 获取NSImage图片的准确大小">&laquo; 获取NSImage图片的准确大小</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/open-uiwebview-link-in-mobile-safari/" title="Next Post: 用Mobile Safari打开UIWebView里的链接">用Mobile Safari打开UIWebView里的链接 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/code-box-like-window-open-animation/">CodeBox风格的窗口打开动画</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/localized-loading-screen/">本地化加载屏幕</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/refresh-control-gochas/">用代码触发下拉更新</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/drive-navigation-in-ios6/">iOS 6下的驾车导航</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/nsstring-height/">关于多行NSString的高度</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/venj">@venj</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'venj',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - venj -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'venj';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://venj.github.io/blog/draw-rounded-rectangle-nsimage-with-quartz/';
+        var disqus_url = 'http://venj.github.io/blog/draw-rounded-rectangle-nsimage-with-quartz/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

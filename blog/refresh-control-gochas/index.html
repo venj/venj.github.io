@@ -1,0 +1,397 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>用代码触发下拉更新 - Cocoa学习</title>
+  <meta name="author" content="venj">
+
+  
+  <meta name="description" content="UIRefreshControl是iOS 6中的一个新控件，这个控件就是大家熟悉的下拉更新控件。关于如何把UIRefreshControl集成至UITableViewController中相信大家都知道怎么做。至于用代码触发下拉更新，查看Apple的文档后， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://venj.github.io/blog/refresh-control-gochas">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Cocoa学习" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Cocoa学习</a></h1>
+  
+    <h2>我的Cocoa/Cocoa Touch学习笔记</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:venj.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">用代码触发下拉更新</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-20T14:55:00+08:00" pubdate data-updated="true">Dec 20<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><code>UIRefreshControl</code>是iOS 6中的一个新控件，这个控件就是大家熟悉的下拉更新控件。关于如何把<code>UIRefreshControl</code>集成至<code>UITableViewController</code>中相信大家都知道怎么做。至于用代码触发下拉更新，查看Apple的文档后，我们看到<code>UIRefreshControl</code>有一个方法：<code>- beginRefreshing</code>。写到这里，貌似问题依然解决，没什么好说的了。但是真是这样吗？让我们来创建一个测试项目进行验证：</p>
+
+<ol>
+<li><p>创建一个Master-Detail Application项目，取名“RefreshControl”（你可以随便取），设备选iPhone，够上“Use Automatic Reference Counting”和“Use Storyboards”（你也可以不用Storyboard，反正差不多）。</p></li>
+<li><p>（可选）打开MainStoryboard.storyboard（或MasterViewController.xib，如果你在1中没有勾选Use Storyboards），启用Master View Controller的Refreshing。</p>
+
+<p><img class="center" src="/images/posts/master_refreshcontrol.png"></p></li>
+<li><p>打开MasterViewController.m，更改代码如下：</p></li>
+</ol>
+
+
+<!-- more -->
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">viewDidLoad</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">super</span> <span class="n">viewDidLoad</span><span class="p">];</span>
+</span><span class='line'>  <span class="c1">// Do any additional setup after loading the view, typically from a nib.</span>
+</span><span class='line'>    <span class="n">self</span><span class="p">.</span><span class="n">navigationItem</span><span class="p">.</span><span class="n">leftBarButtonItem</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">editButtonItem</span><span class="p">;</span>
+</span><span class='line'>    <span class="c1">// self.refreshControl = [[UIRefreshControl alloc] init]; // 如果你没有做步骤2，取消注释本行。</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">refreshControl</span> <span class="nl">addTarget:</span><span class="n">self</span> <span class="nl">action:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">insertNewObject:</span><span class="p">)</span> <span class="nl">forControlEvents:</span><span class="n">UIControlEventValueChanged</span><span class="p">];</span> <span class="c1">// 设置下拉刷新时执行的动作</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">UIBarButtonItem</span> <span class="o">*</span><span class="n">addButton</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIBarButtonItem</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithBarButtonSystemItem:</span><span class="n">UIBarButtonSystemItemAdd</span> <span class="nl">target:</span><span class="n">self</span> <span class="nl">action:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">addButtonAction:</span><span class="p">)];</span> <span class="c1">// 通过代码触发下拉刷新动作</span>
+</span><span class='line'>    <span class="n">self</span><span class="p">.</span><span class="n">navigationItem</span><span class="p">.</span><span class="n">rightBarButtonItem</span> <span class="o">=</span> <span class="n">addButton</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">didReceiveMemoryWarning</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">super</span> <span class="n">didReceiveMemoryWarning</span><span class="p">];</span>
+</span><span class='line'>    <span class="c1">// Dispose of any resources that can be recreated.</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// 下拉刷新动作</span>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">addButtonAction:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">refreshControl</span> <span class="n">beginRefreshing</span><span class="p">];</span> <span class="c1">// 触发刷新动作</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">insertNewObject:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="c1">// 使用Timer来模拟一个耗时的操作</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">NSTimer</span> <span class="nl">scheduledTimerWithTimeInterval:</span><span class="mi">2</span> <span class="nl">target:</span><span class="n">self</span> <span class="nl">selector:</span><span class="k">@selector</span><span class="p">(</span><span class="n">doSomething</span><span class="p">)</span> <span class="nl">userInfo:</span><span class="nb">nil</span> <span class="nl">repeats:</span><span class="n">NO</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// 这是模板自动生成的插入新项目的代码，我们把它移入了一个新方法，并增加结束刷新的代码。</span>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">doSomething</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">_objects</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">_objects</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSMutableArray</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">_objects</span> <span class="nl">insertObject:</span><span class="p">[</span><span class="n">NSDate</span> <span class="n">date</span><span class="p">]</span> <span class="nl">atIndex:</span><span class="mi">0</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">NSIndexPath</span> <span class="o">*</span><span class="n">indexPath</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSIndexPath</span> <span class="nl">indexPathForRow:</span><span class="mi">0</span> <span class="nl">inSection:</span><span class="mi">0</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">tableView</span> <span class="nl">insertRowsAtIndexPaths:</span><span class="err">@</span><span class="p">[</span><span class="n">indexPath</span><span class="p">]</span> <span class="nl">withRowAnimation:</span><span class="n">UITableViewRowAnimationAutomatic</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">refreshControl</span> <span class="n">endRefreshing</span><span class="p">];</span> <span class="c1">// 结束刷新</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>编译执行。</p>
+
+<p>首先，我们先测试手动下拉刷新－－如果你设置正确的话，程序运行良好，下拉更新OK了。</p>
+
+<p>然后，我们试试点击右上角的“＋”按钮。我们希望它也能正常运行。但是这时候，问题出现了－－好像程序啥都没有做！但是实际上，<code>UIRefreshControl</code>确实在工作了。不信你可以把TableView往下拉一点，我们能看到进度圈在转。但是奇怪的是，<code>- doSomething</code>代码似乎没有执行。</p>
+
+<p>为了解决这个问题，我们在<code>- addButtonAction:</code>方法中在调用<code>－ beginRefreshing</code>之后加入一行代码：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[</span><span class="n">self</span> <span class="nl">insertNewObject:</span><span class="nb">nil</span><span class="p">];</span> <span class="c1">//手工执行插入新行的动作</span>
+</span><span class='line'><span class="c1">// 或者</span>
+</span><span class='line'><span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">refreshControl</span> <span class="nl">sendActionsForControlEvents:</span><span class="n">UIControlEventValueChanged</span><span class="p">];</span> <span class="c1">//发送ValueChanged事件（推荐）</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>再次编译执行后，我们发现<code>- doSomething</code>可以正确执行了，但是，进度圈还是藏在TableView可见范围的上方。为了解决这个问题，我们需要在<code>- addButtonAction:</code>方法中，在调用<code>－ beginRefreshing</code>之前再加入一行代码：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">tableView</span> <span class="nl">setContentOffset:</span><span class="n">CGPointMake</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">44</span><span class="p">)</span> <span class="nl">animated:</span><span class="n">YES</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>编译执行，点击“＋”按钮，进度圈出现，2秒后，新条目加入，进度圈消失，我们的问题也解决了。</p>
+
+<p>总结一下，用代码触发下拉更新有两个陷阱：1. 调用<code>- beginRefreshing</code>方法不会触发<code>UIControlEventValueChanged</code>事件；2. 调用<code>- beginRefreshing</code>方法不会自动显示进度圈。</p>
+
+<p>示例代码已经上传至<a href="https://github.com/venj/Cocoa-blog-code/tree/master/RefreshControl">github</a>。如果你有更好的方法，或者你觉得我的处理方法有错误，请留言指正。谢谢。</p>
+
+<p>（全文完）</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">venj</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-20T14:55:00+08:00" pubdate data-updated="true">Dec 20<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/uirefreshcontrol/'>UIRefreshControl</a>, <a class='category' href='/blog/categories/uitableview/'>UITableView</a>, <a class='category' href='/blog/categories/ios-6/'>iOS 6</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://venj.github.io/blog/refresh-control-gochas/" data-via="" data-counturl="http://venj.github.io/blog/refresh-control-gochas/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/drive-navigation-in-ios6/" title="Previous Post: iOS 6下的驾车导航">&laquo; iOS 6下的驾车导航</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/localized-loading-screen/" title="Next Post: 本地化加载屏幕">本地化加载屏幕 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/code-box-like-window-open-animation/">CodeBox风格的窗口打开动画</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/localized-loading-screen/">本地化加载屏幕</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/refresh-control-gochas/">用代码触发下拉更新</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/drive-navigation-in-ios6/">iOS 6下的驾车导航</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/nsstring-height/">关于多行NSString的高度</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/venj">@venj</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'venj',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - venj -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'venj';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://venj.github.io/blog/refresh-control-gochas/';
+        var disqus_url = 'http://venj.github.io/blog/refresh-control-gochas/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

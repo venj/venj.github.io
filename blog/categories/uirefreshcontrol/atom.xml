@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: UIRefreshControl | Cocoa学习]]></title>
+  <link href="http://venj.github.io/blog/categories/uirefreshcontrol/atom.xml" rel="self"/>
+  <link href="http://venj.github.io/"/>
+  <updated>2013-12-27T13:33:43+08:00</updated>
+  <id>http://venj.github.io/</id>
+  <author>
+    <name><![CDATA[venj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[用代码触发下拉更新]]></title>
+    <link href="http://venj.github.io/blog/refresh-control-gochas/"/>
+    <updated>2012-12-20T14:55:00+08:00</updated>
+    <id>http://venj.github.io/blog/refresh-control-gochas</id>
+    <content type="html"><![CDATA[<p><code>UIRefreshControl</code>是iOS 6中的一个新控件，这个控件就是大家熟悉的下拉更新控件。关于如何把<code>UIRefreshControl</code>集成至<code>UITableViewController</code>中相信大家都知道怎么做。至于用代码触发下拉更新，查看Apple的文档后，我们看到<code>UIRefreshControl</code>有一个方法：<code>- beginRefreshing</code>。写到这里，貌似问题依然解决，没什么好说的了。但是真是这样吗？让我们来创建一个测试项目进行验证：</p>
+
+<ol>
+<li><p>创建一个Master-Detail Application项目，取名“RefreshControl”（你可以随便取），设备选iPhone，够上“Use Automatic Reference Counting”和“Use Storyboards”（你也可以不用Storyboard，反正差不多）。</p></li>
+<li><p>（可选）打开MainStoryboard.storyboard（或MasterViewController.xib，如果你在1中没有勾选Use Storyboards），启用Master View Controller的Refreshing。</p>
+
+<p><img class="center" src="/images/posts/master_refreshcontrol.png"></p></li>
+<li><p>打开MasterViewController.m，更改代码如下：</p></li>
+</ol>
+
+
+<!-- more -->
+
+
+<p>```objc
+&ndash; (void)viewDidLoad
+{</p>
+
+<pre><code>[super viewDidLoad];
+// Do any additional setup after loading the view, typically from a nib.
+self.navigationItem.leftBarButtonItem = self.editButtonItem;
+// self.refreshControl = [[UIRefreshControl alloc] init]; // 如果你没有做步骤2，取消注释本行。
+[self.refreshControl addTarget:self action:@selector(insertNewObject:) forControlEvents:UIControlEventValueChanged]; // 设置下拉刷新时执行的动作
+
+UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addButtonAction:)]; // 通过代码触发下拉刷新动作
+self.navigationItem.rightBarButtonItem = addButton;
+</code></pre>
+
+<p>}</p>
+
+<ul>
+<li>(void)didReceiveMemoryWarning
+{
+  [super didReceiveMemoryWarning];
+  // Dispose of any resources that can be recreated.
+}</li>
+</ul>
+
+
+<p>// 下拉刷新动作
+&ndash; (void)addButtonAction:(id)sender {</p>
+
+<pre><code>[self.refreshControl beginRefreshing]; // 触发刷新动作
+</code></pre>
+
+<p>}</p>
+
+<ul>
+<li>(void)insertNewObject:(id)sender
+{
+  // 使用Timer来模拟一个耗时的操作
+  [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(doSomething) userInfo:nil repeats:NO];
+}</li>
+</ul>
+
+
+<p>// 这是模板自动生成的插入新项目的代码，我们把它移入了一个新方法，并增加结束刷新的代码。
+&ndash; (void)doSomething {</p>
+
+<pre><code>if (!_objects) {
+    _objects = [[NSMutableArray alloc] init];
+}
+[_objects insertObject:[NSDate date] atIndex:0];
+NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+[self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+[self.refreshControl endRefreshing]; // 结束刷新
+</code></pre>
+
+<p>}</p>
+
+<p>```</p>
+
+<p>编译执行。</p>
+
+<p>首先，我们先测试手动下拉刷新－－如果你设置正确的话，程序运行良好，下拉更新OK了。</p>
+
+<p>然后，我们试试点击右上角的“＋”按钮。我们希望它也能正常运行。但是这时候，问题出现了－－好像程序啥都没有做！但是实际上，<code>UIRefreshControl</code>确实在工作了。不信你可以把TableView往下拉一点，我们能看到进度圈在转。但是奇怪的是，<code>- doSomething</code>代码似乎没有执行。</p>
+
+<p>为了解决这个问题，我们在<code>- addButtonAction:</code>方法中在调用<code>－ beginRefreshing</code>之后加入一行代码：</p>
+
+<p><code>objc
+[self insertNewObject:nil]; //手工执行插入新行的动作
+// 或者
+[self.refreshControl sendActionsForControlEvents:UIControlEventValueChanged]; //发送ValueChanged事件（推荐）
+</code></p>
+
+<p>再次编译执行后，我们发现<code>- doSomething</code>可以正确执行了，但是，进度圈还是藏在TableView可见范围的上方。为了解决这个问题，我们需要在<code>- addButtonAction:</code>方法中，在调用<code>－ beginRefreshing</code>之前再加入一行代码：</p>
+
+<p><code>objc
+[self.tableView setContentOffset:CGPointMake(0, -44) animated:YES];
+</code></p>
+
+<p>编译执行，点击“＋”按钮，进度圈出现，2秒后，新条目加入，进度圈消失，我们的问题也解决了。</p>
+
+<p>总结一下，用代码触发下拉更新有两个陷阱：1. 调用<code>- beginRefreshing</code>方法不会触发<code>UIControlEventValueChanged</code>事件；2. 调用<code>- beginRefreshing</code>方法不会自动显示进度圈。</p>
+
+<p>示例代码已经上传至<a href="https://github.com/venj/Cocoa-blog-code/tree/master/RefreshControl">github</a>。如果你有更好的方法，或者你觉得我的处理方法有错误，请留言指正。谢谢。</p>
+
+<p>（全文完）</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,328 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>获取NSImage图片的准确大小 - Cocoa学习</title>
+  <meta name="author" content="venj">
+
+  
+  <meta name="description" content="今天在测试代码的时候发现了一个诡异的问题，那就是NSImage加载图片的时候无法准确获得图片的大小。 最初的代码是这样的： 1
+2
+3
+4
+NSImage *image = [NSImage imageNamed:@&quot;image&quot;];
+NSLog(@&quot;%f, %f& &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://venj.github.io/blog/get-real-size-of-nsimage">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Cocoa学习" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Cocoa学习</a></h1>
+  
+    <h2>我的Cocoa/Cocoa Touch学习笔记</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:venj.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">获取NSImage图片的准确大小</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-08-19T23:58:00+08:00" pubdate data-updated="true">Aug 19<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>今天在测试代码的时候发现了一个诡异的问题，那就是<code>NSImage</code>加载图片的时候无法准确获得图片的大小。</p>
+
+<p>最初的代码是这样的：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSImage</span> <span class="o">*</span><span class="n">image</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSImage</span> <span class="nl">imageNamed:</span><span class="s">@&quot;image&quot;</span><span class="p">];</span>
+</span><span class='line'><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%f, %f&quot;</span><span class="p">,</span> <span class="n">image</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="n">image</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">);</span>
+</span><span class='line'><span class="c1">//终端Log到的图片的尺寸是：185.250000, 106.500000，而实际的大小是274.0, 142.0。</span>
+</span><span class='line'><span class="c1">//image.size = NSMakeSize(247.0, 142.0); //强制指定尺寸能够解决问题</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>我用一个Image Well来显示图片的时候，发现图片居然比实际的要小！我试着<code>NSLog</code>图片的大小，发现<code>NSImage</code>加载的图片的<code>size</code>根本就是错的！我根据图片的实际大小，强制设置了图片的尺寸，图片就显示正常了，而且也没有被拉伸的痕迹。这说明图片数据在加载后并没有损耗，只是图片的<code>size</code>属性出错了，因此，强制设置<code>size</code>属性，图片就能正常显示了。</p>
+
+<!-- more -->
+
+
+<p>
+在搜索了一番之后，发现这个问题似乎和<a href="http://stackoverflow.com/questions/4748846/nsimage-dpi-question">图片的DPI有关</a>。如果图片的DPI不是72，<code>NSImage</code>加载图片后<code>size</code>属性就会出错。我在iOS上用同样的方法做了测试，发现<code>UIImage</code>则没有类似的问题。虽然我对图片的DPI的概念也是一知半解，但是，像72 DPI这种应该算是历史的包袱了，毕竟Cocoa是一个非常古老的框架了。</p>
+
+<p>虽然在这里，人肉设置图片大小能够解决问题，不过总不能在以后的代码中都人肉设置每张图片的尺寸吧。总有什么准确的方法来获取图片的真实像素尺寸的。然后就找到了<a href="http://stackoverflow.com/">Stack Overflow</a>里的<a href="http://stackoverflow.com/questions/2190027/nsimage-acting-weird">这个问题</a>，解决方法是这样的：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// 不要用这个方法，这个方法并不一定总能成功。</span>
+</span><span class='line'><span class="n">NSBitmapImageRep</span> <span class="o">*</span><span class="n">rep</span> <span class="o">=</span> <span class="p">[[</span><span class="n">image</span> <span class="n">representations</span><span class="p">]</span> <span class="nl">objectAtIndex:</span> <span class="mi">0</span><span class="p">];</span>
+</span><span class='line'><span class="n">NSSize</span> <span class="n">size</span> <span class="o">=</span> <span class="n">NSMakeSize</span><span class="p">([</span><span class="n">rep</span> <span class="n">pixelsWide</span><span class="p">],</span> <span class="p">[</span><span class="n">rep</span> <span class="n">pixelsHigh</span><span class="p">]);</span>
+</span><span class='line'><span class="p">[</span><span class="n">image</span> <span class="nl">setSize:</span> <span class="n">size</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>我试了一下这个方法，确实能够解决我的问题。不过这个方法下面，两个开发人员的对话很有启发，其中一人提到了一个问题，那就是<code>NSImage</code>可能并不存在<code>NSBitmapImageRep</code>－－这并不稀奇，比如，用<a href="/blog/take-photo-with-isight-camera/">Mac的摄像头拍下的图片</a>就没有！因此，一定有更好的方法。于是，我顺藤摸瓜，又在Stack Overflow上找到了<a href="http://stackoverflow.com/questions/4748846/nsimage-dpi-question">另一个更加靠谱的方法</a>：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSImage</span> <span class="o">*</span><span class="n">image</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSImage</span> <span class="nl">imageNamed:</span><span class="s">@&quot;image&quot;</span><span class="p">];</span>
+</span><span class='line'><span class="n">NSBitmapImageRep</span> <span class="o">*</span><span class="n">rep</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSBitmapImageRep</span> <span class="nl">imageRepWithData:</span><span class="p">[</span><span class="n">image</span> <span class="n">TIFFRepresentation</span><span class="p">]];</span>
+</span><span class='line'><span class="n">NSSize</span> <span class="n">size</span> <span class="o">=</span> <span class="n">NSMakeSize</span><span class="p">([</span><span class="n">rep</span> <span class="n">pixelsWide</span><span class="p">],</span> <span class="p">[</span><span class="n">rep</span> <span class="n">pixelsHigh</span><span class="p">]);</span>
+</span><span class='line'><span class="p">[</span><span class="n">image</span> <span class="nl">setSize:</span> <span class="n">size</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这种方法其实在原理上和之前说的那个有缺陷的方法并没有非常本质的不同。只是这种方法是创建了一个<code>NSBitmapImageRep</code>，而不是从图片中获取一个。这样，就不会存在图片对象中无法获取<code>NSBitmapImageRep</code>的问题了。</p>
+
+<p>至此，问题完美解决。不过这个问题提醒了我，不要对Cocoa的内建对象想当然，一定要注意Cocoa框架中的陷阱。</p>
+
+<p>(全文完)</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">venj</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-08-19T23:58:00+08:00" pubdate data-updated="true">Aug 19<span>th</span>, 2011</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/nsimage/'>NSImage</a>, <a class='category' href='/blog/categories/uiimage/'>UIImage</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://venj.github.io/blog/get-real-size-of-nsimage/" data-via="" data-counturl="http://venj.github.io/blog/get-real-size-of-nsimage/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/testing-ios-projects/" title="Previous Post: iOS项目的测试简介">&laquo; iOS项目的测试简介</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/draw-rounded-rectangle-nsimage-with-quartz/" title="Next Post: 用Quartz绘制NSImage圆角图像">用Quartz绘制NSImage圆角图像 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/code-box-like-window-open-animation/">CodeBox风格的窗口打开动画</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/localized-loading-screen/">本地化加载屏幕</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/refresh-control-gochas/">用代码触发下拉更新</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/drive-navigation-in-ios6/">iOS 6下的驾车导航</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/nsstring-height/">关于多行NSString的高度</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/venj">@venj</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'venj',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - venj -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'venj';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://venj.github.io/blog/get-real-size-of-nsimage/';
+        var disqus_url = 'http://venj.github.io/blog/get-real-size-of-nsimage/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

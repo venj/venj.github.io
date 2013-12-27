@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Core Graphics | Cocoa学习]]></title>
+  <link href="http://venj.github.io/blog/categories/core-graphics/atom.xml" rel="self"/>
+  <link href="http://venj.github.io/"/>
+  <updated>2013-12-27T13:33:43+08:00</updated>
+  <id>http://venj.github.io/</id>
+  <author>
+    <name><![CDATA[venj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[在iOS上用Quartz绘制圆角矩形]]></title>
+    <link href="http://venj.github.io/blog/draw-round-rectangle-with-quartz-on-ios/"/>
+    <updated>2011-08-06T00:28:00+08:00</updated>
+    <id>http://venj.github.io/blog/draw-round-rectangle-with-quartz-on-ios</id>
+    <content type="html"><![CDATA[<p>Bezels是Mac OS X下，苹果私有的UI控件，用来提示用户某些信息。不过iOS下，就有很多第三方的Bezels风格的提示控件实现了。相信大家也见过很多了。下图左侧是OSX的提示音量变化的Bezels，右侧是iOS上的Bezels风格的进度提示。</p>
+
+<p><img class="center" src="/images/posts/quartz-1.png"></p>
+
+<p>在iOS上做Bezels的思路很简单，无非就是在<code>UIView</code>里绘制一个半透明的圆角矩形，然后加入其他的<code>SubView</code>。因为没有现成的绘制圆角矩形的API可用，所以我们来自己绘制一个——反正是为了学习嘛。</p>
+
+<p>新建项目，添加一个<code>UIView</code>的子类，修改<code>drawRect</code>方法，如下：</p>
+
+<!-- more -->
+
+
+<p>
+``` objc
+&ndash; (void)drawRect:(CGRect)rect
+{</p>
+
+<pre><code>CGFloat width = rect.size.width;
+CGFloat height = rect.size.height;
+// 简便起见，这里把圆角半径设置为长和宽平均值的1/10
+CGFloat radius = (width + height) * 0.05;
+
+// 获取CGContext，注意UIKit里用的是一个专门的函数
+CGContextRef context = UIGraphicsGetCurrentContext();
+// 移动到初始点
+CGContextMoveToPoint(context, radius, 0);
+
+// 绘制第1条线和第1个1/4圆弧
+CGContextAddLineToPoint(context, width - radius, 0);
+CGContextAddArc(context, width - radius, radius, radius, -0.5 * M_PI, 0.0, 0);
+
+// 绘制第2条线和第2个1/4圆弧
+CGContextAddLineToPoint(context, width, height - radius);
+CGContextAddArc(context, width - radius, height - radius, radius, 0.0, 0.5 * M_PI, 0);
+
+// 绘制第3条线和第3个1/4圆弧
+CGContextAddLineToPoint(context, radius, height);
+CGContextAddArc(context, radius, height - radius, radius, 0.5 * M_PI, M_PI, 0);
+
+// 绘制第4条线和第4个1/4圆弧
+CGContextAddLineToPoint(context, 0, radius);
+CGContextAddArc(context, radius, radius, radius, M_PI, 1.5 * M_PI, 0);
+
+// 闭合路径
+CGContextClosePath(context);
+// 填充半透明黑色
+CGContextSetRGBFillColor(context, 0.0, 0.0, 0.0, 0.5);
+CGContextDrawPath(context, kCGPathFill);
+</code></pre>
+
+<p>}
+```</p>
+
+<p>其实这用到的只是些很基本的Quartz绘图函数而已。不过，我们顺利的绘制出了半透明，黑色的，圆角Bezel风格的View。下面就是一个测试的例子——绘制长方形的也行哦。 :P</p>
+
+<p><img class="center" src="/images/posts/quartz-2.png"></p>
+
+<p>当然，这只是个基础，但是不管怎样，有了这个很好的开始，自己做一个Bezels风格ViewController就很方便了。如果你要在实际的项目中使用Bezels风格的View，但是又不想自己麻烦动手写，网上已经有很多开源的Bezels实现，自己找一找吧。 :)</p>
+
+<p>（全文完）</p>
+]]></content>
+  </entry>
+  
+</feed>

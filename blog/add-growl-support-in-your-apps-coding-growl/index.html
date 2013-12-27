@@ -1,0 +1,567 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>为应用程序增加Growl支持（下）：在代码中应用Growl - Cocoa学习</title>
+  <meta name="author" content="venj">
+
+  
+  <meta name="description" content="在之前一篇日志里，我简单的介绍了一下如何在项目中增加Growl.framework。现在，我来介绍一下如何使用Growl。在之前的日志里，我演示的时候，是往项目中加入Growl.framework，这次，为了完整起见，我将使用Growl-WithInstaller.framework来演示。 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://venj.github.io/blog/add-growl-support-in-your-apps-coding-growl">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Cocoa学习" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Cocoa学习</a></h1>
+  
+    <h2>我的Cocoa/Cocoa Touch学习笔记</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:venj.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">为应用程序增加Growl支持（下）：在代码中应用Growl</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-05-26T21:07:00+08:00" pubdate data-updated="true">May 26<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>在<a href="/blog/add-growl-support-in-your-apps-add-growl-framework/">之前一篇日志</a>里，我简单的介绍了一下如何在项目中增加Growl.framework。现在，我来介绍一下如何使用Growl。在之前的日志里，我演示的时候，是往项目中加入Growl.framework，这次，为了完整起见，我将使用Growl-WithInstaller.framework来演示。</p>
+
+<p>这两个框架的区别在于后者把Growl安装程序打包进了框架中。如果用户没有安装Growl，并且愿意安装，可以马上安装。但是很多人并不喜欢这种捆绑安装的方式，很多人把责任归咎于Growl，Growl甚至专门为此<a href="http://growl.info/thirdpartyinstallations.php">写了个网页</a>解释。其实Growl是出于好意，并且，选择哪个框架是开发人员的事情。作为用户，如果你真的不喜欢Growl，Growl能够很方便的删除；而作为开发人员，应该根据目标用户谨慎选择捆绑Growl安装程序的包。</p>
+
+<p>好了，题外话不多说，言归正传。</p>
+
+<!-- more -->
+
+
+<p>
+我们首先在Xcode里新建一个简单的Cocoa项目，按照前文的方法，加入Growl支持。</p>
+
+<p>要让Cocoa程序支持Growl，首先要为Growl设置一个<code>Delegate</code>。简单起见，我们在<code>AppDelegate</code>的<code>-(void)applicationDidFinishLaunching:(NSNotification *)aNotification</code>中，设置<code>Delegate</code>方法：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[</span><span class="n">GrowlApplicationBridge</span> <span class="nl">setGrowlDelegate:</span><span class="n">self</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>在显示提示信息之前，我们首先要“注册”提示信息。注册的方法有两种，一种是在项目中加入一个名为“Growl Registration Ticket.growlRegDict”的文件，格式为property list。Growl会自动加载这个文件。</p>
+
+<p><img class="center" src="/images/posts/growl-code-1.png"></p>
+
+<p>这个plist包含三个键值对。第一个键是<code>TicketVersion</code>，值为整数类型，目前取值为<code>1</code>；第二个键是<code>AllNotifications</code>，值为一个数组，其中包含所有的<code>Notification</code>的名称，类型为字符串；第三个键是<code>DefaultNotifications</code>，值为一个数组，是<code>AllNotifications</code>的一个子集，作为默认启用的<code>Notification</code>。大多数情况下，是相同的。至于为什么要有这两种数组的区分，我也没弄得很明白。</p>
+
+<p>另一种注册提示信息的方法是实现一个<code>delegate</code>方法：<code>-(NSDictionary *)registrationDictionaryForGrowl</code>。这个方法返回的辞典必须包含两个键：<code>GROWL_NOTIFICATIONS_ALL</code>和<code>GROWL_NOTIFICATIONS_DEFAULT</code>。作用自然不用多说，跟上述的<code>AllNotifications</code>和<code>DefaultNotifications</code>一一对应。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSDictionary</span> <span class="o">*</span><span class="p">)</span><span class="nf">registrationDictionaryForGrowl</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">NSArray</span> <span class="o">*</span><span class="n">allNotes</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSArray</span> <span class="nl">arrayWithObjects:</span><span class="s">@&quot;myNotification&quot;</span><span class="p">,</span> <span class="s">@&quot;myNote&quot;</span><span class="p">,</span> <span class="s">@&quot;notDefaultNote&quot;</span><span class="p">,</span> <span class="nb">nil</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">NSArray</span> <span class="o">*</span><span class="n">defaultNotes</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSArray</span> <span class="nl">arrayWithObjects:</span><span class="s">@&quot;myNotification&quot;</span><span class="p">,</span> <span class="s">@&quot;myNote&quot;</span><span class="p">,</span> <span class="nb">nil</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="p">[</span><span class="n">NSDictionary</span> <span class="nl">dictionaryWithObjectsAndKeys:</span><span class="n">allNotes</span><span class="p">,</span> <span class="n">GROWL_NOTIFICATIONS_ALL</span><span class="p">,</span> <span class="n">defaultNotes</span><span class="p">,</span> <span class="n">GROWL_NOTIFICATIONS_DEFAULT</span><span class="p">,</span> <span class="nb">nil</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如果没有利用任何一种方法注册提示信息，程序在编译时，在控制台上会出现下面这样错误信息：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="mi">2011</span><span class="o">-</span><span class="mo">05</span><span class="o">-</span><span class="mi">26</span> <span class="mi">20</span><span class="o">:</span><span class="mi">08</span><span class="o">:</span><span class="mf">13.469</span> <span class="n">GrowlTest</span><span class="p">[</span><span class="mi">1644</span><span class="o">:</span><span class="mi">903</span><span class="p">]</span> <span class="nl">GrowlApplicationBridge:</span> <span class="n">The</span> <span class="n">Growl</span> <span class="n">delegate</span> <span class="n">did</span> <span class="n">not</span> <span class="n">supply</span> <span class="n">a</span> <span class="n">registration</span> <span class="n">dictionary</span><span class="p">,</span> <span class="n">and</span> <span class="n">the</span> <span class="n">app</span> <span class="n">bundle</span> <span class="n">at</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">venj</span><span class="o">/</span><span class="n">Library</span><span class="o">/</span><span class="n">Developer</span><span class="o">/</span><span class="n">Xcode</span><span class="o">/</span><span class="n">DerivedData</span><span class="o">/</span><span class="n">GrowlTest</span><span class="o">-</span><span class="n">hetkeinkpxbuynbhprgdyoywkrif</span><span class="o">/</span><span class="n">Build</span><span class="o">/</span><span class="n">Products</span><span class="o">/</span><span class="n">Debug</span><span class="o">/</span><span class="n">GrowlTest</span><span class="p">.</span><span class="n">app</span> <span class="n">does</span> <span class="n">not</span> <span class="n">have</span> <span class="n">one</span><span class="p">.</span> <span class="n">Please</span> <span class="n">tell</span> <span class="n">this</span> <span class="n">application</span><span class="err">&#39;</span><span class="n">s</span> <span class="n">developer</span><span class="mf">.2011</span><span class="o">-</span><span class="mo">05</span><span class="o">-</span><span class="mi">26</span> <span class="mi">20</span><span class="o">:</span><span class="mi">08</span><span class="o">:</span><span class="mf">13.668</span> <span class="n">GrowlTest</span><span class="p">[</span><span class="mi">1644</span><span class="o">:</span><span class="mi">903</span><span class="p">]</span> <span class="n">not</span> <span class="n">installed</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>不过Growl提示还是能够显示的。至于注册和不注册的区别，我也没弄明白，囧。</p>
+
+<p>注册完毕之后，你就能显示Growl提示了。我们假设在Cocoa项目中，增加了一个按钮，连接到下面这个Action上：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">showGrowl:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">GrowlApplicationBridge</span> <span class="nl">notifyWithTitle:</span><span class="s">@&quot;The Title&quot;</span> <span class="nl">description:</span><span class="s">@&quot;This is a notification description.&quot;</span> <span class="nl">notificationName:</span><span class="s">@&quot;myNote&quot;</span> <span class="nl">iconData:</span><span class="nb">nil</span> <span class="nl">priority:</span><span class="mi">0</span> <span class="nl">isSticky:</span><span class="n">NO</span> <span class="nl">clickContext:</span><span class="nb">nil</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Growl提示的核心方法是：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="o">+</span><span class="p">[</span><span class="n">GrowlApplicationBridge</span> <span class="nl">notifyWithTitle:</span>
+</span><span class='line'>    <span class="nl">description:</span>
+</span><span class='line'>    <span class="nl">notificationName:</span>
+</span><span class='line'>    <span class="nl">iconData:</span>
+</span><span class='line'>    <span class="nl">priority:</span>
+</span><span class='line'>    <span class="nl">isSticky:</span>
+</span><span class='line'>    <span class="nl">clickContext:</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>其中，<code>title</code>（<code>NSString</code>）, <code>description</code>（<code>NSString</code>）, <code>iconData</code>（<code>NSData</code>）, <code>isSticky</code>（<code>BOOL</code>）的值在下图中表示了一下。其中，Sticky的值如果设置为<code>YES</code>，那么必须要用户点击关闭按钮，提示才会消失；否则，提示会自动消失。</p>
+
+<p><img class="center" src="/images/posts/growl-code-2.png"></p>
+
+<p><code>priority</code>的取值为包括-2, -1, 0, 1, 2，从左到右优先级递增。Priority通常没啥作用。如果你在Growl的控制面板中，为不同优先级设置了不统的提示背景和提示文字颜色，那么这些优先级就会反映出来。</p>
+
+<p><img class="center" src="/images/posts/growl-code-3.png"></p>
+
+<p>最后一个<code>context</code>，接收一个<code>id</code>类型的值。这个值与<code>-(void)growlNotificationWasClicked:(id)clickContext</code>这个回调方法有密切联系。如果<code>context</code>为<code>nil</code>，这个方法将不会调用；如果<code>context</code>不是<code>nil</code>，那么<code>context</code>的值就会作为<code>clickContext</code>的值，传入这个回调方法。在Growl提示被点击时候，会触发这个回调方法，执行相应的动作。</p>
+
+<p>另外，还有几个<code>delegate</code>方法，我来简单介绍一下：</p>
+
+<p><code>-(void)growlIsReady:</code>这个方法主要是在程序使用了Growl-WithInstaller.framework时，用户选择安装或升级Growl，并成功启动之后，所执行的动作。</p>
+
+<p><code>-(void)growlNotificationTimedOut:(id)clickContext:</code>与<code>-(void)growlNotificationWasClicked:(id)clickContext</code>类似，这个方法是在用户没有对提示作出响应，在Growl即将消失的时候调用的一个方法。</p>
+
+<p><img class="center" src="/images/posts/growl-code-4.png"></p>
+
+<p><code>-(NSData *)applicationIconDataForGrowl</code>和<code>-(NSString *)applicationNameForGrowl</code>，设置Growl返回的程序名称和程序图标。通常如果不设置，Growl会使用默认的程序图标和<code>Info.plist</code>里指定的程序名称。比如下面的两个图中，我们并没有为示例程序设置程序图标，而默认的程序名称为“GrowlAppTest”。我们在实现了这两个方法之后，可以覆盖默认行为，这样，在Growl设置和Growl提示里，我们就能看到图标和程序名称了。</p>
+
+<p><img class="center" src="/images/posts/growl-code-5.png"></p>
+
+<p><img class="center" src="/images/posts/growl-code-6.png"></p>
+
+<p>另外，假如用户没有安装Growl，那么应用Grow-WitiInstaller.framework的时候，程序在第一次调用Growl方法的时候会提示用户安装Growl。</p>
+
+<p><img class="center" src="/images/posts/growl-code-7.png"></p>
+
+<p>关于如何自定义这个对话框“说服”用户安装Growl，还有几个<code>Delegate</code>方法来做到。我就不一一叙述了：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nf">growlInstallationWindowTitle</span><span class="p">;</span>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nf">growlUpdateWindowTitle</span><span class="p">;</span>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSAttributedString</span> <span class="o">*</span><span class="p">)</span><span class="nf">growlInstallationInformation</span><span class="p">;</span>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSAttributedString</span> <span class="o">*</span><span class="p">)</span><span class="nf">growlUpdateInformation</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>最后，我就连篇累牍的奉上示例程序的源代码：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cm">/* GrowlTestAppDelegate.h */</span>
+</span><span class='line'><span class="cp">#import &lt;Cocoa/Cocoa.h&gt;</span>
+</span><span class='line'><span class="cp">#import &quot;Growl-WithInstaller/Growl.h&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@interface</span> <span class="nc">GrowlTestAppDelegate</span> : <span class="nc">NSObject</span> <span class="o">&lt;</span><span class="n">NSApplicationDelegate</span><span class="p">,</span> <span class="n">GrowlApplicationBridgeDelegate</span><span class="o">&gt;</span> <span class="p">{</span>
+</span><span class='line'><span class="k">@private</span>
+</span><span class='line'>    <span class="n">NSWindow</span> <span class="o">*</span><span class="n">window</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="n">assign</span><span class="p">)</span> <span class="kt">IBOutlet</span> <span class="n">NSWindow</span> <span class="o">*</span><span class="n">window</span><span class="p">;</span>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">showGrowl:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@end</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/* GrowlTestAppDelegate.m */</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#import &quot;GrowlTestAppDelegate.h&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@implementation</span> <span class="nc">GrowlTestAppDelegate</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@synthesize</span> <span class="n">window</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">applicationDidFinishLaunching:</span><span class="p">(</span><span class="n">NSNotification</span> <span class="o">*</span><span class="p">)</span><span class="nv">aNotification</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="c1">// Insert code here to initialize your application</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">GrowlApplicationBridge</span> <span class="nl">setGrowlDelegate:</span><span class="n">self</span><span class="p">];</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">[</span><span class="n">GrowlApplicationBridge</span> <span class="n">isGrowlInstalled</span><span class="p">])</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;not installed&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">showGrowl:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">GrowlApplicationBridge</span> <span class="nl">notifyWithTitle:</span><span class="s">@&quot;The Title&quot;</span> <span class="nl">description:</span><span class="s">@&quot;This is a notification description.&quot;</span> <span class="nl">notificationName:</span><span class="s">@&quot;myNote&quot;</span> <span class="nl">iconData:</span><span class="nb">nil</span> <span class="nl">priority:</span><span class="mi">0</span> <span class="nl">isSticky:</span><span class="n">NO</span> <span class="nl">clickContext:</span><span class="s">@&quot;God&quot;</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp"># pragma mark - Growl Delegate</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//- (NSDictionary *)registrationDictionaryForGrowl {</span>
+</span><span class='line'><span class="c1">//    NSArray *allNotes = [NSArray arrayWithObjects:@&quot;myNotification&quot;, @&quot;myNote&quot;, @&quot;notDefaultNote&quot;, nil];</span>
+</span><span class='line'><span class="c1">//    NSArray *defaultNotes = [NSArray arrayWithObjects:@&quot;myNotification&quot;, @&quot;myNote&quot;, nil];</span>
+</span><span class='line'><span class="c1">//</span>
+</span><span class='line'><span class="c1">//    return [NSDictionary dictionaryWithObjectsAndKeys:allNotes, GROWL_NOTIFICATIONS_ALL, defaultNotes, GROWL_NOTIFICATIONS_DEFAULT, nil];</span>
+</span><span class='line'><span class="c1">//}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">growlIsReady</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;Growl is up and running.&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">self</span> <span class="nl">showGrowl:</span><span class="nb">nil</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">growlNotificationTimedOut:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">clickContext</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%@, I&#39;m disappearing...&quot;</span><span class="p">,</span> <span class="n">clickContext</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">growlNotificationWasClicked:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">clickContext</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%@, I&#39;m clicked...&quot;</span><span class="p">,</span> <span class="n">clickContext</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSData</span> <span class="o">*</span><span class="p">)</span> <span class="nf">applicationIconDataForGrowl</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">NSData</span> <span class="o">*</span><span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSData</span> <span class="nl">dataWithContentsOfFile:</span><span class="p">[[</span><span class="n">NSBundle</span> <span class="n">mainBundle</span><span class="p">]</span> <span class="nl">pathForImageResource:</span><span class="s">@&quot;lame&quot;</span><span class="p">]];</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">data</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span> <span class="nf">applicationNameForGrowl</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="s">@&quot;GrowlAppTest&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp"># pragma mark - Growl Installer Delegate</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nf">growlInstallationWindowTitle</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="s">@&quot;Install Growl&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nf">growlUpdateWindowTitle</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="s">@&quot;Update Growl&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//- (NSAttributedString *)growlInstallationInformation {</span>
+</span><span class='line'><span class="c1">//    // Some inplementation</span>
+</span><span class='line'><span class="c1">//}</span>
+</span><span class='line'><span class="c1">//</span>
+</span><span class='line'><span class="c1">//- (NSAttributedString *)growlUpdateInformation {</span>
+</span><span class='line'><span class="c1">//    // Some inplementation</span>
+</span><span class='line'><span class="c1">//}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>（全文完）</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">venj</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-05-26T21:07:00+08:00" pubdate data-updated="true">May 26<span>th</span>, 2011</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/framework/'>Framework</a>, <a class='category' href='/blog/categories/growl/'>Growl</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://venj.github.io/blog/add-growl-support-in-your-apps-coding-growl/" data-via="" data-counturl="http://venj.github.io/blog/add-growl-support-in-your-apps-coding-growl/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/add-growl-support-in-your-apps-add-growl-framework/" title="Previous Post: 为应用程序增加Growl支持（上）：在项目中加入Growl.Framework">&laquo; 为应用程序增加Growl支持（上）：在项目中加入Growl.Framework</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/auto-update-apps-with-sparkle/" title="Next Post: 用Sparkle为Cocoa程序增加自动升级">用Sparkle为Cocoa程序增加自动升级 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/code-box-like-window-open-animation/">CodeBox风格的窗口打开动画</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/localized-loading-screen/">本地化加载屏幕</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/refresh-control-gochas/">用代码触发下拉更新</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/drive-navigation-in-ios6/">iOS 6下的驾车导航</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/nsstring-height/">关于多行NSString的高度</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/venj">@venj</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'venj',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - venj -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'venj';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://venj.github.io/blog/add-growl-support-in-your-apps-coding-growl/';
+        var disqus_url = 'http://venj.github.io/blog/add-growl-support-in-your-apps-coding-growl/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

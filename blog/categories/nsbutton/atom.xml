@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: NSButton | Cocoa学习]]></title>
+  <link href="http://venj.github.io/blog/categories/nsbutton/atom.xml" rel="self"/>
+  <link href="http://venj.github.io/"/>
+  <updated>2013-12-27T13:33:43+08:00</updated>
+  <id>http://venj.github.io/</id>
+  <author>
+    <name><![CDATA[venj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[用Cocoa实现点击按钮打开快捷菜单]]></title>
+    <link href="http://venj.github.io/blog/open-menu-with-a-button/"/>
+    <updated>2011-04-16T11:41:00+08:00</updated>
+    <id>http://venj.github.io/blog/open-menu-with-a-button</id>
+    <content type="html"><![CDATA[<p>用一个自定义按钮打开菜单已经是一个很常见的需求的。不过<code>NSPopupButton</code>对于我们的这种需求来说显得有点不合适。最终的结果如下所示：</p>
+
+<p><img class="center" src="/images/posts/image-button-menu.png" title="和自定义按钮关联的弹出菜单" ></p>
+
+<p><img class="center" src="/images/posts/normal-button-menu.png" title="和普通按钮关联的弹出菜单" ></p>
+
+<p>实现的方法很简单，代码如下所示：</p>
+
+<!-- more -->
+
+
+<p>
+``` objc
+&ndash; (IBAction)showMenu:(id)sender {</p>
+
+<pre><code>NSRect frame = [(NSButton *)sender frame];
+NSPoint menuOrigin = [[(NSButton *)sender superview] convertPoint:NSMakePoint(frame.origin.x, frame.origin.y) toView:nil];
+
+NSEvent *event =  [NSEvent mouseEventWithType:NSLeftMouseDown
+                                     location:menuOrigin
+                                modifierFlags:NSLeftMouseDownMask
+                                    timestamp:0
+                                 windowNumber:[[(NSButton *)sender window] windowNumber]
+                                      context:[[(NSButton *)sender window] graphicsContext]
+                                  eventNumber:0
+                                   clickCount:1
+                                     pressure:1];
+
+// contextMenu可以直接在XIB里初始化一个菜单
+[NSMenu popUpContextMenu:contextMenu withEvent:event forView:(NSButton *)sender];
+</code></pre>
+
+<p>}
+```
+啰嗦一句，关于自定义按钮的设定问题。截图中的自定义按钮就是一个普通的push button，在IB里作如下设置：</p>
+
+<p><img class="center" src="/images/posts/button-menu-xcode.png"></p>
+
+<p>也就是取消掉Bordered，以及指定一个Image和Alternative (Image)。</p>
+
+<p><a href="http://praveenmatanam.wordpress.com/2008/09/05/how-to-popup-context-menu-when-clicked-on-button/">参考文章在此</a></p>
+
+<p>（全文完）</p>
+]]></content>
+  </entry>
+  
+</feed>

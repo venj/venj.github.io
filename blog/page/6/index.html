@@ -1,0 +1,508 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Cocoa学习</title>
+  <meta name="author" content="venj">
+
+  
+  <meta name="description" content="关于如何隐藏Dock图标的方法，相信大家都知道——即使没有没有编程经验的老用户都知道。那就是，在Application Bundle里的Info.plist中增加一个LSUIElement的键，设置值为YES。但是，在程序中往往要让用户选择是否启用或禁用Dock图标。 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://venj.github.io/blog/page/6">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Cocoa学习" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Cocoa学习</a></h1>
+  
+    <h2>我的Cocoa/Cocoa Touch学习笔记</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:venj.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/dynamically-show-and-hide-dock-icon/">在程序中动态设置是否显示Dock图标</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-08-06T21:50:00+08:00" pubdate data-updated="true">Aug 6<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>关于如何隐藏Dock图标的方法，相信大家都知道——即使没有没有编程经验的老用户都知道。那就是，在Application Bundle里的<code>Info.plist</code>中增加一个<code>LSUIElement</code>的键，设置值为<code>YES</code>。但是，在程序中往往要让用户选择是否启用或禁用Dock图标。而程序是不能修改Application Bundle里的<code>Info.plist</code>的，因为这样会破坏程序的数字签名，所以只能在程序代码中动态的设置Dock图标的状态。</p>
+
+<p>其实动态设置Dock图标的方法很简单严格的说只有两行代码：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">ProcessSerialNumber</span> <span class="n">psn</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">0</span><span class="p">,</span> <span class="n">kCurrentProcess</span> <span class="p">};</span>
+</span><span class='line'><span class="n">TransformProcessType</span><span class="p">(</span><span class="o">&amp;</span><span class="n">psn</span><span class="p">,</span> <span class="n">kProcessTransformToForegroundApplication</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>在设置隐藏Dock图标的时候需要重启应用程序，无法在运行时动态完成的，而在显示Dock图标的时候则不需要。我做了一个简单的Demo程序。放到了Github上，有兴趣的可以看看。（以后在这里出现的其他示例代码也会放到那里。）</p>
+
+<p><img class="center" src="/images/posts/dynamic-dock-icon.png"></p>
+
+<p>程序很简单，就一个复选框，用来设置是否显示Dock图标。通过一个<code>-toggleDockIcon:</code>方法来设置是否显示Dock图标。并且在<code>-applicationDidFinishLaunching:</code>方法，设置在程序初始化的时候是否需要显示Dock图标。主要代码如下：</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/dynamically-show-and-hide-dock-icon/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/draw-round-rectangle-with-quartz-on-ios/">在iOS上用Quartz绘制圆角矩形</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-08-06T00:28:00+08:00" pubdate data-updated="true">Aug 6<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Bezels是Mac OS X下，苹果私有的UI控件，用来提示用户某些信息。不过iOS下，就有很多第三方的Bezels风格的提示控件实现了。相信大家也见过很多了。下图左侧是OSX的提示音量变化的Bezels，右侧是iOS上的Bezels风格的进度提示。</p>
+
+<p><img class="center" src="/images/posts/quartz-1.png"></p>
+
+<p>在iOS上做Bezels的思路很简单，无非就是在<code>UIView</code>里绘制一个半透明的圆角矩形，然后加入其他的<code>SubView</code>。因为没有现成的绘制圆角矩形的API可用，所以我们来自己绘制一个——反正是为了学习嘛。</p>
+
+<p>新建项目，添加一个<code>UIView</code>的子类，修改<code>drawRect</code>方法，如下：</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/draw-round-rectangle-with-quartz-on-ios/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/geocoding-in-ios-5/">iOS 5的Geocoding</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-07-06T23:44:00+08:00" pubdate data-updated="true">Jul 6<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>很明显，本文有标题党的嫌疑。其实本文要说的是“<a href="http://www.bignerdranch.com/book/ios_programming_the_big_nerd_ranch_guide_nd_edition_">iPhone Programming: The Big Nerd Ranch Guide</a>”一书中第5章里的Whereami的例子。我照着书本做下来，但是感觉例子似乎有点问题。可能是我看书不仔细，不过这个例子要实现的功能很诡异——定位自己，然后自己用文本框加上一个Annotation(？)这太诡异了吧。</p>
+
+<p>我现在对这个例子小做修改，那就是，在文本框中输入任何地址字符串，然后地图自动定位到该位置——类似Google Map的搜索。我基于书本上的代码，做一些小修改。</p>
+
+<p>首先，注释掉<code>-locationManager:didUpdateToLocation:fromLocation:</code>这个方法里的所有代码。主要对<code>-findLocation</code>方法作出修改，实现地图搜索功能。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/geocoding-in-ios-5/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/talk-about-nsattributesstring-to-html-again/">再谈NSAttributedString转HTML</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-06-28T22:59:00+08:00" pubdate data-updated="true">Jun 28<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>我之前曾经写过一篇<a href="/blog/a-not-so-good-way-to-convert-nsattributesstring-to-html/">关于NSAttributedString转HTML的文章</a>，因为没有得到理想的结果，而TextEdit的另存为HTML却非常漂亮，所以对此我一直耿耿于怀。今天又研究了一下TextEdit将文档另存为HTML的方法，总算能把这个问题画上一个圆满的句号了。</p>
+
+<p>在来回翻阅了TextEdit的源码后，我发现在<code>Document.m</code>里的<code>- (id)fileWrapperOfType:(NSString *)typeName error:(NSError **)outError</code>方法，就是苹果官方将<code>NSAttributedString</code>转HTML的方法（这个方法当然也包含了将富文本转成其他格式的方法，在此不详述了）。仔细阅读了这个方法之后，我发现原来苹果也是用的我在之前那篇文章中用到的那个方法：<code>- (NSData *)dataFromRange:(NSRange)range documentAttributes:(NSDictionary *)dict error:(NSError **)error</code>转的——我没把重点弄错。不错我的错误是错在调用的时候，设置的参数有问题。
+下面贴上源码，在注释了进行解释：</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/talk-about-nsattributesstring-to-html-again/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/remember-window-position/">记忆窗口位置</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-06-12T12:26:00+08:00" pubdate data-updated="true">Jun 12<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>在程序中记忆窗口的位置，以便在下次打开的时候恢复记忆的位置。这对很多程序来说还是比较有必要的。方法很简单：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">windowDidMove:</span><span class="p">(</span><span class="n">NSNotification</span> <span class="o">*</span><span class="p">)</span><span class="nv">notification</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">// 自动记忆和恢复位置</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">window</span> <span class="nl">setFrameAutosaveName:</span><span class="s">@&quot;Position&quot;</span><span class="p">];</span>
+</span><span class='line'>    <span class="cm">/* 如果是基于文档的程序</span>
+</span><span class='line'><span class="cm">    [[self.window windowController] setShouldCascadeWindows:NO];</span>
+</span><span class='line'><span class="cm">    [self.window saveFrameUsingName:[window representedFilename]];</span>
+</span><span class='line'><span class="cm">    */</span>
+</span><span class='line'>    <span class="c1">// 手动记忆位置</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">window</span> <span class="nl">setFrameUsingName:</span><span class="s">@&quot;Some name&quot;</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>// 如果是手动保存，则需要手动恢复</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">awakeFromNib</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">window</span> <span class="nl">setFrameAutosaveName:</span><span class="s">@&quot;Some name&quot;</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>// 清除记忆的位置</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">clearWindowPosition:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">NSWindow</span> <span class="nl">removeFrameUsingName:</span><span class="s">@&quot;Some name&quot;</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>很简单吧。更多可以参考<a href="http://developer.apple.com/library/mac/#documentation/Cocoa/Reference/ApplicationKit/Classes/NSWindow_Class/Reference/Reference.html">NSWindows Class Reference</a>和<a href="http://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/WinPanel/WinPanel.html">Window Programming Guide</a>文档。</p>
+
+<p>（全文完）</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/popover-became-official-control-in-lion/">Popover在Mac OS X Lion中已经成为正式控件</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-06-02T11:38:00+08:00" pubdate data-updated="true">Jun 2<span>nd</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>昨天心血来潮又把Lion装上了。这次是装到了移动硬盘里。效果良好。这次只要是为了看看Lion里Cocoa的新变化，顺道学习一下——虽然我对已有的Cocoa框架还没有熟悉。</p>
+
+<p>打开最新的Xcode 4.1 DP5，很高兴的发现Popover已经成为一个标准控件。Popover在Xcode 4里用的很多。因为Popover现在非常流行，所以我就忍不住要测试以下。快速搜索了一下文档，发现Popover的文档暂时还没有进入Xcode的文档系统，所以只能硬着头皮，参考头文件里的文档，做了一个测试程序，感觉良好。 ：）</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/popover-became-official-control-in-lion/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/7/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/5/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/code-box-like-window-open-animation/">CodeBox风格的窗口打开动画</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/localized-loading-screen/">本地化加载屏幕</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/refresh-control-gochas/">用代码触发下拉更新</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/drive-navigation-in-ios6/">iOS 6下的驾车导航</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/nsstring-height/">关于多行NSString的高度</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/venj">@venj</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'venj',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - venj -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'venj';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,360 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>在iOS上用Quartz绘制圆角矩形 - Cocoa学习</title>
+  <meta name="author" content="venj">
+
+  
+  <meta name="description" content="Bezels是Mac OS X下，苹果私有的UI控件，用来提示用户某些信息。不过iOS下，就有很多第三方的Bezels风格的提示控件实现了。相信大家也见过很多了。下图左侧是OSX的提示音量变化的Bezels，右侧是iOS上的Bezels风格的进度提示。 在iOS上做Bezels的思路很简单， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://venj.github.io/blog/draw-round-rectangle-with-quartz-on-ios">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Cocoa学习" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Cocoa学习</a></h1>
+  
+    <h2>我的Cocoa/Cocoa Touch学习笔记</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:venj.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">在iOS上用Quartz绘制圆角矩形</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-08-06T00:28:00+08:00" pubdate data-updated="true">Aug 6<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Bezels是Mac OS X下，苹果私有的UI控件，用来提示用户某些信息。不过iOS下，就有很多第三方的Bezels风格的提示控件实现了。相信大家也见过很多了。下图左侧是OSX的提示音量变化的Bezels，右侧是iOS上的Bezels风格的进度提示。</p>
+
+<p><img class="center" src="/images/posts/quartz-1.png"></p>
+
+<p>在iOS上做Bezels的思路很简单，无非就是在<code>UIView</code>里绘制一个半透明的圆角矩形，然后加入其他的<code>SubView</code>。因为没有现成的绘制圆角矩形的API可用，所以我们来自己绘制一个——反正是为了学习嘛。</p>
+
+<p>新建项目，添加一个<code>UIView</code>的子类，修改<code>drawRect</code>方法，如下：</p>
+
+<!-- more -->
+
+
+<p></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">drawRect:</span><span class="p">(</span><span class="n">CGRect</span><span class="p">)</span><span class="nv">rect</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">CGFloat</span> <span class="n">width</span> <span class="o">=</span> <span class="n">rect</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">CGFloat</span> <span class="n">height</span> <span class="o">=</span> <span class="n">rect</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">;</span>
+</span><span class='line'>    <span class="c1">// 简便起见，这里把圆角半径设置为长和宽平均值的1/10</span>
+</span><span class='line'>    <span class="n">CGFloat</span> <span class="n">radius</span> <span class="o">=</span> <span class="p">(</span><span class="n">width</span> <span class="o">+</span> <span class="n">height</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.05</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 获取CGContext，注意UIKit里用的是一个专门的函数</span>
+</span><span class='line'>    <span class="n">CGContextRef</span> <span class="n">context</span> <span class="o">=</span> <span class="n">UIGraphicsGetCurrentContext</span><span class="p">();</span>
+</span><span class='line'>    <span class="c1">// 移动到初始点</span>
+</span><span class='line'>    <span class="n">CGContextMoveToPoint</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 绘制第1条线和第1个1/4圆弧</span>
+</span><span class='line'>    <span class="n">CGContextAddLineToPoint</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">width</span> <span class="o">-</span> <span class="n">radius</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">CGContextAddArc</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">width</span> <span class="o">-</span> <span class="n">radius</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">M_PI</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 绘制第2条线和第2个1/4圆弧</span>
+</span><span class='line'>    <span class="n">CGContextAddLineToPoint</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="o">-</span> <span class="n">radius</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">CGContextAddArc</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">width</span> <span class="o">-</span> <span class="n">radius</span><span class="p">,</span> <span class="n">height</span> <span class="o">-</span> <span class="n">radius</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">M_PI</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 绘制第3条线和第3个1/4圆弧</span>
+</span><span class='line'>    <span class="n">CGContextAddLineToPoint</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">height</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">CGContextAddArc</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">height</span> <span class="o">-</span> <span class="n">radius</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">M_PI</span><span class="p">,</span> <span class="n">M_PI</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 绘制第4条线和第4个1/4圆弧</span>
+</span><span class='line'>    <span class="n">CGContextAddLineToPoint</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">radius</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">CGContextAddArc</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">M_PI</span><span class="p">,</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">M_PI</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 闭合路径</span>
+</span><span class='line'>    <span class="n">CGContextClosePath</span><span class="p">(</span><span class="n">context</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">// 填充半透明黑色</span>
+</span><span class='line'>    <span class="n">CGContextSetRGBFillColor</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">CGContextDrawPath</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">kCGPathFill</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>其实这用到的只是些很基本的Quartz绘图函数而已。不过，我们顺利的绘制出了半透明，黑色的，圆角Bezel风格的View。下面就是一个测试的例子——绘制长方形的也行哦。 :P</p>
+
+<p><img class="center" src="/images/posts/quartz-2.png"></p>
+
+<p>当然，这只是个基础，但是不管怎样，有了这个很好的开始，自己做一个Bezels风格ViewController就很方便了。如果你要在实际的项目中使用Bezels风格的View，但是又不想自己麻烦动手写，网上已经有很多开源的Bezels实现，自己找一找吧。 :)</p>
+
+<p>（全文完）</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">venj</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-08-06T00:28:00+08:00" pubdate data-updated="true">Aug 6<span>th</span>, 2011</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/core-graphics/'>Core Graphics</a>, <a class='category' href='/blog/categories/quartz/'>Quartz</a>, <a class='category' href='/blog/categories/uikit/'>UIKit</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://venj.github.io/blog/draw-round-rectangle-with-quartz-on-ios/" data-via="" data-counturl="http://venj.github.io/blog/draw-round-rectangle-with-quartz-on-ios/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/geocoding-in-ios-5/" title="Previous Post: iOS 5的Geocoding">&laquo; iOS 5的Geocoding</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/dynamically-show-and-hide-dock-icon/" title="Next Post: 在程序中动态设置是否显示Dock图标">在程序中动态设置是否显示Dock图标 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/code-box-like-window-open-animation/">CodeBox风格的窗口打开动画</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/localized-loading-screen/">本地化加载屏幕</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/refresh-control-gochas/">用代码触发下拉更新</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/drive-navigation-in-ios6/">iOS 6下的驾车导航</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/nsstring-height/">关于多行NSString的高度</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/venj">@venj</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'venj',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - venj -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'venj';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://venj.github.io/blog/draw-round-rectangle-with-quartz-on-ios/';
+        var disqus_url = 'http://venj.github.io/blog/draw-round-rectangle-with-quartz-on-ios/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

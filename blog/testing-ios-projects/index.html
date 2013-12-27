@@ -1,0 +1,675 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>iOS项目的测试简介 - Cocoa学习</title>
+  <meta name="author" content="venj">
+
+  
+  <meta name="description" content="记得有人说过，写不写测试代码是判断一个开发者是否成熟的标志。良好的测试代码能够让程序代码更健壮，使重构更加方便。虽然Objective-C是一种编译语言，但是在Xcode的帮助下，做测试和测试驱动开发（Test Driven Development, TDD）也非常方便。 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://venj.github.io/blog/testing-ios-projects">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Cocoa学习" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Cocoa学习</a></h1>
+  
+    <h2>我的Cocoa/Cocoa Touch学习笔记</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:venj.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">iOS项目的测试简介</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-08-17T15:06:00+08:00" pubdate data-updated="true">Aug 17<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>记得有人说过，写不写测试代码是判断一个开发者是否成熟的标志。良好的测试代码能够让程序代码更健壮，使重构更加方便。虽然Objective-C是一种编译语言，但是在Xcode的帮助下，做测试和测试驱动开发（Test Driven Development, TDD）也非常方便。苹果官方有一个关于如何做为项目增加测试支持的文档，不过iOS 4.3的文档包的的<a href="http://developer.apple.com/library/iOS/#documentation/Xcode/Conceptual/iphone_development/135-Unit_Testing_Applications/unit_testing_applications.html">该文档</a>已经比较老了，如果你是付费iOS开发者，那么可以看看iOS 5.0的文档包的的<a href="https://developer.apple.com/library/prerelease/ios/#documentation/Xcode/Conceptual/ios_development_workflow/135-Unit_Testing_Applications/unit_testing_applications.html">该文档</a>，已经更新为Xcode 4的教程了。</p>
+
+<p>iOS的测试分两种，一种是逻辑测试（Logic Tests）；另一种是程序测试（Application Tests）。逻辑测试主要是用来测试模块的业务逻辑的；程序测试则是测试模块在整个应用程序中的行为是否正确。逻辑测试类似单元测试；而程序测试则类似集成测试。个人感觉，逻辑测试比较适合测试模型代码；而应用程序测试则比较适合测试控制器和视图代码，考虑到视图在iOS开发中主要是通过Interface Builder来实现，因此，应用测试实际上就是测试控制器代码的。</p>
+
+<p>下面，简单的讲一下如何设置项目支持单元测试。我们要在Xcode中为项目建立两种测试的Target。</p>
+
+<!-- more -->
+
+
+<p>
+首先，打开“File” &ndash; “New” &ndash; “New Target&hellip;”。这时，选择iOS大标签下面的“Others”小标签，里面有一个“Cocoa Touch Unit Testing Bundle”。选中它，点击“Next”。（如下图所示）</p>
+
+<p><img class="center" src="/images/posts/unittest-1.png"></p>
+
+<p>在下一页里，填入测试的名字。我们现在要建的是逻辑测试，虽然名字可以随意，不过，我这里把它命名为MyTestAppLogicTests。Project当然是选择当前的项目。（如下图所示）</p>
+
+<p><img class="center" src="/images/posts/unittest-2.png"></p>
+
+<p>点击“Finish”完成。这时，在Project设置的面板里就会增加一个新的Logic Tests的Target。</p>
+
+<p><img class="center" src="/images/posts/unittest-3.png"></p>
+
+<p>同样的方法建立一个程序测试的Target，命名为MyTestAppApplicationTests。</p>
+
+<p>然后开始对两个Target进行配置。</p>
+
+<p>首先是逻辑测试。在编译设置的标签下，选择All，然后搜索：</p>
+
+<blockquote><ul>
+<li>ios deployment target，如果显示为加粗，则选中后按下Delete键。</li>
+<li>bundle loader，如果显示为加粗，则选中后按下Delete键。</li>
+<li>test host，如果显示为加粗，则选中后按下Delete键。</li>
+</ul>
+</blockquote>
+
+<p><img class="center" src="/images/posts/unittest-4.png"></p>
+
+<p>然后是程序测试。在编译设置的标签下，选择All，然后搜索：</p>
+
+<blockquote><ul>
+<li>ios deployment target，如果显示为加粗，则选中后按下Delete键。</li>
+<li>bundle loader，设置值为<code>$(BUILT_PRODUCTS_DIR)/APP_NAME.app/APP_NAME</code>。<code>APP_NAME</code>是程序的名字，比如这个例子里是<code>MyTestApp</code></li>
+<li>test host，设置值为<code>$(BUNDLE_LOADER)</code>。</li>
+</ul>
+</blockquote>
+
+<p><img class="center" src="/images/posts/unittest-5.png"></p>
+
+<p>设置完成之后，我们就可以开始试着编译一下，看看配置有没有成功。在Xcode 4的工具条的Scheme部分，选择其中一个测试，以及运行测试的设备，如“iPhone 4.3 Simulator”。然后点击菜单“Project” &ndash; “Test”，或按下cmd &ndash; u。</p>
+
+<p>因为测试bundle的代码模版里包含一个不能通过的测试例。如果你看到一个不是编译错误的问题，基本上就是配置成功了。分别试一下逻辑测试的配置和程序测试的配置，看看是否都成功。</p>
+
+<p>配置成功后，就可以开始写测试代码了。</p>
+
+<p>首先还是先开看看逻辑测试代码的写法。在MyTestAppLogicTests的类中，加入下面这些简单的测试代码。我们这里要测试的是一个名为<code>MySillyAdd</code>的类。这个类只有一个方法，<code>-addNumberA: ToNumberB:</code>，返回两个整数的和：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">//</span>
+</span><span class='line'><span class="c1">//  MyTestAppLogicTests.h</span>
+</span><span class='line'><span class="c1">//</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#import &lt;SenTestingKit/SenTestingKit.h&gt;</span>
+</span><span class='line'><span class="cp">#import &quot;MySillyAdd.h&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@interface</span> <span class="nc">MyTestAppLogicTests</span> : <span class="nc">SenTestCase</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">MySillyAdd</span> <span class="o">*</span><span class="n">mySillyAdd</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//</span>
+</span><span class='line'><span class="c1">//  MyTestAppLogicTests.m</span>
+</span><span class='line'><span class="c1">//</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#import &quot;MyTestAppLogicTests.h&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@implementation</span> <span class="nc">MyTestAppLogicTests</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp"># 运行测试例之前的设置</span>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">setUp</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">super</span> <span class="n">setUp</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// Set-up code here.</span>
+</span><span class='line'>    <span class="n">mySillyAdd</span> <span class="o">=</span> <span class="p">[[</span><span class="n">MySillyAdd</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">STAssertNotNil</span><span class="p">(</span><span class="n">mySillyAdd</span><span class="p">,</span> <span class="s">@&quot;Can not create MySillyAdd object.&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp"># 运行测试例之后的清理现场</span>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">tearDown</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="c1">// Tear-down code here.</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">mySillyAdd</span> <span class="n">release</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="p">[</span><span class="n">super</span> <span class="n">tearDown</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp"># 测试例，都是方法名为：testXXXX，用ST...的Macro来验证测试结果。</span>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">testAddOneToOne</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">NSInteger</span> <span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">mySillyAdd</span> <span class="nl">addNumberA:</span><span class="mi">1</span> <span class="nl">ToNumberB:</span><span class="mi">1</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">STAssertEquals</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s">@&quot;Expect 2 for result, but got %d&quot;</span><span class="p">,</span> <span class="n">result</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="k">@end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>程序测试的与逻辑测试的区别在于需要在<code>-setUp:</code>方法中获取应用程序的环境。示例代码如下：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">//</span>
+</span><span class='line'><span class="c1">//  MyTestAppApplicationTests.h</span>
+</span><span class='line'><span class="c1">//</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#import &lt;SenTestingKit/SenTestingKit.h&gt;</span>
+</span><span class='line'><span class="cp">#import &lt;UIKit/UIKit.h&gt;</span>
+</span><span class='line'><span class="cp">#import &quot;MyTestAppViewController.h&quot;</span>
+</span><span class='line'><span class="cp">#import &quot;MyTestAppAppDelegate.h&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@interface</span> <span class="nc">MyTestAppApplicationTests</span> : <span class="nc">SenTestCase</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">MyTestAppViewController</span> <span class="o">*</span><span class="n">vc</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">MyTestAppAppDelegate</span> <span class="o">*</span><span class="n">appDelegate</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">UIView</span> <span class="o">*</span><span class="n">view</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">testAddOneToOne</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//</span>
+</span><span class='line'><span class="c1">//  MyTestAppApplicationTests.m</span>
+</span><span class='line'><span class="c1">//</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#import &quot;MyTestAppApplicationTests.h&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@implementation</span> <span class="nc">MyTestAppApplicationTests</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp"># 设置测试环境，获取应用程序实例。</span>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">setUp</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">super</span> <span class="n">setUp</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// Set-up code here.</span>
+</span><span class='line'>    <span class="n">appDelegate</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIApplication</span> <span class="n">sharedApplication</span><span class="p">]</span> <span class="n">delegate</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">vc</span> <span class="o">=</span> <span class="p">(</span><span class="n">MyTestAppViewController</span> <span class="o">*</span><span class="p">)</span><span class="n">appDelegate</span><span class="p">.</span><span class="n">window</span><span class="p">.</span><span class="n">rootViewController</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">view</span> <span class="o">=</span> <span class="n">vc</span><span class="p">.</span><span class="n">view</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">tearDown</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="c1">// Tear-down code here.</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="p">[</span><span class="n">super</span> <span class="n">tearDown</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">testAppDelegate</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">STAssertNotNil</span><span class="p">(</span><span class="n">appDelegate</span><span class="p">,</span> <span class="s">@&quot;Cannot find the application delegate&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp"># 测试1+1的结果是不是等于2</span>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">testAddOneToOne</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">vc</span><span class="p">.</span><span class="n">numberA</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="s">@&quot;1&quot;</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">vc</span><span class="p">.</span><span class="n">numberB</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="s">@&quot;1&quot;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="p">[</span><span class="n">vc</span> <span class="nl">calc:</span><span class="p">[</span><span class="n">view</span> <span class="nl">viewWithTag:</span><span class="mi">3</span><span class="p">]];</span> <span class="c1">// The Tag Button;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">NSString</span> <span class="o">*</span><span class="n">resultString</span> <span class="o">=</span> <span class="n">vc</span><span class="p">.</span><span class="n">resultLabel</span><span class="p">.</span><span class="n">text</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">STAssertEqualObjects</span><span class="p">(</span><span class="s">@&quot;2&quot;</span><span class="p">,</span> <span class="n">resultString</span><span class="p">,</span> <span class="s">@&quot;Expect 2 for result, but got %@&quot;</span><span class="p">,</span> <span class="n">resultString</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="k">@end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>上例测试的是<code>MyTestAppViewController</code>中的<code>-calc:</code>方法。我们先来测试一个<code>-calc:</code>的实现：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">calc:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">NSInteger</span> <span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">numberA</span><span class="p">.</span><span class="n">text</span> <span class="n">integerValue</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">NSInteger</span> <span class="n">b</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">numberB</span><span class="p">.</span><span class="n">text</span> <span class="n">integerValue</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">self</span><span class="p">.</span><span class="n">resultLabel</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSString</span> <span class="nl">stringWithFormat:</span><span class="s">@&quot;%d&quot;</span><span class="p">,</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>运行测试，我们就可以看到这个测试例顺利通过。</p>
+
+<p>然后，我们对上述方法进行重构，用我们的<code>MySillyAdd</code>类来实现1+1。再次运行测试例。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">calc:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">NSInteger</span> <span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">numberA</span><span class="p">.</span><span class="n">text</span> <span class="n">integerValue</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">NSInteger</span> <span class="n">b</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">numberB</span><span class="p">.</span><span class="n">text</span> <span class="n">integerValue</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">self</span><span class="p">.</span><span class="n">resultLabel</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSString</span> <span class="nl">stringWithFormat:</span><span class="s">@&quot;%d&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">mySillyAdd</span> <span class="nl">addNumberA:</span><span class="n">a</span> <span class="nl">ToNumberB:</span><span class="n">b</span><span class="p">]];</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>在<code>MySillyAdd</code>中，<code>-addNumberA:ToNumberB:</code>的实现如下：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSInteger</span><span class="p">)</span><span class="nf">addNumberA:</span><span class="p">(</span><span class="n">NSInteger</span><span class="p">)</span><span class="nv">theNumberA</span> <span class="nf">ToNumberB:</span><span class="p">(</span><span class="n">NSInteger</span><span class="p">)</span><span class="nv">theNumberB</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">theNumberA</span> <span class="o">+</span> <span class="n">theNumberB</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>测试运行结果是顺利通过。虽然这个例子非常傻，不过基本上描述了写测试的大致过程。本文的示例代码在这里，有兴趣的可以看看。</p>
+
+<p>通过这个简单的例子，我们了解了如何在iOS开发中加入测试，以后，我们就能通过编写测试代码来使我们写的代码更加健壮了。</p>
+
+<p>最后附上逻辑测试和程序测试的输出。</p>
+
+<p><strong>逻辑测试</strong></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">Test</span> <span class="n">Suite</span> <span class="err">&#39;</span><span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">venj</span><span class="o">/</span><span class="n">Library</span><span class="o">/</span><span class="n">Developer</span><span class="o">/</span><span class="n">Xcode</span><span class="o">/</span><span class="n">DerivedData</span><span class="o">/</span><span class="n">MyTestApp</span><span class="o">-</span><span class="n">cyecpqfpcbcdlcgizexbrsjxlngw</span><span class="o">/</span><span class="n">Build</span><span class="o">/</span><span class="n">Products</span><span class="o">/</span><span class="n">Debug</span><span class="o">-</span><span class="n">iphonesimulator</span><span class="o">/</span><span class="n">MyTestAppLogicTests</span><span class="p">.</span><span class="n">octest</span><span class="p">(</span><span class="n">Tests</span><span class="p">)</span><span class="err">&#39;</span> <span class="n">started</span> <span class="n">at</span> <span class="mi">2011</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">17</span> <span class="mo">07</span><span class="o">:</span><span class="mi">41</span><span class="o">:</span><span class="mi">15</span> <span class="o">+</span><span class="mo">0000</span>
+</span><span class='line'><span class="n">Test</span> <span class="n">Suite</span> <span class="err">&#39;</span><span class="n">MyTestAppLogicTests</span><span class="err">&#39;</span> <span class="n">started</span> <span class="n">at</span> <span class="mi">2011</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">17</span> <span class="mo">07</span><span class="o">:</span><span class="mi">41</span><span class="o">:</span><span class="mi">15</span> <span class="o">+</span><span class="mo">0000</span>
+</span><span class='line'><span class="n">Test</span> <span class="n">Case</span> <span class="err">&#39;</span><span class="o">-</span><span class="p">[</span><span class="n">MyTestAppLogicTests</span> <span class="n">testAddOneToOne</span><span class="p">]</span><span class="err">&#39;</span> <span class="n">started</span><span class="p">.</span>
+</span><span class='line'><span class="n">Test</span> <span class="n">Case</span> <span class="err">&#39;</span><span class="o">-</span><span class="p">[</span><span class="n">MyTestAppLogicTests</span> <span class="n">testAddOneToOne</span><span class="p">]</span><span class="err">&#39;</span> <span class="n">passed</span> <span class="p">(</span><span class="mf">0.000</span> <span class="n">seconds</span><span class="p">).</span>
+</span><span class='line'><span class="n">Test</span> <span class="n">Suite</span> <span class="err">&#39;</span><span class="n">MyTestAppLogicTests</span><span class="err">&#39;</span> <span class="n">finished</span> <span class="n">at</span> <span class="mi">2011</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">17</span> <span class="mo">07</span><span class="o">:</span><span class="mi">41</span><span class="o">:</span><span class="mi">15</span> <span class="o">+</span><span class="mf">0000.</span>
+</span><span class='line'><span class="n">Executed</span> <span class="mi">1</span> <span class="n">test</span><span class="p">,</span> <span class="n">with</span> <span class="mi">0</span> <span class="n">failures</span> <span class="p">(</span><span class="mi">0</span> <span class="n">unexpected</span><span class="p">)</span> <span class="k">in</span> <span class="mf">0.000</span> <span class="p">(</span><span class="mf">0.001</span><span class="p">)</span> <span class="n">seconds</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">Test</span> <span class="n">Suite</span> <span class="err">&#39;</span><span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">venj</span><span class="o">/</span><span class="n">Library</span><span class="o">/</span><span class="n">Developer</span><span class="o">/</span><span class="n">Xcode</span><span class="o">/</span><span class="n">DerivedData</span><span class="o">/</span><span class="n">MyTestApp</span><span class="o">-</span><span class="n">cyecpqfpcbcdlcgizexbrsjxlngw</span><span class="o">/</span><span class="n">Build</span><span class="o">/</span><span class="n">Products</span><span class="o">/</span><span class="n">Debug</span><span class="o">-</span><span class="n">iphonesimulator</span><span class="o">/</span><span class="n">MyTestAppLogicTests</span><span class="p">.</span><span class="n">octest</span><span class="p">(</span><span class="n">Tests</span><span class="p">)</span><span class="err">&#39;</span> <span class="n">finished</span> <span class="n">at</span> <span class="mi">2011</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">17</span> <span class="mo">07</span><span class="o">:</span><span class="mi">41</span><span class="o">:</span><span class="mi">15</span> <span class="o">+</span><span class="mf">0000.</span>
+</span><span class='line'><span class="n">Executed</span> <span class="mi">1</span> <span class="n">test</span><span class="p">,</span> <span class="n">with</span> <span class="mi">0</span> <span class="n">failures</span> <span class="p">(</span><span class="mi">0</span> <span class="n">unexpected</span><span class="p">)</span> <span class="k">in</span> <span class="mf">0.000</span> <span class="p">(</span><span class="mf">0.002</span><span class="p">)</span> <span class="n">seconds</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>程序测试</strong></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">Test</span> <span class="n">Suite</span> <span class="err">&#39;</span><span class="n">All</span> <span class="n">tests</span><span class="err">&#39;</span> <span class="n">started</span> <span class="n">at</span> <span class="mi">2011</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">17</span> <span class="mo">07</span><span class="o">:</span><span class="mi">43</span><span class="o">:</span><span class="mi">20</span> <span class="o">+</span><span class="mo">0000</span>
+</span><span class='line'><span class="n">Test</span> <span class="n">Suite</span> <span class="err">&#39;</span><span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">venj</span><span class="o">/</span><span class="n">Library</span><span class="o">/</span><span class="n">Developer</span><span class="o">/</span><span class="n">Xcode</span><span class="o">/</span><span class="n">DerivedData</span><span class="o">/</span><span class="n">MyTestApp</span><span class="o">-</span><span class="n">cyecpqfpcbcdlcgizexbrsjxlngw</span><span class="o">/</span><span class="n">Build</span><span class="o">/</span><span class="n">Products</span><span class="o">/</span><span class="n">Debug</span><span class="o">-</span><span class="n">iphonesimulator</span><span class="o">/</span><span class="n">MyTestAppApplicationTests</span><span class="p">.</span><span class="n">octest</span><span class="p">(</span><span class="n">Tests</span><span class="p">)</span><span class="err">&#39;</span> <span class="n">started</span> <span class="n">at</span> <span class="mi">2011</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">17</span> <span class="mo">07</span><span class="o">:</span><span class="mi">43</span><span class="o">:</span><span class="mi">20</span> <span class="o">+</span><span class="mo">0000</span>
+</span><span class='line'><span class="n">Test</span> <span class="n">Suite</span> <span class="err">&#39;</span><span class="n">MyTestAppApplicationTests</span><span class="err">&#39;</span> <span class="n">started</span> <span class="n">at</span> <span class="mi">2011</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">17</span> <span class="mo">07</span><span class="o">:</span><span class="mi">43</span><span class="o">:</span><span class="mi">20</span> <span class="o">+</span><span class="mo">0000</span>
+</span><span class='line'><span class="n">Test</span> <span class="n">Case</span> <span class="err">&#39;</span><span class="o">-</span><span class="p">[</span><span class="n">MyTestAppApplicationTests</span> <span class="n">testAddOneToOne</span><span class="p">]</span><span class="err">&#39;</span> <span class="n">started</span><span class="p">.</span>
+</span><span class='line'><span class="n">Test</span> <span class="n">Case</span> <span class="err">&#39;</span><span class="o">-</span><span class="p">[</span><span class="n">MyTestAppApplicationTests</span> <span class="n">testAddOneToOne</span><span class="p">]</span><span class="err">&#39;</span> <span class="n">passed</span> <span class="p">(</span><span class="mf">0.001</span> <span class="n">seconds</span><span class="p">).</span>
+</span><span class='line'><span class="n">Test</span> <span class="n">Case</span> <span class="err">&#39;</span><span class="o">-</span><span class="p">[</span><span class="n">MyTestAppApplicationTests</span> <span class="n">testAppDelegate</span><span class="p">]</span><span class="err">&#39;</span> <span class="n">started</span><span class="p">.</span>
+</span><span class='line'><span class="n">Test</span> <span class="n">Case</span> <span class="err">&#39;</span><span class="o">-</span><span class="p">[</span><span class="n">MyTestAppApplicationTests</span> <span class="n">testAppDelegate</span><span class="p">]</span><span class="err">&#39;</span> <span class="n">passed</span> <span class="p">(</span><span class="mf">0.001</span> <span class="n">seconds</span><span class="p">).</span>
+</span><span class='line'><span class="n">Test</span> <span class="n">Suite</span> <span class="err">&#39;</span><span class="n">MyTestAppApplicationTests</span><span class="err">&#39;</span> <span class="n">finished</span> <span class="n">at</span> <span class="mi">2011</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">17</span> <span class="mo">07</span><span class="o">:</span><span class="mi">43</span><span class="o">:</span><span class="mi">20</span> <span class="o">+</span><span class="mf">0000.</span>
+</span><span class='line'><span class="n">Executed</span> <span class="mi">2</span> <span class="n">tests</span><span class="p">,</span> <span class="n">with</span> <span class="mi">0</span> <span class="n">failures</span> <span class="p">(</span><span class="mi">0</span> <span class="n">unexpected</span><span class="p">)</span> <span class="k">in</span> <span class="mf">0.002</span> <span class="p">(</span><span class="mf">0.004</span><span class="p">)</span> <span class="n">seconds</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">Test</span> <span class="n">Suite</span> <span class="err">&#39;</span><span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">venj</span><span class="o">/</span><span class="n">Library</span><span class="o">/</span><span class="n">Developer</span><span class="o">/</span><span class="n">Xcode</span><span class="o">/</span><span class="n">DerivedData</span><span class="o">/</span><span class="n">MyTestApp</span><span class="o">-</span><span class="n">cyecpqfpcbcdlcgizexbrsjxlngw</span><span class="o">/</span><span class="n">Build</span><span class="o">/</span><span class="n">Products</span><span class="o">/</span><span class="n">Debug</span><span class="o">-</span><span class="n">iphonesimulator</span><span class="o">/</span><span class="n">MyTestAppApplicationTests</span><span class="p">.</span><span class="n">octest</span><span class="p">(</span><span class="n">Tests</span><span class="p">)</span><span class="err">&#39;</span> <span class="n">finished</span> <span class="n">at</span> <span class="mi">2011</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">17</span> <span class="mo">07</span><span class="o">:</span><span class="mi">43</span><span class="o">:</span><span class="mi">20</span> <span class="o">+</span><span class="mf">0000.</span>
+</span><span class='line'><span class="n">Executed</span> <span class="mi">2</span> <span class="n">tests</span><span class="p">,</span> <span class="n">with</span> <span class="mi">0</span> <span class="n">failures</span> <span class="p">(</span><span class="mi">0</span> <span class="n">unexpected</span><span class="p">)</span> <span class="k">in</span> <span class="mf">0.002</span> <span class="p">(</span><span class="mf">0.007</span><span class="p">)</span> <span class="n">seconds</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">Test</span> <span class="n">Suite</span> <span class="err">&#39;</span><span class="o">/</span><span class="n">Developer</span><span class="o">/</span><span class="n">Platforms</span><span class="o">/</span><span class="n">iPhoneSimulator</span><span class="p">.</span><span class="n">platform</span><span class="o">/</span><span class="n">Developer</span><span class="o">/</span><span class="n">SDKs</span><span class="o">/</span><span class="n">iPhoneSimulator4</span><span class="mf">.3</span><span class="p">.</span><span class="n">sdk</span><span class="o">/</span><span class="n">Developer</span><span class="o">/</span><span class="n">Library</span><span class="o">/</span><span class="n">Frameworks</span><span class="o">/</span><span class="n">SenTestingKit</span><span class="p">.</span><span class="n">framework</span><span class="p">(</span><span class="n">Tests</span><span class="p">)</span><span class="err">&#39;</span> <span class="n">started</span> <span class="n">at</span> <span class="mi">2011</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">17</span> <span class="mo">07</span><span class="o">:</span><span class="mi">43</span><span class="o">:</span><span class="mi">20</span> <span class="o">+</span><span class="mo">0000</span>
+</span><span class='line'><span class="n">Test</span> <span class="n">Suite</span> <span class="err">&#39;</span><span class="n">SenInterfaceTestCase</span><span class="err">&#39;</span> <span class="n">started</span> <span class="n">at</span> <span class="mi">2011</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">17</span> <span class="mo">07</span><span class="o">:</span><span class="mi">43</span><span class="o">:</span><span class="mi">20</span> <span class="o">+</span><span class="mo">0000</span>
+</span><span class='line'><span class="n">Test</span> <span class="n">Suite</span> <span class="err">&#39;</span><span class="n">SenInterfaceTestCase</span><span class="err">&#39;</span> <span class="n">finished</span> <span class="n">at</span> <span class="mi">2011</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">17</span> <span class="mo">07</span><span class="o">:</span><span class="mi">43</span><span class="o">:</span><span class="mi">20</span> <span class="o">+</span><span class="mf">0000.</span>
+</span><span class='line'><span class="n">Executed</span> <span class="mi">0</span> <span class="n">tests</span><span class="p">,</span> <span class="n">with</span> <span class="mi">0</span> <span class="n">failures</span> <span class="p">(</span><span class="mi">0</span> <span class="n">unexpected</span><span class="p">)</span> <span class="k">in</span> <span class="mf">0.000</span> <span class="p">(</span><span class="mf">0.001</span><span class="p">)</span> <span class="n">seconds</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">Test</span> <span class="n">Suite</span> <span class="err">&#39;</span><span class="o">/</span><span class="n">Developer</span><span class="o">/</span><span class="n">Platforms</span><span class="o">/</span><span class="n">iPhoneSimulator</span><span class="p">.</span><span class="n">platform</span><span class="o">/</span><span class="n">Developer</span><span class="o">/</span><span class="n">SDKs</span><span class="o">/</span><span class="n">iPhoneSimulator4</span><span class="mf">.3</span><span class="p">.</span><span class="n">sdk</span><span class="o">/</span><span class="n">Developer</span><span class="o">/</span><span class="n">Library</span><span class="o">/</span><span class="n">Frameworks</span><span class="o">/</span><span class="n">SenTestingKit</span><span class="p">.</span><span class="n">framework</span><span class="p">(</span><span class="n">Tests</span><span class="p">)</span><span class="err">&#39;</span> <span class="n">finished</span> <span class="n">at</span> <span class="mi">2011</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">17</span> <span class="mo">07</span><span class="o">:</span><span class="mi">43</span><span class="o">:</span><span class="mi">20</span> <span class="o">+</span><span class="mf">0000.</span>
+</span><span class='line'><span class="n">Executed</span> <span class="mi">0</span> <span class="n">tests</span><span class="p">,</span> <span class="n">with</span> <span class="mi">0</span> <span class="n">failures</span> <span class="p">(</span><span class="mi">0</span> <span class="n">unexpected</span><span class="p">)</span> <span class="k">in</span> <span class="mf">0.000</span> <span class="p">(</span><span class="mf">0.003</span><span class="p">)</span> <span class="n">seconds</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">Test</span> <span class="n">Suite</span> <span class="err">&#39;</span><span class="n">All</span> <span class="n">tests</span><span class="err">&#39;</span> <span class="n">finished</span> <span class="n">at</span> <span class="mi">2011</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">17</span> <span class="mo">07</span><span class="o">:</span><span class="mi">43</span><span class="o">:</span><span class="mi">20</span> <span class="o">+</span><span class="mf">0000.</span>
+</span><span class='line'><span class="n">Executed</span> <span class="mi">2</span> <span class="n">tests</span><span class="p">,</span> <span class="n">with</span> <span class="mi">0</span> <span class="n">failures</span> <span class="p">(</span><span class="mi">0</span> <span class="n">unexpected</span><span class="p">)</span> <span class="k">in</span> <span class="mf">0.002</span> <span class="p">(</span><span class="mf">0.086</span><span class="p">)</span> <span class="n">seconds</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>(全文完)</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">venj</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-08-17T15:06:00+08:00" pubdate data-updated="true">Aug 17<span>th</span>, 2011</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/tdd/'>TDD</a>, <a class='category' href='/blog/categories/unit-test/'>Unit Test</a>, <a class='category' href='/blog/categories/xcode-4/'>Xcode 4</a>, <a class='category' href='/blog/categories/ios-5/'>iOS 5</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://venj.github.io/blog/testing-ios-projects/" data-via="" data-counturl="http://venj.github.io/blog/testing-ios-projects/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/ios-and-pc-file-exchange-using-itunes/" title="Previous Post: 让iOS App通过iTunes进行文件交换">&laquo; 让iOS App通过iTunes进行文件交换</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/get-real-size-of-nsimage/" title="Next Post: 获取NSImage图片的准确大小">获取NSImage图片的准确大小 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/code-box-like-window-open-animation/">CodeBox风格的窗口打开动画</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/localized-loading-screen/">本地化加载屏幕</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/refresh-control-gochas/">用代码触发下拉更新</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/drive-navigation-in-ios6/">iOS 6下的驾车导航</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/nsstring-height/">关于多行NSString的高度</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/venj">@venj</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'venj',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - venj -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'venj';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://venj.github.io/blog/testing-ios-projects/';
+        var disqus_url = 'http://venj.github.io/blog/testing-ios-projects/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

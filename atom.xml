@@ -1,0 +1,2105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Cocoa学习]]></title>
+  <link href="http://venj.github.io/atom.xml" rel="self"/>
+  <link href="http://venj.github.io/"/>
+  <updated>2013-12-27T13:33:43+08:00</updated>
+  <id>http://venj.github.io/</id>
+  <author>
+    <name><![CDATA[venj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[CodeBox风格的窗口打开动画]]></title>
+    <link href="http://venj.github.io/blog/code-box-like-window-open-animation/"/>
+    <updated>2013-06-03T16:51:00+08:00</updated>
+    <id>http://venj.github.io/blog/code-box-like-window-open-animation</id>
+    <content type="html"><![CDATA[<p>一直觉得<a href="http://www.shpakovski.com/codebox/">CodeBox</a>的窗口呈现动画很帅气－－就是窗口Bounce了一下的那个效果。对了，就是<code>NSAlert</code>在OSX Lion下的显示的时候那个动画。我一直试图复刻那个动画，但是每次都灰头土脸的结束各种尝试。</p>
+
+<p>今天搜索网络，在StackOverflow上找到了<a href="http://stackoverflow.com/questions/14591785/how-to-open-a-nswindow-with-a-popup-animation">答案</a>－－事实上，我曾经多次无限接近正确答案，但最终还是没有成功。</p>
+
+<!-- more -->
+
+
+<p>答案实际上很简单：设置<code>NSWindow</code>对象的<code>animationBehavior:</code>为<code>NSWindowAnimationBehaviorAlertPanel</code>。</p>
+
+<p>但是为啥我曾经这么设置，却一直没有成功呢？因为我一直用的非Document Based Application模版做的测试！</p>
+
+<p>在Document Based Application模版下，直接在Interface Builder里，设置窗口的Animation为Alert Style，就直接达成了CodeBox的窗口呈现动画了，一行代码都不用写。但是对于非Document Based Application，你需要做一点点工作才行。</p>
+
+<p>首先，在Interface Builder里设置Animation为Alert Style，然后，取消Visible At Launch前面的选择。如下图：</p>
+
+<p><img class="center" src="http://venj.github.io/images/posts/codebox_animation.png"></p>
+
+<p>然后，在<code>-applicationDidFinishLaunching:</code>方法中，加入如下代码：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">dispatch_async</span><span class="p">(</span><span class="n">dispatch_get_main_queue</span><span class="p">(),</span> <span class="o">^</span><span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">window</span> <span class="nl">makeKeyAndOrderFront:</span><span class="nb">nil</span><span class="p">];</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>编译，执行。Boom！窗口动画就出来了！注意了，这个动画只有OS X Lion及更新版本上可以使用。虽然我走了很多弯路，但是最终还是成功找到解决方法，一方面，显示了自己有多么无知，但是最终解决问题，也总算有一丝安慰。</p>
+
+<p>(全文完)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[本地化加载屏幕]]></title>
+    <link href="http://venj.github.io/blog/localized-loading-screen/"/>
+    <updated>2013-03-11T09:00:00+08:00</updated>
+    <id>http://venj.github.io/blog/localized-loading-screen</id>
+    <content type="html"><![CDATA[<p>我一直有注意到“<a href="https://itunes.apple.com/app/da-ci-lin/id299029654?mt=8">大辞林</a>”程序针对不同的系统语言，加载屏幕（Loading Screen，也称Splash Screen）是不一样的。因为无可治愈的拖延症，导致我从来没有想着去研究一下为什么。今天闲来无事，简单的弄了个程序做了一下，解决了加载屏幕本地化的问题。问题的答案只有一句话：</p>
+
+<p>加载屏幕(Default.png)和其他的资源文件一样，可以在Xcode里直接设置本地化的！</p>
+
+<p><del>（全文完）</del> 等等，既然写成博文了，怎么可以这么就结束了呢！好吧，那就略微详细一点，看一下在Xcode 4.6中如何一步一步地把加载屏幕本地化。</p>
+
+<!-- more -->
+
+
+<p>首先，我们用图形编辑(PS, Pixelmator等)工具，做两套语言的加载屏幕。简单起见，我们就用白底加居中的黑字(“US”和“CN”)的两套图片好了（文件在示例代码中有），每套图片要三个尺寸：Default.png(320x480)，<a href="&#x6d;&#x61;&#x69;&#x6c;&#x74;&#x6f;&#x3a;&#x44;&#101;&#x66;&#97;&#x75;&#x6c;&#116;&#64;&#x32;&#x78;&#46;&#x70;&#110;&#103;">&#68;&#101;&#x66;&#97;&#x75;&#x6c;&#116;&#64;&#x32;&#x78;&#46;&#112;&#110;&#x67;</a>(640x960)以及<a href="&#x6d;&#x61;&#x69;&#x6c;&#116;&#111;&#x3a;&#x44;&#x65;&#x66;&#x61;&#117;&#108;&#116;&#x2d;&#x35;&#54;&#56;&#x68;&#64;&#50;&#120;&#x2e;&#112;&#110;&#x67;">&#x44;&#101;&#x66;&#97;&#117;&#x6c;&#x74;&#x2d;&#53;&#x36;&#x38;&#x68;&#64;&#50;&#x78;&#46;&#x70;&#x6e;&#103;</a>(640x1136)。</p>
+
+<p>做好图片之后，我们在Xcode里创建一个新项目名字可以叫做“Local Splash”，程序模板任意，简单起见，支持的设备只选iPhone。创建后，我们用“US”那套图片替换项目默认的纯黑色加载屏幕，作为默认语言的加载屏幕。</p>
+
+<p>在Xcode的Project设置里，增加一个本地化语言Chinese(zh-Hans)。如下图所示：</p>
+
+<p><img class="center" src="http://venj.github.io/images/posts/local_splash_project_lang.png"></p>
+
+<p>设置完成后，再分别选择三个Default文件，点击右侧属性栏里的“Localize”按钮。这里选择“English”作为其语言。完成后，这三个Default文件会被移动到项目目录下的en.lproj目录中。</p>
+
+<p><img class="center" src="http://venj.github.io/images/posts/local_splash_us_loading.png"></p>
+
+<p>然后我们把三个“CN”的Default文件加入项目中。然后如上炮制。注意，这里选择“Chinese”作为其语言。完成后它们会被移入zh-Hans.lproj中。</p>
+
+<p><img class="center" src="http://venj.github.io/images/posts/local_splash_cn_loading.png"></p>
+
+<p>好了，到此，加载屏幕的本地化工作已经基本完成。为了保证看到我们的实验效果，我们在AppDelegate.m的<code>-application:didFinishLaunchingWithOptions:</code>的最前面加入下面一行：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这行代码的作用是让程序完成启动后睡2秒，不要在实际项目中加入这种代码！！！</p>
+
+<p>下面就是在模拟器里跑一下看看效果了。按下cmd &ndash; r，看看加载屏幕显示的是不是和模拟器的语言一致（简体中文显示“CN”，英语和其他语言都显示“US”）；把模拟器的语言切换为其他语言再试一试，看看加载屏幕是不是已经变了。</p>
+
+<p>好了，至此，实验完成。示例代码已经上传至<a href="https://github.com/venj/Cocoa-blog-code/tree/master/Local%20Splash">github</a>。</p>
+
+<p>(全文完)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[用代码触发下拉更新]]></title>
+    <link href="http://venj.github.io/blog/refresh-control-gochas/"/>
+    <updated>2012-12-20T14:55:00+08:00</updated>
+    <id>http://venj.github.io/blog/refresh-control-gochas</id>
+    <content type="html"><![CDATA[<p><code>UIRefreshControl</code>是iOS 6中的一个新控件，这个控件就是大家熟悉的下拉更新控件。关于如何把<code>UIRefreshControl</code>集成至<code>UITableViewController</code>中相信大家都知道怎么做。至于用代码触发下拉更新，查看Apple的文档后，我们看到<code>UIRefreshControl</code>有一个方法：<code>- beginRefreshing</code>。写到这里，貌似问题依然解决，没什么好说的了。但是真是这样吗？让我们来创建一个测试项目进行验证：</p>
+
+<ol>
+<li><p>创建一个Master-Detail Application项目，取名“RefreshControl”（你可以随便取），设备选iPhone，够上“Use Automatic Reference Counting”和“Use Storyboards”（你也可以不用Storyboard，反正差不多）。</p></li>
+<li><p>（可选）打开MainStoryboard.storyboard（或MasterViewController.xib，如果你在1中没有勾选Use Storyboards），启用Master View Controller的Refreshing。</p>
+
+<p><img class="center" src="http://venj.github.io/images/posts/master_refreshcontrol.png"></p></li>
+<li><p>打开MasterViewController.m，更改代码如下：</p></li>
+</ol>
+
+
+<!-- more -->
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">viewDidLoad</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">super</span> <span class="n">viewDidLoad</span><span class="p">];</span>
+</span><span class='line'>  <span class="c1">// Do any additional setup after loading the view, typically from a nib.</span>
+</span><span class='line'>    <span class="n">self</span><span class="p">.</span><span class="n">navigationItem</span><span class="p">.</span><span class="n">leftBarButtonItem</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">editButtonItem</span><span class="p">;</span>
+</span><span class='line'>    <span class="c1">// self.refreshControl = [[UIRefreshControl alloc] init]; // 如果你没有做步骤2，取消注释本行。</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">refreshControl</span> <span class="nl">addTarget:</span><span class="n">self</span> <span class="nl">action:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">insertNewObject:</span><span class="p">)</span> <span class="nl">forControlEvents:</span><span class="n">UIControlEventValueChanged</span><span class="p">];</span> <span class="c1">// 设置下拉刷新时执行的动作</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">UIBarButtonItem</span> <span class="o">*</span><span class="n">addButton</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIBarButtonItem</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithBarButtonSystemItem:</span><span class="n">UIBarButtonSystemItemAdd</span> <span class="nl">target:</span><span class="n">self</span> <span class="nl">action:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">addButtonAction:</span><span class="p">)];</span> <span class="c1">// 通过代码触发下拉刷新动作</span>
+</span><span class='line'>    <span class="n">self</span><span class="p">.</span><span class="n">navigationItem</span><span class="p">.</span><span class="n">rightBarButtonItem</span> <span class="o">=</span> <span class="n">addButton</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">didReceiveMemoryWarning</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">super</span> <span class="n">didReceiveMemoryWarning</span><span class="p">];</span>
+</span><span class='line'>    <span class="c1">// Dispose of any resources that can be recreated.</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// 下拉刷新动作</span>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">addButtonAction:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">refreshControl</span> <span class="n">beginRefreshing</span><span class="p">];</span> <span class="c1">// 触发刷新动作</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">insertNewObject:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="c1">// 使用Timer来模拟一个耗时的操作</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">NSTimer</span> <span class="nl">scheduledTimerWithTimeInterval:</span><span class="mi">2</span> <span class="nl">target:</span><span class="n">self</span> <span class="nl">selector:</span><span class="k">@selector</span><span class="p">(</span><span class="n">doSomething</span><span class="p">)</span> <span class="nl">userInfo:</span><span class="nb">nil</span> <span class="nl">repeats:</span><span class="n">NO</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// 这是模板自动生成的插入新项目的代码，我们把它移入了一个新方法，并增加结束刷新的代码。</span>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">doSomething</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">_objects</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">_objects</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSMutableArray</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">_objects</span> <span class="nl">insertObject:</span><span class="p">[</span><span class="n">NSDate</span> <span class="n">date</span><span class="p">]</span> <span class="nl">atIndex:</span><span class="mi">0</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">NSIndexPath</span> <span class="o">*</span><span class="n">indexPath</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSIndexPath</span> <span class="nl">indexPathForRow:</span><span class="mi">0</span> <span class="nl">inSection:</span><span class="mi">0</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">tableView</span> <span class="nl">insertRowsAtIndexPaths:</span><span class="err">@</span><span class="p">[</span><span class="n">indexPath</span><span class="p">]</span> <span class="nl">withRowAnimation:</span><span class="n">UITableViewRowAnimationAutomatic</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">refreshControl</span> <span class="n">endRefreshing</span><span class="p">];</span> <span class="c1">// 结束刷新</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>编译执行。</p>
+
+<p>首先，我们先测试手动下拉刷新－－如果你设置正确的话，程序运行良好，下拉更新OK了。</p>
+
+<p>然后，我们试试点击右上角的“＋”按钮。我们希望它也能正常运行。但是这时候，问题出现了－－好像程序啥都没有做！但是实际上，<code>UIRefreshControl</code>确实在工作了。不信你可以把TableView往下拉一点，我们能看到进度圈在转。但是奇怪的是，<code>- doSomething</code>代码似乎没有执行。</p>
+
+<p>为了解决这个问题，我们在<code>- addButtonAction:</code>方法中在调用<code>－ beginRefreshing</code>之后加入一行代码：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[</span><span class="n">self</span> <span class="nl">insertNewObject:</span><span class="nb">nil</span><span class="p">];</span> <span class="c1">//手工执行插入新行的动作</span>
+</span><span class='line'><span class="c1">// 或者</span>
+</span><span class='line'><span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">refreshControl</span> <span class="nl">sendActionsForControlEvents:</span><span class="n">UIControlEventValueChanged</span><span class="p">];</span> <span class="c1">//发送ValueChanged事件（推荐）</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>再次编译执行后，我们发现<code>- doSomething</code>可以正确执行了，但是，进度圈还是藏在TableView可见范围的上方。为了解决这个问题，我们需要在<code>- addButtonAction:</code>方法中，在调用<code>－ beginRefreshing</code>之前再加入一行代码：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">tableView</span> <span class="nl">setContentOffset:</span><span class="n">CGPointMake</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">44</span><span class="p">)</span> <span class="nl">animated:</span><span class="n">YES</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>编译执行，点击“＋”按钮，进度圈出现，2秒后，新条目加入，进度圈消失，我们的问题也解决了。</p>
+
+<p>总结一下，用代码触发下拉更新有两个陷阱：1. 调用<code>- beginRefreshing</code>方法不会触发<code>UIControlEventValueChanged</code>事件；2. 调用<code>- beginRefreshing</code>方法不会自动显示进度圈。</p>
+
+<p>示例代码已经上传至<a href="https://github.com/venj/Cocoa-blog-code/tree/master/RefreshControl">github</a>。如果你有更好的方法，或者你觉得我的处理方法有错误，请留言指正。谢谢。</p>
+
+<p>（全文完）</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[iOS 6下的驾车导航]]></title>
+    <link href="http://venj.github.io/blog/drive-navigation-in-ios6/"/>
+    <updated>2012-11-26T11:18:00+08:00</updated>
+    <id>http://venj.github.io/blog/drive-navigation-in-ios6</id>
+    <content type="html"><![CDATA[<p>好久没有写Blog了，今天正好碰上了一个问题，于是决定写一写博客简单描述下。情况是这样的：之前，在iOS 5下，要显示一个从当前为止到目标位置的驾车导航可以使用如下的代码来搞定（<a href="http://developer.apple.com/library/ios/#featuredarticles/iPhoneURLScheme_Reference/Articles/MapLinks.html">参考这里</a>）：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">//基于地名调用iOS自带的Google Maps导航</span>
+</span><span class='line'><span class="n">NSString</span> <span class="o">*</span><span class="n">urlEncodedCurrentPlaceName</span> <span class="o">=</span> <span class="p">[</span><span class="s">@&quot;当前位置&quot;</span> <span class="nl">stringByAddingPercentEscapesUsingEncoding:</span><span class="n">NSUTF8StringEncoding</span><span class="p">];</span> <span class="c1">//简单起见，没有考虑多语言*（注）*。</span>
+</span><span class='line'><span class="n">NSString</span> <span class="o">*</span><span class="n">mapLink</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSString</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFormat:</span><span class="s">@&quot;http://maps.google.com/maps?daddr=%@&amp;saddr=%@&quot;</span><span class="p">,</span> <span class="n">urlEncodedDestinationPlaceName</span><span class="p">,</span> <span class="p">];</span>
+</span><span class='line'><span class="p">[[</span><span class="n">UIApplication</span> <span class="n">sharedApplication</span><span class="p">]</span> <span class="nl">openURL:</span><span class="p">[[</span><span class="n">NSURL</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithString:</span><span class="n">mapLink</span><span class="p">]];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<!-- more -->
+
+
+<p>但是假如我们只有起始位置和终点位置的经纬度地址怎么办？Google Maps还是很智能的，只需直接传入逗号分隔的经纬度坐标即可。如下：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">//基于经纬度调用iOS自带的Google Maps导航</span>
+</span><span class='line'><span class="n">NSString</span> <span class="o">*</span><span class="n">urlEncodedCurrentPlaceName</span> <span class="o">=</span> <span class="p">[</span><span class="s">@&quot;当前位置&quot;</span> <span class="nl">stringByAddingPercentEscapesUsingEncoding:</span><span class="n">NSUTF8StringEncoding</span><span class="p">];</span>
+</span><span class='line'><span class="n">NSString</span> <span class="o">*</span><span class="n">mapLink</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSString</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFormat:</span><span class="s">@&quot;http://maps.google.com/maps?daddr=%f,%f&amp;saddr=%@&quot;</span><span class="p">,</span> <span class="n">destLat</span><span class="p">,</span> <span class="n">destLng</span><span class="p">,</span> <span class="n">urlEncodedCurrentPlaceName</span><span class="p">];</span>
+</span><span class='line'><span class="p">[[</span><span class="n">UIApplication</span> <span class="n">sharedApplication</span><span class="p">]</span> <span class="nl">openURL:</span><span class="p">[[</span><span class="n">NSURL</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithString:</span><span class="n">mapLink</span><span class="p">]];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这招在iOS 6下有点问题的。因为大家都知道苹果把iOS 6的地图换成了自己的地图应用，所以使用上面的实现方法只能转跳到Mobile Safari中的Google Maps网站。虽然路线也是可以用的，但是总觉得有些不爽。</p>
+
+<p>后来查文档发现，要转跳Apple地图应用其实很简单，只需把上面代码里的google换成apple即可：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">//基于地名调用iOS自带的Google Maps导航</span>
+</span><span class='line'><span class="n">NSString</span> <span class="o">*</span><span class="n">mapLink</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSString</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFormat:</span><span class="s">@&quot;http://maps.apple.com/maps?daddr=%@&amp;saddr=%@&quot;</span><span class="p">,</span> <span class="n">urlEncodedDestinationPlaceName</span><span class="p">,</span> <span class="n">urlEncodedCurrentPlaceName</span><span class="p">];</span>
+</span><span class='line'><span class="p">[[</span><span class="n">UIApplication</span> <span class="n">sharedApplication</span><span class="p">]</span> <span class="nl">openURL:</span><span class="p">[[</span><span class="n">NSURL</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithString:</span><span class="n">mapLink</span><span class="p">]];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>但是遗憾的是，这个实现方法不支持传入经纬度。如果传入经纬度值，虽然能够转跳Apple地图应用，但是总是提示“地图服务器不可用”。但事实上，你在地图应用里使用导航功能是没问题的，所以并非地图服务器不可用，而是Apple地图不支持直接传经纬度作为地名。而且，iOS 6的地图程序也不支持“当前位置”这个特殊地名。我尝试了把经纬度进行<a href="http://cocoa.venj.me/blog/geocoding-in-ios-5/">反向地理位置解析</a>，再把解析到的地址用于地图导航。但是结果显示，反向地理位置解析实在是偏移太大了，因此这个方案显然是不可行的。</p>
+
+<p>经过Google搜索和查看Apple文档发现，MapKit在iOS 6里引入了一个新类：<a href="http://developer.apple.com/library/ios/#documentation/MapKit/Reference/MKMapItem_class/Reference/Reference.html">MKMapItem</a>，这个类是解决这个问题的关键。其中最重要的方法是<code>-openMapsWithItems:launchOptions:</code>和<code>+mapItemForCurrentLocation</code>下面是从当前位置到目标经纬度的驾车导航在iOS 6中的实现。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">Class</span> <span class="n">mapItemClass</span> <span class="o">=</span> <span class="p">[</span><span class="n">MKMapItem</span> <span class="n">class</span><span class="p">];</span>
+</span><span class='line'><span class="k">if</span> <span class="p">(</span><span class="n">mapItemClass</span> <span class="o">&amp;&amp;</span> <span class="p">[</span><span class="n">mapItemClass</span> <span class="nl">respondsToSelector:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">openMapsWithItems:launchOptions:</span><span class="p">)])</span> <span class="p">{</span> <span class="c1">// For iOS 6</span>
+</span><span class='line'>    <span class="n">CLLocationCoordinate2D</span> <span class="n">destCoord</span> <span class="o">=</span> <span class="n">CLLocationCoordinate2DMake</span><span class="p">(</span><span class="n">destLat</span><span class="p">,</span> <span class="n">destLng</span><span class="p">);</span> <span class="c1">//目标经纬度坐标</span>
+</span><span class='line'>    <span class="n">MKPlacemark</span> <span class="o">*</span><span class="n">destPlacemark</span> <span class="o">=</span> <span class="p">[[</span><span class="n">MKPlacemark</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithCoordinate:</span><span class="n">destCoord</span> <span class="nl">addressDictionary:</span><span class="nb">nil</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">MKMapItem</span> <span class="o">*</span><span class="n">destMapItem</span> <span class="o">=</span> <span class="p">[[</span><span class="n">MKMapItem</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithPlacemark:</span><span class="n">destPlacemark</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">MKMapItem</span> <span class="o">*</span><span class="n">currentMapItem</span> <span class="o">=</span> <span class="p">[</span><span class="n">MKMapItem</span> <span class="n">mapItemForCurrentLocation</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="p">[</span><span class="n">MKMapItem</span> <span class="nl">openMapsWithItems:</span><span class="err">@</span><span class="p">[</span><span class="n">currentMapItem</span><span class="p">,</span> <span class="n">destMapItem</span><span class="p">]</span>
+</span><span class='line'>                 <span class="nl">launchOptions:</span><span class="err">@</span><span class="p">{</span><span class="nl">MKLaunchOptionsDirectionsModeKey:</span> <span class="n">MKLaunchOptionsDirectionsModeDriving</span><span class="p">}];</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="k">else</span> <span class="p">{</span> <span class="c1">// For iOS 5 and before.</span>
+</span><span class='line'>    <span class="n">NSString</span> <span class="o">*</span><span class="n">urlEncodedCurrentPlaceName</span> <span class="o">=</span> <span class="p">[</span><span class="s">@&quot;当前位置&quot;</span> <span class="nl">stringByAddingPercentEscapesUsingEncoding:</span><span class="n">NSUTF8StringEncoding</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">NSString</span> <span class="o">*</span><span class="n">mapLink</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSString</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFormat:</span><span class="s">@&quot;http://maps.google.com/maps?daddr=%f,%f&amp;saddr=%@&quot;</span><span class="p">,</span> <span class="n">destLat</span><span class="p">,</span> <span class="n">destLng</span><span class="p">,</span> <span class="n">urlEncodedCurrentPlaceName</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[[</span><span class="n">UIApplication</span> <span class="n">sharedApplication</span><span class="p">]</span> <span class="nl">openURL:</span><span class="p">[[</span><span class="n">NSURL</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithString:</span><span class="n">mapLink</span><span class="p">]];</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>上面的实现能够同时兼容iOS 6以及iOS 5.x和更早版本。经测试，该方法能够很精确的显示定位和导航信息。至此，驾车导航的问题基本上完美解决。</p>
+
+<p>（Updated）iOS 5的实现中，使用maps.apple.com访问地图程序，会先转跳Safari，然后再转跳地图程序。因此还是改回maps.google.com，避免一次多余的浏览器转跳。</p>
+
+<p>（注）关于“当前位置”这个特殊地名的多语言支持参考<a href="http://www.martip.net/blog/localized-current-location-string-for-iphone-apps">这里</a>。</p>
+
+<p>(全文完)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[关于多行NSString的高度]]></title>
+    <link href="http://venj.github.io/blog/nsstring-height/"/>
+    <updated>2012-07-30T09:01:00+08:00</updated>
+    <id>http://venj.github.io/blog/nsstring-height</id>
+    <content type="html"><![CDATA[<p>有时候，我们需要动态地得到一个多行字符串的高度。比如，在TableView中，如果我们允许<code>UILabel</code>/<code>NSTextField</code>多行显示，而TableView的Delegate就需要知道Cell的高度，这时，我们需要根据TableView呈现的内容，动态地计算多行字符串的高度，以确定Cell的高度。</p>
+
+<p>这样的需求，在UIKit中实现起来相对比较直观。我们就先看看UIKit中的情况。</p>
+
+<p><code>NSString</code>的<code>UIStringDrawing</code>这个Catagory中，有一个非常方便调用的方法：<code>- sizeWithFont:forWidth:lineBreakMode:</code>。看下面的示例代码：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">UITableViewCell</span> <span class="o">*</span><span class="p">)</span><span class="nf">tableView:</span><span class="p">(</span><span class="n">UITableView</span> <span class="o">*</span><span class="p">)</span><span class="nv">tableView</span> <span class="nf">cellForRowAtIndexPath:</span><span class="p">(</span><span class="n">NSIndexPath</span> <span class="o">*</span><span class="p">)</span><span class="nv">indexPath</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">...</span>
+</span><span class='line'>    <span class="n">cell</span><span class="p">.</span><span class="n">textLabel</span><span class="p">.</span><span class="n">lineBreakMode</span> <span class="o">=</span> <span class="n">UILineBreakModeWordWrap</span><span class="p">;</span> <span class="c1">//设置换行模式</span>
+</span><span class='line'>    <span class="n">cell</span><span class="p">.</span><span class="n">textLabel</span><span class="p">.</span><span class="n">numberOfLines</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">//允许多行</span>
+</span><span class='line'>    <span class="p">...</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span><span class="nf">tableView:</span><span class="p">(</span><span class="n">UITableView</span> <span class="o">*</span><span class="p">)</span><span class="nv">tableView</span> <span class="nf">heightForRowAtIndexPath:</span><span class="p">(</span><span class="n">NSIndexPath</span> <span class="o">*</span><span class="p">)</span><span class="nv">indexPath</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">...</span>
+</span><span class='line'>    <span class="n">NSString</span> <span class="n">cellText</span> <span class="o">=</span> <span class="p">...;</span>
+</span><span class='line'>    <span class="n">CGSize</span> <span class="n">maximumSize</span> <span class="o">=</span> <span class="n">CGSizeMake</span><span class="p">(</span><span class="mf">280.</span><span class="p">,</span> <span class="mf">9999.</span><span class="p">);</span> <span class="c1">//指定一个宽度为实际宽度，高度为极大指的尺寸</span>
+</span><span class='line'>    <span class="n">CGSize</span> <span class="n">labelSize</span> <span class="o">=</span> <span class="p">[</span><span class="n">cellText</span> <span class="nl">sizeWithFont:</span><span class="p">[</span><span class="n">UIFont</span> <span class="nl">systemFontOfSize:</span><span class="mf">14.</span><span class="p">]</span> <span class="nl">constrainedToSize:</span><span class="n">maximumSize</span> <span class="nl">lineBreakMode:</span><span class="n">UILineBreakModeWordWrap</span><span class="p">];</span> <span class="c1">//调用方法，获取字符串的尺寸</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="n">labelSize</span><span class="p">.</span><span class="n">height</span> <span class="o">+</span> <span class="n">SOME_SPECE_FOR_OTHER_CONTROL</span><span class="p">;</span> <span class="c1">//返回字符串的高度，加上一些自由空间的高度或其他空间所占的高度。</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>遗憾的是，AppKit里没有对应于上述调用的简便方法。这时候，苹果的文档就发挥作用了。在<a href="http://developer.apple.com/documentation/Cocoa/Conceptual/TextLayout/TextLayout.html">Text Layout Programming Guide</a>中有一段示例代码，展示了如何使用<code>NSString</code>以及一些其他的类，来实现类似的功能。下面是我自己用在NSTableView中的的一段代码，照抄了文档中的示例代码，如下：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span><span class="nf">tableView:</span><span class="p">(</span><span class="n">NSTableView</span> <span class="o">*</span><span class="p">)</span><span class="nv">tableView</span> <span class="nf">heightOfRow:</span><span class="p">(</span><span class="n">NSInteger</span><span class="p">)</span><span class="nv">row</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">NSString</span> <span class="o">*</span><span class="n">statusText</span> <span class="o">=</span> <span class="p">[[</span><span class="n">_statusMessages</span> <span class="nl">objectAtIndex:</span><span class="n">row</span><span class="p">]</span> <span class="n">text</span><span class="p">];</span>
+</span><span class='line'>    <span class="k">return</span> <span class="p">[</span><span class="n">self</span> <span class="nl">heightForStringDrawing:</span><span class="n">statusText</span> <span class="nl">font:</span><span class="p">[</span><span class="n">NSFont</span> <span class="nl">systemFontOfSize:</span><span class="mi">12</span><span class="p">]</span> <span class="nl">width:</span><span class="n">tableView</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">]</span> <span class="o">+</span> <span class="mi">8</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//苹果官方文档中的示例方法</span>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span><span class="nf">heightForStringDrawing:</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">myString</span> <span class="nf">font:</span><span class="p">(</span><span class="n">NSFont</span> <span class="o">*</span><span class="p">)</span><span class="nv">myFont</span> <span class="nf">width:</span><span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span><span class="nv">myWidth</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">NSTextStorage</span> <span class="o">*</span><span class="n">textStorage</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSTextStorage</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithString:</span><span class="n">myString</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">NSTextContainer</span> <span class="o">*</span><span class="n">textContainer</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSTextContainer</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithContainerSize:</span> <span class="n">NSMakeSize</span><span class="p">(</span><span class="n">myWidth</span><span class="p">,</span> <span class="n">FLT_MAX</span><span class="p">)];</span>
+</span><span class='line'>    <span class="n">NSLayoutManager</span> <span class="o">*</span><span class="n">layoutManager</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSLayoutManager</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="p">[</span><span class="n">layoutManager</span> <span class="nl">addTextContainer:</span><span class="n">textContainer</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">textStorage</span> <span class="nl">addLayoutManager:</span><span class="n">layoutManager</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">textStorage</span> <span class="nl">addAttribute:</span><span class="n">NSFontAttributeName</span> <span class="nl">value:</span><span class="n">myFont</span> <span class="nl">range:</span><span class="n">NSMakeRange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">[</span><span class="n">textStorage</span> <span class="n">length</span><span class="p">])];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">textContainer</span> <span class="nl">setLineFragmentPadding:</span><span class="mf">0.0</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="p">[</span><span class="n">layoutManager</span> <span class="nl">glyphRangeForTextContainer:</span><span class="n">textContainer</span><span class="p">];</span>
+</span><span class='line'>    <span class="k">return</span> <span class="p">[</span><span class="n">layoutManager</span> <span class="nl">usedRectForTextContainer:</span><span class="n">textContainer</span><span class="p">].</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>上述代码中涉及了<code>NSTextStorage</code>，<code>NSTextContainer</code>，<code>NSLayoutManager</code>等多个比较复杂的方法，我对这些类也不是很熟悉，因此我就不详细注释了，有兴趣的同学可以查阅这些类的文档。你也可以将上述方法稍作修改，自己写一个<code>NSString</code>的Catagory，方便以后使用。你甚至可以基于上述方法，写一个/一组对应于<code>NSString(UIStringDrawing)</code>里计算字符串尺寸的快捷方法。</p>
+
+<p>还是那个老梗，任何时候，RTFM总能给人带来惊喜和收获。</p>
+
+<p>(全文完)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Block的Retain Cycle的解决方法]]></title>
+    <link href="http://venj.github.io/blog/prevent-block-instance-retain-cycle/"/>
+    <updated>2012-05-21T10:49:00+08:00</updated>
+    <id>http://venj.github.io/blog/prevent-block-instance-retain-cycle</id>
+    <content type="html"><![CDATA[<p>一个使用Block语法的实例变量，在引用另一个实例变量的时候，经常会引起retain cycle。这个问题在使用ASIHTTPRequest的block语法的时候会时不时的碰到。这个问题困扰了我这个小白很久。终于有一天，在Advanced Mac OS X Programming上，看到了这个问题的解决方案。</p>
+
+<p>先用代码描述一下症状：</p>
+
+<!-- more -->
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cm">/* ViewController.h */</span>
+</span><span class='line'><span class="cp">#import &lt;UIKit/UIKit.h&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">typedef</span> <span class="nf">void</span> <span class="p">(</span><span class="o">^</span><span class="n">ABlock</span><span class="p">)(</span><span class="kt">void</span><span class="p">);</span> <span class="c1">//定义一个简单的Block</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@interface</span> <span class="nc">ViewController</span> : <span class="nc">UIViewController</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">NSMutableArray</span> <span class="o">*</span><span class="n">_items</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">ABlock</span> <span class="n">_block</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@end</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/* ViewController.m */</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#import &quot;ViewController.h&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@implementation</span> <span class="nc">ViewController</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">viewDidLoad</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">super</span> <span class="n">viewDidLoad</span><span class="p">];</span>
+</span><span class='line'>    <span class="c1">// Do any additional setup after loading the view, typically from a nib.</span>
+</span><span class='line'>    <span class="n">_items</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSMutableArray</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">_block</span> <span class="o">=</span> <span class="o">^</span><span class="p">{</span>
+</span><span class='line'>        <span class="p">[</span><span class="n">_items</span> <span class="nl">addObject:</span><span class="s">@&quot;Hello!&quot;</span><span class="p">];</span> <span class="c1">//_block引用了_items，导致retain cycle。</span>
+</span><span class='line'>    <span class="p">};</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Xcode在编译以上程序的时候会给出一个警告：Captureing &lsquo;self&rsquo; strongly in this block is likely to lead to a retain cycle。原因是<code>_items</code>实际上是<code>self-&gt;items</code>。<code>_block</code>对象在创建的时候会被<code>retain</code>一次，因此会导致<code>self</code>也被<code>retain</code>一次。这样就形成了一个retain cycle。</p>
+
+<p>解决方法就是，创建一个本地变量<code>blockSelf</code>，指向<code>self</code>，然后用结构体语法访问实例变量。代码如下：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">__block</span> <span class="n">ViewController</span> <span class="o">*</span><span class="n">blockSelf</span> <span class="o">=</span> <span class="n">self</span><span class="p">;</span>
+</span><span class='line'><span class="n">_block</span> <span class="o">=</span> <span class="o">^</span><span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">blockSelf</span><span class="o">-&gt;</span><span class="n">_items</span> <span class="nl">addObject:</span><span class="s">@&quot;Hello!&quot;</span><span class="p">];</span>
+</span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这么修改之后，<code>blockSelf</code>是本地变量，是弱引用，因此在<code>_block</code>被<code>retain</code>的时候，并不会增加retain count，所以retain cycle就解除了，Xcode也不再出现警告了，问题解决。</p>
+
+<p>注：本文并非原创，详情请参阅<a href="http://www.amazon.com/Advanced-Mac-OS-Programming-Guides/dp/0321706250">Advanced Mac OS X Programming</a>，第92页“Block Retain Cycles”。</p>
+
+<p>(全文完)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[检测iOS的网络可用性并打开网络设置]]></title>
+    <link href="http://venj.github.io/blog/warn-no-network-and-show-settings/"/>
+    <updated>2012-05-08T10:39:00+08:00</updated>
+    <id>http://venj.github.io/blog/warn-no-network-and-show-settings</id>
+    <content type="html"><![CDATA[<p>今天接到个需求，要求程序能够检测网络可用性，并在没有网络可用的时候能够弹出对话框，并允许用户点击按钮打开网络设置。</p>
+
+<p>这个问题，我首先想到的就是用一个方法检测网络可用性，然后用<code>UIApplication</code>的<code>openURL</code>方法打开某个特殊URL，就可以进入设置了。于是，我迅速地建了个测试项目，写了个简单的实现，如下：</p>
+
+<!-- more -->
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// 注意：这个方法仅对iOS 5.0.x有效</span>
+</span><span class='line'><span class="k">+</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span> <span class="nf">isNetworkAvailable</span> <span class="p">{</span> <span class="c1">//Via Stackoverflow</span>
+</span><span class='line'>    <span class="n">NSURL</span> <span class="o">*</span><span class="n">url</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSURL</span> <span class="nl">URLWithString:</span><span class="s">@&quot;http://www.baidu.com&quot;</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">NSURLRequest</span> <span class="o">*</span><span class="n">request</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSMutableURLRequest</span> <span class="nl">requestWithURL:</span><span class="n">url</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">NSHTTPURLResponse</span> <span class="o">*</span><span class="n">response</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">NSURLConnection</span> <span class="nl">sendSynchronousRequest:</span><span class="n">request</span>
+</span><span class='line'>                          <span class="nl">returningResponse:</span><span class="o">&amp;</span><span class="n">response</span> <span class="nl">error:</span><span class="nb">NULL</span><span class="p">];</span>
+</span><span class='line'>    <span class="k">return</span> <span class="p">(</span><span class="n">response</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">viewDidLoad</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">super</span> <span class="n">viewDidLoad</span><span class="p">];</span>
+</span><span class='line'>    <span class="c1">// Do any additional setup after loading the view, typically from a nib.</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">[[</span><span class="n">self</span> <span class="n">class</span><span class="p">]</span> <span class="n">isNetworkAvailable</span><span class="p">])</span> <span class="p">{</span>
+</span><span class='line'>        <span class="p">[[[</span><span class="n">UIAlertView</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithTitle:</span><span class="s">@&quot;No network&quot;</span> <span class="nl">message:</span><span class="s">@&quot;No networkNetwork unavailable!!!&quot;</span> <span class="nl">delegate:</span><span class="n">self</span> <span class="nl">cancelButtonTitle:</span><span class="s">@&quot;OK&quot;</span> <span class="nl">otherButtonTitles:</span><span class="s">@&quot;Settings&quot;</span><span class="p">,</span> <span class="nb">nil</span><span class="p">]</span> <span class="n">show</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">alertView:</span><span class="p">(</span><span class="n">UIAlertView</span> <span class="o">*</span><span class="p">)</span><span class="nv">alertView</span> <span class="nf">didDismissWithButtonIndex:</span><span class="p">(</span><span class="n">NSInteger</span><span class="p">)</span><span class="nv">buttonIndex</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">buttonIndex</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="p">[[</span><span class="n">UIApplication</span> <span class="n">sharedApplication</span><span class="p">]</span> <span class="nl">openURL:</span><span class="p">[</span><span class="n">NSURL</span> <span class="nl">URLWithString:</span><span class="s">@&quot;prefs:root=General&amp;path=Network&quot;</span><span class="p">]];</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>编译运行之后，网络不可用倒是顺利提示了，但是我很杯具的发现，点了提示框里的“Settings”按钮之后完全没有反应。于是STFW，然后悲催的发现“特殊URL”在iOS 5.1里已经失效。多方搜索基于<code>openURL</code>的方法无果。</p>
+
+<p>正当我快放弃的时候，我发现高德地图在iOS 5.1下居然有类似的功能！（难道高德地图用了Private API，而且没有被苹果发现？我偷偷的这么想。）我对着高德地图又研究了好久，发现高德地图居然能够判断有无蜂窝网络和飞行模式！（嗯，肯定是Private API无误了！【误！】）</p>
+
+<p>然后突然灵光一闪，是不是<code>Info.plist</code>在作祟呢？因为<code>Info.plist</code>可以检测有无摄像头啥的，检测网络应该也没问题吧。于是，我解包了高德地图，打开<code>Info.plist</code>一看，果然有一条名为<code>SBUsesNetwork</code>的<code>Boolean</code>类型的记录。</p>
+
+<p>然后我就注释了自己的代码，在<code>Info.plist</code>里增加了一条：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;key&gt;</span>SBUsesNetwork<span class="nt">&lt;/key&gt;</span>
+</span><span class='line'><span class="nt">&lt;true/&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>编译运行，终于出现了高德地图一样的提示对话框。按下“设置”按钮，顺利转跳到了“设置”程序里，问题解决。</p>
+
+<p>经过这次乌龙，我只有再次感叹，Cocoa (Touch)深似海，而我的脚才刚踩上沙滩。</p>
+
+<p>顺道：我真的用软件检测了高德地图是否用了Private API。答案当然是否定的。【我这个白痴】</p>
+
+<p>(全文完)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[山寨一下QQ for Mac样式的头像选择菜单]]></title>
+    <link href="http://venj.github.io/blog/make-a-qq-mac-avatar-menu-clone/"/>
+    <updated>2012-03-29T17:02:00+08:00</updated>
+    <id>http://venj.github.io/blog/make-a-qq-mac-avatar-menu-clone</id>
+    <content type="html"><![CDATA[<p>腾讯一直被大家吐槽山寨别人，这次我决定山寨一下腾讯，对象就是QQ for Mac的头像选择菜单。下面是原版的头像选择菜单：</p>
+
+<p><img class="center" src="http://venj.github.io/images/posts/qq-avatar-menu-original.png"></p>
+
+<!-- more -->
+
+
+<p>这个菜单，一眼望过去，基本上就是一个有自定义View的菜单项加上一个普通菜单项。菜单附着在一个“头像”上。“头像”本身也是一个自定义按钮，这里不多深究；我们实现的时候，可以把菜单作为一个快捷菜单附着在一个按钮上。</p>
+
+<p>菜单的自定义View，由一个Label（<code>NSTextField</code>），8个头像（行为类似<code>NSButton</code>）组成。另外，在鼠标悬停在头像上的时候还有一个Focus Ring。</p>
+
+<p>问题分析到这里，我们就可以开始实现了。首先，我们先来创建两个菜单项：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cp">#define IMAGES_COUNT 8</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">applicationDidFinishLaunching:</span><span class="p">(</span><span class="n">NSNotification</span> <span class="o">*</span><span class="p">)</span><span class="nv">aNotification</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="c1">// 一些变量</span>
+</span><span class='line'>    <span class="n">NSInteger</span> <span class="n">sideMargin</span> <span class="o">=</span> <span class="mf">25.</span><span class="p">,</span> <span class="n">headMargin</span><span class="o">=</span><span class="mf">10.</span><span class="p">,</span> \
+</span><span class='line'>    <span class="n">seperateMargin</span> <span class="o">=</span> <span class="mf">2.</span><span class="p">,</span> <span class="n">imageWidth</span> <span class="o">=</span> <span class="mf">44.</span><span class="p">,</span> \
+</span><span class='line'>    <span class="n">imagesPerLine</span> <span class="o">=</span> <span class="mf">4.</span><span class="p">,</span> <span class="n">menuTitleHeight</span> <span class="o">=</span> <span class="mf">20.</span><span class="p">,</span>\
+</span><span class='line'>    <span class="n">menuTitleLeftMargin</span> <span class="o">=</span> <span class="mf">20.</span><span class="p">,</span> <span class="n">menuTitleWidth</span> <span class="o">=</span> <span class="mf">180.</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 创建菜单</span>
+</span><span class='line'>    <span class="n">self</span><span class="p">.</span><span class="n">myMenuItem</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSMenuItem</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithTitle:</span><span class="s">@&quot;My Menu&quot;</span> <span class="nl">action:</span><span class="nb">nil</span> <span class="nl">keyEquivalent:</span><span class="s">@&quot;&quot;</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">self</span><span class="p">.</span><span class="n">myMenuItem</span><span class="p">.</span><span class="n">target</span> <span class="o">=</span> <span class="n">self</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">NSMenuItem</span> <span class="o">*</span><span class="n">otherMenu</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSMenuItem</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithTitle:</span><span class="s">@&quot;自定义头像...&quot;</span> <span class="nl">action:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">doSomething:</span><span class="p">)</span> <span class="nl">keyEquivalent:</span><span class="s">@&quot;&quot;</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 创建菜单项的自定义视图</span>
+</span><span class='line'>    <span class="n">self</span><span class="p">.</span><span class="n">menuView</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSView</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFrame:</span><span class="n">NSMakeRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> \
+</span><span class='line'>                                                                <span class="n">sideMargin</span><span class="o">*</span><span class="mi">2</span><span class="o">+</span><span class="n">seperateMargin</span><span class="o">*</span><span class="p">(</span><span class="n">imagesPerLine</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">imageWidth</span><span class="o">*</span><span class="n">imagesPerLine</span><span class="p">,</span> \
+</span><span class='line'>                                                                <span class="n">imageWidth</span><span class="o">*</span><span class="p">(</span><span class="n">IMAGES_COUNT</span><span class="o">/</span><span class="n">imagesPerLine</span><span class="p">)</span><span class="o">+</span><span class="n">seperateMargin</span><span class="o">*</span><span class="p">(</span><span class="n">IMAGES_COUNT</span><span class="o">/</span><span class="n">imagesPerLine</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">headMargin</span><span class="o">*</span><span class="mi">2</span><span class="o">+</span><span class="n">menuTitleHeight</span><span class="p">)];</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>接着，在<code>-applicationDidFinishLaunching:</code>方法中继续加入Lebel：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">...</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">NSTextField</span> <span class="o">*</span><span class="n">menuViewTitle</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSTextField</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFrame:</span><span class="n">NSMakeRect</span><span class="p">(</span><span class="n">menuTitleLeftMargin</span><span class="p">,</span> <span class="n">headMargin</span><span class="o">+</span><span class="p">(</span><span class="n">seperateMargin</span> <span class="o">+</span> <span class="n">imageWidth</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">IMAGES_COUNT</span><span class="o">/</span><span class="n">imagesPerLine</span><span class="p">),</span> <span class="n">menuTitleWidth</span><span class="p">,</span> <span class="n">menuTitleHeight</span><span class="p">)];</span>
+</span><span class='line'><span class="n">menuViewTitle</span><span class="p">.</span><span class="n">stringValue</span> <span class="o">=</span> <span class="s">@&quot;系统头像&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="n">menuViewTitle</span><span class="p">.</span><span class="n">textColor</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSColor</span> <span class="n">grayColor</span><span class="p">];</span>
+</span><span class='line'><span class="n">menuViewTitle</span><span class="p">.</span><span class="n">backgroundColor</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSColor</span> <span class="n">controlColor</span><span class="p">];</span>
+</span><span class='line'><span class="n">menuViewTitle</span><span class="p">.</span><span class="n">font</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSFont</span> <span class="nl">systemFontOfSize:</span><span class="mi">15</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="n">menuViewTitle</span> <span class="nl">setEditable:</span><span class="n">NO</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="n">menuViewTitle</span> <span class="nl">setBordered:</span><span class="n">NO</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">menuView</span> <span class="nl">addSubview:</span><span class="n">menuViewTitle</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然后是8个头像按钮，这里我尽量地模仿QQ的大小尺寸，使用了一些变量来指定尺寸，以方便修改。对于尺寸的大小，如果你有疑问，可以简单的在纸上画一下就清楚了：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// 头像按钮</span>
+</span><span class='line'><span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">IMAGES_COUNT</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">NSRect</span> <span class="n">buttonRect</span> <span class="o">=</span> <span class="n">NSMakeRect</span><span class="p">(</span><span class="n">sideMargin</span> <span class="o">+</span> <span class="p">(</span><span class="n">imageWidth</span> <span class="o">+</span> <span class="n">seperateMargin</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">%</span> <span class="n">imagesPerLine</span><span class="p">),</span> \
+</span><span class='line'>                                    <span class="n">headMargin</span> <span class="o">+</span> <span class="p">((</span><span class="n">IMAGES_COUNT</span> <span class="o">/</span> <span class="n">imagesPerLine</span><span class="p">)</span> <span class="o">-</span> <span class="p">((</span><span class="n">i</span> <span class="o">/</span> <span class="n">imagesPerLine</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="n">imageWidth</span> <span class="o">+</span> <span class="n">seperateMargin</span><span class="p">),</span> \
+</span><span class='line'>                                    <span class="n">imageWidth</span><span class="p">,</span> <span class="n">imageWidth</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">NSButton</span> <span class="o">*</span><span class="n">button</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSButton</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFrame:</span><span class="n">buttonRect</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">button</span> <span class="nl">setButtonType:</span><span class="n">NSSwitchButton</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">button</span> <span class="nl">setImagePosition:</span><span class="n">NSImageOnly</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">button</span><span class="p">.</span><span class="n">image</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSImage</span> <span class="nl">imageNamed:</span><span class="p">[[</span><span class="n">NSString</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFormat:</span><span class="s">@&quot;avatar_small_%d&quot;</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]]</span> <span class="nl">roundCornersImageCornerRadius:</span><span class="mi">4</span><span class="p">];</span>
+</span><span class='line'>    <span class="c1">// 用于实现FocusRing（并不是很好的方法）</span>
+</span><span class='line'>    <span class="n">button</span><span class="p">.</span><span class="n">alternateImage</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSImage</span> <span class="nl">imageNamed:</span><span class="p">[[</span><span class="n">NSString</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFormat:</span><span class="s">@&quot;avatar_small_%d_h&quot;</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]]</span> <span class="nl">roundCornersImageCornerRadius:</span><span class="mi">5</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">button</span><span class="p">.</span><span class="n">cell</span> <span class="nl">setHighlightsBy:</span><span class="n">NSNoCellMask</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">button</span><span class="p">.</span><span class="n">tag</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">button</span><span class="p">.</span><span class="n">target</span> <span class="o">=</span> <span class="n">self</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">button</span><span class="p">.</span><span class="n">action</span> <span class="o">=</span> <span class="k">@selector</span><span class="p">(</span><span class="nl">buttonClicked:</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">button</span> <span class="nl">setBordered:</span><span class="n">NO</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 增加鼠标跟踪区域</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">options</span> <span class="o">=</span> <span class="n">NSTrackingMouseEnteredAndExited</span> <span class="o">|</span> <span class="n">NSTrackingActiveAlways</span> <span class="o">|</span> <span class="n">NSTrackingAssumeInside</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">NSTrackingArea</span> <span class="o">*</span><span class="n">trackingArea</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">NSDictionary</span> <span class="o">*</span><span class="n">userInfo</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSDictionary</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithObjectsAndKeys:</span><span class="n">button</span><span class="p">,</span><span class="s">@&quot;button&quot;</span><span class="p">,</span> <span class="nb">nil</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">trackingArea</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSTrackingArea</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithRect:</span><span class="n">buttonRect</span>
+</span><span class='line'>                                      <span class="nl">options:</span><span class="n">options</span>
+</span><span class='line'>                                        <span class="nl">owner:</span><span class="n">self</span>
+</span><span class='line'>                                     <span class="nl">userInfo:</span><span class="n">userInfo</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">menuView</span> <span class="nl">addTrackingArea:</span><span class="n">trackingArea</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">menuView</span> <span class="nl">addSubview:</span><span class="n">button</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">self</span><span class="p">.</span><span class="n">myMenuItem</span><span class="p">.</span><span class="n">view</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">menuView</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// 然后把菜单项加入菜单</span>
+</span><span class='line'><span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">attachedMenu</span> <span class="nl">addItem:</span><span class="n">self</span><span class="p">.</span><span class="n">myMenuItem</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">attachedMenu</span> <span class="nl">addItem:</span><span class="n">otherMenu</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>关于如何将菜单附着到按钮上，我过去曾写过<a href="http://cocoa.venj.me/blog/open-menu-with-a-button/">文章</a>讲述了，这里就不赘述了。另外，头像的图片有圆角显示，关于如何实现，我过去也曾写过<a href="http://cocoa.venj.me/blog/draw-rounded-rectangle-nsimage-with-quartz/">介绍文章</a>。</p>
+
+<p>问题差不多解决了，最后用两个鼠标事件回调函数来处理鼠标悬停时的Focus Ring效果：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">applicationDidFinishLaunching:</span><span class="p">(</span><span class="n">NSNotification</span> <span class="o">*</span><span class="p">)</span><span class="nv">aNotification</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="c1">// Insert code here to initialize your application</span>
+</span><span class='line'>    <span class="p">[[</span><span class="n">self</span> <span class="n">window</span><span class="p">]</span> <span class="nl">setAcceptsMouseMovedEvents:</span><span class="n">YES</span><span class="p">];</span> <span class="c1">// 注册接受鼠标事件</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="p">...</span> <span class="p">(</span><span class="err">其他代码</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">mouseEntered:</span><span class="p">(</span><span class="n">NSEvent</span> <span class="o">*</span><span class="p">)</span><span class="nv">theEvent</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">NSButton</span> <span class="o">*</span><span class="n">currentButton</span> <span class="o">=</span> <span class="p">[(</span><span class="n">NSDictionary</span> <span class="o">*</span><span class="p">)[</span><span class="n">theEvent</span> <span class="n">userData</span><span class="p">]</span> <span class="nl">objectForKey:</span><span class="s">@&quot;button&quot;</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">currentButton</span> <span class="nl">setState:</span><span class="n">NSOnState</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">mouseExited:</span><span class="p">(</span><span class="n">NSEvent</span> <span class="o">*</span><span class="p">)</span><span class="nv">theEvent</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">NSButton</span> <span class="o">*</span><span class="n">currentButton</span> <span class="o">=</span> <span class="p">[(</span><span class="n">NSDictionary</span> <span class="o">*</span><span class="p">)[</span><span class="n">theEvent</span> <span class="n">userData</span><span class="p">]</span> <span class="nl">objectForKey:</span><span class="s">@&quot;button&quot;</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">currentButton</span> <span class="nl">setState:</span><span class="n">NSOffState</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>山寨的效果效果如下：</p>
+
+<p><img class="center" src="http://venj.github.io/images/posts/qq-avatar-menu-clone.png"></p>
+
+<p>关于Focus Ring的实现我要说明一下，我这里用的方法比较粗糙，QQ应该是用Quartz绘制的Focus ring，而我是用了一张图片来“伪造”了一个Focus ring。我这里选择使用<code>NSSwitchButton</code>类型的按钮是为了利用<code>alternativeImage</code>来实现Focus ring效果。之所以这么做，是因为我一时间没有想到比较好的绘制Focus ring的方法 &mdash; 基础不过关啊 &mdash; 所以，如果谁知道怎么做，劳烦您能不吝赐教。</p>
+
+<p>示例代码我已经推送到<a href="https://github.com/venj/Cocoa-blog-code/tree/master/Custom%20Menu">Github</a>上了，有兴趣的可以签出来看看，并提出宝贵意见。另外，我在示例代码中使用了QQ for Mac里面的头像图片，希望腾讯勿怪。</p>
+
+<p>(全文完)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[模拟低速网络，测试iOS程序的表现]]></title>
+    <link href="http://venj.github.io/blog/simulate-low-speed-network-connection-for-ios-apps/"/>
+    <updated>2012-03-29T11:56:00+08:00</updated>
+    <id>http://venj.github.io/blog/simulate-low-speed-network-connection-for-ios-apps</id>
+    <content type="html"><![CDATA[<p>因为没有考虑程序在低速网络下的表现，昨天在测试公司的一个程序的时候出了点丑，于是痛定思痛，要解决模拟低速网络连接的问题。遗憾的是iOS Simulator并没有提供模拟低速网络的功能。</p>
+
+<p>经过一番STFW之后，发现原来苹果从Xcode 4.1开始提供了一款叫做“Network Link Connector”的工具。但是如今我已经升级到Xcode 4.3.2，用SpotLight搜索了一番之后也没有发现系统里已经安装了这样的一个工具。</p>
+
+<p>又经过一番搜索，我发现原来“Network Link Connector”是一个prefPane程序，从Xcode 4.3开始已经不再默认包含在程序里了，而是需要从developer.apple.com/download上单独下载，它位于“Hardware IO Tools”的一个包中。</p>
+
+<!-- more -->
+
+
+<p>下载安装之后，就可以在系统预置中找到，并使用它了。</p>
+
+<p><img class="center" src="http://venj.github.io/images/posts/nlcui.png"></p>
+
+<p>打开网速限制之后，会显示一个Menubar Adddon。</p>
+
+<p><img class="center" src="http://venj.github.io/images/posts/nlcmenu.png"></p>
+
+<p>这个程序默认包含了多种预置的网络设置，包括3G，WiFi，Edge，DSL等。</p>
+
+<p><img class="center" src="http://venj.github.io/images/posts/nlcprofile.png"></p>
+
+<p>你也可以自己创建网络Profile，对网速限制进行自定义。</p>
+
+<p><img class="center" src="http://venj.github.io/images/posts/nlccustom.png"></p>
+
+<p>因为这个网速限制是针对整个系统的，因此在测试完程序之后记得关掉网速限制。</p>
+
+<p>至此，问题解决。我也顺利的利用这个程序测试了程序的修改，感觉良好。</p>
+
+<p>不过我在使用中发现一个问题，就是打开了网速限制之后，Xcode在attach到Simulator的时候速度异常的慢，我怀疑是这个工具的影响，不过我无法确定。</p>
+
+<p>虽然这个工具已经足够我使用了，但是如果您有更好的工具的话，可以留言推荐给我。 :)</p>
+
+<p>(全文完)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[跳动Dock图标的实现]]></title>
+    <link href="http://venj.github.io/blog/bounce-dock-icon/"/>
+    <updated>2012-03-09T09:13:00+08:00</updated>
+    <id>http://venj.github.io/blog/bounce-dock-icon</id>
+    <content type="html"><![CDATA[<p>OS X程序，在执行后台任务的时候，有时需要通过跳动Dock图标来提示用户进行操作或某项操作已经执行完成。方法很简单，<code>NSApplication</code>有一个<code>-requestUserAttention:</code>的方法可以跳动Dock图标。</p>
+
+<p>下面是实例代码：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">//跳动一次</span>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">bounceOnce:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">NSApp</span> <span class="nl">requestUserAttention:</span><span class="n">NSInformationalRequest</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="c1">//总是跳动，直到用户干预为止</span>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">bounceAlways:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">NSApp</span> <span class="nl">requestUserAttention:</span><span class="n">NSCriticalRequest</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>FYI: <code>NSApp</code>是一个指向当前运行的程序实例的全局变量，等同于调用：<code>[NSApplication sharedApplication]</code>。</p>
+
+<p>示例代码已经上传到<a href="https://github.com/venj/Cocoa-blog-code/tree/master/Bounce%20Icon">github</a>，有兴趣的可以看看。不过记得在测试示例程序的时候，点击按钮后就让程序进入后台运行。5秒钟后就能看到效果了。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[在Sandbox的程序中加入Growl支持]]></title>
+    <link href="http://venj.github.io/blog/add-growl-to-your-sandboxed-app/"/>
+    <updated>2012-03-07T16:00:00+08:00</updated>
+    <id>http://venj.github.io/blog/add-growl-to-your-sandboxed-app</id>
+    <content type="html"><![CDATA[<p>Growl是一个知名的第三方消息提示框架，几乎是Mac装机必备的软件。虽然从Growl 1.3开始，Growl变成了收费软件，但是它依然是Mac App Store收费榜名列前茅的软件。虽然从OS X 10.8 Mountain Lion开始，OS X将加入Notification Center的支持，但是现在距离OS X 10.8发布依然有一段时间，而且，OS X 10.8之前的Mac OS X要退出历史舞台还有很长的路。</p>
+
+<p>我曾经撰写过<a href="http://cocoa.venj.me/blog/add-growl-support-in-your-apps-add-growl-framework/">关于Growl的文章</a>，因此关于Growl.framework的基本使用的内容我在本文中不再赘述了，大家可以去<a href="http://cocoa.venj.me/blog/add-growl-support-in-your-apps-coding-growl/">回顾一下</a>。基本上就是：</p>
+
+<ul>
+<li><a href="http://growl.info/downloads">下载</a><a href="http://growl.cachefly.net/Growl-1.3.1-SDK.zip">Growl SDK</a></li>
+<li>解压，添加Framework目录下的Growl.framework到项目中；</li>
+<li>添加一个plist文件，名为：Growl Registration Ticket.growlRegDict，添加合适的值（不详述）；</li>
+<li>增加一个Copy Build Phase，设置为Framework，把Growl.framework加入进去；</li>
+<li>在代码中实现<code>GrowlApplicationBridgeDelegate</code>的方法；</li>
+<li>发布Growl Notification。</li>
+</ul>
+
+
+<!-- more -->
+
+
+<p>Sandbox的程序不能直接向Growl的Helper程序发送消息，支持Sandbox的程序需要使用XPC（进程间通讯）的方式与Growl交互。因此，在完成和以前一样的步骤之后，我们还有一些额外的工作要做。</p>
+
+<p>我们需要往项目中加入一个Run Script的Build Phase。这个Build Phase的作用是执行一个Ruby脚本，把SDK里，<code>XPC Client</code>目录下的<code>com.company.application.GNTPClientService.xpc</code>这个包修改成适合当前项目的包。脚本和<code>.xpc</code>包在Growl SDK里都能找到。</p>
+
+<p>假设，我们把SDK里的<code>XPC Client</code>文件夹复制到项目目录中，在Build Phase中添加下列shell脚本：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">XPC_START</span><span class="o">=</span><span class="s2">&quot;$BUILT_PRODUCTS_DIR&quot;</span>
+</span><span class='line'><span class="nv">XPC_SCRIPT</span><span class="o">=</span><span class="s2">&quot;$SRCROOT/XPC Client/xpc-rename-move.rb&quot;</span>
+</span><span class='line'>ruby <span class="s2">&quot;$XPC_SCRIPT&quot;</span> <span class="s2">&quot;$SRCROOT/XPC Client/&quot;</span> <span class="s2">&quot;$BUILT_PRODUCTS_DIR/$WRAPPER_NAME&quot;</span> <span class="s2">&quot;$CODE_SIGN_IDENTITY&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img class="center" src="http://venj.github.io/images/posts/growl-script-phase.png"></p>
+
+<p>上面的代码中两个变量需要注意。<code>XPC_SCRIPT</code>是指定脚本的路径，如果你没有像我一样把XPC Client文件夹复制到到项目目录中，你可以用绝对路径。另外一个就是脚本第三行的<code>"$SRCROOT/XPC Client/"</code>。这个参数指定的是<code>.xpc</code>文件所在的文件夹，和<code>XPC_SCRIPT</code>这个变量一样，你也可以使用绝对路径。</p>
+
+<p>要让Growl支持Sandbox的程序，你还要实现一个delegate方法，告诉Growl.framework程序是否有网络访问的Entitlement。我的示例程序中如下：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span> <span class="nf">hasNetworkClientEntitlement</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">NO</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>完成之后，你就可以启用Entitlement，指定Code Sign的数字签名，开始编译了。</p>
+
+<p>老规矩，我还是做了一个简单的示例程序，下面是执行效果：</p>
+
+<p><img class="center" src="http://venj.github.io/images/posts/growl-sandbox-app.png"></p>
+
+<p>程序已经能够正常的通过XPC发送Growl消息，并且已经是Sandbox的程序了。</p>
+
+<p>我已经把代码推送到<a href="https://github.com/venj/Cocoa-blog-code/tree/master/Growl%20Test">github</a>上去了，项目名称是&#8221;Growl Test&#8221;（注意区别之前的&#8221;GrowlTest&#8221;项目），如果你遇到什么问题，可以Checkout出来看看我的设置。注意，测试Sandbox是需要付费开发者帐号的。（不是付费开发者帐号也没必要做Sandbox的程序，不是么？ :P ）</p>
+
+<p>(全文完)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[在iOS 4中自定义BarButtonItem]]></title>
+    <link href="http://venj.github.io/blog/custom-barbuttomitem-for-ios4/"/>
+    <updated>2012-02-29T15:08:00+08:00</updated>
+    <id>http://venj.github.io/blog/custom-barbuttomitem-for-ios4</id>
+    <content type="html"><![CDATA[<p>在iOS 5中已经有了自定义<code>UIBarButtonItem</code>背景的API。但是在iOS 4中，自定义BarButtonItem背景就复杂很多了。其中最典型也最容易实现的一种是方法是试用<code>UIBarButtonItem</code>的<code>-initWithCustomView:</code>方法，传递一个自定义<code>UIButton</code>对象进去。</p>
+
+<p>在深入讨论自定义<code>UIBarButtonItem</code>，让我们来先解决自定义<code>UIButton</code>的一个问题：那就是Button的标题的长度是变化的，我们应该通过什么方法让背景图片适应标题长度的变化呢？</p>
+
+<p>下面是解决方案：</p>
+
+<!-- more -->
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">if</span> <span class="p">([</span><span class="n">image</span> <span class="nl">respondsToSelector:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">resizableImageWithCapInsets:</span><span class="p">)])</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">// iOS 5中的方法。</span>
+</span><span class='line'>    <span class="n">buttonImage</span> <span class="o">=</span> <span class="p">[</span><span class="n">image</span> <span class="nl">resizableImageWithCapInsets:</span><span class="n">UIEdgeInsetsMake</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">leftcap</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">rightcap</span><span class="p">)];</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">// iOS 4-中的方法。该方法在iOS 5中已经标注为“Depreciated”。</span>
+</span><span class='line'>    <span class="n">buttonImage</span> <span class="o">=</span> <span class="p">[</span><span class="n">image</span> <span class="nl">stretchableImageWithLeftCapWidth:</span><span class="n">leftcap</span> <span class="nl">topCapHeight:</span><span class="mi">0</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这个解决方案的核心是<code>-stretchableImageWithLeftCapWidth:topCapHeight:</code>（或iOS 5中的<code>- resizableImageWithCapInsets:</code>）方法。这个方法能够根据指定的左右两侧“帽子”的尺寸（当然，上下拉伸也可以），拉伸图片的中间部分。具体效果你可以亲自试验一下。</p>
+
+<p>好了，回到自定义<code>UIBarButtonItem</code>的问题上来。既然<code>UIButton</code>背景的问题解决之后，我们就可以创建基于<code>UIButton</code>对象的<code>UIBarButtonItem</code>了：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// 用来被拉伸的图片</span>
+</span><span class='line'><span class="n">UIImage</span> <span class="o">*</span><span class="n">originalImage</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIImage</span> <span class="nl">imageNamed:</span><span class="s">@&quot;backButton&quot;</span><span class="p">];</span>
+</span><span class='line'><span class="n">UIImage</span> <span class="o">*</span><span class="n">buttonImage</span><span class="p">;</span>
+</span><span class='line'><span class="c1">// 拉伸图片</span>
+</span><span class='line'><span class="k">if</span> <span class="p">([[</span><span class="n">UIImage</span> <span class="n">class</span><span class="p">]</span> <span class="nl">respondsToSelector:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">resizableImageWithCapInsets:</span><span class="p">)])</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">buttonImage</span> <span class="o">=</span> <span class="p">[</span><span class="n">originalImage</span> <span class="nl">resizableImageWithCapInsets:</span><span class="n">UIEdgeInsetsMake</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">8</span><span class="p">)];</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">buttonImage</span> <span class="o">=</span> <span class="p">[</span><span class="n">originalImage</span> <span class="nl">stretchableImageWithLeftCapWidth:</span><span class="mi">13</span> <span class="nl">topCapHeight:</span><span class="mi">0</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="c1">// 创建自定义按钮</span>
+</span><span class='line'><span class="n">UIButton</span> <span class="o">*</span><span class="n">backButton</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIButton</span> <span class="nl">buttonWithType:</span><span class="n">UIButtonTypeCustom</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="n">backButton</span> <span class="nl">setBackgroundImage:</span><span class="n">buttonImage</span> <span class="nl">forState:</span><span class="n">UIControlStateNormal</span><span class="p">];</span>
+</span><span class='line'><span class="n">NSString</span> <span class="o">*</span><span class="n">title</span> <span class="o">=</span> <span class="s">@&quot;Back&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="p">[</span><span class="n">backButton</span> <span class="nl">setTitle:</span><span class="n">title</span> <span class="nl">forState:</span><span class="n">UIControlStateNormal</span><span class="p">];</span>
+</span><span class='line'><span class="n">UIFont</span> <span class="o">*</span><span class="n">font</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIFont</span> <span class="nl">boldSystemFontOfSize:</span><span class="mi">12</span><span class="p">];</span>
+</span><span class='line'><span class="n">backButton</span><span class="p">.</span><span class="n">titleLabel</span><span class="p">.</span><span class="n">font</span> <span class="o">=</span> <span class="n">font</span><span class="p">;</span>
+</span><span class='line'><span class="n">CGSize</span> <span class="n">labelSize</span> <span class="o">=</span> <span class="p">[</span><span class="n">title</span> <span class="nl">sizeWithFont:</span><span class="n">font</span><span class="p">];</span>
+</span><span class='line'><span class="c1">// 模拟系统按钮，设置文字阴影</span>
+</span><span class='line'><span class="n">backButton</span><span class="p">.</span><span class="n">titleLabel</span><span class="p">.</span><span class="n">shadowColor</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIColor</span> <span class="n">grayColor</span><span class="p">];</span>
+</span><span class='line'><span class="n">backButton</span><span class="p">.</span><span class="n">titleLabel</span><span class="p">.</span><span class="n">shadowOffset</span> <span class="o">=</span> <span class="n">CGSizeMake</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">);</span>
+</span><span class='line'><span class="c1">// 设置按钮的Frame，宽度为文字的宽度加上拉伸图宽度的和</span>
+</span><span class='line'><span class="n">backButton</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">CGRectMake</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">labelSize</span><span class="p">.</span><span class="n">width</span> <span class="o">+</span> <span class="n">buttonImage</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="n">buttonImage</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">);</span>
+</span><span class='line'><span class="c1">// 设置按钮的target和action</span>
+</span><span class='line'><span class="p">[</span><span class="n">backButton</span> <span class="nl">addTarget:</span><span class="n">self</span> <span class="nl">action:</span><span class="k">@selector</span><span class="p">(</span><span class="n">back</span><span class="p">)</span>
+</span><span class='line'>     <span class="nl">forControlEvents:</span><span class="n">UIControlEventTouchUpInside</span><span class="p">];</span>
+</span><span class='line'><span class="c1">//创建UIBarButtonItem</span>
+</span><span class='line'><span class="n">self</span><span class="p">.</span><span class="n">navigationItem</span><span class="p">.</span><span class="n">leftBarButtonItem</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIBarButtonItem</span> <span class="n">alloc</span><span class="p">]</span>
+</span><span class='line'>                                         <span class="nl">initWithCustomView:</span><span class="n">backButton</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这就是实现自定义<code>UIBarButtonItem</code>对象的核心了。我写了一个<code>UIBarButtonItem</code>的subclass，有点粗糙，但是能够实现上述的所有功能，并且能够响应设备方向的变化对按钮的宽度作出调整。用法很简单：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">VCTranslucentBarButtonItem</span> <span class="o">*</span><span class="n">item</span> <span class="o">=</span> <span class="p">[[</span><span class="n">VCTranslucentBarButtonItem</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithType:</span><span class="n">VCTranslucentBarButtonItemTypeBackward</span> <span class="nl">title:</span><span class="s">@&quot;Test Button&quot;</span> <span class="nl">target:</span><span class="n">self</span> <span class="nl">action:</span><span class="k">@selector</span><span class="p">(</span><span class="n">buttonClicked</span><span class="p">)];</span>
+</span><span class='line'><span class="n">self</span><span class="p">.</span><span class="n">navigationItem</span><span class="p">.</span><span class="n">leftBarButtonItem</span> <span class="o">=</span> <span class="n">item</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>完整的源码我就不在本文中贴出来了，反正已经推送到github上了。效果如下图所示：</p>
+
+<p><img class="center" src="http://venj.github.io/images/posts/barbuttonportrait.png"></p>
+
+<p><img class="center" src="http://venj.github.io/images/posts/barbuttonlandscape.png"></p>
+
+<p>上图中显示的是<code>DetailViewController</code>的自定义后退按钮，注意颜色上和<code>MasterViewController</code>中按钮的区别。因为用的按钮素材的问题，效果图未能完整复制系统的按钮样式，不过这已经足够说明问题了。实战中，你可以让设计师做更好，更美观的按钮。</p>
+
+<p>有兴趣的可以把<a href="https://github.com/venj/Cocoa-blog-code/tree/master/Custom%20NavBar">github</a>上的源码拉下来看看。本文和前一篇文章的源码在同一个项目中。</p>
+
+<p>注：本文所有的代码都用了ARC，以后的文章中将不再特别说明。如果你看到本博客的示例代码没有<code>release</code>，那么基本上都是用了ARC。</p>
+
+<p>(全文完)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[再谈iOS 4下NavigationBar的自定义]]></title>
+    <link href="http://venj.github.io/blog/more-on-navigationbar-customization/"/>
+    <updated>2012-02-29T10:30:00+08:00</updated>
+    <id>http://venj.github.io/blog/more-on-navigationbar-customization</id>
+    <content type="html"><![CDATA[<p>iOS 5已经有了很方便的自定义<code>UINavigationBar</code>的方法，但是iOS 4现在还远未完全被iOS 5取代，因此，在做程序开发的时候必须要考虑对iOS 4的兼容。因此，要自定义<code>UINavigationBar</code>还不能简单的直接用iOS 5中才有的自定义API。</p>
+
+<p>关于这个话题，我曾经写过<a href="http://cocoa.venj.me/blog/custom-navbar-background/">一篇日志</a>，但是后来发现那篇日志里面的实现方法有诸多缺陷。因此我后来对那篇文章做过部分删改。这两天，我再次研究了一下NavigationBar的自定义，总算找到了一个近乎完美的解决方法，因此，我决定写出来和大家分享一下。</p>
+
+<p>本文中的实现方法很大程度上参考了<a href="http://idevrecipes.com/2011/01/12/how-do-iphone-apps-instagramreederdailybooth-implement-custom-navigationbar-with-variable-width-back-buttons/">这篇文章</a>，不过我这里介绍的实现方法在原方法的基础上加入了对设备旋转的支持。</p>
+
+<p>方法的核心思想是创建一个<code>UINavigationBar</code>的子类，让这个子类支持背景图，然后在项目中用自定义类替换<code>UINavigationController</code>的<code>navgationBar</code>。不过有一个问题是，<code>UINavigationController</code>的<code>navgationBar</code>属性是一个只读属性，因此我们只能在xib中将<code>navgationBar</code>的类改成我们的自定义类。</p>
+
+<p>我还没有找到适合StoryBoard的无xib的解决方法，因此我在上面说这个方法是“近乎完美”。不过既然是部署到iOS 4，那项目不采用StoryBoard也不算特别反人类。好了，下面开始代码说话（注：代码用了ARC）：</p>
+
+<!-- more -->
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cm">/* VCCustomNavigationBar.h */</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#import &lt;UIKit/UIKit.h&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@interface</span> <span class="nc">VCCustomNavigationBar</span> : <span class="nc">UINavigationBar</span>
+</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">)</span> <span class="n">UIImageView</span> <span class="o">*</span><span class="n">navigationBarBackgroundImage</span><span class="p">;</span>
+</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">)</span> <span class="n">UIImage</span> <span class="o">*</span><span class="n">landscapeBarBackground</span><span class="p">;</span>
+</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">)</span> <span class="n">UIImage</span> <span class="o">*</span><span class="n">portraitBarBackground</span><span class="p">;</span>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">setBackgroundForDeviceOrientation:</span><span class="p">(</span><span class="n">UIDeviceOrientation</span><span class="p">)</span><span class="nv">orientation</span><span class="p">;</span>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">clearBackground</span><span class="p">;</span>
+</span><span class='line'><span class="k">@end</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/* VCCustomNavigationBar.m */</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#import &quot;VCCustomNavigationBar.h&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@implementation</span> <span class="nc">VCCustomNavigationBar</span>
+</span><span class='line'><span class="k">@synthesize</span> <span class="n">navigationBarBackgroundImage</span> <span class="o">=</span> <span class="n">_navigationBarBackgroundImage</span><span class="p">;</span>
+</span><span class='line'><span class="k">@synthesize</span> <span class="n">landscapeBarBackground</span> <span class="o">=</span> <span class="n">_landscapeBarBackground</span><span class="p">;</span>
+</span><span class='line'><span class="k">@synthesize</span> <span class="n">portraitBarBackground</span> <span class="o">=</span> <span class="n">_portraitBarBackground</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nf">initWithFrame:</span><span class="p">(</span><span class="n">CGRect</span><span class="p">)</span><span class="nv">frame</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">self</span> <span class="o">=</span> <span class="p">[</span><span class="n">super</span> <span class="nl">initWithFrame:</span><span class="n">frame</span><span class="p">];</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="c1">// Initialization code</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">self</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">awakeFromNib</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[[</span><span class="n">NSNotificationCenter</span> <span class="n">defaultCenter</span><span class="p">]</span> <span class="nl">addObserver:</span><span class="n">self</span> <span class="nl">selector:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">changeBackgroundImage:</span><span class="p">)</span> <span class="nl">name:</span><span class="n">UIDeviceOrientationDidChangeNotification</span> <span class="nl">object:</span><span class="nb">NULL</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">drawRect:</span><span class="p">(</span><span class="n">CGRect</span><span class="p">)</span><span class="nv">rect</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">navigationBarBackgroundImage</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">navigationBarBackgroundImage</span><span class="p">.</span><span class="n">image</span> <span class="nl">drawInRect:</span><span class="n">rect</span><span class="p">];</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>        <span class="p">[</span><span class="n">super</span> <span class="nl">drawRect:</span><span class="n">rect</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">setBackgroundForDeviceOrientation:</span><span class="p">(</span><span class="n">UIDeviceOrientation</span><span class="p">)</span><span class="nv">orientation</span><span class="p">;</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">self</span><span class="p">.</span><span class="n">navigationBarBackgroundImage</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIImageView</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFrame:</span><span class="n">self</span><span class="p">.</span><span class="n">frame</span><span class="p">];</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">((</span><span class="n">orientation</span> <span class="o">==</span> <span class="n">UIDeviceOrientationLandscapeLeft</span><span class="p">)</span>
+</span><span class='line'>        <span class="o">||</span> <span class="p">(</span><span class="n">orientation</span> <span class="o">==</span> <span class="n">UIDeviceOrientationLandscapeRight</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">self</span><span class="p">.</span><span class="n">navigationBarBackgroundImage</span><span class="p">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">landscapeBarBackground</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">orientation</span> <span class="o">==</span> <span class="n">UIDeviceOrientationPortrait</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">self</span><span class="p">.</span><span class="n">navigationBarBackgroundImage</span><span class="p">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">portraitBarBackground</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">self</span> <span class="n">setNeedsDisplay</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">clearBackground</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">self</span><span class="p">.</span><span class="n">navigationBarBackgroundImage</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">self</span> <span class="n">setNeedsDisplay</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">dealloc</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[[</span><span class="n">NSNotificationCenter</span> <span class="n">defaultCenter</span><span class="p">]</span> <span class="nl">removeObserver:</span><span class="n">self</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nl">changeBackgroundImage:</span><span class="p">(</span><span class="n">NSNotification</span> <span class="o">*</span><span class="p">)</span><span class="n">notification</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">UIDeviceOrientation</span> <span class="n">currentOrientation</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIDevice</span> <span class="n">currentDevice</span><span class="p">]</span> <span class="n">orientation</span><span class="p">];</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">currentOrientation</span> <span class="o">==</span> <span class="n">UIDeviceOrientationPortraitUpsideDown</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">self</span> <span class="nl">setBackgroundForDeviceOrientation:</span><span class="n">currentOrientation</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>在需要修改<code>NavigationBar</code>的<code>ViewController</code>中，在<code>-viewDidLoad</code>方法中设置自定义背景图：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">viewDidLoad</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">super</span> <span class="n">viewDidLoad</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//设置合适的NavBar背景(按钮)颜色，配合背景图</span>
+</span><span class='line'>    <span class="n">self</span><span class="p">.</span><span class="n">navigationController</span><span class="p">.</span><span class="n">navigationBar</span><span class="p">.</span><span class="n">tintColor</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIColor</span> <span class="n">brownColor</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//自定义NavBar背景</span>
+</span><span class='line'>    <span class="n">VCCustomNavigationBar</span> <span class="o">*</span><span class="n">customBar</span> <span class="o">=</span> <span class="p">(</span><span class="n">VCCustomNavigationBar</span> <span class="o">*</span><span class="p">)</span><span class="n">self</span><span class="p">.</span><span class="n">navigationController</span><span class="p">.</span><span class="n">navigationBar</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">customBar</span><span class="p">.</span><span class="n">landscapeBarBackground</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIImage</span> <span class="nl">imageNamed:</span><span class="s">@&quot;landscapeBarBackground&quot;</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">customBar</span><span class="p">.</span><span class="n">portraitBarBackground</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIImage</span> <span class="nl">imageNamed:</span><span class="s">@&quot;portraitBarBackground&quot;</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">customBar</span> <span class="nl">setBackgroundForDeviceOrientation:</span><span class="p">[[</span><span class="n">UIDevice</span> <span class="n">currentDevice</span><span class="p">]</span> <span class="n">orientation</span><span class="p">]];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//其他自定义代码</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>效果图如下：</p>
+
+<p><img class="center" src="http://venj.github.io/images/posts/navbar_bg_portrait.png"></p>
+
+<p><img class="center" src="http://venj.github.io/images/posts/navbar_bg_landscape.png"></p>
+
+<p>我已经把项目推送到<a href="https://github.com/venj/Cocoa-blog-code/tree/master/Custom%20NavBar">github</a>上了，有兴趣的可以拉下来研究一下。因为现在Xcode 4生成的模版已经默认不使用MainWindow.xib了，因此，你在测试的时候可能要自己创建一个Window.xib，并且自己创建所有对象，并连接Outlet等。</p>
+
+<p>(全文完)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Twitter for Mac风格的Sheet定位]]></title>
+    <link href="http://venj.github.io/blog/twitter-style-sheet-positioning/"/>
+    <updated>2012-02-15T17:29:00+08:00</updated>
+    <id>http://venj.github.io/blog/twitter-style-sheet-positioning</id>
+    <content type="html"><![CDATA[<p>昨天在用Twitter的时候，突然意识到，在删除Twitter消息的时候弹出的Sheet是定位在要删除的那条消息的顶部，而不是窗口标题栏的下方。</p>
+
+<p><img class="center" src="http://venj.github.io/images/posts/twitter-sheet.png"></p>
+
+<p>我很好奇这是如何做到的。今天抽了点时间，在简单的查阅<a href="https://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/Sheets/Tasks/PositioningSheets.html#//apple_ref/doc/uid/20002082-BAJDAJHF">文档</a>之后，我找到了答案。其核心就是<code>NSWindowDelegate</code>的一个方法：<code>-window:willPositionSheet:usingRect:</code>，可以指定Sheet的显示位置。</p>
+
+<p>我做了一个简单的View-based Table View（Lion下），然后用下面的方法做了实现：</p>
+
+<!-- more -->
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// 创建一个NSAlert，并以Sheet的形式呈现</span>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">removeRow:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">NSAlert</span> <span class="o">*</span><span class="n">alert</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSAlert</span> <span class="nl">alertWithMessageText:</span><span class="s">@&quot;Are you sure?&quot;</span> <span class="nl">defaultButton:</span><span class="s">@&quot;Yes&quot;</span> <span class="nl">alternateButton:</span><span class="s">@&quot;No&quot;</span> <span class="nl">otherButton:</span><span class="nb">nil</span> <span class="nl">informativeTextWithFormat:</span><span class="s">@&quot;Deleting a table cell is not reversable.&quot;</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">alert</span> <span class="nl">beginSheetModalForWindow:</span><span class="n">self</span><span class="p">.</span><span class="n">window</span> <span class="nl">modalDelegate:</span><span class="n">self</span> <span class="nl">didEndSelector:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">alertDidEnd:returnCode:contextInfo:</span><span class="p">)</span> <span class="nl">contextInfo:</span><span class="nb">NULL</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// NSWindowDelegate方法，用来指定Sheet的显示位置</span>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSRect</span><span class="p">)</span><span class="nf">window:</span><span class="p">(</span><span class="n">NSWindow</span> <span class="o">*</span><span class="p">)</span><span class="nv">window</span> <span class="nf">willPositionSheet:</span><span class="p">(</span><span class="n">NSWindow</span> <span class="o">*</span><span class="p">)</span><span class="nv">sheet</span> <span class="nf">usingRect:</span><span class="p">(</span><span class="n">NSRect</span><span class="p">)</span><span class="nv">rect</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kt">id</span> <span class="n">cell</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">tableView</span> <span class="nl">rowViewAtRow:</span><span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">tableView</span> <span class="n">selectedRow</span><span class="p">]</span> <span class="nl">makeIfNecessary:</span><span class="n">YES</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">NSRect</span> <span class="n">cellRect</span> <span class="o">=</span> <span class="p">[</span><span class="n">cell</span> <span class="n">frame</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">NSRect</span> <span class="n">scrollViewRect</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">tableView</span><span class="p">.</span><span class="n">superview</span> <span class="n">frame</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">cellRect</span><span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">scrollViewRect</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">-</span> <span class="n">cellRect</span><span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">y</span><span class="p">;</span> <span class="c1">// View-based table view is flipped?</span>
+</span><span class='line'>    <span class="n">cellRect</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">cellRect</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这个实现中，有一行用了并不漂亮的方法设置了<code>cellRect.origin.y</code>的值。这可能是因为Table View的坐标系是Flipped的，因此需要倒置一下，Sheet才能正确定位(注)。我做的示例程序的运行效果如下：</p>
+
+<p><img class="center" src="http://venj.github.io/images/posts/twitter-style-sheet.png"></p>
+
+<p>我已经把示例程序的源码推送到<a href="https://github.com/venj/Cocoa-blog-code/tree/master/TwiTable">github</a>上了，有兴趣的读者可以clone下来研究一下。示例程序运行的时候，选中一个表格，按下cmd &ndash; delete（或者Edit &ndash; Delete菜单操作），你就能看到运行效果了。</p>
+
+<p>这次碰到问题的经历再次证明了RTFM的威力所在。Happy coding and RTFM.</p>
+
+<p>(注) 我不确定View-based table view是否是一个flipped的View，仅仅从实现的时候发现似乎是这样的（RTFM做的还不够好，自pia）。如果你知道细节，请留言告知，鄙人不胜感谢！</p>
+
+<p>(全文完)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[点击按钮复制粘贴到文本框]]></title>
+    <link href="http://venj.github.io/blog/copy-and-paste-to-text-field/"/>
+    <updated>2012-02-13T14:47:00+08:00</updated>
+    <id>http://venj.github.io/blog/copy-and-paste-to-text-field</id>
+    <content type="html"><![CDATA[<p>相信很多读者看到标题肯定会疑惑，文本框本来就支持复制粘贴，为什么要专门写一篇日志来介绍文本框的复制粘贴呢？其实，本文要讲述的是，如何通过按下按钮，来复制粘贴文本到文本框 &mdash; 不是通过菜单操作，也不是通过快捷键cmd-c和cmd-v来完成。</p>
+
+<p>提到复制粘贴的菜单操作和快捷键操作，看过“Cocoa Programming for Mac OS X”的读者肯定知道，他们属于“nil-targeted action”，也就是说，他们的receive是在运行时被指定的。在Interface Builder中，<code>-copy:</code>，<code>-paste:</code>方法都是连接到一个占位对象“First Responder”上的。而First Responder到底是谁是在程序运行过程中动态变化着的。</p>
+
+<p>事实上，在<code>NSTextField</code>这个例子中，<code>-copy:</code>和<code>-paste:</code>的Receive是一个<code>NSText</code>对象。知道了这一点，剩下的问题就是如何获取这个对象。</p>
+
+<!-- more -->
+
+
+<p>答案就是，在<code>NSWindow</code>中，有一个方法能够返回当前处于First Responder的<code>NSText</code>对象: <code>-fieldEditor:forObject:</code>。</p>
+
+<p>下面是实现代码：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">copyText:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">sourceField</span> <span class="n">becomeFirstResponder</span><span class="p">];</span>  <span class="c1">//让Source文本框变成First Responder</span>
+</span><span class='line'>    <span class="n">NSText</span> <span class="o">*</span><span class="n">sourceText</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">window</span> <span class="nl">fieldEditor:</span><span class="n">YES</span> <span class="nl">forObject:</span><span class="n">self</span><span class="p">.</span><span class="n">sourceField</span><span class="p">];</span>  <span class="c1">//返回sourceField的NSText对象</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">sourceText</span> <span class="nl">selectAll:</span><span class="nb">nil</span><span class="p">];</span>  <span class="c1">// 全选</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">sourceText</span> <span class="nl">copy:</span><span class="nb">nil</span><span class="p">];</span>  <span class="c1">// 复制</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">pasteText:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">targetField</span> <span class="n">becomeFirstResponder</span><span class="p">];</span>  <span class="c1">//让Target文本框变成First Responder</span>
+</span><span class='line'>    <span class="n">NSText</span> <span class="o">*</span><span class="n">targetText</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">window</span> <span class="nl">fieldEditor:</span><span class="n">YES</span> <span class="nl">forObject:</span><span class="n">self</span><span class="p">.</span><span class="n">targetField</span><span class="p">];</span>  <span class="c1">//返回targetField的NSText对象</span>
+</span><span class='line'>    <span class="n">self</span><span class="p">.</span><span class="n">targetField</span><span class="p">.</span><span class="n">stringValue</span> <span class="o">=</span> <span class="s">@&quot;&quot;</span><span class="p">;</span>  <span class="c1">//清空原来文本框中的值</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">targetText</span> <span class="nl">paste:</span><span class="nb">nil</span><span class="p">];</span>  <span class="c1">//粘贴</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>下面是我做的一个示例程序的运行截图：</p>
+
+<p><img class="center" src="http://venj.github.io/images/posts/copy-paste-with-button.png"></p>
+
+<p>怎么样，实现很简单吧。很惭愧的是，这个问题我研究了很久，也没有找到合适的关键词搜索到比较好的参考资料。最后还是翻阅文档才找到解决方案的。RTFM，果然是永恒的真理啊！</p>
+
+<p>本文的示例程序的源代码我已经推送到<a href="https://github.com/venj/Cocoa-blog-code/tree/master/Paste%20Button">github</a>上了，有兴趣的可以pull下来看看。</p>
+
+<p>(全文完)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Objective-C中单例模式的实现]]></title>
+    <link href="http://venj.github.io/blog/singleton-in-objc/"/>
+    <updated>2012-02-07T20:29:00+08:00</updated>
+    <id>http://venj.github.io/blog/singleton-in-objc</id>
+    <content type="html"><![CDATA[<p>单例模式在Cocoa和Cocoa Touch中非常常见。比如这两个，<code>[UIApplication sharedApplication]</code>和<code>[NSApplication sharedApplication]</code>，大家应该都见过。但是我们应该如何在代码中实现一个单例模式呢？</p>
+
+<p>如果你对苹果的文档很熟悉的话，你一定知道，在<a href="https://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/CocoaFundamentals/Introduction/Introduction.html">Cocoa Foundamentals Guide</a>中有一段<a href="https://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/CocoaFundamentals/CocoaObjects/CocoaObjects.html#//apple_ref/doc/uid/TP40002974-CH4-SW32">实现单例模式的示例代码</a>。大致如下：</p>
+
+<!-- more -->
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cm">/* Singleton.h */</span>
+</span><span class='line'><span class="cp">#import &amp;lt;Foundation/Foundation.h&amp;gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@interface</span> <span class="nc">Singleton</span> : <span class="nc">NSObject</span>
+</span><span class='line'><span class="k">+</span> <span class="p">(</span><span class="n">Singleton</span> <span class="o">*</span><span class="p">)</span><span class="nf">instance</span><span class="p">;</span>
+</span><span class='line'><span class="k">@end</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/* Singleton.m */</span>
+</span><span class='line'><span class="cp">#import &quot;Singleton.h&quot;</span>
+</span><span class='line'><span class="k">static</span> <span class="n">Singleton</span> <span class="o">*</span><span class="n">instance</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@implementation</span> <span class="nc">Singleton</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">+</span> <span class="p">(</span><span class="n">Singleton</span> <span class="o">*</span><span class="p">)</span><span class="nf">instance</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">instance</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">instance</span> <span class="o">=</span> <span class="p">[[</span><span class="n">super</span> <span class="nl">allocWithZone:</span><span class="nb">NULL</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">instance</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">+</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nf">allocWithZone:</span><span class="p">(</span><span class="n">NSZone</span> <span class="o">*</span><span class="p">)</span><span class="nv">zone</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="p">[</span><span class="n">self</span> <span class="n">instance</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nf">copyWithZone:</span><span class="p">(</span><span class="n">NSZone</span> <span class="o">*</span><span class="p">)</span><span class="nv">zone</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">self</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nf">init</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">instance</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">instance</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="n">self</span> <span class="o">=</span> <span class="p">[</span><span class="n">super</span> <span class="n">init</span><span class="p">];</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">self</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nf">retain</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">self</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">oneway</span> <span class="kt">void</span><span class="p">)</span><span class="nf">release</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">// Do nothing</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nf">autorelease</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">self</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSUInteger</span><span class="p">)</span><span class="nf">retainCount</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">NSUIntegerMax</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这是一种很标准的Singleton实现，中规中矩。不过这种实现并不是线程安全的。所以各路大神都各显神威，给出了多种单例模式的实现。</p>
+
+<p>Matt Gallagher在<a href="http://cocoawithlove.com/2008/11/singletons-appdelegates-and-top-level.html">博客</a>中放出了一个Macro，用来实现单例模式。虽然是一个宏定义的代码，但是具体实现还是很清楚的。代码如下：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">//</span>
+</span><span class='line'><span class="c1">//  SynthesizeSingleton.h</span>
+</span><span class='line'><span class="c1">//  CocoaWithLove</span>
+</span><span class='line'><span class="c1">//</span>
+</span><span class='line'><span class="c1">//  Created by Matt Gallagher on 20/10/08.</span>
+</span><span class='line'><span class="c1">//  Copyright 2009 Matt Gallagher. All rights reserved.</span>
+</span><span class='line'><span class="c1">//</span>
+</span><span class='line'><span class="c1">//  Permission is given to use this source code file without charge in any</span>
+</span><span class='line'><span class="c1">//  project, commercial or otherwise, entirely at your risk, with the condition</span>
+</span><span class='line'><span class="c1">//  that any redistribution (in part or whole) of source code must retain</span>
+</span><span class='line'><span class="c1">//  this copyright and permission notice. Attribution in compiled projects is</span>
+</span><span class='line'><span class="c1">//  appreciated but not required.</span>
+</span><span class='line'><span class="c1">//</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define SYNTHESIZE_SINGLETON_FOR_CLASS(classname) \</span>
+</span><span class='line'><span class="cp"> \</span>
+</span><span class='line'><span class="cp">static classname *shared##classname = nil; \</span>
+</span><span class='line'><span class="cp"> \</span>
+</span><span class='line'><span class="cp">+ (classname *)shared##classname \</span>
+</span><span class='line'><span class="cp">{ \</span>
+</span><span class='line'><span class="cp">    @synchronized(self) \</span>
+</span><span class='line'><span class="cp">    { \</span>
+</span><span class='line'><span class="cp">        if (shared##classname == nil) \</span>
+</span><span class='line'><span class="cp">        { \</span>
+</span><span class='line'><span class="cp">            shared##classname = [[self alloc] init]; \</span>
+</span><span class='line'><span class="cp">        } \</span>
+</span><span class='line'><span class="cp">    } \</span>
+</span><span class='line'><span class="cp">     \</span>
+</span><span class='line'><span class="cp">    return shared##classname; \</span>
+</span><span class='line'><span class="cp">} \</span>
+</span><span class='line'><span class="cp"> \</span>
+</span><span class='line'><span class="cp">+ (id)allocWithZone:(NSZone *)zone \</span>
+</span><span class='line'><span class="cp">{ \</span>
+</span><span class='line'><span class="cp">    @synchronized(self) \</span>
+</span><span class='line'><span class="cp">    { \</span>
+</span><span class='line'><span class="cp">        if (shared##classname == nil) \</span>
+</span><span class='line'><span class="cp">        { \</span>
+</span><span class='line'><span class="cp">            shared##classname = [super allocWithZone:zone]; \</span>
+</span><span class='line'><span class="cp">            return shared##classname; \</span>
+</span><span class='line'><span class="cp">        } \</span>
+</span><span class='line'><span class="cp">    } \</span>
+</span><span class='line'><span class="cp">     \</span>
+</span><span class='line'><span class="cp">    return nil; \</span>
+</span><span class='line'><span class="cp">} \</span>
+</span><span class='line'><span class="cp"> \</span>
+</span><span class='line'><span class="cp">- (id)copyWithZone:(NSZone *)zone \</span>
+</span><span class='line'><span class="cp">{ \</span>
+</span><span class='line'><span class="cp">    return self; \</span>
+</span><span class='line'><span class="cp">} \</span>
+</span><span class='line'><span class="cp"> \</span>
+</span><span class='line'><span class="cp">- (id)retain \</span>
+</span><span class='line'><span class="cp">{ \</span>
+</span><span class='line'><span class="cp">    return self; \</span>
+</span><span class='line'><span class="cp">} \</span>
+</span><span class='line'><span class="cp"> \</span>
+</span><span class='line'><span class="cp">- (NSUInteger)retainCount \</span>
+</span><span class='line'><span class="cp">{ \</span>
+</span><span class='line'><span class="cp">    return NSUIntegerMax; \</span>
+</span><span class='line'><span class="cp">} \</span>
+</span><span class='line'><span class="cp"> \</span>
+</span><span class='line'><span class="cp">- (void)release \</span>
+</span><span class='line'><span class="cp">{ \</span>
+</span><span class='line'><span class="cp">} \</span>
+</span><span class='line'><span class="cp"> \</span>
+</span><span class='line'><span class="cp">- (id)autorelease \</span>
+</span><span class='line'><span class="cp">{ \</span>
+</span><span class='line'><span class="cp">    return self; \</span>
+</span><span class='line'><span class="cp">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然而，eschaton则觉得这些实现都太繁琐了，他给出的实现如下：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">@interface</span> <span class="nc">SomeManager</span> : <span class="nc">NSObject</span>
+</span><span class='line'><span class="k">+</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nf">sharedManager</span><span class="p">;</span>
+</span><span class='line'><span class="k">@end</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/* 非线程安全的实现 */</span>
+</span><span class='line'><span class="k">@implementation</span> <span class="nc">SomeManager</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">+</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nf">sharedManager</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">static</span> <span class="kt">id</span> <span class="n">sharedManager</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">sharedManager</span> <span class="o">==</span> <span class="nb">nil</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">sharedManager</span> <span class="o">=</span> <span class="p">[[</span><span class="n">self</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="n">sharedManager</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="k">@end</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/* 线程安全的实现 */</span>
+</span><span class='line'><span class="k">@implementation</span> <span class="nc">SomeManager</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">static</span> <span class="kt">id</span> <span class="n">sharedManager</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">+</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">initialize</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">self</span> <span class="o">==</span> <span class="p">[</span><span class="n">SomeManager</span> <span class="n">class</span><span class="p">])</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">sharedManager</span> <span class="o">=</span> <span class="p">[[</span><span class="n">self</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">+</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nf">sharedManager</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">sharedManager</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="k">@end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>关于为什么上述代码就能实现单例模式，以及关于线程安全问题的考量，请参考他的<a href="http://eschatologist.net/blog/?p=178">博客</a>。</p>
+
+<p>最后介绍一个比较<a href="http://lukeredpath.co.uk/blog/a-note-on-objective-c-singletons.html">现代的单例模式实现</a>。为什么说现代呢？因为这种实现利用了GCD（Grand Central Dispatch）和ARC（Automatic Reference Counting）。核心代码如下：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">+</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nf">sharedInstance</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="k">static</span> <span class="n">dispatch_once_t</span> <span class="n">pred</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">__strong</span> <span class="k">static</span> <span class="kt">id</span> <span class="n">_sharedObject</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">dispatch_once</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pred</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+</span><span class='line'>    <span class="n">_sharedObject</span> <span class="o">=</span> <span class="p">[[</span><span class="n">self</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span> <span class="c1">// or some other init method</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">_sharedObject</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>作者还写了一个宏（<a href="https://gist.github.com/1057420">gist</a>）来方便使用，大家可以阅读作者的博文<a href="http://lukeredpath.co.uk/blog/a-note-on-objective-c-singletons.html">A note on Objective-C singletons</a>了解详情。</p>
+
+<p>大多数情况下，Apple官方文档里的单例模式的示例代码实现已经够用了。虽然它最繁琐，但是也是本文介绍的几种单例模式中最容易理解的一个。至于其他的实现就留给读者们根据需要选择和应用了。</p>
+
+<p>(全文完)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[自定义UINavigationBar的背景]]></title>
+    <link href="http://venj.github.io/blog/custom-navbar-background/"/>
+    <updated>2012-01-11T15:20:00+08:00</updated>
+    <id>http://venj.github.io/blog/custom-navbar-background</id>
+    <content type="html"><![CDATA[<p>为了让我们的应用程序更加美观，我们往往希望对iPhone自带的控件进行一点自定义。比如，本文即将要讲述的，给<code>UINavigationBar</code>加一个背景。</p>
+
+<p>最简单的一个自定义方法就是修改一下背景色。方法非常简单，那就是使用它的<code>tintColor</code>属性：</p>
+
+<!-- more -->
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">self</span><span class="p">.</span><span class="n">navigationController</span><span class="p">.</span><span class="n">navigationBar</span><span class="p">.</span><span class="n">tintColor</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIColor</span> <span class="n">redColor</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这样就轻松地为<code>UINavigationBar</code>加上了红色的背景色&mdash;当然你可以使用任何颜色。下面是模拟器中的测试效果：</p>
+
+<p><img class="center" src="http://venj.github.io/images/posts/custom-navbar-bg-color.png"></p>
+
+<p>另外，就是为<code>UINavigationBar</code>加背景图片。这个稍稍复杂一些&mdash;特别是对于iOS 5之前的iOS来说。先说说简单的，iOS 5已经为<code>UINavigationBar</code>增加了一个新的方法<code>-setBackgroundImage:forBarMetrics:</code>，专门用于设置<code>UINavigationBar</code>的背景图片。</p>
+
+<p><strong>Updated</strong></p>
+
+<p>删除了在iOS4下有问题的方法。</p>
+
+<p><strong>Update</strong></p>
+
+<p>适用于iOS 4的方法是在<code>AppDelegate.m</code>中创建一个<code>UINavigationBar</code>的Catagory，覆盖<code>-drawRect:</code>方法，如下：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">@implementation</span> <span class="nc">UINavigationBar</span> <span class="nl">(CustomImage)</span>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">drawRect:</span><span class="p">(</span><span class="n">CGRect</span><span class="p">)</span><span class="nv">rect</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">UIImage</span> <span class="o">*</span><span class="n">img</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIImage</span> <span class="nl">imageNamed:</span><span class="s">@&quot;navbar&quot;</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">img</span> <span class="nl">drawInRect:</span><span class="n">rect</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="k">@end</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">...</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//在后面加入判断是否支持iOS 5的代码，来提供对iOS 5的支持：</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">if</span> <span class="p">([</span><span class="n">bar</span> <span class="nl">respondsToSelector:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">setBackgroundImage:forBarMetrics:</span><span class="p">)])</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">bar</span> <span class="nl">setBackgroundImage:</span><span class="n">bg</span> <span class="nl">forBarMetrics:</span><span class="n">UIBarMetricsDefault</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这种方法将应用到程序中所有的<code>UINavigationBar</code>实例。但是通常来说，是不推荐覆盖系统自带的类中的方法的，所以我并不推荐使用这种方法。</p>
+
+<p><a href="http://idevrecipes.com/2011/01/12/how-do-iphone-apps-instagramreederdailybooth-implement-custom-navigationbar-with-variable-width-back-buttons/">这里</a>介绍了更好的方法。</p>
+
+<p>(全文完)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[在Mac和iOS中注册自定义的URL Scheme]]></title>
+    <link href="http://venj.github.io/blog/custom-url-scheme-on-mac-and-ios/"/>
+    <updated>2012-01-10T15:44:00+08:00</updated>
+    <id>http://venj.github.io/blog/custom-url-scheme-on-mac-and-ios</id>
+    <content type="html"><![CDATA[<p>URL Scheme是类似<code>http://</code>，<code>ftp://</code>，<code>afp://</code>这样的东西，通常是用传输协议作为URL Scheme。不过事实上，你可以在iOS和Mac中注册任何类型的URL Scheme。当用户在浏览器中访问你的自定义URL Scheme的链接的时候，操作系统就会打开你的程序，响应这个请求。</p>
+
+<p>要在程序中注册自定义URL Scheme非常简单。主要分为两个步骤：在程序的Info.plist中加入你需要注册的URL Scheme，然后在你的应用程序中加入处理这类请求的代码。</p>
+
+<p>其中，第一个步骤对于iOS和Mac应用程序来说是完全相同的。方法如下：</p>
+
+<!-- more -->
+
+
+<p>在<code>Info.plist</code>中，增加一个字段，名称为<code>CFBundleURLTypes</code>（URL Types）。Xcode会自动为你创建一个必须的键：<code>URL Identifier</code>(CFBundleURLName)，这个键的值可以赋值为一个唯一的字符串。通常是逆向的域名结构，如：<code>me.venj.myapp</code>。然后在URL Types这个键下增加一个子项：<code>CFBundleURLSchemes</code>(URL Schemes)，这里填入你想注册的URL Scheme的名称，如：<code>cloud</code>。你可以增加多个URL Scheme。</p>
+
+<p>下面是一个示例的XML结构：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;key&gt;</span>CFBundleURLTypes<span class="nt">&lt;/key&gt;</span>
+</span><span class='line'><span class="nt">&lt;array&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;dict&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;key&gt;</span>CFBundleURLName<span class="nt">&lt;/key&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;string&gt;</span>me.venj.myapp<span class="nt">&lt;/string&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;key&gt;</span>CFBundleURLSchemes<span class="nt">&lt;/key&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;array&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;string&gt;</span>cloud<span class="nt">&lt;/string&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/array&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/dict&gt;</span>
+</span><span class='line'><span class="nt">&lt;/array&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这样，我们就可以在程序中处理请求了。下面我们来分别看一下iOS和Mac下的处理方法：</p>
+
+<p><strong>iOS：</strong></p>
+
+<p>在iOS中，我们可以在AppDelegate中加入一个方法，来处理这个请求。对于iOS 4.1或更早的系统，使用<code>-application:handleOpenURL:</code>方法，对于iOS 4.2以后的系统使用：<code>-application:openURL:sourceApplication:annotation:</code>方法。</p>
+
+<p>下面是示例代码：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cm">/* For iOS 4.1 and earlier */</span>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">application:</span><span class="p">(</span><span class="n">UIApplication</span> <span class="o">*</span><span class="p">)</span><span class="nv">application</span> <span class="nf">handleOpenURL:</span><span class="p">(</span><span class="n">NSURL</span> <span class="o">*</span><span class="p">)</span><span class="nv">url</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">// Handle url request.</span>
+</span><span class='line'>    <span class="n">UIAlertView</span> <span class="o">*</span><span class="n">alert</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIAlertView</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithTitle:</span><span class="s">@&quot;URL Request&quot;</span> <span class="nl">message:</span><span class="p">[</span><span class="n">url</span> <span class="n">absoluteString</span><span class="p">]</span> <span class="nl">delegate:</span><span class="nb">nil</span> <span class="nl">cancelButtonTitle:</span><span class="s">@&quot;OK&quot;</span> <span class="nl">otherButtonTitles:</span><span class="nb">nil</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">alert</span> <span class="n">show</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="n">YES</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/* For iOS 4.2 and later */</span>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">application:</span><span class="p">(</span><span class="n">UIApplication</span> <span class="o">*</span><span class="p">)</span><span class="nv">application</span> <span class="nf">openURL:</span><span class="p">(</span><span class="n">NSURL</span> <span class="o">*</span><span class="p">)</span><span class="nv">url</span> <span class="nf">sourceApplication:</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">sourceApplication</span> <span class="nf">annotation:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">annotation</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">// Handle url request.</span>
+</span><span class='line'>    <span class="n">UIAlertView</span> <span class="o">*</span><span class="n">alert</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIAlertView</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithTitle:</span><span class="s">@&quot;URL Request&quot;</span> <span class="nl">message:</span><span class="p">[</span><span class="n">url</span> <span class="n">absoluteString</span><span class="p">]</span> <span class="nl">delegate:</span><span class="nb">nil</span> <span class="nl">cancelButtonTitle:</span><span class="s">@&quot;OK&quot;</span> <span class="nl">otherButtonTitles:</span><span class="nb">nil</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">alert</span> <span class="n">show</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="n">YES</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>我们的演示程序只是简单的显示了一个<code>UIAlertView</code>来响应请求。实际应该如何处理那就看需要了。</p>
+
+<p>效果如下：</p>
+
+<p><img class="center" src="http://venj.github.io/images/posts/custom-url-scheme-ios.png"></p>
+
+<p><strong>Mac：</strong></p>
+
+<p>Mac下处理自定义URL Scheme的请求稍有不同。我们首先要在<code>-applicationDidFinishLaunching:</code>方法中注册一下，并指定处理URL请求的方法。如下：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">applicationDidFinishLaunching:</span><span class="p">(</span><span class="n">NSNotification</span> <span class="o">*</span><span class="p">)</span><span class="nv">aNotification</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="c1">// Insert code here to initialize your application</span>
+</span><span class='line'>    <span class="p">[[</span><span class="n">NSAppleEventManager</span> <span class="n">sharedAppleEventManager</span><span class="p">]</span> <span class="nl">setEventHandler:</span><span class="n">self</span> <span class="nl">andSelector:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">handleURLEvent:withReplyEvent:</span><span class="p">)</span> <span class="nl">forEventClass:</span><span class="n">kInternetEventClass</span> <span class="nl">andEventID:</span><span class="n">kAEGetURL</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">handleURLEvent:</span><span class="p">(</span><span class="n">NSAppleEventDescriptor</span><span class="o">*</span><span class="p">)</span><span class="nv">theEvent</span> <span class="nf">withReplyEvent:</span><span class="p">(</span><span class="n">NSAppleEventDescriptor</span><span class="o">*</span><span class="p">)</span><span class="nv">replyEvent</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">// Process URL Request</span>
+</span><span class='line'>    <span class="n">NSString</span><span class="o">*</span> <span class="n">path</span> <span class="o">=</span> <span class="p">[[</span><span class="n">theEvent</span> <span class="nl">paramDescriptorForKeyword:</span><span class="n">keyDirectObject</span><span class="p">]</span> <span class="n">stringValue</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="p">[[</span><span class="n">NSAlert</span> <span class="nl">alertWithMessageText:</span><span class="s">@&quot;URL Request&quot;</span> <span class="nl">defaultButton:</span><span class="s">@&quot;OK&quot;</span> <span class="nl">alternateButton:</span><span class="nb">nil</span> <span class="nl">otherButton:</span><span class="nb">nil</span> <span class="nl">informativeTextWithFormat:</span><span class="s">@&quot;%@&quot;</span><span class="p">,</span> <span class="n">path</span><span class="p">]</span> <span class="n">runModal</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>类似的，我们在示例程序中还是简单的用了一个<code>NSAlert</code>来展示我们成功捕获到了这个URL Scheme的请求。</p>
+
+<p>效果如下：</p>
+
+<p><img class="center" src="http://venj.github.io/images/posts/custom-url-scheme.png"></p>
+
+<p>好了，关于自定义URL Scheme就讲这么多，用起来很简单吧。</p>
+
+<p>说明：
+&ndash; 本文的示例代码已经推送到了<a href="https://github.com/venj/Cocoa-blog-code">Github</a>，你可以下载编译之后退出程序。然后打开Safari，在地址栏中输入： <code>cloud://test.com</code>，看看是不是自动转跳到示例程序，并看到了对话框。
+&ndash; 本文参考了<a href="http://stackoverflow.com/questions/1991072/how-to-handle-with-a-default-url-scheme">这里</a>和<a href="http://developer.apple.com/library/ios/#documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/AdvancedAppTricks/AdvancedAppTricks.html#//apple_ref/doc/uid/TP40007072-CH7-SW20">Apple的文档</a></p>
+
+<p>(全文完)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[在iOS程序中使用自定义字体]]></title>
+    <link href="http://venj.github.io/blog/custom-fonts-in-ios-apps/"/>
+    <updated>2012-01-10T10:58:00+08:00</updated>
+    <id>http://venj.github.io/blog/custom-fonts-in-ios-apps</id>
+    <content type="html"><![CDATA[<p>好久没有更新这里了，今天开始慢慢恢复更新。好了，废话不多说，开始讲正题。今天的话题其实也很简单，那就是在iOS中使用自定义字体。</p>
+
+<p>虽然iOS自带的字体通常已经足够我们使用了，但是，对于某些特殊程序来说，比如，电子书程序，可能需要用到一些特殊的字体，或者需要用更好看的字体来达到我们想要的显示效果。不过，iOS是不支持系统级安装新字体的。不过在iOS 3.x中，我们已经可以用一个很简单的方法来使用自定义字体了。</p>
+
+<p>我们来创建一个简单的iOS项目来做演示。在界面上拖入一个<code>UITextView</code>，在代码中创建一个<code>IBOutlet</code>指向这个<code>UITextView</code>。我们从OSX中找一个iOS下没有的字体，比如：PTSans.ttc（这个也是Octopress模版的默认字体，我很喜欢这个字体），拖放到项目中。</p>
+
+<p>打开info.plist，增加一个新的Array类型的键，键名设置为UIAppFonts（Fonts provided by application），增加字体的<strong>文件名</strong>：“PTSans.ttc“。</p>
+
+<p>然后我们就可以在程序中调用这个字体了：</p>
+
+<!-- more -->
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">viewDidLoad</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">super</span> <span class="n">viewDidLoad</span><span class="p">];</span>
+</span><span class='line'>    <span class="c1">// 在viewDidLoad方法中设置字体。</span>
+</span><span class='line'>    <span class="n">self</span><span class="p">.</span><span class="n">tv</span><span class="p">.</span><span class="n">font</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIFont</span> <span class="nl">fontWithName:</span><span class="s">@&quot;PT Sans&quot;</span> <span class="nl">size:</span><span class="mi">20</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>下面是在iOS模拟器中的显示效果：</p>
+
+<p><img class="center" src="http://venj.github.io/images/posts/customfont.png"></p>
+
+<p>还不错吧。 :)</p>
+
+<p>最后提醒一点，在调用字体的时候，要使用字体名。<strong>字体名不是文件名</strong>，而是字体的Family Name。Family Name可以在Font Book中查看。</p>
+
+<p>本文的示例代码已经推送到<a href="https://github.com/venj/Cocoa-blog-code/tree/master/iPhoneCustomFont">Github</a>上了。在编译示例代码前，请先复制PTSans.ttc到<code>iPhoneCustomFont/iPhoneCustomFont</code>目录下。</p>
+
+<p>(全文完)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[把程序移动到/Applications文件夹]]></title>
+    <link href="http://venj.github.io/blog/move-app-to-application-folder-at-runtime/"/>
+    <updated>2011-09-10T15:46:00+08:00</updated>
+    <id>http://venj.github.io/blog/move-app-to-application-folder-at-runtime</id>
+    <content type="html"><![CDATA[<p>OSX有一个非常好的文件系统结构，默认的文件系统职能明确。一个很典型的例子是<code>Applications</code>文件夹，专门用来存放Mac应用程序。不过有时用户在下载了你的应用程序之后并没有养成把程序放到<code>/Applications</code>的习惯，你可以选择不去干预，也可以通过一个友好的提示来帮助用户把程序移动到<code>/Application</code>文件夹中。</p>
+
+<p>要在程序中实现这样的功能其实很简单，因为已经有人帮我们实现了这样的一个方法：<a href="https://github.com/potionfactory/LetsMove">LetsMove</a>。使用方法也很简单，在<code>ApplicationDelegate</code>中的<code>-applicationDidFinishLaunching:</code>方法的最前面增加一行代码，如下：</p>
+
+<!-- more -->
+
+
+<p></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">applicationDidFinishLaunching:</span><span class="p">(</span><span class="n">NSNotification</span> <span class="o">*</span><span class="p">)</span><span class="nv">aNotification</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">PFMoveToApplicationsFolderIfNecessary</span><span class="p">();</span> <span class="c1">// 增加这行代码。</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// Other Code…</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这样就能够在程序开始的时候提示用户是否要移动应用程序了。如下所示：</p>
+
+<p><img class="center" src="http://venj.github.io/images/posts/letsmove.png"></p>
+
+<p>有一点需要注意的是，需要在编译项目的时候添加<strong>Security.framework</strong>支持。我做了一个示例项目，已经<a href="https://github.com/venj/Cocoa-blog-code/tree/master/Move%20It">推送到github上了</a>，你也可以参考LetsMove的源码中的示例项目来了解使用方法。在OSX Lion中编译的时候可能会提示方法Depreciated，不过程序能够正常运行，相信LetMove项目的开发人员会在以后更新代码，解决方法Depreciated的问题。</p>
+
+<p><del>注：目前LetsMove不包含中文的本地语言，你可以自己做一个，或者参考我Fork的LetsMove里的中文翻译。</del></p>
+
+<p>【更新】LetsMove的作者已经合并了我的Pull请求，现在LetsMove有简体中文翻译了。</p>
+
+<p>（全文完）</p>
+]]></content>
+  </entry>
+  
+</feed>

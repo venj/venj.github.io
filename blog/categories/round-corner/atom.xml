@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Round Corner | Cocoa学习]]></title>
+  <link href="http://venj.github.io/blog/categories/round-corner/atom.xml" rel="self"/>
+  <link href="http://venj.github.io/"/>
+  <updated>2013-12-27T13:33:43+08:00</updated>
+  <id>http://venj.github.io/</id>
+  <author>
+    <name><![CDATA[venj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[用Quartz绘制NSImage圆角图像]]></title>
+    <link href="http://venj.github.io/blog/draw-rounded-rectangle-nsimage-with-quartz/"/>
+    <updated>2011-08-20T00:42:00+08:00</updated>
+    <id>http://venj.github.io/blog/draw-rounded-rectangle-nsimage-with-quartz</id>
+    <content type="html"><![CDATA[<p>今天偶尔看到了<a href="http://www.wattz.net/snippets/iphone_round_corners/">用Quartz绘制<code>UIImage</code>圆角图像的源码的Snippet</a>，因此心血来潮，简单的改了几行，把它移植到NSImage上了。也正是因为研究这个问题，我才发现了<a href="/blog/get-real-size-of-nsimage/"><code>NSImage</code>不能准确获得图片的实际像素大小的问题</a>。说实话，那个代码片断我也是一知半解，因此我只是依样画葫芦，也直接把源码附上，也不知道有没有更好的方法，仅供参考。</p>
+
+<!-- more -->
+
+
+<p>
+我把这个源码改成了<code>NSImage</code>的一个Category，从而方便日后自己使用。代码如下<strong>（更新了代码，修复了一个提前<code>release</code>的问题）</strong>：</p>
+
+<p>``` objc
+/<em> NSImage+RoundCorner.h </em>/</p>
+
+<h1>import &lt;Foundation/Foundation.h></h1>
+
+<p>/<em> C Prototypes </em>/
+void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, float ovalHeight);</p>
+
+<p>@interface NSImage(RoundCorner)
+&ndash; (NSImage *)roundCornersImageCornerRadius:(NSInteger)radius;
+@end</p>
+
+<p>/<em> NSImage+RoundCorner.m </em>/</p>
+
+<h1>import &ldquo;NSImage+RoundCorner.h&rdquo;</h1>
+
+<p>@implementation NSImage (RoundCorner)</p>
+
+<p>void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, float ovalHeight)
+{</p>
+
+<pre><code>float fw, fh;
+if (ovalWidth == 0 || ovalHeight == 0) {
+    CGContextAddRect(context, rect);
+    return;
+}
+CGContextSaveGState(context);
+CGContextTranslateCTM (context, CGRectGetMinX(rect), CGRectGetMinY(rect));
+CGContextScaleCTM (context, ovalWidth, ovalHeight);
+fw = CGRectGetWidth (rect) / ovalWidth;
+fh = CGRectGetHeight (rect) / ovalHeight;
+CGContextMoveToPoint(context, fw, fh/2);
+CGContextAddArcToPoint(context, fw, fh, fw/2, fh, 1);
+CGContextAddArcToPoint(context, 0, fh, 0, fh/2, 1);
+CGContextAddArcToPoint(context, 0, 0, fw/2, 0, 1);
+CGContextAddArcToPoint(context, fw, 0, fw, fh/2, 1);
+CGContextClosePath(context);
+CGContextRestoreGState(context);
+</code></pre>
+
+<p>}</p>
+
+<ul>
+<li><p>(NSImage *)roundCornersImageCornerRadius:(NSInteger)radius {
+  int w = (int) self.size.width;
+  int h = (int) self.size.height;</p>
+
+<p>  CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+  CGContextRef context = CGBitmapContextCreate(NULL, w, h, 8, 4 * w, colorSpace, kCGImageAlphaPremultipliedFirst);</p>
+
+<p>  CGContextBeginPath(context);
+  CGRect rect = CGRectMake(0, 0, w, h);
+  addRoundedRectToPath(context, rect, radius, radius);
+  CGContextClosePath(context);
+  CGContextClip(context);</p>
+
+<p>  CGImageRef cgImage = [[NSBitmapImageRep imageRepWithData:[self TIFFRepresentation]] CGImage];</p>
+
+<p>  CGContextDrawImage(context, CGRectMake(0, 0, w, h), cgImage);</p>
+
+<p>  CGImageRef imageMasked = CGBitmapContextCreateImage(context);
+  CGContextRelease(context);
+  CGColorSpaceRelease(colorSpace);</p>
+
+<p>  NSImage <em>tmpImage = [[NSImage alloc] initWithCGImage:imageMasked size:self.size];
+  NSData </em>imageData = [tmpImage TIFFRepresentation];
+  NSImage *image = [[NSImage alloc] initWithData:imageData];
+  [tmpImage release];</p>
+
+<p>  return [image autorelease];
+}
+@end
+```</p></li>
+</ul>
+
+
+<p>测试效果如下：</p>
+
+<p><img class="center" src="/images/posts/round-corner-nsimgage.png"></p>
+
+<p>本例的源代码已经上传到<a href="https://github.com/venj/Cocoa-blog-code/tree/master/Round%20Corner%20Image">github</a>，顺便也测试了一下<a href="/blog/get-real-size-of-nsimage/">前文</a>所述的问题，你可以顺便简单的看一下。于是乎，iOS上也可以如法炮制一个<code>UIImage</code>的Catagory，方便使用。我在这里就不赘述了，有兴趣的可以自己试着改改。 :D</p>
+
+<p>(全文完)</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Growl | Cocoa学习]]></title>
+  <link href="http://venj.github.io/blog/categories/growl/atom.xml" rel="self"/>
+  <link href="http://venj.github.io/"/>
+  <updated>2013-12-27T13:33:43+08:00</updated>
+  <id>http://venj.github.io/</id>
+  <author>
+    <name><![CDATA[venj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[在Sandbox的程序中加入Growl支持]]></title>
+    <link href="http://venj.github.io/blog/add-growl-to-your-sandboxed-app/"/>
+    <updated>2012-03-07T16:00:00+08:00</updated>
+    <id>http://venj.github.io/blog/add-growl-to-your-sandboxed-app</id>
+    <content type="html"><![CDATA[<p>Growl是一个知名的第三方消息提示框架，几乎是Mac装机必备的软件。虽然从Growl 1.3开始，Growl变成了收费软件，但是它依然是Mac App Store收费榜名列前茅的软件。虽然从OS X 10.8 Mountain Lion开始，OS X将加入Notification Center的支持，但是现在距离OS X 10.8发布依然有一段时间，而且，OS X 10.8之前的Mac OS X要退出历史舞台还有很长的路。</p>
+
+<p>我曾经撰写过<a href="http://cocoa.venj.me/blog/add-growl-support-in-your-apps-add-growl-framework/">关于Growl的文章</a>，因此关于Growl.framework的基本使用的内容我在本文中不再赘述了，大家可以去<a href="http://cocoa.venj.me/blog/add-growl-support-in-your-apps-coding-growl/">回顾一下</a>。基本上就是：</p>
+
+<ul>
+<li><a href="http://growl.info/downloads">下载</a><a href="http://growl.cachefly.net/Growl-1.3.1-SDK.zip">Growl SDK</a></li>
+<li>解压，添加Framework目录下的Growl.framework到项目中；</li>
+<li>添加一个plist文件，名为：Growl Registration Ticket.growlRegDict，添加合适的值（不详述）；</li>
+<li>增加一个Copy Build Phase，设置为Framework，把Growl.framework加入进去；</li>
+<li>在代码中实现<code>GrowlApplicationBridgeDelegate</code>的方法；</li>
+<li>发布Growl Notification。</li>
+</ul>
+
+
+<!-- more -->
+
+
+<p>Sandbox的程序不能直接向Growl的Helper程序发送消息，支持Sandbox的程序需要使用XPC（进程间通讯）的方式与Growl交互。因此，在完成和以前一样的步骤之后，我们还有一些额外的工作要做。</p>
+
+<p>我们需要往项目中加入一个Run Script的Build Phase。这个Build Phase的作用是执行一个Ruby脚本，把SDK里，<code>XPC Client</code>目录下的<code>com.company.application.GNTPClientService.xpc</code>这个包修改成适合当前项目的包。脚本和<code>.xpc</code>包在Growl SDK里都能找到。</p>
+
+<p>假设，我们把SDK里的<code>XPC Client</code>文件夹复制到项目目录中，在Build Phase中添加下列shell脚本：</p>
+
+<p><code>bash
+XPC_START="$BUILT_PRODUCTS_DIR"
+XPC_SCRIPT="$SRCROOT/XPC Client/xpc-rename-move.rb"
+ruby "$XPC_SCRIPT" "$SRCROOT/XPC Client/" "$BUILT_PRODUCTS_DIR/$WRAPPER_NAME" "$CODE_SIGN_IDENTITY"
+</code></p>
+
+<p><img class="center" src="/images/posts/growl-script-phase.png"></p>
+
+<p>上面的代码中两个变量需要注意。<code>XPC_SCRIPT</code>是指定脚本的路径，如果你没有像我一样把XPC Client文件夹复制到到项目目录中，你可以用绝对路径。另外一个就是脚本第三行的<code>"$SRCROOT/XPC Client/"</code>。这个参数指定的是<code>.xpc</code>文件所在的文件夹，和<code>XPC_SCRIPT</code>这个变量一样，你也可以使用绝对路径。</p>
+
+<p>要让Growl支持Sandbox的程序，你还要实现一个delegate方法，告诉Growl.framework程序是否有网络访问的Entitlement。我的示例程序中如下：</p>
+
+<p>``` objc
+&ndash; (BOOL) hasNetworkClientEntitlement {</p>
+
+<pre><code>return NO;
+</code></pre>
+
+<p>}
+```</p>
+
+<p>完成之后，你就可以启用Entitlement，指定Code Sign的数字签名，开始编译了。</p>
+
+<p>老规矩，我还是做了一个简单的示例程序，下面是执行效果：</p>
+
+<p><img class="center" src="/images/posts/growl-sandbox-app.png"></p>
+
+<p>程序已经能够正常的通过XPC发送Growl消息，并且已经是Sandbox的程序了。</p>
+
+<p>我已经把代码推送到<a href="https://github.com/venj/Cocoa-blog-code/tree/master/Growl%20Test">github</a>上去了，项目名称是"Growl Test"（注意区别之前的"GrowlTest"项目），如果你遇到什么问题，可以Checkout出来看看我的设置。注意，测试Sandbox是需要付费开发者帐号的。（不是付费开发者帐号也没必要做Sandbox的程序，不是么？ :P ）</p>
+
+<p>(全文完)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[为应用程序增加Growl支持（下）：在代码中应用Growl]]></title>
+    <link href="http://venj.github.io/blog/add-growl-support-in-your-apps-coding-growl/"/>
+    <updated>2011-05-26T21:07:00+08:00</updated>
+    <id>http://venj.github.io/blog/add-growl-support-in-your-apps-coding-growl</id>
+    <content type="html"><![CDATA[<p>在<a href="/blog/add-growl-support-in-your-apps-add-growl-framework/">之前一篇日志</a>里，我简单的介绍了一下如何在项目中增加Growl.framework。现在，我来介绍一下如何使用Growl。在之前的日志里，我演示的时候，是往项目中加入Growl.framework，这次，为了完整起见，我将使用Growl-WithInstaller.framework来演示。</p>
+
+<p>这两个框架的区别在于后者把Growl安装程序打包进了框架中。如果用户没有安装Growl，并且愿意安装，可以马上安装。但是很多人并不喜欢这种捆绑安装的方式，很多人把责任归咎于Growl，Growl甚至专门为此<a href="http://growl.info/thirdpartyinstallations.php">写了个网页</a>解释。其实Growl是出于好意，并且，选择哪个框架是开发人员的事情。作为用户，如果你真的不喜欢Growl，Growl能够很方便的删除；而作为开发人员，应该根据目标用户谨慎选择捆绑Growl安装程序的包。</p>
+
+<p>好了，题外话不多说，言归正传。</p>
+
+<!-- more -->
+
+
+<p>
+我们首先在Xcode里新建一个简单的Cocoa项目，按照前文的方法，加入Growl支持。</p>
+
+<p>要让Cocoa程序支持Growl，首先要为Growl设置一个<code>Delegate</code>。简单起见，我们在<code>AppDelegate</code>的<code>-(void)applicationDidFinishLaunching:(NSNotification *)aNotification</code>中，设置<code>Delegate</code>方法：</p>
+
+<p><code>objc
+[GrowlApplicationBridge setGrowlDelegate:self];
+</code></p>
+
+<p>在显示提示信息之前，我们首先要“注册”提示信息。注册的方法有两种，一种是在项目中加入一个名为“Growl Registration Ticket.growlRegDict”的文件，格式为property list。Growl会自动加载这个文件。</p>
+
+<p><img class="center" src="/images/posts/growl-code-1.png"></p>
+
+<p>这个plist包含三个键值对。第一个键是<code>TicketVersion</code>，值为整数类型，目前取值为<code>1</code>；第二个键是<code>AllNotifications</code>，值为一个数组，其中包含所有的<code>Notification</code>的名称，类型为字符串；第三个键是<code>DefaultNotifications</code>，值为一个数组，是<code>AllNotifications</code>的一个子集，作为默认启用的<code>Notification</code>。大多数情况下，是相同的。至于为什么要有这两种数组的区分，我也没弄得很明白。</p>
+
+<p>另一种注册提示信息的方法是实现一个<code>delegate</code>方法：<code>-(NSDictionary *)registrationDictionaryForGrowl</code>。这个方法返回的辞典必须包含两个键：<code>GROWL_NOTIFICATIONS_ALL</code>和<code>GROWL_NOTIFICATIONS_DEFAULT</code>。作用自然不用多说，跟上述的<code>AllNotifications</code>和<code>DefaultNotifications</code>一一对应。</p>
+
+<p>``` objc
+&ndash; (NSDictionary *)registrationDictionaryForGrowl {</p>
+
+<pre><code>NSArray *allNotes = [NSArray arrayWithObjects:@"myNotification", @"myNote", @"notDefaultNote", nil];
+NSArray *defaultNotes = [NSArray arrayWithObjects:@"myNotification", @"myNote", nil];
+
+return [NSDictionary dictionaryWithObjectsAndKeys:allNotes, GROWL_NOTIFICATIONS_ALL, defaultNotes, GROWL_NOTIFICATIONS_DEFAULT, nil];
+</code></pre>
+
+<p>}
+```
+如果没有利用任何一种方法注册提示信息，程序在编译时，在控制台上会出现下面这样错误信息：</p>
+
+<p><code>
+2011-05-26 20:08:13.469 GrowlTest[1644:903] GrowlApplicationBridge: The Growl delegate did not supply a registration dictionary, and the app bundle at /Users/venj/Library/Developer/Xcode/DerivedData/GrowlTest-hetkeinkpxbuynbhprgdyoywkrif/Build/Products/Debug/GrowlTest.app does not have one. Please tell this application's developer.2011-05-26 20:08:13.668 GrowlTest[1644:903] not installed
+</code></p>
+
+<p>不过Growl提示还是能够显示的。至于注册和不注册的区别，我也没弄明白，囧。</p>
+
+<p>注册完毕之后，你就能显示Growl提示了。我们假设在Cocoa项目中，增加了一个按钮，连接到下面这个Action上：</p>
+
+<p>``` objc
+&ndash; (IBAction)showGrowl:(id)sender {</p>
+
+<pre><code>[GrowlApplicationBridge notifyWithTitle:@"The Title" description:@"This is a notification description." notificationName:@"myNote" iconData:nil priority:0 isSticky:NO clickContext:nil];
+</code></pre>
+
+<p>}
+```</p>
+
+<p>Growl提示的核心方法是：</p>
+
+<p>``` objc
++[GrowlApplicationBridge notifyWithTitle:</p>
+
+<pre><code>description:
+notificationName:
+iconData:
+priority:
+isSticky:
+clickContext:]
+</code></pre>
+
+<p>```</p>
+
+<p>其中，<code>title</code>（<code>NSString</code>）, <code>description</code>（<code>NSString</code>）, <code>iconData</code>（<code>NSData</code>）, <code>isSticky</code>（<code>BOOL</code>）的值在下图中表示了一下。其中，Sticky的值如果设置为<code>YES</code>，那么必须要用户点击关闭按钮，提示才会消失；否则，提示会自动消失。</p>
+
+<p><img class="center" src="/images/posts/growl-code-2.png"></p>
+
+<p><code>priority</code>的取值为包括-2, -1, 0, 1, 2，从左到右优先级递增。Priority通常没啥作用。如果你在Growl的控制面板中，为不同优先级设置了不统的提示背景和提示文字颜色，那么这些优先级就会反映出来。</p>
+
+<p><img class="center" src="/images/posts/growl-code-3.png"></p>
+
+<p>最后一个<code>context</code>，接收一个<code>id</code>类型的值。这个值与<code>-(void)growlNotificationWasClicked:(id)clickContext</code>这个回调方法有密切联系。如果<code>context</code>为<code>nil</code>，这个方法将不会调用；如果<code>context</code>不是<code>nil</code>，那么<code>context</code>的值就会作为<code>clickContext</code>的值，传入这个回调方法。在Growl提示被点击时候，会触发这个回调方法，执行相应的动作。</p>
+
+<p>另外，还有几个<code>delegate</code>方法，我来简单介绍一下：</p>
+
+<p><code>-(void)growlIsReady:</code>这个方法主要是在程序使用了Growl-WithInstaller.framework时，用户选择安装或升级Growl，并成功启动之后，所执行的动作。</p>
+
+<p><code>-(void)growlNotificationTimedOut:(id)clickContext:</code>与<code>-(void)growlNotificationWasClicked:(id)clickContext</code>类似，这个方法是在用户没有对提示作出响应，在Growl即将消失的时候调用的一个方法。</p>
+
+<p><img class="center" src="/images/posts/growl-code-4.png"></p>
+
+<p><code>-(NSData *)applicationIconDataForGrowl</code>和<code>-(NSString *)applicationNameForGrowl</code>，设置Growl返回的程序名称和程序图标。通常如果不设置，Growl会使用默认的程序图标和<code>Info.plist</code>里指定的程序名称。比如下面的两个图中，我们并没有为示例程序设置程序图标，而默认的程序名称为“GrowlAppTest”。我们在实现了这两个方法之后，可以覆盖默认行为，这样，在Growl设置和Growl提示里，我们就能看到图标和程序名称了。</p>
+
+<p><img class="center" src="/images/posts/growl-code-5.png"></p>
+
+<p><img class="center" src="/images/posts/growl-code-6.png"></p>
+
+<p>另外，假如用户没有安装Growl，那么应用Grow-WitiInstaller.framework的时候，程序在第一次调用Growl方法的时候会提示用户安装Growl。</p>
+
+<p><img class="center" src="/images/posts/growl-code-7.png"></p>
+
+<p>关于如何自定义这个对话框“说服”用户安装Growl，还有几个<code>Delegate</code>方法来做到。我就不一一叙述了：</p>
+
+<p><code>objc
+- (NSString *)growlInstallationWindowTitle;
+- (NSString *)growlUpdateWindowTitle;
+- (NSAttributedString *)growlInstallationInformation;
+- (NSAttributedString *)growlUpdateInformation;
+</code></p>
+
+<p>最后，我就连篇累牍的奉上示例程序的源代码：</p>
+
+<p>``` objc
+/<em> GrowlTestAppDelegate.h </em>/</p>
+
+<h1>import &lt;Cocoa/Cocoa.h></h1>
+
+<h1>import &ldquo;Growl-WithInstaller/Growl.h&rdquo;</h1>
+
+<p>@interface GrowlTestAppDelegate : NSObject &lt;NSApplicationDelegate, GrowlApplicationBridgeDelegate> {
+@private</p>
+
+<pre><code>NSWindow *window;
+</code></pre>
+
+<p>}</p>
+
+<p>@property (assign) IBOutlet NSWindow *window;
+&ndash; (IBAction)showGrowl:(id)sender;</p>
+
+<p>@end</p>
+
+<p>/<em> GrowlTestAppDelegate.m </em>/</p>
+
+<h1>import &ldquo;GrowlTestAppDelegate.h&rdquo;</h1>
+
+<p>@implementation GrowlTestAppDelegate</p>
+
+<p>@synthesize window;</p>
+
+<ul>
+<li><p>(void)applicationDidFinishLaunching:(NSNotification *)aNotification
+{
+  // Insert code here to initialize your application
+  [GrowlApplicationBridge setGrowlDelegate:self];
+  if (![GrowlApplicationBridge isGrowlInstalled]) {
+      NSLog(@&ldquo;not installed&rdquo;);
+  }
+}</p></li>
+<li><p>(IBAction)showGrowl:(id)sender {
+  [GrowlApplicationBridge notifyWithTitle:@&ldquo;The Title&rdquo; description:@&ldquo;This is a notification description.&rdquo; notificationName:@&ldquo;myNote&rdquo; iconData:nil priority:0 isSticky:NO clickContext:@&ldquo;God&rdquo;];
+}</p></li>
+</ul>
+
+
+<h1>pragma mark &ndash; Growl Delegate</h1>
+
+<p>//&ndash; (NSDictionary <em>)registrationDictionaryForGrowl {
+//    NSArray </em>allNotes = [NSArray arrayWithObjects:@&ldquo;myNotification&rdquo;, @&ldquo;myNote&rdquo;, @&ldquo;notDefaultNote&rdquo;, nil];
+//    NSArray *defaultNotes = [NSArray arrayWithObjects:@&ldquo;myNotification&rdquo;, @&ldquo;myNote&rdquo;, nil];
+//
+//    return [NSDictionary dictionaryWithObjectsAndKeys:allNotes, GROWL_NOTIFICATIONS_ALL, defaultNotes, GROWL_NOTIFICATIONS_DEFAULT, nil];
+//}</p>
+
+<ul>
+<li><p>(void) growlIsReady {
+  NSLog(@&ldquo;Growl is up and running.&rdquo;);
+  [self showGrowl:nil];
+}</p></li>
+<li><p>(void) growlNotificationTimedOut:(id)clickContext {
+  NSLog(@&ldquo;%@, I&rsquo;m disappearing&hellip;&rdquo;, clickContext);
+}</p></li>
+<li><p>(void) growlNotificationWasClicked:(id)clickContext {
+  NSLog(@&ldquo;%@, I&rsquo;m clicked&hellip;&rdquo;, clickContext);
+}</p></li>
+<li><p>(NSData <em>) applicationIconDataForGrowl {
+  NSData </em>data = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForImageResource:@&ldquo;lame&rdquo;]];
+  return data;
+}</p></li>
+<li><p>(NSString *) applicationNameForGrowl {
+  return @&ldquo;GrowlAppTest&rdquo;;
+}</p></li>
+</ul>
+
+
+<h1>pragma mark &ndash; Growl Installer Delegate</h1>
+
+<ul>
+<li><p>(NSString *)growlInstallationWindowTitle {
+  return @&ldquo;Install Growl&rdquo;;
+}</p></li>
+<li><p>(NSString *)growlUpdateWindowTitle {
+  return @&ldquo;Update Growl&rdquo;;
+}</p></li>
+</ul>
+
+
+<p>//&ndash; (NSAttributedString <em>)growlInstallationInformation {
+//    // Some inplementation
+//}
+//
+//&ndash; (NSAttributedString </em>)growlUpdateInformation {
+//    // Some inplementation
+//}</p>
+
+<p>@end
+```</p>
+
+<p>（全文完）</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[为应用程序增加Growl支持（上）：在项目中加入Growl.Framework]]></title>
+    <link href="http://venj.github.io/blog/add-growl-support-in-your-apps-add-growl-framework/"/>
+    <updated>2011-05-26T10:12:00+08:00</updated>
+    <id>http://venj.github.io/blog/add-growl-support-in-your-apps-add-growl-framework</id>
+    <content type="html"><![CDATA[<p>Growl是啥，用来干什么的我就不介绍了。Growl的文档说实话，写的挺抽象的。不是Step by Step的文档，对我来说就有点困难了。所以，我决定把Growl支持写成几篇短文，简单介绍一下如何在程序中增加Growl支持。【为啥要分几篇？嘛，因为我自己也是边学边写文章的吗。。。Orz】</p>
+
+<p>首先，介绍一下原文是怎么写的。</p>
+
+<blockquote><ol>
+<li>Download the frameworks from the Downloads page from there.</li>
+<li>Copy the Growl framework to your application&rsquo;s project folder (or any subdirectory of it).</li>
+<li>Add the Growl framework to your project, making sure that all the relevant target checkboxes are checked. The header files in the framework use UTF-8 encoding.</li>
+<li>Add a Copy Files phase to your application&rsquo;s target.</li>
+<li>Get Info on the Copy Files phase.</li>
+<li>Set the destination to “Frameworks”, with no subpath (clear the field).</li>
+<li>Drag the framework from the group tree into the Copy Files phase.</li>
+</ol>
+</blockquote>
+
+<p>其实描述的听清楚的。奈何，我的理解能力太差，搞不定。俗话说，<strong>A picture worth a thousand words</strong>，所以我就以Xcode 4为例，把上述过程做一遍。（下面的编号基本对应上文中的1-7所述的步骤）</p>
+
+<!-- more -->
+
+
+<p>
+1 下载SDK（<a href="http://growl.info/index.php">下载页</a>）。</p>
+
+<p><img class="center" src="/images/posts/growl-1.png"></p>
+
+<p>2 挂载DMG，把Framework里的Growl.framwork或Growl-WithInstaller.framework（根据需要选择）拖拽到Xcode4的左侧项目树下。</p>
+
+<p><img class="center" src="/images/posts/growl-2.png"></p>
+
+<p>3 这时会弹出Sheet。选择“Copy items into destination group&rsquo;s folder(if needed)”。至于文中提到的UTF-8什么的，这个是Xcode 3.x中的东西了，现在已经没有了。</p>
+
+<p><img class="center" src="/images/posts/growl-3.png"></p>
+
+<p>4 增加一个Build Phase，操作顺序如下图。</p>
+
+<p><img class="center" src="/images/posts/growl-4.png"></p>
+
+<p>5 &ndash; 6. 在Copy Files Build Phase窗口中，将Destination设置为Framework，subpath保持默认的留空状态。</p>
+
+<p><img class="center" src="/images/posts/growl-5.png"></p>
+
+<p>7 把左侧栏里的Growl.framework拖进Copy Files Build Phase。</p>
+
+<p><img class="center" src="/images/posts/growl-6.png"></p>
+
+<p>至此，设置的部分完成了。简单测试一下：</p>
+
+<p><img class="center" src="/images/posts/growl-7.png"></p>
+
+<p>在<code>AppDelegate</code>里，加入如下代码：</p>
+
+<p>``` objc
+/<em> TestAppDelegate.h </em>/</p>
+
+<h1>import &ldquo;Growl/Growl.h&rdquo;  // 增加这行！</h1>
+
+<p>@interface TestAppAppDelegate : NSObject &lt;NSApplicationDele, GrowlApplicationBridgeDelegate>
+// 省去其它代码
+@end</p>
+
+<p>/<em> TestAppDelegate.m </em>/
+// 省去其它代码
+@implementation TestAppAppDelegate
+// 省去其它代码
+&ndash; (void)applicationDidFinishLaunching:(NSNotification *)note {</p>
+
+<pre><code> [GrowlApplicationBridge setGrowlDelegate:self]; // 增加这行！
+</code></pre>
+
+<p>// 省去其它代码
+}
+```</p>
+
+<p>然后选择“Product &ndash; Build”，或者按下cmd-b。如果编译成功，表示你的应用程序的Growl支持已经设置成功。现在你就可以开始利用Growl了。</p>
+
+<p>关于怎么在代码中利用Growl，我会在<a href="/blog/add-growl-support-in-your-apps-coding-growl/">后续文章</a>中讲述。</p>
+
+<p>（本文完）</p>
+]]></content>
+  </entry>
+  
+</feed>

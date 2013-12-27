@@ -1,0 +1,356 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>再谈NSAttributedString转HTML - Cocoa学习</title>
+  <meta name="author" content="venj">
+
+  
+  <meta name="description" content="我之前曾经写过一篇关于NSAttributedString转HTML的文章，因为没有得到理想的结果，而TextEdit的另存为HTML却非常漂亮，所以对此我一直耿耿于怀。今天又研究了一下TextEdit将文档另存为HTML的方法，总算能把这个问题画上一个圆满的句号了。 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://venj.github.io/blog/talk-about-nsattributesstring-to-html-again">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Cocoa学习" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Cocoa学习</a></h1>
+  
+    <h2>我的Cocoa/Cocoa Touch学习笔记</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:venj.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">再谈NSAttributedString转HTML</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-06-28T22:59:00+08:00" pubdate data-updated="true">Jun 28<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>我之前曾经写过一篇<a href="/blog/a-not-so-good-way-to-convert-nsattributesstring-to-html/">关于NSAttributedString转HTML的文章</a>，因为没有得到理想的结果，而TextEdit的另存为HTML却非常漂亮，所以对此我一直耿耿于怀。今天又研究了一下TextEdit将文档另存为HTML的方法，总算能把这个问题画上一个圆满的句号了。</p>
+
+<p>在来回翻阅了TextEdit的源码后，我发现在<code>Document.m</code>里的<code>- (id)fileWrapperOfType:(NSString *)typeName error:(NSError **)outError</code>方法，就是苹果官方将<code>NSAttributedString</code>转HTML的方法（这个方法当然也包含了将富文本转成其他格式的方法，在此不详述了）。仔细阅读了这个方法之后，我发现原来苹果也是用的我在之前那篇文章中用到的那个方法：<code>- (NSData *)dataFromRange:(NSRange)range documentAttributes:(NSDictionary *)dict error:(NSError **)error</code>转的——我没把重点弄错。不错我的错误是错在调用的时候，设置的参数有问题。
+下面贴上源码，在注释了进行解释：</p>
+
+<!-- more -->
+
+
+<p></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">convert:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">attrString</span> <span class="o">=</span> <span class="p">[</span><span class="n">richView</span> <span class="n">attributedString</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">NSMutableArray</span> <span class="o">*</span><span class="n">exclude</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSMutableArray</span> <span class="n">array</span><span class="p">];</span>
+</span><span class='line'>    <span class="c1">// 如果要使用XHTML文档，可以注释掉下面这行，否则会使用HTML 4.01。</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">exclude</span> <span class="nl">addObject:</span><span class="s">@&quot;XML&quot;</span><span class="p">];</span>
+</span><span class='line'>    <span class="c1">// 如果要使用HTML Transitional，注释掉下面这行。否则就用HTML Strict。</span>
+</span><span class='line'>    <span class="c1">// 不过HTML Transitional支持font标签，而这显然不是我们想要的。</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">exclude</span> <span class="nl">addObjectsFromArray:</span><span class="p">[</span><span class="n">NSArray</span> <span class="nl">arrayWithObjects:</span><span class="s">@&quot;APPLET&quot;</span><span class="p">,</span> <span class="s">@&quot;BASEFONT&quot;</span><span class="p">,</span> <span class="s">@&quot;CENTER&quot;</span><span class="p">,</span> <span class="s">@&quot;DIR&quot;</span><span class="p">,</span> <span class="s">@&quot;FONT&quot;</span><span class="p">,</span> <span class="s">@&quot;ISINDEX&quot;</span><span class="p">,</span> <span class="s">@&quot;MENU&quot;</span><span class="p">,</span> <span class="s">@&quot;S&quot;</span><span class="p">,</span> <span class="s">@&quot;STRIKE&quot;</span><span class="p">,</span> <span class="s">@&quot;U&quot;</span><span class="p">,</span> <span class="nb">nil</span><span class="p">]];</span>
+</span><span class='line'>    <span class="c1">// 如果要将CSS放入HTML的head标签中，可以注释掉下面这样：</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">exclude</span> <span class="nl">addObject:</span><span class="s">@&quot;STYLE&quot;</span><span class="p">];</span>
+</span><span class='line'>    <span class="c1">// 如果要完全不用CSS，同时注释掉上面这样和下面这行。</span>
+</span><span class='line'>    <span class="c1">//[exclude addObject:@&quot;SPAN&quot;];</span>
+</span><span class='line'>    <span class="c1">// 如果要保留空格字符，注释掉下面几行——因为HTML会把任意长的空格合成一个空格的。</span>
+</span><span class='line'>    <span class="c1">//[exclude addObject:@&quot;Apple-converted-space&quot;];</span>
+</span><span class='line'>    <span class="c1">//[exclude addObject:@&quot;Apple-converted-tab&quot;];</span>
+</span><span class='line'>    <span class="c1">//[exclude addObject:@&quot;Apple-interchange-newline&quot;];</span>
+</span><span class='line'>    <span class="c1">// 如果不要完整的HTML结构，则取消注释下面一行。</span>
+</span><span class='line'>    <span class="c1">//[exclude addObjectsFromArray:[NSArray arrayWithObjects:@&quot;doctype&quot;, @&quot;html&quot;, @&quot;head&quot;, @&quot;body&quot;, nil]];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">NSDictionary</span> <span class="o">*</span><span class="n">htmlAtt</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSDictionary</span> <span class="nl">dictionaryWithObjectsAndKeys:</span>
+</span><span class='line'>                             <span class="n">NSHTMLTextDocumentType</span><span class="p">,</span> <span class="n">NSDocumentTypeDocumentAttribute</span><span class="p">,</span>
+</span><span class='line'>                             <span class="n">exclude</span><span class="p">,</span> <span class="n">NSExcludedElementsDocumentAttribute</span><span class="p">,</span> <span class="nb">nil</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">NSError</span> <span class="o">*</span><span class="n">error</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">NSData</span> <span class="o">*</span><span class="n">htmlData</span> <span class="o">=</span> <span class="p">[</span><span class="n">attrString</span> <span class="nl">dataFromRange:</span><span class="n">NSMakeRange</span><span class="p">(</span><span class="mi">0</span><span class="p">,[</span><span class="n">attrString</span> <span class="n">length</span><span class="p">])</span> <span class="nl">documentAttributes:</span><span class="n">htmlAtt</span> <span class="nl">error:</span><span class="o">&amp;</span><span class="n">error</span> <span class="p">];</span>
+</span><span class='line'>    <span class="n">NSString</span> <span class="o">*</span><span class="n">htmlString</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSString</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithData:</span><span class="n">htmlData</span> <span class="nl">encoding:</span><span class="n">NSUTF8StringEncoding</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">htmlView</span> <span class="nl">setStringValue:</span><span class="n">htmlString</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%@&quot;</span><span class="p">,</span><span class="n">htmlString</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>下面是测试的结果（未包含完整的HTML结构）：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;p</span> <span class="na">style=</span><span class="s">&quot;margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Menlo&quot;</span><span class="nt">&gt;</span>- (<span class="nt">&lt;span</span> <span class="na">style=</span><span class="s">&quot;color: #b41ca4&quot;</span><span class="nt">&gt;</span>void<span class="nt">&lt;/span&gt;</span>)applicationDidFinishLaunching:(<span class="nt">&lt;span</span> <span class="na">style=</span><span class="s">&quot;color: #7134aa&quot;</span><span class="nt">&gt;</span>NSNotification<span class="nt">&lt;/span&gt;</span> *)aNotification<span class="nt">&lt;/p&gt;</span>
+</span><span class='line'><span class="nt">&lt;p</span> <span class="na">style=</span><span class="s">&quot;margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Menlo&quot;</span><span class="nt">&gt;</span>{<span class="nt">&lt;/p&gt;</span>
+</span><span class='line'><span class="nt">&lt;p</span> <span class="na">style=</span><span class="s">&quot;margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Menlo; color: #1a8600&quot;</span><span class="nt">&gt;&lt;span</span> <span class="na">style=</span><span class="s">&quot;color: #000000&quot;</span><span class="nt">&gt;&lt;span</span> <span class="na">class=</span><span class="s">&quot;Apple-converted-space&quot;</span><span class="nt">&gt;</span>    <span class="nt">&lt;/span&gt;&lt;/span&gt;</span>// Insert code here to initialize your application<span class="nt">&lt;/p&gt;</span>
+</span><span class='line'><span class="nt">&lt;p</span> <span class="na">style=</span><span class="s">&quot;margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Menlo&quot;</span><span class="nt">&gt;</span>}<span class="nt">&lt;/p&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>虽然有很多冗余的CSS，但是总算告别满屏的<code>&lt;font&gt;</code>标签了，而且知道了如何对生成的HTML进行控制，应该说，比较完美的解决了富文本转HTML的问题了——这毕竟是苹果官方的方法啊。</p>
+
+<p>至于如何对生成的HTML进行进一步优化，那就是另一个新问题了，所以留给以后解决吧。</p>
+
+<p>（全文完）</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">venj</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-06-28T22:59:00+08:00" pubdate data-updated="true">Jun 28<span>th</span>, 2011</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/nsattributesstring/'>NSAttributesString</a>, <a class='category' href='/blog/categories/rtf/'>RTF</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://venj.github.io/blog/talk-about-nsattributesstring-to-html-again/" data-via="" data-counturl="http://venj.github.io/blog/talk-about-nsattributesstring-to-html-again/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/remember-window-position/" title="Previous Post: 记忆窗口位置">&laquo; 记忆窗口位置</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/geocoding-in-ios-5/" title="Next Post: iOS 5的Geocoding">iOS 5的Geocoding &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/code-box-like-window-open-animation/">CodeBox风格的窗口打开动画</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/localized-loading-screen/">本地化加载屏幕</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/refresh-control-gochas/">用代码触发下拉更新</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/drive-navigation-in-ios6/">iOS 6下的驾车导航</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/nsstring-height/">关于多行NSString的高度</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/venj">@venj</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'venj',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - venj -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'venj';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://venj.github.io/blog/talk-about-nsattributesstring-to-html-again/';
+        var disqus_url = 'http://venj.github.io/blog/talk-about-nsattributesstring-to-html-again/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

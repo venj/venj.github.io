@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Network Link Connector | Cocoa学习]]></title>
+  <link href="http://venj.github.io/blog/categories/network-link-connector/atom.xml" rel="self"/>
+  <link href="http://venj.github.io/"/>
+  <updated>2013-12-27T13:33:43+08:00</updated>
+  <id>http://venj.github.io/</id>
+  <author>
+    <name><![CDATA[venj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[模拟低速网络，测试iOS程序的表现]]></title>
+    <link href="http://venj.github.io/blog/simulate-low-speed-network-connection-for-ios-apps/"/>
+    <updated>2012-03-29T11:56:00+08:00</updated>
+    <id>http://venj.github.io/blog/simulate-low-speed-network-connection-for-ios-apps</id>
+    <content type="html"><![CDATA[<p>因为没有考虑程序在低速网络下的表现，昨天在测试公司的一个程序的时候出了点丑，于是痛定思痛，要解决模拟低速网络连接的问题。遗憾的是iOS Simulator并没有提供模拟低速网络的功能。</p>
+
+<p>经过一番STFW之后，发现原来苹果从Xcode 4.1开始提供了一款叫做“Network Link Connector”的工具。但是如今我已经升级到Xcode 4.3.2，用SpotLight搜索了一番之后也没有发现系统里已经安装了这样的一个工具。</p>
+
+<p>又经过一番搜索，我发现原来“Network Link Connector”是一个prefPane程序，从Xcode 4.3开始已经不再默认包含在程序里了，而是需要从developer.apple.com/download上单独下载，它位于“Hardware IO Tools”的一个包中。</p>
+
+<!-- more -->
+
+
+<p>下载安装之后，就可以在系统预置中找到，并使用它了。</p>
+
+<p><img class="center" src="/images/posts/nlcui.png"></p>
+
+<p>打开网速限制之后，会显示一个Menubar Adddon。</p>
+
+<p><img class="center" src="/images/posts/nlcmenu.png"></p>
+
+<p>这个程序默认包含了多种预置的网络设置，包括3G，WiFi，Edge，DSL等。</p>
+
+<p><img class="center" src="/images/posts/nlcprofile.png"></p>
+
+<p>你也可以自己创建网络Profile，对网速限制进行自定义。</p>
+
+<p><img class="center" src="/images/posts/nlccustom.png"></p>
+
+<p>因为这个网速限制是针对整个系统的，因此在测试完程序之后记得关掉网速限制。</p>
+
+<p>至此，问题解决。我也顺利的利用这个程序测试了程序的修改，感觉良好。</p>
+
+<p>不过我在使用中发现一个问题，就是打开了网速限制之后，Xcode在attach到Simulator的时候速度异常的慢，我怀疑是这个工具的影响，不过我无法确定。</p>
+
+<p>虽然这个工具已经足够我使用了，但是如果您有更好的工具的话，可以留言推荐给我。 :)</p>
+
+<p>(全文完)</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: MVC | Cocoa学习]]></title>
+  <link href="http://venj.github.io/blog/categories/mvc/atom.xml" rel="self"/>
+  <link href="http://venj.github.io/"/>
+  <updated>2013-12-27T13:33:43+08:00</updated>
+  <id>http://venj.github.io/</id>
+  <author>
+    <name><![CDATA[venj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[浅谈iOS 5的StoryBoard]]></title>
+    <link href="http://venj.github.io/blog/ios5-story-board-a-brief-discussion/"/>
+    <updated>2011-08-24T00:34:00+08:00</updated>
+    <id>http://venj.github.io/blog/ios5-story-board-a-brief-discussion</id>
+    <content type="html"><![CDATA[<p>StoryBoard是iOS 5的新特征，旨在代替历史悠久的NIB/XIB（其实<strong>StoryBoard还是基于NIB/XIB的</strong>，不过开发人员已经无需直接跟NIB打交道了）。目前关于StoryBoard的文档并不多，苹果的iOS 5的开发者文档里也仅有不多的介绍。所以，本文只是简单的谈谈本人对StoryBoard的一些粗浅的理解。（StoryBoard有时也叫做StoryBoarding，我不太注意这种细节，所以两个词经常会混用，如果你英语可以的话，能体会到两者的细微差别）</p>
+
+<p><img class="center" src="/images/posts/storyboard-1.png"></p>
+
+<!-- more -->
+
+
+<p>
+StoryBoarding机制比之NIB/XIB的的优势何在呢？个人认为，StoryBoard有以下几个优点：</p>
+
+<blockquote><ol>
+<li>能够减少很多跟View相关的代码；</li>
+<li>能够使View和Controller进一步解耦；</li>
+<li>能够优化程序的“页面流”，使程序的结构更清楚 ；</li>
+</ol>
+</blockquote>
+
+<p>要理解这些优点，我们先要对NIB有一个基本的认识。通常，NIB是和ViewController相关联的，很多ViewController都有对应的NIB文件。NIB文件的作用是描述用户界面以及初始化对象和界面元素对象。其实开发者在NIB里描述的界面和初始化的对象都能够在代码中实现；之所以用Interface Builder来绘制界面，是为了减少那些设置界面属性的无聊和重复的代码，让开发人员能够集中精力做程序的功能。</p>
+
+<p>而StoryBoard的出现，则是进一步加强了这方面的功能；NIB文件是没有办法描述从一个ViewController到另一个ViewController的过渡的。这种过渡只能靠手写代码来实现。相信很多人都会经常用到 <code>-presentModalViewController:animated:</code>以及<code>-pushViewController:animated:</code>这两个方法。这种代码在Storyboarding里将成为历史；取而代之的是Segue。Segue定义了从一个ViewController到另一个ViewController的过渡。在Storyboard里，我们只需要像连接界面对象和Action Method那样把ViewController之间用Segue连接起来就可以了，不再需要手写代码了。即便你像自定义Segue，你也只需写Segue的实现，而无需编写调用的代码，StoryBoard会帮你调用的。这就是上面所说的第一个优点。</p>
+
+<p><img class="center" src="/images/posts/storyboard-2.png"></p>
+
+<p>要用好Storyboarding机制，那么必须严格遵守MVC原则。要让View和Controller充分解耦；并且不同的Controller之间也要充分解耦。否则，程序的业务逻辑就会乱成一团，很难理解，维护和除虫（Debug）。</p>
+
+<p>举个例子来说：在过去，特别是初学Cocoa Touch开发的时候，很多人都喜欢直接把<code>AppDelegate</code>当ViewController用，直接在AppDelegate和<code>MainMenu.xib</code>之间交互。应该说，<strong>这是一个非常不好的习惯</strong>。<code>AppDelegate</code>的作用很简单，就是处理<code>UIApplication</code>的回调，而不应该负责用户界面的处理。很多iOS教程为了省事，都直接把<code>AppDelegate</code>当ViewController用，甚至直接举例在<code>UIWindow</code>上绘制界面。虽然，作为教程这么做很简单明了，因为<code>UIWindow</code>也是<code>UIView</code>的子类，但是这却不是一种优良的实践。因为<strong>由ViewController来负责处理View才是正确的做法</strong>。</p>
+
+<p>近一段时间，苹果的项目模版经常发生改变，特别是自从Xcode 4发布之后，程序模版（如，View Based Application）开始鼓励使用<code>UIWindow</code>的<code>rootViewController</code>属性来指定第一屏的ViewController，以保证<code>AppDelegate</code>专注于它应该做的事情。而引入StoryBoard之后，<code>AppDelegate</code>已经不管ViewController的事情了 ；第一屏所使用的ViewController（也就是<code>rootViewController</code>）可以在StoryBoard中设置。这样，程序的入口点就能从StoryBoard的“设计图”上一目了然了。这是第二个优点。</p>
+
+<p><img class="center" src="/images/posts/storyboard-3.png"></p>
+
+<p>至于第三个优点，就是StoryBoard的“设计图”了。StoryBoard能够包含一个程序所有的ViewController以及它们之间的连接。因此，StoryBoard甚至可以作为程序的“设计图”来用了。理想情况下，在程序开发接近尾声的时候，我们只需对比StoryBoard的“流程”和最初程序的设计“流程”，就知道程序有没有“走样”了。</p>
+
+<p><img class="center" src="/images/posts/storyboard-4.png"></p>
+
+<p>说完了优点，我们来看看从NIB/XIB到StoryBoard的迁移，我们需要有哪些理解和实践上的改变呢？</p>
+
+<blockquote><ul>
+<li>首先，自然是（在做程序开发的时候）ViewController不再需要NIB/XIB了（虽然在后台还是用的NIB）。以前在NIB/XIB上做的连接Outlet和Action的操作都可以在StoryBoard上完成了；</li>
+<li>第二，孤儿View（独立于ViewController的View）是不能出现在StoryBoard里的，View必须通过ViewController来管理（StoryBoard更像是Controller对象的容器，而不是View对象的容器，NIB/XIB可以作为View对象的容器）；</li>
+<li>第三，ViewController之间的过渡代码已经是历史了，用StoryBoard可以直接可视化地连接不同的ViewController；</li>
+<li>第四，UIWindow对象的作用被进一步淡化，甚至可以这么说：其实很多程序根本无需用到UIWindow对象。<code>AppDelegate</code>也不再被鼓励（也不能）用来做ViewController－－你甚至无法在Interface Builder的StoryBoard图上找到<code>AppDelegate</code>对象－－因为它本来就不应该用来处理界面（View）的。</li>
+<li>最后，写优质的代码，严格遵守MVC设计模式，这样不仅能够让你用好StoryBoard，也能帮助你理解StoryBoard的原理。</li>
+</ul>
+</blockquote>
+
+<p>StoryBoard是非常好的鼓励MVC和代码解耦的手段，能够让开发人员写出更加容易维护的代码。不过对于初学者来说，确实是个对理解力的小挑战。不过作为初学者也不用担心，一旦突破了理解障碍，你就会发现StoryBoard也非常好用－－就像最初理解NIB/XIB时，Outlet和Action“拉线”来“拉线”去，看起来也很神奇；理解之后，发现原来“拉线”神马的也没那么神秘。</p>
+
+<p>好了，絮絮叨叨的啰嗦了这么多无聊的文字，相信你也看累了。如果你依然对我写的东西不知所云的话，你可以稍稍研究一下Xcode 4.2的几个内建模版，然后和使用XIB的模版对比一下，看看苹果是怎么用StoryBoard的，能够很好的帮助你理解Storyboarding机制。当然，千万不要忘记亲自动手用一用StoryBoard！</p>
+
+<p>Happy Coding!</p>
+
+<p><strong>【更新】</strong></p>
+
+<p>在看了WWDC 2011 的session video：UIViewController Containment这个视频之后，我感觉，正确的处理<code>UIViewController</code>之间的层级关系对于Storyboard来说非常重要，两者能够相得益彰。而<code>window.rootViewController</code>的使用，虽然也是鼓励用户不要把<code>AppDelegate</code>当ViewController用，更重要的是鼓励用户使用正确的<code>UIViewController</code>层级关系。</p>
+
+<p>（全文完）</p>
+]]></content>
+  </entry>
+  
+</feed>

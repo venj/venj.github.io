@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: LetsMove | Cocoa学习]]></title>
+  <link href="http://venj.github.io/blog/categories/letsmove/atom.xml" rel="self"/>
+  <link href="http://venj.github.io/"/>
+  <updated>2013-12-27T13:33:43+08:00</updated>
+  <id>http://venj.github.io/</id>
+  <author>
+    <name><![CDATA[venj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[把程序移动到/Applications文件夹]]></title>
+    <link href="http://venj.github.io/blog/move-app-to-application-folder-at-runtime/"/>
+    <updated>2011-09-10T15:46:00+08:00</updated>
+    <id>http://venj.github.io/blog/move-app-to-application-folder-at-runtime</id>
+    <content type="html"><![CDATA[<p>OSX有一个非常好的文件系统结构，默认的文件系统职能明确。一个很典型的例子是<code>Applications</code>文件夹，专门用来存放Mac应用程序。不过有时用户在下载了你的应用程序之后并没有养成把程序放到<code>/Applications</code>的习惯，你可以选择不去干预，也可以通过一个友好的提示来帮助用户把程序移动到<code>/Application</code>文件夹中。</p>
+
+<p>要在程序中实现这样的功能其实很简单，因为已经有人帮我们实现了这样的一个方法：<a href="https://github.com/potionfactory/LetsMove">LetsMove</a>。使用方法也很简单，在<code>ApplicationDelegate</code>中的<code>-applicationDidFinishLaunching:</code>方法的最前面增加一行代码，如下：</p>
+
+<!-- more -->
+
+
+<p>
+``` objc
+&ndash; (void)applicationDidFinishLaunching:(NSNotification *)aNotification
+{</p>
+
+<pre><code>PFMoveToApplicationsFolderIfNecessary(); // 增加这行代码。
+
+// Other Code…
+</code></pre>
+
+<p>}
+```</p>
+
+<p>这样就能够在程序开始的时候提示用户是否要移动应用程序了。如下所示：</p>
+
+<p><img class="center" src="/images/posts/letsmove.png"></p>
+
+<p>有一点需要注意的是，需要在编译项目的时候添加<strong>Security.framework</strong>支持。我做了一个示例项目，已经<a href="https://github.com/venj/Cocoa-blog-code/tree/master/Move%20It">推送到github上了</a>，你也可以参考LetsMove的源码中的示例项目来了解使用方法。在OSX Lion中编译的时候可能会提示方法Depreciated，不过程序能够正常运行，相信LetMove项目的开发人员会在以后更新代码，解决方法Depreciated的问题。</p>
+
+<p><del>注：目前LetsMove不包含中文的本地语言，你可以自己做一个，或者参考我Fork的LetsMove里的中文翻译。</del></p>
+
+<p>【更新】LetsMove的作者已经合并了我的Pull请求，现在LetsMove有简体中文翻译了。</p>
+
+<p>（全文完）</p>
+]]></content>
+  </entry>
+  
+</feed>

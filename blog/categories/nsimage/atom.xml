@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: NSImage | Cocoa学习]]></title>
+  <link href="http://venj.github.io/blog/categories/nsimage/atom.xml" rel="self"/>
+  <link href="http://venj.github.io/"/>
+  <updated>2013-12-27T13:33:43+08:00</updated>
+  <id>http://venj.github.io/</id>
+  <author>
+    <name><![CDATA[venj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[用Quartz绘制NSImage圆角图像]]></title>
+    <link href="http://venj.github.io/blog/draw-rounded-rectangle-nsimage-with-quartz/"/>
+    <updated>2011-08-20T00:42:00+08:00</updated>
+    <id>http://venj.github.io/blog/draw-rounded-rectangle-nsimage-with-quartz</id>
+    <content type="html"><![CDATA[<p>今天偶尔看到了<a href="http://www.wattz.net/snippets/iphone_round_corners/">用Quartz绘制<code>UIImage</code>圆角图像的源码的Snippet</a>，因此心血来潮，简单的改了几行，把它移植到NSImage上了。也正是因为研究这个问题，我才发现了<a href="/blog/get-real-size-of-nsimage/"><code>NSImage</code>不能准确获得图片的实际像素大小的问题</a>。说实话，那个代码片断我也是一知半解，因此我只是依样画葫芦，也直接把源码附上，也不知道有没有更好的方法，仅供参考。</p>
+
+<!-- more -->
+
+
+<p>
+我把这个源码改成了<code>NSImage</code>的一个Category，从而方便日后自己使用。代码如下<strong>（更新了代码，修复了一个提前<code>release</code>的问题）</strong>：</p>
+
+<p>``` objc
+/<em> NSImage+RoundCorner.h </em>/</p>
+
+<h1>import &lt;Foundation/Foundation.h></h1>
+
+<p>/<em> C Prototypes </em>/
+void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, float ovalHeight);</p>
+
+<p>@interface NSImage(RoundCorner)
+&ndash; (NSImage *)roundCornersImageCornerRadius:(NSInteger)radius;
+@end</p>
+
+<p>/<em> NSImage+RoundCorner.m </em>/</p>
+
+<h1>import &ldquo;NSImage+RoundCorner.h&rdquo;</h1>
+
+<p>@implementation NSImage (RoundCorner)</p>
+
+<p>void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, float ovalHeight)
+{</p>
+
+<pre><code>float fw, fh;
+if (ovalWidth == 0 || ovalHeight == 0) {
+    CGContextAddRect(context, rect);
+    return;
+}
+CGContextSaveGState(context);
+CGContextTranslateCTM (context, CGRectGetMinX(rect), CGRectGetMinY(rect));
+CGContextScaleCTM (context, ovalWidth, ovalHeight);
+fw = CGRectGetWidth (rect) / ovalWidth;
+fh = CGRectGetHeight (rect) / ovalHeight;
+CGContextMoveToPoint(context, fw, fh/2);
+CGContextAddArcToPoint(context, fw, fh, fw/2, fh, 1);
+CGContextAddArcToPoint(context, 0, fh, 0, fh/2, 1);
+CGContextAddArcToPoint(context, 0, 0, fw/2, 0, 1);
+CGContextAddArcToPoint(context, fw, 0, fw, fh/2, 1);
+CGContextClosePath(context);
+CGContextRestoreGState(context);
+</code></pre>
+
+<p>}</p>
+
+<ul>
+<li><p>(NSImage *)roundCornersImageCornerRadius:(NSInteger)radius {
+  int w = (int) self.size.width;
+  int h = (int) self.size.height;</p>
+
+<p>  CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+  CGContextRef context = CGBitmapContextCreate(NULL, w, h, 8, 4 * w, colorSpace, kCGImageAlphaPremultipliedFirst);</p>
+
+<p>  CGContextBeginPath(context);
+  CGRect rect = CGRectMake(0, 0, w, h);
+  addRoundedRectToPath(context, rect, radius, radius);
+  CGContextClosePath(context);
+  CGContextClip(context);</p>
+
+<p>  CGImageRef cgImage = [[NSBitmapImageRep imageRepWithData:[self TIFFRepresentation]] CGImage];</p>
+
+<p>  CGContextDrawImage(context, CGRectMake(0, 0, w, h), cgImage);</p>
+
+<p>  CGImageRef imageMasked = CGBitmapContextCreateImage(context);
+  CGContextRelease(context);
+  CGColorSpaceRelease(colorSpace);</p>
+
+<p>  NSImage <em>tmpImage = [[NSImage alloc] initWithCGImage:imageMasked size:self.size];
+  NSData </em>imageData = [tmpImage TIFFRepresentation];
+  NSImage *image = [[NSImage alloc] initWithData:imageData];
+  [tmpImage release];</p>
+
+<p>  return [image autorelease];
+}
+@end
+```</p></li>
+</ul>
+
+
+<p>测试效果如下：</p>
+
+<p><img class="center" src="/images/posts/round-corner-nsimgage.png"></p>
+
+<p>本例的源代码已经上传到<a href="https://github.com/venj/Cocoa-blog-code/tree/master/Round%20Corner%20Image">github</a>，顺便也测试了一下<a href="/blog/get-real-size-of-nsimage/">前文</a>所述的问题，你可以顺便简单的看一下。于是乎，iOS上也可以如法炮制一个<code>UIImage</code>的Catagory，方便使用。我在这里就不赘述了，有兴趣的可以自己试着改改。 :D</p>
+
+<p>(全文完)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[获取NSImage图片的准确大小]]></title>
+    <link href="http://venj.github.io/blog/get-real-size-of-nsimage/"/>
+    <updated>2011-08-19T23:58:00+08:00</updated>
+    <id>http://venj.github.io/blog/get-real-size-of-nsimage</id>
+    <content type="html"><![CDATA[<p>今天在测试代码的时候发现了一个诡异的问题，那就是<code>NSImage</code>加载图片的时候无法准确获得图片的大小。</p>
+
+<p>最初的代码是这样的：</p>
+
+<p><code>objc
+NSImage *image = [NSImage imageNamed:@"image"];
+NSLog(@"%f, %f", image.size.width, image.size.height);
+//终端Log到的图片的尺寸是：185.250000, 106.500000，而实际的大小是274.0, 142.0。
+//image.size = NSMakeSize(247.0, 142.0); //强制指定尺寸能够解决问题
+</code></p>
+
+<p>我用一个Image Well来显示图片的时候，发现图片居然比实际的要小！我试着<code>NSLog</code>图片的大小，发现<code>NSImage</code>加载的图片的<code>size</code>根本就是错的！我根据图片的实际大小，强制设置了图片的尺寸，图片就显示正常了，而且也没有被拉伸的痕迹。这说明图片数据在加载后并没有损耗，只是图片的<code>size</code>属性出错了，因此，强制设置<code>size</code>属性，图片就能正常显示了。</p>
+
+<!-- more -->
+
+
+<p>
+在搜索了一番之后，发现这个问题似乎和<a href="http://stackoverflow.com/questions/4748846/nsimage-dpi-question">图片的DPI有关</a>。如果图片的DPI不是72，<code>NSImage</code>加载图片后<code>size</code>属性就会出错。我在iOS上用同样的方法做了测试，发现<code>UIImage</code>则没有类似的问题。虽然我对图片的DPI的概念也是一知半解，但是，像72 DPI这种应该算是历史的包袱了，毕竟Cocoa是一个非常古老的框架了。</p>
+
+<p>虽然在这里，人肉设置图片大小能够解决问题，不过总不能在以后的代码中都人肉设置每张图片的尺寸吧。总有什么准确的方法来获取图片的真实像素尺寸的。然后就找到了<a href="http://stackoverflow.com/">Stack Overflow</a>里的<a href="http://stackoverflow.com/questions/2190027/nsimage-acting-weird">这个问题</a>，解决方法是这样的：</p>
+
+<p><code>objc
+// 不要用这个方法，这个方法并不一定总能成功。
+NSBitmapImageRep *rep = [[image representations] objectAtIndex: 0];
+NSSize size = NSMakeSize([rep pixelsWide], [rep pixelsHigh]);
+[image setSize: size];
+</code></p>
+
+<p>我试了一下这个方法，确实能够解决我的问题。不过这个方法下面，两个开发人员的对话很有启发，其中一人提到了一个问题，那就是<code>NSImage</code>可能并不存在<code>NSBitmapImageRep</code>－－这并不稀奇，比如，用<a href="/blog/take-photo-with-isight-camera/">Mac的摄像头拍下的图片</a>就没有！因此，一定有更好的方法。于是，我顺藤摸瓜，又在Stack Overflow上找到了<a href="http://stackoverflow.com/questions/4748846/nsimage-dpi-question">另一个更加靠谱的方法</a>：</p>
+
+<p><code>objc
+NSImage *image = [NSImage imageNamed:@"image"];
+NSBitmapImageRep *rep = [NSBitmapImageRep imageRepWithData:[image TIFFRepresentation]];
+NSSize size = NSMakeSize([rep pixelsWide], [rep pixelsHigh]);
+[image setSize: size];
+</code></p>
+
+<p>这种方法其实在原理上和之前说的那个有缺陷的方法并没有非常本质的不同。只是这种方法是创建了一个<code>NSBitmapImageRep</code>，而不是从图片中获取一个。这样，就不会存在图片对象中无法获取<code>NSBitmapImageRep</code>的问题了。</p>
+
+<p>至此，问题完美解决。不过这个问题提醒了我，不要对Cocoa的内建对象想当然，一定要注意Cocoa框架中的陷阱。</p>
+
+<p>(全文完)</p>
+]]></content>
+  </entry>
+  
+</feed>

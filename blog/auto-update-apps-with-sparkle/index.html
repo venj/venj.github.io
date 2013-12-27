@@ -1,0 +1,409 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>用Sparkle为Cocoa程序增加自动升级 - Cocoa学习</title>
+  <meta name="author" content="venj">
+
+  
+  <meta name="description" content="Mac OS X上的绝大部分程序都使用Sparkle来作为程序的自动升级工具。利用Sparkle，用户无需对升级过程进行干涉，只需跟着升级指示做就可以了。而Sparkle对于程序开发人员来说，使用也是相当方便。其实Sparkle的文档已经写的相当好了，不过我还是来简单写一下Sparkle的使用， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://venj.github.io/blog/auto-update-apps-with-sparkle">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Cocoa学习" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Cocoa学习</a></h1>
+  
+    <h2>我的Cocoa/Cocoa Touch学习笔记</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:venj.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">用Sparkle为Cocoa程序增加自动升级</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-05-27T12:52:00+08:00" pubdate data-updated="true">May 27<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Mac OS X上的绝大部分程序都使用<a href="http://sparkle.andymatuschak.org/">Sparkle</a>来作为程序的自动升级工具。利用Sparkle，用户无需对升级过程进行干涉，只需跟着升级指示做就可以了。而Sparkle对于程序开发人员来说，使用也是相当方便。其实<a href="https://github.com/andymatuschak/Sparkle/wiki">Sparkle的文档</a>已经写的相当好了，不过我还是来简单写一下Sparkle的使用，用于备忘。</p>
+
+<p>首先到Sparkle的首页下载Sparkle框架。</p>
+
+<p><img class="center" src="/images/posts/sparkle-1.png"></p>
+
+<p>然后按照和之前<a href="/blog/add-growl-support-in-your-apps-add-growl-framework/">介绍Growl.framework的文章</a>中同样的方法，新建一个Cocoa项目（或打开一个已有的Cocoa项目）把Sparkle加入项目中，在此我就不赘述了。</p>
+
+<p>要让应用程序支持Sparkle很简单。大致分为3个大步骤：在项目中设置Sparkle；对升级包进行数字签名；设置AppCast服务器。（按：我正在用Rails编写一个AppCast服务器程序，能够简单方便的将这个过程自动化，等我测试完成之后将放到github上去。）</p>
+
+<!-- more -->
+
+
+<p>
+1. 在项目中设置Sparkle</p>
+
+<p>要让程序支持Sparkle，我们无需编写任何代码，只需做几个简单设置。简单的说，就是在<code>MainMenu.xib</code>里，增加一个新的<code>Object</code>，设置其类为<code>SUUpdator</code>。保存即可。操作顺序已经在下图中表示出来了。</p>
+
+<p><img class="center" src="/images/posts/sparkle-2.png"></p>
+
+<p>通常，我们还会在应用程序菜单中增加一个“Check for update&hellip;”的菜单项。然后把上一步中增加的<code>SUUpdater</code>对象的<code>-checkForUpdates:</code>连接到菜单项上。</p>
+
+<p><img class="center" src="/images/posts/sparkle-3.png"></p>
+
+<p>然后打开项目的<code>Info.plist</code>文件，增加两个键：<code>SUFeedURL</code>和<code>SUPublicDSAKeyFile</code>，都是字符串类型的值。<code>SUFeedURL</code>是appcast的Feed地址（后文中会讲述如何设置appcast服务器）；<code>SUPublicDSAKeyFile</code>是签署升级包的公钥，默认生成的公钥的名字是<code>dsa_pub.pem</code>。</p>
+
+<p><img class="center" src="/images/posts/sparkle-4.png"></p>
+
+<p>接着，我们设置程序的版本号，设置为1.0。注意，版本号是Bundle version string, short（CFBundleVersion）；不是Bundle version那项！</p>
+
+<p><img class="center" src="/images/posts/sparkle-5.png"></p>
+
+<p>至此，程序设置的部分差不多了。下面开始生成用于签署升级包的公钥和私钥，并对升级包进行数字签名。</p>
+
+<ol>
+<li>对升级包进行数字签名</li>
+</ol>
+
+
+<p>如果你还没有公钥私钥对，那么你需要先生成一对。生成公私钥的脚本已经包含在Sparkle的下载包里了。位于Extras/Signing Tools。里面有两个Ruby脚本，分别用于生成密钥和签署升级包。在命令行执行<code>generate_keys.rb</code>，可以得到<code>dsa_priv.pem</code>（私钥）和<code>dsa_pub.pem</code>（公钥）两个文件。你可以放在任何位置。不过私钥千万不能丢，否则将无法签署升级包。</p>
+
+<p><img class="center" src="/images/posts/sparkle-6.png"></p>
+
+<p>然后，把<code>dsa_pub.pam</code>添加到项目中。</p>
+
+<p><img class="center" src="/images/posts/sparkle-7.png"></p>
+
+<p>现在，编译程序的第一个版本Product &ndash; Build For &ndash; Build For Archiving。</p>
+
+<p><img class="center" src="/images/posts/sparkle-8.png"></p>
+
+<p>编译后，程序通常是位于<code>~/Library/Developer/Xcode/DerivedData/AppName-randomstring/Build/Products/Release</code>目录下。</p>
+
+<p><img class="center" src="/images/posts/sparkle-9.png"></p>
+
+<p>把这个程序拖到任意位置，用于后续测试。</p>
+
+<p>然后，我们把对程序做一个简单修改，比如在界面上加一个按钮，修改程序版本号为2，再次编译。把这次生成的程序打包成zip。因为这个是升级包，因此我们要对升级包进行数字签名。方法很简单：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ ./sign_update.rb SparkleTest.zip ~/.ssh/dsa_priv.pem
+</span><span class='line'>MCwCFCV4IgyLAsp/zrg6mZXsoVRYwXsEAhQ+HKKhHzaEc3EcLOSc0X/PdKWfOA==</span></code></pre></td></tr></table></div></figure>
+
+
+<p>记录下返回的字符串——这是升级包的签名。后面马上就要用到。</p>
+
+<ol>
+<li>设置AppCast服务器</li>
+</ol>
+
+
+<p>最后一步，就是设置AppCast服务器了。</p>
+
+<p>为了方便测试，我们打开MacOSX的Web共享功能(具体不在此详述)；这样，我们就有了一个本地服务器来用于测试。比如，我的电脑上打开Web共享之后，就有服务器运行在<a href="http://127.0.0.1%EF%BC%8C%E8%80%8C%E5%AE%B6%E7%9B%AE%E5%BD%95%E9%87%8C%E7%9A%84%E2%80%9C%E7%AB%99%E7%82%B9%E2%80%9D%E5%B0%B1%E4%BD%8D%E4%BA%8E%EF%BC%9Ahttp://127.0.0.1/~venj/%E3%80%82">http://127.0.0.1%EF%BC%8C%E8%80%8C%E5%AE%B6%E7%9B%AE%E5%BD%95%E9%87%8C%E7%9A%84%E2%80%9C%E7%AB%99%E7%82%B9%E2%80%9D%E5%B0%B1%E4%BD%8D%E4%BA%8E%EF%BC%9Ahttp://127.0.0.1/~venj/%E3%80%82</a></p>
+
+<p>AppCast服务器主要提供两个页面：1. appcast.xml，2. release note的页面。这两种文件个格式在Sparkle的下载包中都有样例。位于Extras目录下。我们复制Sample Appcast.xml，重命名为appcast.xml，放到“站点”目录下（还记得第一步我们设置的SUFeedURL值吗？）。然后进行编辑，具体我就不说了，XML文件很容易读。修改后的appcast.xml内容如下：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+</span><span class='line'><span class="nt">&lt;rss</span> <span class="na">version=</span><span class="s">&quot;2.0&quot;</span> <span class="na">xmlns:sparkle=</span><span class="s">&quot;http://www.andymatuschak.org/xml-namespaces/sparkle&quot;</span>  <span class="na">xmlns:dc=</span><span class="s">&quot;http://purl.org/dc/elements/1.1/&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;channel&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;title&gt;</span>Your Great App&#39;s Changelog<span class="nt">&lt;/title&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;link&gt;</span>http://127.0.0.1/~venj/appcast.xml<span class="nt">&lt;/link&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;description&gt;</span>Most recent changes with links to updates for SparkleTest.<span class="nt">&lt;/description&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;language&gt;</span>en<span class="nt">&lt;/language&gt;</span>
+</span><span class='line'>         <span class="nt">&lt;item&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;title&gt;</span>Version 2 (2 bugs fixed; 3 new features)<span class="nt">&lt;/title&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;sparkle:releaseNotesLink&gt;</span>
+</span><span class='line'>            http://127.0.0.1/~venj/rnotes/rnotes2.0.html
+</span><span class='line'>        <span class="nt">&lt;/sparkle:releaseNotesLink&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;pubDate&gt;</span>Thu, 19 May 2011 19:20:11 +0000<span class="nt">&lt;/pubDate&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;enclosure</span> <span class="na">url=</span><span class="s">&quot;http://127.0.0.1/~venj/spar.zip&quot;</span> <span class="na">sparkle:version=</span><span class="s">&quot;2.0&quot;</span> <span class="na">length=</span><span class="s">&quot;1623481&quot;</span> <span class="na">type=</span><span class="s">&quot;application/octet-stream&quot;</span> <span class="na">sparkle:dsaSignature=</span><span class="s">&quot;MCwCFCV4IgyLAsp/zrg6mZXsoVRYwXsEAhQ+HKKhHzaEc3EcLOSc0X/PdKWfOA==&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>         <span class="nt">&lt;/item&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;/channel&gt;</span>
+</span><span class='line'><span class="nt">&lt;/rss&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>我们可以任意修改<code>&lt;title&gt;</code>和<code>&lt;description&gt;</code>。<code>&lt;link&gt;</code>的值为appcast.xml的路径；<code>&lt;item&gt;</code>里根据实际修改。需要注意的是，<code>&lt;enclosure&gt;</code>的<code>sparkle:dsaSigniture</code>的值要设置为上面签署升级包时返回的字符串。</p>
+
+<p>再复制Extras里的Release Notes Template文件夹到“站点”目录下，把rnote.html重命名为rnote2.0.html。你可以任意修改这个HTML文件，编写详细的发行注记。</p>
+
+<p>至此，Sparkle设置完毕。开始测试：</p>
+
+<p>首先，打开我们之前保存的SparkleTest程序的第1版，然后退出；</p>
+
+<p>再次打开SparkleTest程序的第1版，这时会弹出提示是否自动检查更新。</p>
+
+<p><img class="center" src="/images/posts/sparkle-10.png"></p>
+
+<p>选择Check Automatically。然后我们就看到了自动</p>
+
+<p><img class="center" src="/images/posts/sparkle-11.png"></p>
+
+<p>升级对话框。选择Install Update，如果一切设置都没有问题，我们会看到准备就绪的对话框。选择“Install and Relaunch”。</p>
+
+<p><img class="center" src="/images/posts/sparkle-12.png"></p>
+
+<p>我们就能看到新版的程序启动了。很简单吧！</p>
+
+<p>Sparkle还支持Bundle，比如以Preference Pane方式发布的程序的升级。关于这个话题，等以后有涉及的时候再行介绍。</p>
+
+<p>（全文完）</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">venj</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-05-27T12:52:00+08:00" pubdate data-updated="true">May 27<span>th</span>, 2011</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/sparkle/'>Sparkle</a>, <a class='category' href='/blog/categories/xcode-4/'>Xcode 4</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://venj.github.io/blog/auto-update-apps-with-sparkle/" data-via="" data-counturl="http://venj.github.io/blog/auto-update-apps-with-sparkle/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/add-growl-support-in-your-apps-coding-growl/" title="Previous Post: 为应用程序增加Growl支持（下）：在代码中应用Growl">&laquo; 为应用程序增加Growl支持（下）：在代码中应用Growl</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/common-data-types-conversion/" title="Next Post: Cocoa的几种内置数据类型之间的互转">Cocoa的几种内置数据类型之间的互转 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/code-box-like-window-open-animation/">CodeBox风格的窗口打开动画</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/localized-loading-screen/">本地化加载屏幕</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/refresh-control-gochas/">用代码触发下拉更新</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/drive-navigation-in-ios6/">iOS 6下的驾车导航</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/nsstring-height/">关于多行NSString的高度</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/venj">@venj</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'venj',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - venj -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'venj';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://venj.github.io/blog/auto-update-apps-with-sparkle/';
+        var disqus_url = 'http://venj.github.io/blog/auto-update-apps-with-sparkle/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

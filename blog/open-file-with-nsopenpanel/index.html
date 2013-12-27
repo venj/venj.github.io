@@ -1,0 +1,332 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>用NSOpenPanel打开文件 - Cocoa学习</title>
+  <meta name="author" content="venj">
+
+  
+  <meta name="description" content="NSOpenPanel和NSSavePanel从Mac OS X 10.6开始把很多方法都标记为了Deprecated，文档里也很详尽的给出了替代方法。 比如，要打开一个选文件的ModalView，以前是用NSOpenPanel的– beginSheetForDirectory:file: &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://venj.github.io/blog/open-file-with-nsopenpanel">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Cocoa学习" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Cocoa学习</a></h1>
+  
+    <h2>我的Cocoa/Cocoa Touch学习笔记</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:venj.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">用NSOpenPanel打开文件</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-03-29T00:00:00+08:00" pubdate data-updated="true">Mar 29<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><code>NSOpenPanel</code>和<code>NSSavePanel</code>从Mac OS X 10.6开始把很多方法都标记为了Deprecated，文档里也很详尽的给出了替代方法。</p>
+
+<p>比如，要打开一个选文件的ModalView，以前是用<code>NSOpenPanel</code>的<code>– beginSheetForDirectory:file:types:modalForWindow:modalDelegate:didEndSelector:contextInfo:</code>方法。现在，必须用新的方法替代。示例代码如下：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span><span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">showOpenPanel:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">NSOpenPanel</span> <span class="o">*</span><span class="n">panel</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSOpenPanel</span> <span class="n">openPanel</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">panel</span> <span class="nl">setDirectory:</span><span class="n">NSHomeDirectory</span><span class="p">()];</span> <span class="c1">// Set panel&#39;s default directory.</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">panel</span> <span class="nl">setAllowedFileTypes:</span><span class="p">[</span><span class="n">NSImage</span> <span class="n">imageFileTypes</span><span class="p">]];</span> <span class="c1">// Set what kind of file to select.</span>
+</span><span class='line'>    <span class="c1">// More panel configure code.</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">panel</span> <span class="nl">beginSheetModalForWindow:</span><span class="p">[</span><span class="n">myView</span> <span class="n">window</span><span class="p">]</span> <span class="nl">completionHandler:</span> <span class="p">(</span><span class="o">^</span><span class="p">(</span><span class="n">NSInteger</span> <span class="n">result</span><span class="p">){</span>
+</span><span class='line'>        <span class="k">if</span><span class="p">(</span><span class="n">result</span> <span class="o">==</span> <span class="n">NSOKButton</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="n">NSArray</span> <span class="o">*</span><span class="n">fileURLs</span> <span class="o">=</span> <span class="p">[</span><span class="n">panel</span> <span class="n">URLs</span><span class="p">];</span>
+</span><span class='line'>            <span class="n">NSImage</span> <span class="o">*</span><span class="n">image</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSImage</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithContentsOfURL:</span>
+</span><span class='line'>                              <span class="p">[</span><span class="n">fileURLs</span> <span class="nl">objectAtIndex:</span><span class="mi">0</span><span class="p">]];</span>
+</span><span class='line'>            <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%@&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">fileURLs</span> <span class="nl">objectAtIndex:</span><span class="mi">0</span><span class="p">]);</span>
+</span><span class='line'>            <span class="c1">// Deal with the image.</span>
+</span><span class='line'>            <span class="p">[</span><span class="n">image</span> <span class="n">release</span><span class="p">];</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">})];</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>用这个新方法利用了Objective-C 2.0的新特征：Block。在引入了Block之后，这个方法也就变成了多线程的了——这是Grand Central Dispatch的使用实例之一。</p>
+
+<p>这段代码的调试输出如下（多线程）：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="mi">2011</span><span class="o">-</span><span class="mo">03</span><span class="o">-</span><span class="mi">29</span> <span class="mi">13</span><span class="o">:</span><span class="mi">49</span><span class="o">:</span><span class="mf">54.204</span> <span class="n">CustomView</span><span class="p">[</span><span class="mi">50396</span><span class="o">:</span><span class="mi">903</span><span class="p">]</span> <span class="n">In</span> <span class="n">app</span> <span class="nl">delegate:</span> <span class="mf">1.000000</span>
+</span><span class='line'><span class="p">[</span><span class="n">Switching</span> <span class="n">to</span> <span class="n">process</span> <span class="mi">50396</span> <span class="kr">thread</span> <span class="mh">0xad07</span><span class="p">]</span>
+</span><span class='line'><span class="p">[</span><span class="n">Switching</span> <span class="n">to</span> <span class="n">process</span> <span class="mi">50396</span> <span class="kr">thread</span> <span class="mh">0x903</span><span class="p">]</span>
+</span><span class='line'><span class="p">[</span><span class="n">Switching</span> <span class="n">to</span> <span class="n">process</span> <span class="mi">50396</span> <span class="kr">thread</span> <span class="mh">0x9633</span><span class="p">]</span>
+</span><span class='line'><span class="p">[</span><span class="n">Switching</span> <span class="n">to</span> <span class="n">process</span> <span class="mi">50396</span> <span class="kr">thread</span> <span class="mh">0x903</span><span class="p">]</span>
+</span><span class='line'><span class="mi">2011</span><span class="o">-</span><span class="mo">03</span><span class="o">-</span><span class="mi">29</span> <span class="mi">13</span><span class="o">:</span><span class="mi">50</span><span class="o">:</span><span class="mf">04.528</span> <span class="n">CustomView</span><span class="p">[</span><span class="mi">50396</span><span class="o">:</span><span class="mi">903</span><span class="p">]</span> <span class="n">x</span><span class="o">-</span><span class="n">marsedit</span><span class="o">-</span><span class="nl">filelocal:</span><span class="c1">//localhost/Users/venj/Pictures/Old%20Photo/IMG_2443.JPG</span>
+</span><span class='line'><span class="n">Program</span> <span class="n">ended</span> <span class="n">with</span> <span class="n">exit</span> <span class="nl">code:</span> <span class="mi">0</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>详情参考ADC文档：<a href="http://developer.apple.com/library/mac/#documentation/cocoa/reference/ApplicationKit/Classes/NSOpenPanel_Class/DeprecationAppendix/AppendixADeprecatedAPI.html%23//apple_ref/occ/instm/NSOpenPanel/beginSheetForDirectory:file:types:modalForWindow:modalDelegate:didEndSelector:contextInfo:">在这里</a>。</p>
+
+<p><strong>Updated：</strong>另外，值得注意的是，<code>NSOpenPanel</code>是<code>NSSavePanel</code>的子类。</p>
+
+<p>（全文完）</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">venj</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-03-29T00:00:00+08:00" pubdate data-updated="true">Mar 29<span>th</span>, 2011</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/block/'>Block</a>, <a class='category' href='/blog/categories/grand-central-dispatch/'>Grand Central Dispatch</a>, <a class='category' href='/blog/categories/panel/'>Panel</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://venj.github.io/blog/open-file-with-nsopenpanel/" data-via="" data-counturl="http://venj.github.io/blog/open-file-with-nsopenpanel/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+      
+        <a class="basic-alignment right" href="/blog/dynamically-change-window-size/" title="Next Post: 动态改变窗口大小">动态改变窗口大小 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/code-box-like-window-open-animation/">CodeBox风格的窗口打开动画</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/localized-loading-screen/">本地化加载屏幕</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/refresh-control-gochas/">用代码触发下拉更新</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/drive-navigation-in-ios6/">iOS 6下的驾车导航</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/nsstring-height/">关于多行NSString的高度</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/venj">@venj</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'venj',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - venj -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'venj';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://venj.github.io/blog/open-file-with-nsopenpanel/';
+        var disqus_url = 'http://venj.github.io/blog/open-file-with-nsopenpanel/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

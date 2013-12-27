@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: iOS | Cocoa学习]]></title>
+  <link href="http://venj.github.io/blog/categories/ios/atom.xml" rel="self"/>
+  <link href="http://venj.github.io/"/>
+  <updated>2013-12-27T13:33:43+08:00</updated>
+  <id>http://venj.github.io/</id>
+  <author>
+    <name><![CDATA[venj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[本地化加载屏幕]]></title>
+    <link href="http://venj.github.io/blog/localized-loading-screen/"/>
+    <updated>2013-03-11T09:00:00+08:00</updated>
+    <id>http://venj.github.io/blog/localized-loading-screen</id>
+    <content type="html"><![CDATA[<p>我一直有注意到“<a href="https://itunes.apple.com/app/da-ci-lin/id299029654?mt=8">大辞林</a>”程序针对不同的系统语言，加载屏幕（Loading Screen，也称Splash Screen）是不一样的。因为无可治愈的拖延症，导致我从来没有想着去研究一下为什么。今天闲来无事，简单的弄了个程序做了一下，解决了加载屏幕本地化的问题。问题的答案只有一句话：</p>
+
+<p>加载屏幕(Default.png)和其他的资源文件一样，可以在Xcode里直接设置本地化的！</p>
+
+<p><del>（全文完）</del> 等等，既然写成博文了，怎么可以这么就结束了呢！好吧，那就略微详细一点，看一下在Xcode 4.6中如何一步一步地把加载屏幕本地化。</p>
+
+<!-- more -->
+
+
+<p>首先，我们用图形编辑(PS, Pixelmator等)工具，做两套语言的加载屏幕。简单起见，我们就用白底加居中的黑字(“US”和“CN”)的两套图片好了（文件在示例代码中有），每套图片要三个尺寸：Default.png(320x480)，<a href="&#109;&#x61;&#105;&#108;&#116;&#111;&#58;&#x44;&#101;&#102;&#x61;&#x75;&#x6c;&#116;&#x40;&#x32;&#120;&#46;&#x70;&#x6e;&#x67;">&#x44;&#x65;&#102;&#97;&#117;&#108;&#x74;&#x40;&#x32;&#120;&#x2e;&#112;&#x6e;&#x67;</a>(640x960)以及<a href="&#109;&#x61;&#x69;&#x6c;&#x74;&#x6f;&#58;&#68;&#101;&#102;&#x61;&#x75;&#x6c;&#x74;&#x2d;&#53;&#x36;&#56;&#x68;&#x40;&#50;&#120;&#x2e;&#112;&#x6e;&#103;">&#68;&#101;&#102;&#x61;&#x75;&#108;&#116;&#45;&#53;&#x36;&#x38;&#104;&#64;&#x32;&#x78;&#x2e;&#x70;&#110;&#x67;</a>(640x1136)。</p>
+
+<p>做好图片之后，我们在Xcode里创建一个新项目名字可以叫做“Local Splash”，程序模板任意，简单起见，支持的设备只选iPhone。创建后，我们用“US”那套图片替换项目默认的纯黑色加载屏幕，作为默认语言的加载屏幕。</p>
+
+<p>在Xcode的Project设置里，增加一个本地化语言Chinese(zh-Hans)。如下图所示：</p>
+
+<p><img class="center" src="/images/posts/local_splash_project_lang.png"></p>
+
+<p>设置完成后，再分别选择三个Default文件，点击右侧属性栏里的“Localize”按钮。这里选择“English”作为其语言。完成后，这三个Default文件会被移动到项目目录下的en.lproj目录中。</p>
+
+<p><img class="center" src="/images/posts/local_splash_us_loading.png"></p>
+
+<p>然后我们把三个“CN”的Default文件加入项目中。然后如上炮制。注意，这里选择“Chinese”作为其语言。完成后它们会被移入zh-Hans.lproj中。</p>
+
+<p><img class="center" src="/images/posts/local_splash_cn_loading.png"></p>
+
+<p>好了，到此，加载屏幕的本地化工作已经基本完成。为了保证看到我们的实验效果，我们在AppDelegate.m的<code>-application:didFinishLaunchingWithOptions:</code>的最前面加入下面一行：</p>
+
+<p>```objc</p>
+
+<pre><code>sleep(2);
+</code></pre>
+
+<p>```</p>
+
+<p>这行代码的作用是让程序完成启动后睡2秒，不要在实际项目中加入这种代码！！！</p>
+
+<p>下面就是在模拟器里跑一下看看效果了。按下cmd &ndash; r，看看加载屏幕显示的是不是和模拟器的语言一致（简体中文显示“CN”，英语和其他语言都显示“US”）；把模拟器的语言切换为其他语言再试一试，看看加载屏幕是不是已经变了。</p>
+
+<p>好了，至此，实验完成。示例代码已经上传至<a href="https://github.com/venj/Cocoa-blog-code/tree/master/Local%20Splash">github</a>。</p>
+
+<p>(全文完)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[检测iOS的网络可用性并打开网络设置]]></title>
+    <link href="http://venj.github.io/blog/warn-no-network-and-show-settings/"/>
+    <updated>2012-05-08T10:39:00+08:00</updated>
+    <id>http://venj.github.io/blog/warn-no-network-and-show-settings</id>
+    <content type="html"><![CDATA[<p>今天接到个需求，要求程序能够检测网络可用性，并在没有网络可用的时候能够弹出对话框，并允许用户点击按钮打开网络设置。</p>
+
+<p>这个问题，我首先想到的就是用一个方法检测网络可用性，然后用<code>UIApplication</code>的<code>openURL</code>方法打开某个特殊URL，就可以进入设置了。于是，我迅速地建了个测试项目，写了个简单的实现，如下：</p>
+
+<!-- more -->
+
+
+<p>``` objc
+// 注意：这个方法仅对iOS 5.0.x有效
++ (BOOL) isNetworkAvailable { //Via Stackoverflow</p>
+
+<pre><code>NSURL *url = [NSURL URLWithString:@"http://www.baidu.com"];
+NSURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+NSHTTPURLResponse *response = nil;
+[NSURLConnection sendSynchronousRequest:request
+                      returningResponse:&amp;response error:NULL];
+return (response != nil);
+</code></pre>
+
+<p>}</p>
+
+<ul>
+<li><p>(void)viewDidLoad
+{
+  [super viewDidLoad];
+  // Do any additional setup after loading the view, typically from a nib.
+  if (![[self class] isNetworkAvailable]) {
+      [[[UIAlertView alloc] initWithTitle:@&ldquo;No network&rdquo; message:@&ldquo;No networkNetwork unavailable!!!&rdquo; delegate:self cancelButtonTitle:@&ldquo;OK&rdquo; otherButtonTitles:@&ldquo;Settings&rdquo;, nil] show];
+  }
+}</p></li>
+<li><p>(void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+  if (buttonIndex != 0) {
+      [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@&ldquo;prefs:root=General&amp;path=Network&rdquo;]];
+  }
+}
+```</p></li>
+</ul>
+
+
+<p>编译运行之后，网络不可用倒是顺利提示了，但是我很杯具的发现，点了提示框里的“Settings”按钮之后完全没有反应。于是STFW，然后悲催的发现“特殊URL”在iOS 5.1里已经失效。多方搜索基于<code>openURL</code>的方法无果。</p>
+
+<p>正当我快放弃的时候，我发现高德地图在iOS 5.1下居然有类似的功能！（难道高德地图用了Private API，而且没有被苹果发现？我偷偷的这么想。）我对着高德地图又研究了好久，发现高德地图居然能够判断有无蜂窝网络和飞行模式！（嗯，肯定是Private API无误了！【误！】）</p>
+
+<p>然后突然灵光一闪，是不是<code>Info.plist</code>在作祟呢？因为<code>Info.plist</code>可以检测有无摄像头啥的，检测网络应该也没问题吧。于是，我解包了高德地图，打开<code>Info.plist</code>一看，果然有一条名为<code>SBUsesNetwork</code>的<code>Boolean</code>类型的记录。</p>
+
+<p>然后我就注释了自己的代码，在<code>Info.plist</code>里增加了一条：</p>
+
+<p><code>xml
+&lt;key&gt;SBUsesNetwork&lt;/key&gt;
+&lt;true/&gt;
+</code></p>
+
+<p>编译运行，终于出现了高德地图一样的提示对话框。按下“设置”按钮，顺利转跳到了“设置”程序里，问题解决。</p>
+
+<p>经过这次乌龙，我只有再次感叹，Cocoa (Touch)深似海，而我的脚才刚踩上沙滩。</p>
+
+<p>顺道：我真的用软件检测了高德地图是否用了Private API。答案当然是否定的。【我这个白痴】</p>
+
+<p>(全文完)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[让iOS App通过iTunes进行文件交换]]></title>
+    <link href="http://venj.github.io/blog/ios-and-pc-file-exchange-using-itunes/"/>
+    <updated>2011-08-07T13:04:00+08:00</updated>
+    <id>http://venj.github.io/blog/ios-and-pc-file-exchange-using-itunes</id>
+    <content type="html"><![CDATA[<p>有一些App需要通过使用iTunes让用户上传和下载文档。要让iOS程序支持iTunes文件交换其实很简单，只需要在程序的<code>Info.plist</code>里增加一个键：<code>UIFileSharingEnabled（Application supports iTunes file sharing）</code>，赋值<code>YES</code>。</p>
+
+<p><img class="center" src="/images/posts/file-exchange-xcode.png"></p>
+
+<p>这样，编译之后进行机上运行的时候，连接设备到iTunes，就能进行文件交换了。</p>
+
+<!-- more -->
+
+
+<p>
+<img class="center" src="/images/posts/file-exchange-itunes.png"></p>
+
+<p>如果是在iOS Simulator中进行测试，可以把文件放到应用程序的“用户目录”的“Documents”下。要知道用户目录在OSX下的路径，可以<code>NSLog(@"%@", NSHomeDirectory());</code>运行一下就知道了，用户家目录在OSX下的路径类似这个：<code>/Users/venj/Library/Application Support/iPhone Simulator/4.3.2/Applications/158C149B-FF57-4C62-AEDB-DFB7A3BD8AFB</code>。我做了一个简单的程序进行测试，在Simulator中运行的时候，把文件放到用户目录下，下图是用户目录在OSX下的内容，把文件放到<code>Documents</code>下就可以了：</p>
+
+<p><img class="center" src="/images/posts/file-exchange-finder.png"></p>
+
+<p>然后在程序中测试文件有没有成功被程序识别：</p>
+
+<p>``` objc
+NSFileManager <em>manager = [NSFileManager defaultManager];
+NSString </em>dbPath = [[NSHomeDirectory() stringByAppendingPathComponent:@&ldquo;Documents&rdquo;] stringByAppendingPathComponent:@&ldquo;db.sqlite&rdquo;];</p>
+
+<p>if ([manager fileExistsAtPath:dbPath]) {</p>
+
+<pre><code>self.navigationItem.title = @"Ready To Go";
+</code></pre>
+
+<p>}
+else {</p>
+
+<pre><code>self.navigationItem.title = @"No DB File";
+</code></pre>
+
+<p>}
+```</p>
+
+<p>下面是程序在添加文件前后的运行情况：</p>
+
+<p><img class="center" src="/images/posts/file-exchange-ios.png"></p>
+
+<p>我已经把示例程序放到了<a href="https://github.com/venj/Cocoa-blog-code">Github</a>上，有兴趣的可以看看。更多详情可以参考iOS开发者文档。</p>
+
+<p>（全文完）</p>
+]]></content>
+  </entry>
+  
+</feed>

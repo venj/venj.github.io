@@ -1,0 +1,411 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>计算字符串的MD5哈希 - Cocoa学习</title>
+  <meta name="author" content="venj">
+
+  
+  <meta name="description" content="字符串或数据的MD5哈希值是非常常用的。在Cocoa里很容易实现。因为这类方法非常好用，因此可以做一个NSString或NSData的Catagory。如下： NSString: 1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://venj.github.io/blog/calculate-md5-for-strings">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Cocoa学习" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Cocoa学习</a></h1>
+  
+    <h2>我的Cocoa/Cocoa Touch学习笔记</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:venj.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">计算字符串的MD5哈希</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-04-09T13:07:00+08:00" pubdate data-updated="true">Apr 9<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>字符串或数据的MD5哈希值是非常常用的。在Cocoa里很容易实现。因为这类方法非常好用，因此可以做一个<code>NSString</code>或<code>NSData</code>的Catagory。如下：</p>
+
+<p><strong>NSString:</strong></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// NSString+MD5.h</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#import &lt;foundation/foundation.h&gt;</span>
+</span><span class='line'><span class="k">@interface</span> <span class="nc">NSString</span> <span class="nl">(NSString_MD5)</span>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nf">md5</span><span class="p">;</span>
+</span><span class='line'><span class="k">@end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// NSString+MD5.m</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#import &quot;NSString+MD5.h&quot;</span>
+</span><span class='line'><span class="cp">#import &lt;commoncrypto/commondigest.h&gt;</span>
+</span><span class='line'><span class="k">@implementation</span> <span class="nc">NSString</span> <span class="nl">(NSString_MD5)</span>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nf">md5</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">cStr</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span> <span class="n">UTF8String</span><span class="p">];</span>
+</span><span class='line'>    <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">result</span><span class="p">[</span><span class="mi">16</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">CC_MD5</span><span class="p">(</span><span class="n">cStr</span><span class="p">,</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span><span class="p">)</span><span class="n">strlen</span><span class="p">(</span><span class="n">cStr</span><span class="p">),</span> <span class="n">result</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">return</span> <span class="p">[</span><span class="n">NSString</span> <span class="nl">stringWithFormat:</span>
+</span><span class='line'>            <span class="s">@&quot;%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x&quot;</span><span class="p">,</span>
+</span><span class='line'>            <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span>
+</span><span class='line'>            <span class="n">result</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">7</span><span class="p">],</span>
+</span><span class='line'>            <span class="n">result</span><span class="p">[</span><span class="mi">8</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">9</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">10</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">11</span><span class="p">],</span>
+</span><span class='line'>            <span class="n">result</span><span class="p">[</span><span class="mi">12</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">13</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">14</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">15</span><span class="p">]</span>
+</span><span class='line'>            <span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="k">@end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<!-- more -->
+
+
+<p>
+<strong>NSData:</strong></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// NSData+MD5.h</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#import &lt;foundation/foundation.h&gt;</span>
+</span><span class='line'><span class="k">@interface</span> <span class="nc">NSData</span> <span class="nl">(MyExtensions)</span>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSString</span><span class="o">*</span><span class="p">)</span><span class="nf">md5</span><span class="p">;</span>
+</span><span class='line'><span class="k">@end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// NSData+MD5.m</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#import &quot;NSData+MD5.h&quot;</span>
+</span><span class='line'><span class="cp">#import &lt;commoncrypto/commondigest.h&gt;</span>
+</span><span class='line'><span class="k">@implementation</span> <span class="nc">NSData</span> <span class="nl">(MyExtensions)</span>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSString</span><span class="o">*</span><span class="p">)</span><span class="nf">md5</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">result</span><span class="p">[</span><span class="mi">16</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">CC_MD5</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">bytes</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">length</span><span class="p">,</span> <span class="n">result</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">return</span> <span class="p">[</span><span class="n">NSString</span> <span class="nl">stringWithFormat:</span>
+</span><span class='line'>        <span class="s">@&quot;%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x&quot;</span><span class="p">,</span>
+</span><span class='line'>        <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span>
+</span><span class='line'>        <span class="n">result</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">7</span><span class="p">],</span>
+</span><span class='line'>        <span class="n">result</span><span class="p">[</span><span class="mi">8</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">9</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">10</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">11</span><span class="p">],</span>
+</span><span class='line'>        <span class="n">result</span><span class="p">[</span><span class="mi">12</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">13</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">14</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">15</span><span class="p">]</span>
+</span><span class='line'>        <span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="k">@end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>MD5只是众多哈希算法中的一种。所以有空要仔细学习一下commoncrypto库里的其他函数。<br/>
+(<a href="http://stackoverflow.com/questions/1524604/md5-algorithm-in-objective-c">via</a>)</p>
+
+<p>（全文完）</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">venj</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-04-09T13:07:00+08:00" pubdate data-updated="true">Apr 9<span>th</span>, 2011</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/md5/'>MD5</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://venj.github.io/blog/calculate-md5-for-strings/" data-via="" data-counturl="http://venj.github.io/blog/calculate-md5-for-strings/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/move-window-to-screen-center/" title="Previous Post: 【更新】把程序窗口放在屏幕中央">&laquo; 【更新】把程序窗口放在屏幕中央</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/using-gravatar-in-cocoa/" title="Next Post: 在Cocoa程序里使用Gravatar">在Cocoa程序里使用Gravatar &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/code-box-like-window-open-animation/">CodeBox风格的窗口打开动画</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/localized-loading-screen/">本地化加载屏幕</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/refresh-control-gochas/">用代码触发下拉更新</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/drive-navigation-in-ios6/">iOS 6下的驾车导航</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/nsstring-height/">关于多行NSString的高度</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/venj">@venj</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'venj',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - venj -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'venj';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://venj.github.io/blog/calculate-md5-for-strings/';
+        var disqus_url = 'http://venj.github.io/blog/calculate-md5-for-strings/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

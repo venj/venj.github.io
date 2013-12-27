@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Cocoa学习</title>
+  <title>关于多行NSString的高度 - Cocoa学习</title>
   <meta name="author" content="venj">
 
   
-  <meta name="description" content="一直觉得CodeBox的窗口呈现动画很帅气－－就是窗口Bounce了一下的那个效果。对了，就是NSAlert在OSX Lion下的显示的时候那个动画。我一直试图复刻那个动画，但是每次都灰头土脸的结束各种尝试。 今天搜索网络，在StackOverflow上找到了答案－－事实上， &hellip;">
+  <meta name="description" content="有时候，我们需要动态地得到一个多行字符串的高度。比如，在TableView中，如果我们允许UILabel/NSTextField多行显示，而TableView的Delegate就需要知道Cell的高度，这时，我们需要根据TableView呈现的内容，动态地计算多行字符串的高度，以确定Cell的高度 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://venj.github.io">
+  <link rel="canonical" href="http://venj.github.io/blog/nsstring-height">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Cocoa学习" type="application/atom+xml">
@@ -63,205 +63,12 @@
 </nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article class="hentry" role="article">
   
-  
-  
-    <article>
-      
   <header>
     
-      <h1 class="entry-title"><a href="/blog/code-box-like-window-open-animation/">CodeBox风格的窗口打开动画</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-06-03T16:51:00+08:00" pubdate data-updated="true">Jun 3<span>rd</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>一直觉得<a href="http://www.shpakovski.com/codebox/">CodeBox</a>的窗口呈现动画很帅气－－就是窗口Bounce了一下的那个效果。对了，就是<code>NSAlert</code>在OSX Lion下的显示的时候那个动画。我一直试图复刻那个动画，但是每次都灰头土脸的结束各种尝试。</p>
-
-<p>今天搜索网络，在StackOverflow上找到了<a href="http://stackoverflow.com/questions/14591785/how-to-open-a-nswindow-with-a-popup-animation">答案</a>－－事实上，我曾经多次无限接近正确答案，但最终还是没有成功。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/code-box-like-window-open-animation/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/localized-loading-screen/">本地化加载屏幕</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-03-11T09:00:00+08:00" pubdate data-updated="true">Mar 11<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>我一直有注意到“<a href="https://itunes.apple.com/app/da-ci-lin/id299029654?mt=8">大辞林</a>”程序针对不同的系统语言，加载屏幕（Loading Screen，也称Splash Screen）是不一样的。因为无可治愈的拖延症，导致我从来没有想着去研究一下为什么。今天闲来无事，简单的弄了个程序做了一下，解决了加载屏幕本地化的问题。问题的答案只有一句话：</p>
-
-<p>加载屏幕(Default.png)和其他的资源文件一样，可以在Xcode里直接设置本地化的！</p>
-
-<p><del>（全文完）</del> 等等，既然写成博文了，怎么可以这么就结束了呢！好吧，那就略微详细一点，看一下在Xcode 4.6中如何一步一步地把加载屏幕本地化。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/localized-loading-screen/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/refresh-control-gochas/">用代码触发下拉更新</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-20T14:55:00+08:00" pubdate data-updated="true">Dec 20<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><code>UIRefreshControl</code>是iOS 6中的一个新控件，这个控件就是大家熟悉的下拉更新控件。关于如何把<code>UIRefreshControl</code>集成至<code>UITableViewController</code>中相信大家都知道怎么做。至于用代码触发下拉更新，查看Apple的文档后，我们看到<code>UIRefreshControl</code>有一个方法：<code>- beginRefreshing</code>。写到这里，貌似问题依然解决，没什么好说的了。但是真是这样吗？让我们来创建一个测试项目进行验证：</p>
-
-<ol>
-<li><p>创建一个Master-Detail Application项目，取名“RefreshControl”（你可以随便取），设备选iPhone，够上“Use Automatic Reference Counting”和“Use Storyboards”（你也可以不用Storyboard，反正差不多）。</p></li>
-<li><p>（可选）打开MainStoryboard.storyboard（或MasterViewController.xib，如果你在1中没有勾选Use Storyboards），启用Master View Controller的Refreshing。</p>
-
-<p><img class="center" src="/images/posts/master_refreshcontrol.png"></p></li>
-<li><p>打开MasterViewController.m，更改代码如下：</p></li>
-</ol>
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/refresh-control-gochas/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/drive-navigation-in-ios6/">iOS 6下的驾车导航</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-11-26T11:18:00+08:00" pubdate data-updated="true">Nov 26<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>好久没有写Blog了，今天正好碰上了一个问题，于是决定写一写博客简单描述下。情况是这样的：之前，在iOS 5下，要显示一个从当前为止到目标位置的驾车导航可以使用如下的代码来搞定（<a href="http://developer.apple.com/library/ios/#featuredarticles/iPhoneURLScheme_Reference/Articles/MapLinks.html">参考这里</a>）：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">//基于地名调用iOS自带的Google Maps导航</span>
-</span><span class='line'><span class="n">NSString</span> <span class="o">*</span><span class="n">urlEncodedCurrentPlaceName</span> <span class="o">=</span> <span class="p">[</span><span class="s">@&quot;当前位置&quot;</span> <span class="nl">stringByAddingPercentEscapesUsingEncoding:</span><span class="n">NSUTF8StringEncoding</span><span class="p">];</span> <span class="c1">//简单起见，没有考虑多语言*（注）*。</span>
-</span><span class='line'><span class="n">NSString</span> <span class="o">*</span><span class="n">mapLink</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSString</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFormat:</span><span class="s">@&quot;http://maps.google.com/maps?daddr=%@&amp;saddr=%@&quot;</span><span class="p">,</span> <span class="n">urlEncodedDestinationPlaceName</span><span class="p">,</span> <span class="p">];</span>
-</span><span class='line'><span class="p">[[</span><span class="n">UIApplication</span> <span class="n">sharedApplication</span><span class="p">]</span> <span class="nl">openURL:</span><span class="p">[[</span><span class="n">NSURL</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithString:</span><span class="n">mapLink</span><span class="p">]];</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/drive-navigation-in-ios6/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/nsstring-height/">关于多行NSString的高度</a></h1>
+      <h1 class="entry-title">关于多行NSString的高度</h1>
     
     
       <p class="meta">
@@ -284,7 +91,7 @@
   </header>
 
 
-  <div class="entry-content"><p>有时候，我们需要动态地得到一个多行字符串的高度。比如，在TableView中，如果我们允许<code>UILabel</code>/<code>NSTextField</code>多行显示，而TableView的Delegate就需要知道Cell的高度，这时，我们需要根据TableView呈现的内容，动态地计算多行字符串的高度，以确定Cell的高度。</p>
+<div class="entry-content"><p>有时候，我们需要动态地得到一个多行字符串的高度。比如，在TableView中，如果我们允许<code>UILabel</code>/<code>NSTextField</code>多行显示，而TableView的Delegate就需要知道Cell的高度，这时，我们需要根据TableView呈现的内容，动态地计算多行字符串的高度，以确定Cell的高度。</p>
 
 <p>这样的需求，在UIKit中实现起来相对比较直观。我们就先看看UIKit中的情况。</p>
 
@@ -372,22 +179,16 @@
 
 <p>(全文完)</p>
 </div>
-  
-  
 
 
-    </article>
-  
-  
-    <article>
+  <footer>
+    <p class="meta">
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/prevent-block-instance-retain-cycle/">Block的Retain Cycle的解决方法</a></h1>
-    
-    
-      <p class="meta">
-        
+  
+
+<span class="byline author vcard">Posted by <span class="fn">venj</span></span>
+
+      
 
 
 
@@ -399,36 +200,46 @@
   
 
 
-<time datetime="2012-05-21T10:49:00+08:00" pubdate data-updated="true">May 21<span>st</span>, 2012</time>
-        
-      </p>
+<time datetime="2012-07-30T09:01:00+08:00" pubdate data-updated="true">Jul 30<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/appkit/'>AppKit</a>, <a class='category' href='/blog/categories/nsstring/'>NSString</a>, <a class='category' href='/blog/categories/uikit/'>UIKit</a>
+  
+</span>
+
+
+    </p>
     
-  </header>
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://venj.github.io/blog/nsstring-height/" data-via="" data-counturl="http://venj.github.io/blog/nsstring-height/" >Tweet</a>
+  
+  
+  
+</div>
 
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/prevent-block-instance-retain-cycle/" title="Previous Post: Block的Retain Cycle的解决方法">&laquo; Block的Retain Cycle的解决方法</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/drive-navigation-in-ios6/" title="Next Post: iOS 6下的驾车导航">iOS 6下的驾车导航 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
 
-  <div class="entry-content"><p>一个使用Block语法的实例变量，在引用另一个实例变量的时候，经常会引起retain cycle。这个问题在使用ASIHTTPRequest的block语法的时候会时不时的碰到。这个问题困扰了我这个小白很久。终于有一天，在Advanced Mac OS X Programming上，看到了这个问题的解决方案。</p>
-
-<p>先用代码描述一下症状：</p>
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/prevent-block-instance-retain-cycle/">继续阅读 &rarr;</a>
-    </footer>
-  
 
-
-    </article>
-  
-  <div class="pagination">
-    
-      <a class="prev" href="/blog/page/2/">&larr; Older</a>
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-  </div>
-</div>
 <aside class="sidebar">
   
     <section>
@@ -461,7 +272,7 @@
 <section>
   <h1>GitHub Repos</h1>
   <ul id="gh_repos">
-    <li class="loading">Status updating&#8230;</li>
+    <li class="loading">Status updating...</li>
   </ul>
   
   <a href="https://github.com/venj">@venj</a> on GitHub
@@ -494,6 +305,7 @@
   
 </aside>
 
+
     </div>
   </div>
   <footer role="contentinfo"><p>
@@ -508,7 +320,10 @@
       var disqus_shortname = 'venj';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://venj.github.io/blog/nsstring-height/';
+        var disqus_url = 'http://venj.github.io/blog/nsstring-height/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
