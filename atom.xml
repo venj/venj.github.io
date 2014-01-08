@@ -4,7 +4,7 @@
   <title><![CDATA[Cocoa学习]]></title>
   <link href="http://venj.github.io/atom.xml" rel="self"/>
   <link href="http://venj.github.io/"/>
-  <updated>2013-12-27T15:37:00+08:00</updated>
+  <updated>2014-01-08T09:46:24+08:00</updated>
   <id>http://venj.github.io/</id>
   <author>
     <name><![CDATA[venj]]></name>
@@ -12,6 +12,57 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[推View Controller时隐藏TabBar]]></title>
+    <link href="http://venj.github.io/blog/push-viewcontroller-hide-buttom-bar/"/>
+    <updated>2014-01-07T10:53:17+08:00</updated>
+    <id>http://venj.github.io/blog/push-viewcontroller-hide-buttom-bar</id>
+    <content type="html"><![CDATA[<p>设想一个场景，RootViewController是一个TabBarController，里面的子Controller是一个NavigationController。NavigationController的子ViewController在执行<code>-pushViewController:animated:</code>的时候，默认情况下，这个新的ViewController将会被UITabBar覆盖。</p>
+
+<p>但是有时，我们希望推入这个新的ViewController的时候，TabBarController也被推走。要做到这一点其实很简单，只需要在这个新的ViewController上设置<code>hidesBottomBarWhenPushed</code>属性为<code>YES</code>。</p>
+
+<p>示例代码如下：</p>
+
+<!-- more -->
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// 初始化ViewController的层级结构</span>
+</span><span class='line'><span class="n">UIViewController</span> <span class="o">*</span><span class="n">vc1</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIViewController</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithNibName:</span><span class="s">@&quot;SomeViewControllerNibName&quot;</span> <span class="nl">bundle:</span><span class="nb">nil</span><span class="p">];</span>
+</span><span class='line'><span class="n">UINavigationController</span> <span class="o">*</span><span class="n">nav</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UINavigationController</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithRootViewController:</span><span class="n">vc1</span><span class="p">];</span>
+</span><span class='line'><span class="n">UITabBarController</span> <span class="o">*</span><span class="n">tc</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UITabBarController</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+</span><span class='line'><span class="n">tc</span><span class="p">.</span><span class="n">viewControllers</span> <span class="o">=</span> <span class="err">@</span><span class="p">[</span><span class="n">nav</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">...</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// 推入新的ViewController</span>
+</span><span class='line'><span class="n">UIViewController</span> <span class="o">*</span><span class="n">vc2</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIViewController</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithNibName:</span><span class="s">@&quot;SomeOtherViewControllerNibName&quot;</span> <span class="nl">bundle:</span><span class="nb">nil</span><span class="p">];</span>
+</span><span class='line'><span class="n">vc2</span><span class="p">.</span><span class="n">hidesBottomBarWhenPushed</span> <span class="err">＝</span> <span class="n">YES</span><span class="p">;</span> <span class="c1">//这是关键！</span>
+</span><span class='line'><span class="p">[</span><span class="n">vc1</span><span class="p">.</span><span class="n">navigationController</span> <span class="nl">pushViewController:</span><span class="n">vc2</span> <span class="nl">animated:</span><span class="n">YES</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>就这么简单。</p>
+
+<p>后记：好久没有写Blog了，2014年希望自己能勤快一点，多更新些。哪怕是一些很小的知识点，也尽量记录和分享出来，就当是给自己做备忘。</p>
+
+<p>（全文完）</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[CodeBox风格的窗口打开动画]]></title>
@@ -66,7 +117,7 @@
 <!-- more -->
 
 
-<p>首先，我们用图形编辑(PS, Pixelmator等)工具，做两套语言的加载屏幕。简单起见，我们就用白底加居中的黑字(“US”和“CN”)的两套图片好了（文件在示例代码中有），每套图片要三个尺寸：Default.png(320x480)，<a href="&#x6d;&#97;&#105;&#x6c;&#116;&#x6f;&#58;&#68;&#101;&#102;&#97;&#x75;&#x6c;&#116;&#64;&#x32;&#120;&#46;&#x70;&#110;&#x67;">&#68;&#101;&#x66;&#x61;&#117;&#108;&#x74;&#x40;&#50;&#120;&#46;&#112;&#110;&#x67;</a>(640x960)以及<a href="&#109;&#x61;&#105;&#108;&#116;&#111;&#58;&#x44;&#x65;&#x66;&#x61;&#117;&#x6c;&#116;&#x2d;&#x35;&#x36;&#x38;&#x68;&#64;&#50;&#x78;&#46;&#x70;&#110;&#103;">&#x44;&#101;&#102;&#97;&#x75;&#108;&#x74;&#x2d;&#53;&#x36;&#x38;&#x68;&#x40;&#50;&#120;&#46;&#x70;&#x6e;&#103;</a>(640x1136)。</p>
+<p>首先，我们用图形编辑(PS, Pixelmator等)工具，做两套语言的加载屏幕。简单起见，我们就用白底加居中的黑字(“US”和“CN”)的两套图片好了（文件在示例代码中有），每套图片要三个尺寸：Default.png(320x480)，<a href="&#x6d;&#97;&#105;&#108;&#x74;&#111;&#x3a;&#68;&#101;&#102;&#x61;&#x75;&#x6c;&#116;&#64;&#50;&#120;&#x2e;&#112;&#110;&#x67;">&#68;&#101;&#102;&#97;&#x75;&#108;&#x74;&#x40;&#50;&#120;&#46;&#112;&#110;&#103;</a>(640x960)以及<a href="&#109;&#97;&#x69;&#108;&#116;&#x6f;&#x3a;&#x44;&#101;&#102;&#x61;&#x75;&#108;&#116;&#x2d;&#53;&#x36;&#x38;&#104;&#x40;&#x32;&#x78;&#46;&#112;&#110;&#103;">&#68;&#101;&#102;&#x61;&#x75;&#108;&#x74;&#45;&#x35;&#54;&#56;&#104;&#x40;&#50;&#120;&#x2e;&#x70;&#x6e;&#x67;</a>(640x1136)。</p>
 
 <p>做好图片之后，我们在Xcode里创建一个新项目名字可以叫做“Local Splash”，程序模板任意，简单起见，支持的设备只选iPhone。创建后，我们用“US”那套图片替换项目默认的纯黑色加载屏幕，作为默认语言的加载屏幕。</p>
 
@@ -2056,49 +2107,6 @@
 <p>本文的示例代码已经推送到<a href="https://github.com/venj/Cocoa-blog-code/tree/master/iPhoneCustomFont">Github</a>上了。在编译示例代码前，请先复制PTSans.ttc到<code>iPhoneCustomFont/iPhoneCustomFont</code>目录下。</p>
 
 <p>(全文完)</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[把程序移动到/Applications文件夹]]></title>
-    <link href="http://venj.github.io/blog/move-app-to-application-folder-at-runtime/"/>
-    <updated>2011-09-10T15:46:00+08:00</updated>
-    <id>http://venj.github.io/blog/move-app-to-application-folder-at-runtime</id>
-    <content type="html"><![CDATA[<p>OSX有一个非常好的文件系统结构，默认的文件系统职能明确。一个很典型的例子是<code>Applications</code>文件夹，专门用来存放Mac应用程序。不过有时用户在下载了你的应用程序之后并没有养成把程序放到<code>/Applications</code>的习惯，你可以选择不去干预，也可以通过一个友好的提示来帮助用户把程序移动到<code>/Application</code>文件夹中。</p>
-
-<p>要在程序中实现这样的功能其实很简单，因为已经有人帮我们实现了这样的一个方法：<a href="https://github.com/potionfactory/LetsMove">LetsMove</a>。使用方法也很简单，在<code>ApplicationDelegate</code>中的<code>-applicationDidFinishLaunching:</code>方法的最前面增加一行代码，如下：</p>
-
-<!-- more -->
-
-
-<p></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">applicationDidFinishLaunching:</span><span class="p">(</span><span class="n">NSNotification</span> <span class="o">*</span><span class="p">)</span><span class="nv">aNotification</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="n">PFMoveToApplicationsFolderIfNecessary</span><span class="p">();</span> <span class="c1">// 增加这行代码。</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">// Other Code…</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>这样就能够在程序开始的时候提示用户是否要移动应用程序了。如下所示：</p>
-
-<p><img class="center" src="http://venj.github.io/images/posts/letsmove.png"></p>
-
-<p>有一点需要注意的是，需要在编译项目的时候添加<strong>Security.framework</strong>支持。我做了一个示例项目，已经<a href="https://github.com/venj/Cocoa-blog-code/tree/master/Move%20It">推送到github上了</a>，你也可以参考LetsMove的源码中的示例项目来了解使用方法。在OSX Lion中编译的时候可能会提示方法Depreciated，不过程序能够正常运行，相信LetMove项目的开发人员会在以后更新代码，解决方法Depreciated的问题。</p>
-
-<p><del>注：目前LetsMove不包含中文的本地语言，你可以自己做一个，或者参考我Fork的LetsMove里的中文翻译。</del></p>
-
-<p>【更新】LetsMove的作者已经合并了我的Pull请求，现在LetsMove有简体中文翻译了。</p>
-
-<p>（全文完）</p>
 ]]></content>
   </entry>
   

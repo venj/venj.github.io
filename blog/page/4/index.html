@@ -9,7 +9,7 @@
   <meta name="author" content="venj">
 
   
-  <meta name="description" content="好久没有更新这里了，今天开始慢慢恢复更新。好了，废话不多说，开始讲正题。今天的话题其实也很简单，那就是在iOS中使用自定义字体。 虽然iOS自带的字体通常已经足够我们使用了，但是，对于某些特殊程序来说，比如，电子书程序，可能需要用到一些特殊的字体，或者需要用更好看的字体来达到我们想要的显示效果。 &hellip;">
+  <meta name="description" content="URL Scheme是类似http://，ftp://，afp://这样的东西，通常是用传输协议作为URL Scheme。不过事实上，你可以在iOS和Mac中注册任何类型的URL Scheme。当用户在浏览器中访问你的自定义URL Scheme的链接的时候，操作系统就会打开你的程序，响应这个请求 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -66,6 +66,51 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/custom-url-scheme-on-mac-and-ios/">在Mac和iOS中注册自定义的URL Scheme</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-01-10T15:44:00+08:00" pubdate data-updated="true">Jan 10<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>URL Scheme是类似<code>http://</code>，<code>ftp://</code>，<code>afp://</code>这样的东西，通常是用传输协议作为URL Scheme。不过事实上，你可以在iOS和Mac中注册任何类型的URL Scheme。当用户在浏览器中访问你的自定义URL Scheme的链接的时候，操作系统就会打开你的程序，响应这个请求。</p>
+
+<p>要在程序中注册自定义URL Scheme非常简单。主要分为两个步骤：在程序的Info.plist中加入你需要注册的URL Scheme，然后在你的应用程序中加入处理这类请求的代码。</p>
+
+<p>其中，第一个步骤对于iOS和Mac应用程序来说是完全相同的。方法如下：</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/custom-url-scheme-on-mac-and-ios/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -296,47 +341,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/draw-accessory-view-on-window-title-bar/">在NSWindow窗口标题栏上绘制辅助视图</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-08-27T01:25:00+08:00" pubdate data-updated="true">Aug 27<span>th</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>如果你用过<a href="http://flyingmeat.com/acorn/">Acorn</a>的试用版，你一定知道Acorn的试用版的文档窗口的标题栏上有一个提示过期的按钮。虽然标题栏不能被滥用来绘制控件，但是有时候，恰到好处的使用会改善用户体验。比如说，Lion的全屏按钮就是放在标题栏上的；<a href="http://chocolatapp.com/">Chocolat</a>文本编辑器也放了一个新建标签的按钮在标题栏上，Lion全屏按钮的旁边。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/draw-accessory-view-on-window-title-bar/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/5/">&larr; Older</a>
@@ -360,6 +364,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/push-viewcontroller-hide-buttom-bar/">推View Controller时隐藏TabBar</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/code-box-like-window-open-animation/">CodeBox风格的窗口打开动画</a>
       </li>
     
@@ -373,10 +381,6 @@
     
       <li class="post">
         <a href="/blog/drive-navigation-in-ios6/">iOS 6下的驾车导航</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/nsstring-height/">关于多行NSString的高度</a>
       </li>
     
   </ul>
@@ -421,7 +425,7 @@
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2011 - 2013 - venj -
+  Copyright &copy; 2011 - 2014 - venj -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> &amp; <a href="http://pages.github.com">Github Pages</a></span>
 </p>
 

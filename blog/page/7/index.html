@@ -9,17 +9,7 @@
   <meta name="author" content="venj">
 
   
-  <meta name="description" content="因为Cocoa的数据类型之间的互转在实际程序中应用很广泛，而我经常都会忘记，因此在此记录一下常用的几个互转。以后将会补充更多。 1 NSData和NSString之间互转： 1
-2
-3
-4
-5
-6
-7
-8
-9
-/* NSString to NSData */
-NSString *theString &hellip;">
+  <meta name="description" content="昨天心血来潮又把Lion装上了。这次是装到了移动硬盘里。效果良好。这次只要是为了看看Lion里Cocoa的新变化，顺道学习一下——虽然我对已有的Cocoa框架还没有熟悉。 打开最新的Xcode 4.1 DP5，很高兴的发现Popover已经成为一个标准控件。Popover在Xcode 4里用的很多 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -76,6 +66,49 @@ NSString *theString &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/popover-became-official-control-in-lion/">Popover在Mac OS X Lion中已经成为正式控件</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-06-02T11:38:00+08:00" pubdate data-updated="true">Jun 2<span>nd</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>昨天心血来潮又把Lion装上了。这次是装到了移动硬盘里。效果良好。这次只要是为了看看Lion里Cocoa的新变化，顺道学习一下——虽然我对已有的Cocoa框架还没有熟悉。</p>
+
+<p>打开最新的Xcode 4.1 DP5，很高兴的发现Popover已经成为一个标准控件。Popover在Xcode 4里用的很多。因为Popover现在非常流行，所以我就忍不住要测试以下。快速搜索了一下文档，发现Popover的文档暂时还没有进入Xcode的文档系统，所以只能硬着头皮，参考头文件里的文档，做了一个测试程序，感觉良好。 ：）</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/popover-became-official-control-in-lion/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -353,54 +386,6 @@ NSString *theString &hellip;">
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/about-nscell/">关于NSCell</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-04-28T22:29:00+08:00" pubdate data-updated="true">Apr 28<span>th</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>作为一个初学者，我一直很弄不明白<code>NSCell</code>的子类，比如，<code>NSButtonCell</code>，<code>NSImageCell</code>及其对应的控件之间的关系。今天，在做一个TableView实现的时候，我终于开始有点悟了——好吧，你大可以鄙视我，我的脑袋是不灵光。尽管这是一个简单的问题，但是我还是简单的记录一下我的理解。</p>
-
-<p>问题的起源是“Cocoa Programming For Mac OS X”上一段关于<code>NSCell</code>的叙述：</p>
-
-<blockquote><p>NSControl inherits from NSView. With its graphics context, NSView is a relatively large and expensive object to create. When the NSButton class was created, the first thing someone did was to create a calculator with 10 rows and 10 columns of buttons. The performance was less than it could have been because of the 100 tiny views. Later, someone had the clever idea of moving the brains of the button into another object (not a view) and creating one big view (called an NSMatrix) that would act as the view for all 100 button brains. The class for the button brains was called NSButtonCell.<br/>
-<strong>&mdash; Chapter 17. Custom Views, “For the More Curious: Cells”</strong></p></blockquote>
-
-<p>现在在此阅读这句话，我似乎已经能够基本理解，不过当时那叫一个困惑啊。为什么用Cell就比Button性能高呢？为什么Cell可以替代Button呢？</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/about-nscell/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/8/">&larr; Older</a>
@@ -424,6 +409,10 @@ NSString *theString &hellip;">
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/push-viewcontroller-hide-buttom-bar/">推View Controller时隐藏TabBar</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/code-box-like-window-open-animation/">CodeBox风格的窗口打开动画</a>
       </li>
     
@@ -437,10 +426,6 @@ NSString *theString &hellip;">
     
       <li class="post">
         <a href="/blog/drive-navigation-in-ios6/">iOS 6下的驾车导航</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/nsstring-height/">关于多行NSString的高度</a>
       </li>
     
   </ul>
@@ -485,7 +470,7 @@ NSString *theString &hellip;">
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2011 - 2013 - venj -
+  Copyright &copy; 2011 - 2014 - venj -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> &amp; <a href="http://pages.github.com">Github Pages</a></span>
 </p>
 
