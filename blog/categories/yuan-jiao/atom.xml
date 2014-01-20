@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 圆角 | Cocoa学习]]></title>
   <link href="http://venj.github.io/blog/categories/yuan-jiao/atom.xml" rel="self"/>
   <link href="http://venj.github.io/"/>
-  <updated>2014-01-20T14:11:13+08:00</updated>
+  <updated>2014-01-20T14:12:10+08:00</updated>
   <id>http://venj.github.io/</id>
   <author>
     <name><![CDATA[venj]]></name>
@@ -19,6 +19,9 @@
     <updated>2014-01-20T13:58:15+08:00</updated>
     <id>http://venj.github.io/blog/simple-uiimage-extension-to-create-rounded-corner-image</id>
     <content type="html"><![CDATA[<p>在iOS开发中经常需要用到圆角图像。简单搜索一下就能找到很多创建圆角图像的实现代码。我在<a href="http://stackoverflow.com/questions/10563986/uiimage-with-rounded-corners">Stack Overflow</a>上找到了一段代码，略微修改了一下，写了个简单的Catagory方法，可以用来创建圆角图像。代码如下：</p>
+
+<!-- more -->
+
 
 <p>```objc
 /<em> UIImage+RoundedRect.h</em>/</p>
