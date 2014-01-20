@@ -9,7 +9,22 @@
   <meta name="author" content="venj">
 
   
-  <meta name="description" content="设想一个场景，RootViewController是一个TabBarController，里面的子Controller是一个NavigationController。NavigationController的子ViewController在执行-pushViewController: &hellip;">
+  <meta name="description" content="在iOS开发中经常需要用到圆角图像。简单搜索一下就能找到很多创建圆角图像的实现代码。我在Stack Overflow上找到了一段代码，略微修改了一下，写了个简单的Catagory方法，可以用来创建圆角图像。代码如下： 1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -66,6 +81,119 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/simple-uiimage-extension-to-create-rounded-corner-image/">一个简单的创建圆角矩形图像的UIImage扩展实现</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-20T13:58:15+08:00" pubdate data-updated="true">Jan 20<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>在iOS开发中经常需要用到圆角图像。简单搜索一下就能找到很多创建圆角图像的实现代码。我在<a href="http://stackoverflow.com/questions/10563986/uiimage-with-rounded-corners">Stack Overflow</a>上找到了一段代码，略微修改了一下，写了个简单的Catagory方法，可以用来创建圆角图像。代码如下：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cm">/* UIImage+RoundedRect.h*/</span>
+</span><span class='line'><span class="cp">#import &lt;UIKit/UIKit.h&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@interface</span> <span class="nc">UIImage</span> <span class="nl">(RoundedCorner)</span>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">UIImage</span> <span class="o">*</span><span class="p">)</span><span class="nf">roundedCornerImageWithCornerRadius:</span><span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span><span class="nv">cornerRadius</span><span class="p">;</span>
+</span><span class='line'><span class="k">@end</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/* UIImage+RoundedRect.m*/</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#import &quot;UIImage+RoundedCorner.h&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@implementation</span> <span class="nc">UIImage</span> <span class="nl">(RoundedCorner)</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">UIImage</span> <span class="o">*</span><span class="p">)</span><span class="nf">roundedCornerImageWithCornerRadius:</span><span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span><span class="nv">cornerRadius</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">CGFloat</span> <span class="n">w</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">CGFloat</span> <span class="n">h</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">CGFloat</span> <span class="n">scale</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIScreen</span> <span class="n">mainScreen</span><span class="p">].</span><span class="n">scale</span><span class="p">;</span>
+</span><span class='line'>    <span class="c1">// 防止圆角半径小于0，或者大于宽/高中较小值的一半。</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">cornerRadius</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">cornerRadius</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">cornerRadius</span> <span class="o">&gt;</span> <span class="n">MIN</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">))</span>
+</span><span class='line'>        <span class="n">cornerRadius</span> <span class="o">=</span> <span class="n">MIN</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">UIImage</span> <span class="o">*</span><span class="n">image</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">CGRect</span> <span class="n">imageFrame</span> <span class="o">=</span> <span class="n">CGRectMake</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">UIGraphicsBeginImageContextWithOptions</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">size</span><span class="p">,</span> <span class="n">NO</span><span class="p">,</span> <span class="n">scale</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">[[</span><span class="n">UIBezierPath</span> <span class="nl">bezierPathWithRoundedRect:</span><span class="n">imageFrame</span> <span class="nl">cornerRadius:</span><span class="n">cornerRadius</span><span class="p">]</span> <span class="n">addClip</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">self</span> <span class="nl">drawInRect:</span><span class="n">imageFrame</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">image</span> <span class="o">=</span> <span class="n">UIGraphicsGetImageFromCurrentImageContext</span><span class="p">();</span>
+</span><span class='line'>  <span class="n">UIGraphicsEndImageContext</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="n">image</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>把这个Catagory添加到项目中之后，直接对<code>UIImage</code>对象调用<code>- roundedCornerImageWithCornerRadius:</code>方法即可。以上实现并非最高效，最佳的实现，但是有时候Quick and Dirty的方法已经足够好了，是吧。（天音：你就自我安慰吧。）</p>
+
+<p>(全文完)</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -302,128 +430,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/nsstring-height/">关于多行NSString的高度</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-30T09:01:00+08:00" pubdate data-updated="true">Jul 30<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>有时候，我们需要动态地得到一个多行字符串的高度。比如，在TableView中，如果我们允许<code>UILabel</code>/<code>NSTextField</code>多行显示，而TableView的Delegate就需要知道Cell的高度，这时，我们需要根据TableView呈现的内容，动态地计算多行字符串的高度，以确定Cell的高度。</p>
-
-<p>这样的需求，在UIKit中实现起来相对比较直观。我们就先看看UIKit中的情况。</p>
-
-<p><code>NSString</code>的<code>UIStringDrawing</code>这个Catagory中，有一个非常方便调用的方法：<code>- sizeWithFont:forWidth:lineBreakMode:</code>。看下面的示例代码：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">UITableViewCell</span> <span class="o">*</span><span class="p">)</span><span class="nf">tableView:</span><span class="p">(</span><span class="n">UITableView</span> <span class="o">*</span><span class="p">)</span><span class="nv">tableView</span> <span class="nf">cellForRowAtIndexPath:</span><span class="p">(</span><span class="n">NSIndexPath</span> <span class="o">*</span><span class="p">)</span><span class="nv">indexPath</span> <span class="p">{</span>
-</span><span class='line'>    <span class="p">...</span>
-</span><span class='line'>    <span class="n">cell</span><span class="p">.</span><span class="n">textLabel</span><span class="p">.</span><span class="n">lineBreakMode</span> <span class="o">=</span> <span class="n">UILineBreakModeWordWrap</span><span class="p">;</span> <span class="c1">//设置换行模式</span>
-</span><span class='line'>    <span class="n">cell</span><span class="p">.</span><span class="n">textLabel</span><span class="p">.</span><span class="n">numberOfLines</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">//允许多行</span>
-</span><span class='line'>    <span class="p">...</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span><span class="nf">tableView:</span><span class="p">(</span><span class="n">UITableView</span> <span class="o">*</span><span class="p">)</span><span class="nv">tableView</span> <span class="nf">heightForRowAtIndexPath:</span><span class="p">(</span><span class="n">NSIndexPath</span> <span class="o">*</span><span class="p">)</span><span class="nv">indexPath</span> <span class="p">{</span>
-</span><span class='line'>    <span class="p">...</span>
-</span><span class='line'>    <span class="n">NSString</span> <span class="n">cellText</span> <span class="o">=</span> <span class="p">...;</span>
-</span><span class='line'>    <span class="n">CGSize</span> <span class="n">maximumSize</span> <span class="o">=</span> <span class="n">CGSizeMake</span><span class="p">(</span><span class="mf">280.</span><span class="p">,</span> <span class="mf">9999.</span><span class="p">);</span> <span class="c1">//指定一个宽度为实际宽度，高度为极大指的尺寸</span>
-</span><span class='line'>    <span class="n">CGSize</span> <span class="n">labelSize</span> <span class="o">=</span> <span class="p">[</span><span class="n">cellText</span> <span class="nl">sizeWithFont:</span><span class="p">[</span><span class="n">UIFont</span> <span class="nl">systemFontOfSize:</span><span class="mf">14.</span><span class="p">]</span> <span class="nl">constrainedToSize:</span><span class="n">maximumSize</span> <span class="nl">lineBreakMode:</span><span class="n">UILineBreakModeWordWrap</span><span class="p">];</span> <span class="c1">//调用方法，获取字符串的尺寸</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">return</span> <span class="n">labelSize</span><span class="p">.</span><span class="n">height</span> <span class="o">+</span> <span class="n">SOME_SPECE_FOR_OTHER_CONTROL</span><span class="p">;</span> <span class="c1">//返回字符串的高度，加上一些自由空间的高度或其他空间所占的高度。</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>遗憾的是，AppKit里没有对应于上述调用的简便方法。这时候，苹果的文档就发挥作用了。在<a href="http://developer.apple.com/documentation/Cocoa/Conceptual/TextLayout/TextLayout.html">Text Layout Programming Guide</a>中有一段示例代码，展示了如何使用<code>NSString</code>以及一些其他的类，来实现类似的功能。下面是我自己用在NSTableView中的的一段代码，照抄了文档中的示例代码，如下：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span><span class="nf">tableView:</span><span class="p">(</span><span class="n">NSTableView</span> <span class="o">*</span><span class="p">)</span><span class="nv">tableView</span> <span class="nf">heightOfRow:</span><span class="p">(</span><span class="n">NSInteger</span><span class="p">)</span><span class="nv">row</span> <span class="p">{</span>
-</span><span class='line'>    <span class="n">NSString</span> <span class="o">*</span><span class="n">statusText</span> <span class="o">=</span> <span class="p">[[</span><span class="n">_statusMessages</span> <span class="nl">objectAtIndex:</span><span class="n">row</span><span class="p">]</span> <span class="n">text</span><span class="p">];</span>
-</span><span class='line'>    <span class="k">return</span> <span class="p">[</span><span class="n">self</span> <span class="nl">heightForStringDrawing:</span><span class="n">statusText</span> <span class="nl">font:</span><span class="p">[</span><span class="n">NSFont</span> <span class="nl">systemFontOfSize:</span><span class="mi">12</span><span class="p">]</span> <span class="nl">width:</span><span class="n">tableView</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">]</span> <span class="o">+</span> <span class="mi">8</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">//苹果官方文档中的示例方法</span>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span><span class="nf">heightForStringDrawing:</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">myString</span> <span class="nf">font:</span><span class="p">(</span><span class="n">NSFont</span> <span class="o">*</span><span class="p">)</span><span class="nv">myFont</span> <span class="nf">width:</span><span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span><span class="nv">myWidth</span> <span class="p">{</span>
-</span><span class='line'>    <span class="n">NSTextStorage</span> <span class="o">*</span><span class="n">textStorage</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSTextStorage</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithString:</span><span class="n">myString</span><span class="p">];</span>
-</span><span class='line'>    <span class="n">NSTextContainer</span> <span class="o">*</span><span class="n">textContainer</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSTextContainer</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithContainerSize:</span> <span class="n">NSMakeSize</span><span class="p">(</span><span class="n">myWidth</span><span class="p">,</span> <span class="n">FLT_MAX</span><span class="p">)];</span>
-</span><span class='line'>    <span class="n">NSLayoutManager</span> <span class="o">*</span><span class="n">layoutManager</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSLayoutManager</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="p">[</span><span class="n">layoutManager</span> <span class="nl">addTextContainer:</span><span class="n">textContainer</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">textStorage</span> <span class="nl">addLayoutManager:</span><span class="n">layoutManager</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">textStorage</span> <span class="nl">addAttribute:</span><span class="n">NSFontAttributeName</span> <span class="nl">value:</span><span class="n">myFont</span> <span class="nl">range:</span><span class="n">NSMakeRange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">[</span><span class="n">textStorage</span> <span class="n">length</span><span class="p">])];</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">textContainer</span> <span class="nl">setLineFragmentPadding:</span><span class="mf">0.0</span><span class="p">];</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="p">[</span><span class="n">layoutManager</span> <span class="nl">glyphRangeForTextContainer:</span><span class="n">textContainer</span><span class="p">];</span>
-</span><span class='line'>    <span class="k">return</span> <span class="p">[</span><span class="n">layoutManager</span> <span class="nl">usedRectForTextContainer:</span><span class="n">textContainer</span><span class="p">].</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>上述代码中涉及了<code>NSTextStorage</code>，<code>NSTextContainer</code>，<code>NSLayoutManager</code>等多个比较复杂的方法，我对这些类也不是很熟悉，因此我就不详细注释了，有兴趣的同学可以查阅这些类的文档。你也可以将上述方法稍作修改，自己写一个<code>NSString</code>的Catagory，方便以后使用。你甚至可以基于上述方法，写一个/一组对应于<code>NSString(UIStringDrawing)</code>里计算字符串尺寸的快捷方法。</p>
-
-<p>还是那个老梗，任何时候，RTFM总能给人带来惊喜和收获。</p>
-
-<p>(全文完)</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -445,6 +451,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/simple-uiimage-extension-to-create-rounded-corner-image/">一个简单的创建圆角矩形图像的UIImage扩展实现</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/push-viewcontroller-hide-buttom-bar/">推View Controller时隐藏TabBar</a>
       </li>
     
@@ -458,10 +468,6 @@
     
       <li class="post">
         <a href="/blog/refresh-control-gochas/">用代码触发下拉更新</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/drive-navigation-in-ios6/">iOS 6下的驾车导航</a>
       </li>
     
   </ul>

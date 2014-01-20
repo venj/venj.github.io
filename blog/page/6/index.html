@@ -9,7 +9,7 @@
   <meta name="author" content="venj">
 
   
-  <meta name="description" content="有一些App需要通过使用iTunes让用户上传和下载文档。要让iOS程序支持iTunes文件交换其实很简单，只需要在程序的Info.plist里增加一个键：UIFileSharingEnabled（Application supports iTunes file sharing），赋值YES。 &hellip;">
+  <meta name="description" content="记得有人说过，写不写测试代码是判断一个开发者是否成熟的标志。良好的测试代码能够让程序代码更健壮，使重构更加方便。虽然Objective-C是一种编译语言，但是在Xcode的帮助下，做测试和测试驱动开发（Test Driven Development, TDD）也非常方便。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -66,6 +66,51 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/testing-ios-projects/">iOS项目的测试简介</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-08-17T15:06:00+08:00" pubdate data-updated="true">Aug 17<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>记得有人说过，写不写测试代码是判断一个开发者是否成熟的标志。良好的测试代码能够让程序代码更健壮，使重构更加方便。虽然Objective-C是一种编译语言，但是在Xcode的帮助下，做测试和测试驱动开发（Test Driven Development, TDD）也非常方便。苹果官方有一个关于如何做为项目增加测试支持的文档，不过iOS 4.3的文档包的的<a href="http://developer.apple.com/library/iOS/#documentation/Xcode/Conceptual/iphone_development/135-Unit_Testing_Applications/unit_testing_applications.html">该文档</a>已经比较老了，如果你是付费iOS开发者，那么可以看看iOS 5.0的文档包的的<a href="https://developer.apple.com/library/prerelease/ios/#documentation/Xcode/Conceptual/ios_development_workflow/135-Unit_Testing_Applications/unit_testing_applications.html">该文档</a>，已经更新为Xcode 4的教程了。</p>
+
+<p>iOS的测试分两种，一种是逻辑测试（Logic Tests）；另一种是程序测试（Application Tests）。逻辑测试主要是用来测试模块的业务逻辑的；程序测试则是测试模块在整个应用程序中的行为是否正确。逻辑测试类似单元测试；而程序测试则类似集成测试。个人感觉，逻辑测试比较适合测试模型代码；而应用程序测试则比较适合测试控制器和视图代码，考虑到视图在iOS开发中主要是通过Interface Builder来实现，因此，应用测试实际上就是测试控制器代码的。</p>
+
+<p>下面，简单的讲一下如何设置项目支持单元测试。我们要在Xcode中为项目建立两种测试的Target。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/testing-ios-projects/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -304,91 +349,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/remember-window-position/">记忆窗口位置</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-06-12T12:26:00+08:00" pubdate data-updated="true">Jun 12<span>th</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>在程序中记忆窗口的位置，以便在下次打开的时候恢复记忆的位置。这对很多程序来说还是比较有必要的。方法很简单：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">windowDidMove:</span><span class="p">(</span><span class="n">NSNotification</span> <span class="o">*</span><span class="p">)</span><span class="nv">notification</span> <span class="p">{</span>
-</span><span class='line'>    <span class="c1">// 自动记忆和恢复位置</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">window</span> <span class="nl">setFrameAutosaveName:</span><span class="s">@&quot;Position&quot;</span><span class="p">];</span>
-</span><span class='line'>    <span class="cm">/* 如果是基于文档的程序</span>
-</span><span class='line'><span class="cm">    [[self.window windowController] setShouldCascadeWindows:NO];</span>
-</span><span class='line'><span class="cm">    [self.window saveFrameUsingName:[window representedFilename]];</span>
-</span><span class='line'><span class="cm">    */</span>
-</span><span class='line'>    <span class="c1">// 手动记忆位置</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">window</span> <span class="nl">setFrameUsingName:</span><span class="s">@&quot;Some name&quot;</span><span class="p">];</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>// 如果是手动保存，则需要手动恢复</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">awakeFromNib</span> <span class="p">{</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">window</span> <span class="nl">setFrameAutosaveName:</span><span class="s">@&quot;Some name&quot;</span><span class="p">];</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>// 清除记忆的位置</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">clearWindowPosition:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">NSWindow</span> <span class="nl">removeFrameUsingName:</span><span class="s">@&quot;Some name&quot;</span><span class="p">];</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>很简单吧。更多可以参考<a href="http://developer.apple.com/library/mac/#documentation/Cocoa/Reference/ApplicationKit/Classes/NSWindow_Class/Reference/Reference.html">NSWindows Class Reference</a>和<a href="http://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/WinPanel/WinPanel.html">Window Programming Guide</a>文档。</p>
-
-<p>（全文完）</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/7/">&larr; Older</a>
@@ -412,6 +372,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/simple-uiimage-extension-to-create-rounded-corner-image/">一个简单的创建圆角矩形图像的UIImage扩展实现</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/push-viewcontroller-hide-buttom-bar/">推View Controller时隐藏TabBar</a>
       </li>
     
@@ -425,10 +389,6 @@
     
       <li class="post">
         <a href="/blog/refresh-control-gochas/">用代码触发下拉更新</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/drive-navigation-in-ios6/">iOS 6下的驾车导航</a>
       </li>
     
   </ul>

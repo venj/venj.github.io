@@ -9,7 +9,9 @@
   <meta name="author" content="venj">
 
   
-  <meta name="description" content="Gravatar是一个非常流行的头像服务，可以根据用户的Email获取头像。下面一段简单的代码展示了如何在Cocoa里使用Gravatar。简单的界面测试： ">
+  <meta name="description" content="今天在码代码的时候遇到了标签在修改了内容后没有重绘的问题，试了n种办法，查了老半天，结果终于找到了比较好的解决方法。 首先，要说明，下面这样的方法是不能让Label(NSTextField)立刻重绘的： 1
+2
+[someLabel setStringValue:@&quot;Some new &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -66,6 +68,56 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/force-label-nstextfield-redraw/">强制Label(NSTextField)重绘</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-04-13T22:57:00+08:00" pubdate data-updated="true">Apr 13<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>今天在码代码的时候遇到了标签在修改了内容后没有重绘的问题，试了n种办法，查了老半天，结果终于找到了比较好的解决方法。</p>
+
+<p>首先，要说明，下面这样的方法是不能让Label(<code>NSTextField</code>)立刻重绘的：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[</span><span class="n">someLabel</span> <span class="nl">setStringValue:</span><span class="s">@&quot;Some new text&quot;</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="n">someLabel</span> <span class="nl">setNeedsDisplay:</span><span class="n">YES</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/force-label-nstextfield-redraw/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -494,6 +546,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/simple-uiimage-extension-to-create-rounded-corner-image/">一个简单的创建圆角矩形图像的UIImage扩展实现</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/push-viewcontroller-hide-buttom-bar/">推View Controller时隐藏TabBar</a>
       </li>
     
@@ -507,10 +563,6 @@
     
       <li class="post">
         <a href="/blog/refresh-control-gochas/">用代码触发下拉更新</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/drive-navigation-in-ios6/">iOS 6下的驾车导航</a>
       </li>
     
   </ul>
