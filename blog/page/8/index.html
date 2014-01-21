@@ -9,10 +9,7 @@
   <meta name="author" content="venj">
 
   
-  <meta name="description" content="在Cocoa中，我们可以用NSWorkspace的-openURL:来来打开系统的默认浏览器。 1
-2
-3
-- (IBAction)clickLink:(id)sender { [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString &hellip;">
+  <meta name="description" content="Growl是啥，用来干什么的我就不介绍了。Growl的文档说实话，写的挺抽象的。不是Step by Step的文档，对我来说就有点困难了。所以，我决定把Growl支持写成几篇短文，简单介绍一下如何在程序中增加Growl支持。【为啥要分几篇？嘛，因为我自己也是边学边写文章的吗。。。Orz】 首先， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -69,6 +66,62 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/add-growl-support-in-your-apps-add-growl-framework/">为应用程序增加Growl支持（上）：在项目中加入Growl.Framework</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-05-26T10:12:00+08:00" pubdate data-updated="true">May 26<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Growl是啥，用来干什么的我就不介绍了。Growl的文档说实话，写的挺抽象的。不是Step by Step的文档，对我来说就有点困难了。所以，我决定把Growl支持写成几篇短文，简单介绍一下如何在程序中增加Growl支持。【为啥要分几篇？嘛，因为我自己也是边学边写文章的吗。。。Orz】</p>
+
+<p>首先，介绍一下原文是怎么写的。</p>
+
+<blockquote><ol>
+<li>Download the frameworks from the Downloads page from there.</li>
+<li>Copy the Growl framework to your application&rsquo;s project folder (or any subdirectory of it).</li>
+<li>Add the Growl framework to your project, making sure that all the relevant target checkboxes are checked. The header files in the framework use UTF-8 encoding.</li>
+<li>Add a Copy Files phase to your application&rsquo;s target.</li>
+<li>Get Info on the Copy Files phase.</li>
+<li>Set the destination to “Frameworks”, with no subpath (clear the field).</li>
+<li>Drag the framework from the group tree into the Copy Files phase.</li>
+</ol>
+</blockquote>
+
+<p>其实描述的听清楚的。奈何，我的理解能力太差，搞不定。俗话说，<strong>A picture worth a thousand words</strong>，所以我就以Xcode 4为例，把上述过程做一遍。（下面的编号基本对应上文中的1-7所述的步骤）</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/add-growl-support-in-your-apps-add-growl-framework/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -314,53 +367,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/open-menu-with-a-button/">用Cocoa实现点击按钮打开快捷菜单</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-04-16T11:41:00+08:00" pubdate data-updated="true">Apr 16<span>th</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>用一个自定义按钮打开菜单已经是一个很常见的需求的。不过<code>NSPopupButton</code>对于我们的这种需求来说显得有点不合适。最终的结果如下所示：</p>
-
-<p><img class="center" src="/images/posts/image-button-menu.png" title="和自定义按钮关联的弹出菜单" ></p>
-
-<p><img class="center" src="/images/posts/normal-button-menu.png" title="和普通按钮关联的弹出菜单" ></p>
-
-<p>实现的方法很简单，代码如下所示：</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/open-menu-with-a-button/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/9/">&larr; Older</a>
@@ -384,6 +390,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/simple-uiimage-extension-to-create-rounded-corner-image/">一个简单的创建圆角图像的UIImage扩展实现</a>
       </li>
     
@@ -397,10 +407,6 @@
     
       <li class="post">
         <a href="/blog/localized-loading-screen/">本地化加载屏幕</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/refresh-control-gochas/">用代码触发下拉更新</a>
       </li>
     
   </ul>

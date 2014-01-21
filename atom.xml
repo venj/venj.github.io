@@ -4,7 +4,7 @@
   <title><![CDATA[Cocoa学习]]></title>
   <link href="http://venj.github.io/atom.xml" rel="self"/>
   <link href="http://venj.github.io/"/>
-  <updated>2014-01-20T14:15:20+08:00</updated>
+  <updated>2014-01-21T09:35:25+08:00</updated>
   <id>http://venj.github.io/</id>
   <author>
     <name><![CDATA[venj]]></name>
@@ -12,6 +12,32 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[用ImageView和Layer实现图像的圆角显示]]></title>
+    <link href="http://venj.github.io/blog/rounded-corner-image-with-layer-and-image-view/"/>
+    <updated>2014-01-21T09:13:01+08:00</updated>
+    <id>http://venj.github.io/blog/rounded-corner-image-with-layer-and-image-view</id>
+    <content type="html"><![CDATA[<p>昨天写过一个<a href="http://venj.github.io/blog/simple-uiimage-extension-to-create-rounded-corner-image/">博文</a>，介绍了创建圆角矩形图像的方法。现在，我再介绍一个<strong>“显示”</strong>圆角图像的方法。</p>
+
+<p>这种方法利用的是<code>UIImageView</code>的<code>layer</code>的属性，实现把图像显示成圆角，而无需对图像本身进行处理。在开发中，大部分情况下，我们只需要“显示”圆角，而不是“得到”圆角图像。不是么。好了，先看代码：</p>
+
+<figure class='code'><figcaption><span>UIImageView的圆角显示图像 mark:2,3</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">UIImageView</span> <span class="o">*</span><span class="n">imageView</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIImageView</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithImage:</span><span class="p">[</span><span class="n">UIImage</span> <span class="nl">imageNamed:</span><span class="s">@&quot;sample&quot;</span><span class="p">]];</span>
+</span><span class='line'><span class="n">imageView</span><span class="p">.</span><span class="n">layer</span><span class="p">.</span><span class="n">cornerRadius</span> <span class="o">=</span> <span class="mf">10.0</span><span class="p">;</span>
+</span><span class='line'><span class="n">imageView</span><span class="p">.</span><span class="n">layer</span><span class="p">.</span><span class="n">masksToBounds</span> <span class="o">=</span> <span class="n">YES</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>简单解释一下。每个<code>UIView</code>对象都有一个<code>layer</code>属性，这个<code>layer</code>属性实际上是一个<code>CALayer</code>对象。这个对象负责把<code>UIView</code>对象显示到屏幕上。而<code>layer</code>则有一个<code>cornerRadius</code>属性，用来指定<code>layer</code>的边框圆角。但是光设定这个属性是不够的，因为<code>layer</code>默认会把图像超出边框的部分也显示出来，所以必须指定<code>masksToBounds</code>属性为<code>YES</code>，让<code>layer</code>切掉边框外的部分。最终实现了图像的圆角显示。</p>
+
+<p>这种方法不需要处理图像本身，如果只是为了显示圆角，这是一种非常高效的方法——所以除非你真的需要得到圆角图像对象本身。</p>
+
+<p>（全文完）</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[一个简单的创建圆角图像的UIImage扩展实现]]></title>
@@ -208,7 +234,7 @@
 <!-- more -->
 
 
-<p>首先，我们用图形编辑(PS, Pixelmator等)工具，做两套语言的加载屏幕。简单起见，我们就用白底加居中的黑字(“US”和“CN”)的两套图片好了（文件在示例代码中有），每套图片要三个尺寸：Default.png(320x480)，<a href="&#x6d;&#x61;&#x69;&#x6c;&#x74;&#x6f;&#x3a;&#x44;&#x65;&#102;&#97;&#117;&#108;&#116;&#x40;&#x32;&#120;&#46;&#x70;&#110;&#x67;">&#68;&#x65;&#x66;&#97;&#117;&#x6c;&#x74;&#x40;&#50;&#x78;&#x2e;&#x70;&#110;&#103;</a>(640x960)以及<a href="&#x6d;&#97;&#x69;&#108;&#x74;&#x6f;&#58;&#x44;&#x65;&#102;&#97;&#117;&#108;&#116;&#x2d;&#53;&#x36;&#56;&#x68;&#64;&#50;&#120;&#x2e;&#x70;&#x6e;&#x67;">&#x44;&#101;&#x66;&#x61;&#117;&#108;&#x74;&#45;&#53;&#54;&#x38;&#104;&#x40;&#x32;&#120;&#x2e;&#x70;&#110;&#103;</a>(640x1136)。</p>
+<p>首先，我们用图形编辑(PS, Pixelmator等)工具，做两套语言的加载屏幕。简单起见，我们就用白底加居中的黑字(“US”和“CN”)的两套图片好了（文件在示例代码中有），每套图片要三个尺寸：Default.png(320x480)，<a href="&#109;&#x61;&#x69;&#108;&#116;&#x6f;&#58;&#68;&#101;&#102;&#97;&#x75;&#108;&#x74;&#64;&#x32;&#x78;&#x2e;&#x70;&#x6e;&#x67;">&#x44;&#x65;&#102;&#97;&#117;&#x6c;&#116;&#64;&#50;&#x78;&#46;&#x70;&#x6e;&#x67;</a>(640x960)以及<a href="&#x6d;&#97;&#x69;&#x6c;&#116;&#x6f;&#x3a;&#68;&#x65;&#102;&#97;&#x75;&#x6c;&#x74;&#45;&#53;&#54;&#56;&#x68;&#x40;&#50;&#120;&#46;&#x70;&#110;&#103;">&#68;&#101;&#x66;&#x61;&#x75;&#108;&#116;&#x2d;&#x35;&#54;&#56;&#104;&#64;&#50;&#120;&#46;&#x70;&#x6e;&#x67;</a>(640x1136)。</p>
 
 <p>做好图片之后，我们在Xcode里创建一个新项目名字可以叫做“Local Splash”，程序模板任意，简单起见，支持的设备只选iPhone。创建后，我们用“US”那套图片替换项目默认的纯黑色加载屏幕，作为默认语言的加载屏幕。</p>
 
@@ -2008,147 +2034,6 @@
 <p>这种方法将应用到程序中所有的<code>UINavigationBar</code>实例。但是通常来说，是不推荐覆盖系统自带的类中的方法的，所以我并不推荐使用这种方法。</p>
 
 <p><a href="http://idevrecipes.com/2011/01/12/how-do-iphone-apps-instagramreederdailybooth-implement-custom-navigationbar-with-variable-width-back-buttons/">这里</a>介绍了更好的方法。</p>
-
-<p>(全文完)</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[在Mac和iOS中注册自定义的URL Scheme]]></title>
-    <link href="http://venj.github.io/blog/custom-url-scheme-on-mac-and-ios/"/>
-    <updated>2012-01-10T15:44:00+08:00</updated>
-    <id>http://venj.github.io/blog/custom-url-scheme-on-mac-and-ios</id>
-    <content type="html"><![CDATA[<p>URL Scheme是类似<code>http://</code>，<code>ftp://</code>，<code>afp://</code>这样的东西，通常是用传输协议作为URL Scheme。不过事实上，你可以在iOS和Mac中注册任何类型的URL Scheme。当用户在浏览器中访问你的自定义URL Scheme的链接的时候，操作系统就会打开你的程序，响应这个请求。</p>
-
-<p>要在程序中注册自定义URL Scheme非常简单。主要分为两个步骤：在程序的Info.plist中加入你需要注册的URL Scheme，然后在你的应用程序中加入处理这类请求的代码。</p>
-
-<p>其中，第一个步骤对于iOS和Mac应用程序来说是完全相同的。方法如下：</p>
-
-<!-- more -->
-
-
-<p>在<code>Info.plist</code>中，增加一个字段，名称为<code>CFBundleURLTypes</code>（URL Types）。Xcode会自动为你创建一个必须的键：<code>URL Identifier</code>(CFBundleURLName)，这个键的值可以赋值为一个唯一的字符串。通常是逆向的域名结构，如：<code>me.venj.myapp</code>。然后在URL Types这个键下增加一个子项：<code>CFBundleURLSchemes</code>(URL Schemes)，这里填入你想注册的URL Scheme的名称，如：<code>cloud</code>。你可以增加多个URL Scheme。</p>
-
-<p>下面是一个示例的XML结构：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;key&gt;</span>CFBundleURLTypes<span class="nt">&lt;/key&gt;</span>
-</span><span class='line'><span class="nt">&lt;array&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;dict&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;key&gt;</span>CFBundleURLName<span class="nt">&lt;/key&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;string&gt;</span>me.venj.myapp<span class="nt">&lt;/string&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;key&gt;</span>CFBundleURLSchemes<span class="nt">&lt;/key&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;array&gt;</span>
-</span><span class='line'>            <span class="nt">&lt;string&gt;</span>cloud<span class="nt">&lt;/string&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;/array&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;/dict&gt;</span>
-</span><span class='line'><span class="nt">&lt;/array&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>这样，我们就可以在程序中处理请求了。下面我们来分别看一下iOS和Mac下的处理方法：</p>
-
-<p><strong>iOS：</strong></p>
-
-<p>在iOS中，我们可以在AppDelegate中加入一个方法，来处理这个请求。对于iOS 4.1或更早的系统，使用<code>-application:handleOpenURL:</code>方法，对于iOS 4.2以后的系统使用：<code>-application:openURL:sourceApplication:annotation:</code>方法。</p>
-
-<p>下面是示例代码：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cm">/* For iOS 4.1 and earlier */</span>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">application:</span><span class="p">(</span><span class="n">UIApplication</span> <span class="o">*</span><span class="p">)</span><span class="nv">application</span> <span class="nf">handleOpenURL:</span><span class="p">(</span><span class="n">NSURL</span> <span class="o">*</span><span class="p">)</span><span class="nv">url</span> <span class="p">{</span>
-</span><span class='line'>    <span class="c1">// Handle url request.</span>
-</span><span class='line'>    <span class="n">UIAlertView</span> <span class="o">*</span><span class="n">alert</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIAlertView</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithTitle:</span><span class="s">@&quot;URL Request&quot;</span> <span class="nl">message:</span><span class="p">[</span><span class="n">url</span> <span class="n">absoluteString</span><span class="p">]</span> <span class="nl">delegate:</span><span class="nb">nil</span> <span class="nl">cancelButtonTitle:</span><span class="s">@&quot;OK&quot;</span> <span class="nl">otherButtonTitles:</span><span class="nb">nil</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">alert</span> <span class="n">show</span><span class="p">];</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">return</span> <span class="n">YES</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="cm">/* For iOS 4.2 and later */</span>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">application:</span><span class="p">(</span><span class="n">UIApplication</span> <span class="o">*</span><span class="p">)</span><span class="nv">application</span> <span class="nf">openURL:</span><span class="p">(</span><span class="n">NSURL</span> <span class="o">*</span><span class="p">)</span><span class="nv">url</span> <span class="nf">sourceApplication:</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">sourceApplication</span> <span class="nf">annotation:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">annotation</span> <span class="p">{</span>
-</span><span class='line'>    <span class="c1">// Handle url request.</span>
-</span><span class='line'>    <span class="n">UIAlertView</span> <span class="o">*</span><span class="n">alert</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIAlertView</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithTitle:</span><span class="s">@&quot;URL Request&quot;</span> <span class="nl">message:</span><span class="p">[</span><span class="n">url</span> <span class="n">absoluteString</span><span class="p">]</span> <span class="nl">delegate:</span><span class="nb">nil</span> <span class="nl">cancelButtonTitle:</span><span class="s">@&quot;OK&quot;</span> <span class="nl">otherButtonTitles:</span><span class="nb">nil</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">alert</span> <span class="n">show</span><span class="p">];</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">return</span> <span class="n">YES</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>我们的演示程序只是简单的显示了一个<code>UIAlertView</code>来响应请求。实际应该如何处理那就看需要了。</p>
-
-<p>效果如下：</p>
-
-<p><img class="center" src="http://venj.github.io/images/posts/custom-url-scheme-ios.png"></p>
-
-<p><strong>Mac：</strong></p>
-
-<p>Mac下处理自定义URL Scheme的请求稍有不同。我们首先要在<code>-applicationDidFinishLaunching:</code>方法中注册一下，并指定处理URL请求的方法。如下：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">applicationDidFinishLaunching:</span><span class="p">(</span><span class="n">NSNotification</span> <span class="o">*</span><span class="p">)</span><span class="nv">aNotification</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="c1">// Insert code here to initialize your application</span>
-</span><span class='line'>    <span class="p">[[</span><span class="n">NSAppleEventManager</span> <span class="n">sharedAppleEventManager</span><span class="p">]</span> <span class="nl">setEventHandler:</span><span class="n">self</span> <span class="nl">andSelector:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">handleURLEvent:withReplyEvent:</span><span class="p">)</span> <span class="nl">forEventClass:</span><span class="n">kInternetEventClass</span> <span class="nl">andEventID:</span><span class="n">kAEGetURL</span><span class="p">];</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">handleURLEvent:</span><span class="p">(</span><span class="n">NSAppleEventDescriptor</span><span class="o">*</span><span class="p">)</span><span class="nv">theEvent</span> <span class="nf">withReplyEvent:</span><span class="p">(</span><span class="n">NSAppleEventDescriptor</span><span class="o">*</span><span class="p">)</span><span class="nv">replyEvent</span> <span class="p">{</span>
-</span><span class='line'>    <span class="c1">// Process URL Request</span>
-</span><span class='line'>    <span class="n">NSString</span><span class="o">*</span> <span class="n">path</span> <span class="o">=</span> <span class="p">[[</span><span class="n">theEvent</span> <span class="nl">paramDescriptorForKeyword:</span><span class="n">keyDirectObject</span><span class="p">]</span> <span class="n">stringValue</span><span class="p">];</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="p">[[</span><span class="n">NSAlert</span> <span class="nl">alertWithMessageText:</span><span class="s">@&quot;URL Request&quot;</span> <span class="nl">defaultButton:</span><span class="s">@&quot;OK&quot;</span> <span class="nl">alternateButton:</span><span class="nb">nil</span> <span class="nl">otherButton:</span><span class="nb">nil</span> <span class="nl">informativeTextWithFormat:</span><span class="s">@&quot;%@&quot;</span><span class="p">,</span> <span class="n">path</span><span class="p">]</span> <span class="n">runModal</span><span class="p">];</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>类似的，我们在示例程序中还是简单的用了一个<code>NSAlert</code>来展示我们成功捕获到了这个URL Scheme的请求。</p>
-
-<p>效果如下：</p>
-
-<p><img class="center" src="http://venj.github.io/images/posts/custom-url-scheme.png"></p>
-
-<p>好了，关于自定义URL Scheme就讲这么多，用起来很简单吧。</p>
-
-<p>说明：
-&ndash; 本文的示例代码已经推送到了<a href="https://github.com/venj/Cocoa-blog-code">Github</a>，你可以下载编译之后退出程序。然后打开Safari，在地址栏中输入： <code>cloud://test.com</code>，看看是不是自动转跳到示例程序，并看到了对话框。
-&ndash; 本文参考了<a href="http://stackoverflow.com/questions/1991072/how-to-handle-with-a-default-url-scheme">这里</a>和<a href="http://developer.apple.com/library/ios/#documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/AdvancedAppTricks/AdvancedAppTricks.html#//apple_ref/doc/uid/TP40007072-CH7-SW20">Apple的文档</a></p>
 
 <p>(全文完)</p>
 ]]></content>

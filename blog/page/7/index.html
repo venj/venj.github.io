@@ -9,17 +9,7 @@
   <meta name="author" content="venj">
 
   
-  <meta name="description" content="在程序中记忆窗口的位置，以便在下次打开的时候恢复记忆的位置。这对很多程序来说还是比较有必要的。方法很简单： 1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-- (void)windowDidMove:(NSNotification *)notification { // 自动记忆和恢复位置 [self. &hellip;">
+  <meta name="description" content="我之前曾经写过一篇关于NSAttributedString转HTML的文章，因为没有得到理想的结果，而TextEdit的另存为HTML却非常漂亮，所以对此我一直耿耿于怀。今天又研究了一下TextEdit将文档另存为HTML的方法，总算能把这个问题画上一个圆满的句号了。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -76,6 +66,50 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/talk-about-nsattributesstring-to-html-again/">再谈NSAttributedString转HTML</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-06-28T22:59:00+08:00" pubdate data-updated="true">Jun 28<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>我之前曾经写过一篇<a href="/blog/a-not-so-good-way-to-convert-nsattributesstring-to-html/">关于NSAttributedString转HTML的文章</a>，因为没有得到理想的结果，而TextEdit的另存为HTML却非常漂亮，所以对此我一直耿耿于怀。今天又研究了一下TextEdit将文档另存为HTML的方法，总算能把这个问题画上一个圆满的句号了。</p>
+
+<p>在来回翻阅了TextEdit的源码后，我发现在<code>Document.m</code>里的<code>- (id)fileWrapperOfType:(NSString *)typeName error:(NSError **)outError</code>方法，就是苹果官方将<code>NSAttributedString</code>转HTML的方法（这个方法当然也包含了将富文本转成其他格式的方法，在此不详述了）。仔细阅读了这个方法之后，我发现原来苹果也是用的我在之前那篇文章中用到的那个方法：<code>- (NSData *)dataFromRange:(NSRange)range documentAttributes:(NSDictionary *)dict error:(NSError **)error</code>转的——我没把重点弄错。不错我的错误是错在调用的时候，设置的参数有问题。
+下面贴上源码，在注释了进行解释：</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/talk-about-nsattributesstring-to-html-again/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -365,62 +399,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/add-growl-support-in-your-apps-add-growl-framework/">为应用程序增加Growl支持（上）：在项目中加入Growl.Framework</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-05-26T10:12:00+08:00" pubdate data-updated="true">May 26<span>th</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Growl是啥，用来干什么的我就不介绍了。Growl的文档说实话，写的挺抽象的。不是Step by Step的文档，对我来说就有点困难了。所以，我决定把Growl支持写成几篇短文，简单介绍一下如何在程序中增加Growl支持。【为啥要分几篇？嘛，因为我自己也是边学边写文章的吗。。。Orz】</p>
-
-<p>首先，介绍一下原文是怎么写的。</p>
-
-<blockquote><ol>
-<li>Download the frameworks from the Downloads page from there.</li>
-<li>Copy the Growl framework to your application&rsquo;s project folder (or any subdirectory of it).</li>
-<li>Add the Growl framework to your project, making sure that all the relevant target checkboxes are checked. The header files in the framework use UTF-8 encoding.</li>
-<li>Add a Copy Files phase to your application&rsquo;s target.</li>
-<li>Get Info on the Copy Files phase.</li>
-<li>Set the destination to “Frameworks”, with no subpath (clear the field).</li>
-<li>Drag the framework from the group tree into the Copy Files phase.</li>
-</ol>
-</blockquote>
-
-<p>其实描述的听清楚的。奈何，我的理解能力太差，搞不定。俗话说，<strong>A picture worth a thousand words</strong>，所以我就以Xcode 4为例，把上述过程做一遍。（下面的编号基本对应上文中的1-7所述的步骤）</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/add-growl-support-in-your-apps-add-growl-framework/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/8/">&larr; Older</a>
@@ -444,6 +422,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/simple-uiimage-extension-to-create-rounded-corner-image/">一个简单的创建圆角图像的UIImage扩展实现</a>
       </li>
     
@@ -457,10 +439,6 @@
     
       <li class="post">
         <a href="/blog/localized-loading-screen/">本地化加载屏幕</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/refresh-control-gochas/">用代码触发下拉更新</a>
       </li>
     
   </ul>

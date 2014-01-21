@@ -9,7 +9,12 @@
   <meta name="author" content="venj">
 
   
-  <meta name="description" content="有时候，我们需要动态地得到一个多行字符串的高度。比如，在TableView中，如果我们允许UILabel/NSTextField多行显示，而TableView的Delegate就需要知道Cell的高度，这时，我们需要根据TableView呈现的内容，动态地计算多行字符串的高度，以确定Cell的高度 &hellip;">
+  <meta name="description" content="好久没有写Blog了，今天正好碰上了一个问题，于是决定写一写博客简单描述下。情况是这样的：之前，在iOS 5下，要显示一个从当前为止到目标位置的驾车导航可以使用如下的代码来搞定（参考这里）： 1
+2
+3
+4
+//基于地名调用iOS自带的Google Maps导航
+NSString * &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -66,6 +71,58 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/drive-navigation-in-ios6/">iOS 6下的驾车导航</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-26T11:18:00+08:00" pubdate data-updated="true">Nov 26<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>好久没有写Blog了，今天正好碰上了一个问题，于是决定写一写博客简单描述下。情况是这样的：之前，在iOS 5下，要显示一个从当前为止到目标位置的驾车导航可以使用如下的代码来搞定（<a href="http://developer.apple.com/library/ios/#featuredarticles/iPhoneURLScheme_Reference/Articles/MapLinks.html">参考这里</a>）：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">//基于地名调用iOS自带的Google Maps导航</span>
+</span><span class='line'><span class="n">NSString</span> <span class="o">*</span><span class="n">urlEncodedCurrentPlaceName</span> <span class="o">=</span> <span class="p">[</span><span class="s">@&quot;当前位置&quot;</span> <span class="nl">stringByAddingPercentEscapesUsingEncoding:</span><span class="n">NSUTF8StringEncoding</span><span class="p">];</span> <span class="c1">//简单起见，没有考虑多语言*（注）*。</span>
+</span><span class='line'><span class="n">NSString</span> <span class="o">*</span><span class="n">mapLink</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSString</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFormat:</span><span class="s">@&quot;http://maps.google.com/maps?daddr=%@&amp;saddr=%@&quot;</span><span class="p">,</span> <span class="n">urlEncodedDestinationPlaceName</span><span class="p">,</span> <span class="p">];</span>
+</span><span class='line'><span class="p">[[</span><span class="n">UIApplication</span> <span class="n">sharedApplication</span><span class="p">]</span> <span class="nl">openURL:</span><span class="p">[[</span><span class="n">NSURL</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithString:</span><span class="n">mapLink</span><span class="p">]];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/drive-navigation-in-ios6/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -363,67 +420,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/bounce-dock-icon/">跳动Dock图标的实现</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-03-09T09:13:00+08:00" pubdate data-updated="true">Mar 9<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>OS X程序，在执行后台任务的时候，有时需要通过跳动Dock图标来提示用户进行操作或某项操作已经执行完成。方法很简单，<code>NSApplication</code>有一个<code>-requestUserAttention:</code>的方法可以跳动Dock图标。</p>
-
-<p>下面是实例代码：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">//跳动一次</span>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">bounceOnce:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">NSApp</span> <span class="nl">requestUserAttention:</span><span class="n">NSInformationalRequest</span><span class="p">];</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="c1">//总是跳动，直到用户干预为止</span>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">bounceAlways:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">NSApp</span> <span class="nl">requestUserAttention:</span><span class="n">NSCriticalRequest</span><span class="p">];</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>FYI: <code>NSApp</code>是一个指向当前运行的程序实例的全局变量，等同于调用：<code>[NSApplication sharedApplication]</code>。</p>
-
-<p>示例代码已经上传到<a href="https://github.com/venj/Cocoa-blog-code/tree/master/Bounce%20Icon">github</a>，有兴趣的可以看看。不过记得在测试示例程序的时候，点击按钮后就让程序进入后台运行。5秒钟后就能看到效果了。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -447,6 +443,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/simple-uiimage-extension-to-create-rounded-corner-image/">一个简单的创建圆角图像的UIImage扩展实现</a>
       </li>
     
@@ -460,10 +460,6 @@
     
       <li class="post">
         <a href="/blog/localized-loading-screen/">本地化加载屏幕</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/refresh-control-gochas/">用代码触发下拉更新</a>
       </li>
     
   </ul>

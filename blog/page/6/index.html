@@ -9,7 +9,12 @@
   <meta name="author" content="venj">
 
   
-  <meta name="description" content="记得有人说过，写不写测试代码是判断一个开发者是否成熟的标志。良好的测试代码能够让程序代码更健壮，使重构更加方便。虽然Objective-C是一种编译语言，但是在Xcode的帮助下，做测试和测试驱动开发（Test Driven Development, TDD）也非常方便。 &hellip;">
+  <meta name="description" content="今天在测试代码的时候发现了一个诡异的问题，那就是NSImage加载图片的时候无法准确获得图片的大小。 最初的代码是这样的： 1
+2
+3
+4
+NSImage *image = [NSImage imageNamed:@&quot;image&quot;];
+NSLog(@&quot;%f, %f& &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -66,6 +71,62 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/get-real-size-of-nsimage/">获取NSImage图片的准确大小</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-08-19T23:58:00+08:00" pubdate data-updated="true">Aug 19<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>今天在测试代码的时候发现了一个诡异的问题，那就是<code>NSImage</code>加载图片的时候无法准确获得图片的大小。</p>
+
+<p>最初的代码是这样的：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSImage</span> <span class="o">*</span><span class="n">image</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSImage</span> <span class="nl">imageNamed:</span><span class="s">@&quot;image&quot;</span><span class="p">];</span>
+</span><span class='line'><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%f, %f&quot;</span><span class="p">,</span> <span class="n">image</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="n">image</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">);</span>
+</span><span class='line'><span class="c1">//终端Log到的图片的尺寸是：185.250000, 106.500000，而实际的大小是274.0, 142.0。</span>
+</span><span class='line'><span class="c1">//image.size = NSMakeSize(247.0, 142.0); //强制指定尺寸能够解决问题</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>我用一个Image Well来显示图片的时候，发现图片居然比实际的要小！我试着<code>NSLog</code>图片的大小，发现<code>NSImage</code>加载的图片的<code>size</code>根本就是错的！我根据图片的实际大小，强制设置了图片的尺寸，图片就显示正常了，而且也没有被拉伸的痕迹。这说明图片数据在加载后并没有损耗，只是图片的<code>size</code>属性出错了，因此，强制设置<code>size</code>属性，图片就能正常显示了。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/get-real-size-of-nsimage/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -305,50 +366,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/talk-about-nsattributesstring-to-html-again/">再谈NSAttributedString转HTML</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-06-28T22:59:00+08:00" pubdate data-updated="true">Jun 28<span>th</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>我之前曾经写过一篇<a href="/blog/a-not-so-good-way-to-convert-nsattributesstring-to-html/">关于NSAttributedString转HTML的文章</a>，因为没有得到理想的结果，而TextEdit的另存为HTML却非常漂亮，所以对此我一直耿耿于怀。今天又研究了一下TextEdit将文档另存为HTML的方法，总算能把这个问题画上一个圆满的句号了。</p>
-
-<p>在来回翻阅了TextEdit的源码后，我发现在<code>Document.m</code>里的<code>- (id)fileWrapperOfType:(NSString *)typeName error:(NSError **)outError</code>方法，就是苹果官方将<code>NSAttributedString</code>转HTML的方法（这个方法当然也包含了将富文本转成其他格式的方法，在此不详述了）。仔细阅读了这个方法之后，我发现原来苹果也是用的我在之前那篇文章中用到的那个方法：<code>- (NSData *)dataFromRange:(NSRange)range documentAttributes:(NSDictionary *)dict error:(NSError **)error</code>转的——我没把重点弄错。不错我的错误是错在调用的时候，设置的参数有问题。
-下面贴上源码，在注释了进行解释：</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/talk-about-nsattributesstring-to-html-again/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/7/">&larr; Older</a>
@@ -372,6 +389,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/simple-uiimage-extension-to-create-rounded-corner-image/">一个简单的创建圆角图像的UIImage扩展实现</a>
       </li>
     
@@ -385,10 +406,6 @@
     
       <li class="post">
         <a href="/blog/localized-loading-screen/">本地化加载屏幕</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/refresh-control-gochas/">用代码触发下拉更新</a>
       </li>
     
   </ul>

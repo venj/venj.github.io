@@ -9,7 +9,7 @@
   <meta name="author" content="venj">
 
   
-  <meta name="description" content="为了让我们的应用程序更加美观，我们往往希望对iPhone自带的控件进行一点自定义。比如，本文即将要讲述的，给UINavigationBar加一个背景。 最简单的一个自定义方法就是修改一下背景色。方法非常简单，那就是使用它的tintColor属性： ">
+  <meta name="description" content="单例模式在Cocoa和Cocoa Touch中非常常见。比如这两个，[UIApplication sharedApplication]和[NSApplication sharedApplication]，大家应该都见过。但是我们应该如何在代码中实现一个单例模式呢？ 如果你对苹果的文档很熟悉的话， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -66,6 +66,49 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/singleton-in-objc/">Objective-C中单例模式的实现</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-02-07T20:29:00+08:00" pubdate data-updated="true">Feb 7<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>单例模式在Cocoa和Cocoa Touch中非常常见。比如这两个，<code>[UIApplication sharedApplication]</code>和<code>[NSApplication sharedApplication]</code>，大家应该都见过。但是我们应该如何在代码中实现一个单例模式呢？</p>
+
+<p>如果你对苹果的文档很熟悉的话，你一定知道，在<a href="https://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/CocoaFundamentals/Introduction/Introduction.html">Cocoa Foundamentals Guide</a>中有一段<a href="https://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/CocoaFundamentals/CocoaObjects/CocoaObjects.html#//apple_ref/doc/uid/TP40002974-CH4-SW32">实现单例模式的示例代码</a>。大致如下：</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/singleton-in-objc/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -288,57 +331,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/play-with-dock-icon/">在Cocoa里玩转Dock图标</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-09-03T00:35:00+08:00" pubdate data-updated="true">Sep 3<span>rd</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>今天我们来看一看如何在Cocoa程序中自定义Dock图标。Dock图标的自定义主要包括四方面：</p>
-
-<blockquote><ul>
-<li>加徽章（Badge）</li>
-<li>换图标</li>
-<li>隐藏和显示最小化时的图标徽章</li>
-<li>增加自定义Dock菜单</li>
-</ul>
-</blockquote>
-
-<p>本文将对如何进行这四方面的自定义进行简单的介绍，并且在最后研究一下腾讯QQ for Mac独特的Badge机制。本文的示例代码使用了Acorn和腾讯QQ的图标做例子，请这两家厂商不要介意。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/play-with-dock-icon/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/5/">&larr; Older</a>
@@ -362,6 +354,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/simple-uiimage-extension-to-create-rounded-corner-image/">一个简单的创建圆角图像的UIImage扩展实现</a>
       </li>
     
@@ -375,10 +371,6 @@
     
       <li class="post">
         <a href="/blog/localized-loading-screen/">本地化加载屏幕</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/refresh-control-gochas/">用代码触发下拉更新</a>
       </li>
     
   </ul>

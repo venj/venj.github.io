@@ -9,7 +9,10 @@
   <meta name="author" content="venj">
 
   
-  <meta name="description" content="用过QQ for Mac的都知道QQ能够直接截图发送。那么，我们如何在Cocoa程序中嵌入截图支持呢？有一个最简单的方法是使用OSX自带的screencapture命令行工具来进行截图。 下面用代码来进行说明： ">
+  <meta name="description" content="今天我们来看一看如何在Cocoa程序中自定义Dock图标。Dock图标的自定义主要包括四方面： 加徽章（Badge）
+换图标
+隐藏和显示最小化时的图标徽章
+增加自定义Dock菜单 本文将对如何进行这四方面的自定义进行简单的介绍，并且在最后研究一下腾讯QQ for Mac独特的Badge机制。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -66,6 +69,57 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/play-with-dock-icon/">在Cocoa里玩转Dock图标</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-09-03T00:35:00+08:00" pubdate data-updated="true">Sep 3<span>rd</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>今天我们来看一看如何在Cocoa程序中自定义Dock图标。Dock图标的自定义主要包括四方面：</p>
+
+<blockquote><ul>
+<li>加徽章（Badge）</li>
+<li>换图标</li>
+<li>隐藏和显示最小化时的图标徽章</li>
+<li>增加自定义Dock菜单</li>
+</ul>
+</blockquote>
+
+<p>本文将对如何进行这四方面的自定义进行简单的介绍，并且在最后研究一下腾讯QQ for Mac独特的Badge机制。本文的示例代码使用了Acorn和腾讯QQ的图标做例子，请这两家厂商不要介意。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/play-with-dock-icon/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -298,62 +352,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/get-real-size-of-nsimage/">获取NSImage图片的准确大小</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-08-19T23:58:00+08:00" pubdate data-updated="true">Aug 19<span>th</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>今天在测试代码的时候发现了一个诡异的问题，那就是<code>NSImage</code>加载图片的时候无法准确获得图片的大小。</p>
-
-<p>最初的代码是这样的：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSImage</span> <span class="o">*</span><span class="n">image</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSImage</span> <span class="nl">imageNamed:</span><span class="s">@&quot;image&quot;</span><span class="p">];</span>
-</span><span class='line'><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%f, %f&quot;</span><span class="p">,</span> <span class="n">image</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="n">image</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">);</span>
-</span><span class='line'><span class="c1">//终端Log到的图片的尺寸是：185.250000, 106.500000，而实际的大小是274.0, 142.0。</span>
-</span><span class='line'><span class="c1">//image.size = NSMakeSize(247.0, 142.0); //强制指定尺寸能够解决问题</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>我用一个Image Well来显示图片的时候，发现图片居然比实际的要小！我试着<code>NSLog</code>图片的大小，发现<code>NSImage</code>加载的图片的<code>size</code>根本就是错的！我根据图片的实际大小，强制设置了图片的尺寸，图片就显示正常了，而且也没有被拉伸的痕迹。这说明图片数据在加载后并没有损耗，只是图片的<code>size</code>属性出错了，因此，强制设置<code>size</code>属性，图片就能正常显示了。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/get-real-size-of-nsimage/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/6/">&larr; Older</a>
@@ -377,6 +375,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/simple-uiimage-extension-to-create-rounded-corner-image/">一个简单的创建圆角图像的UIImage扩展实现</a>
       </li>
     
@@ -390,10 +392,6 @@
     
       <li class="post">
         <a href="/blog/localized-loading-screen/">本地化加载屏幕</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/refresh-control-gochas/">用代码触发下拉更新</a>
       </li>
     
   </ul>
