@@ -12,7 +12,7 @@ categories: [UIImageView, CALayer]
 
 <!-- more -->
 
-```objc UIImageView的圆角显示图像 start:1 mark:2-3
+```objc
 UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"sample"]];
 imageView.layer.cornerRadius = 10.0;
 imageView.layer.masksToBounds = YES;
