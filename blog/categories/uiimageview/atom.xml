@@ -4,7 +4,7 @@
   <title><![CDATA[Category: UIImageView | Cocoa学习]]></title>
   <link href="http://venj.github.io/blog/categories/uiimageview/atom.xml" rel="self"/>
   <link href="http://venj.github.io/"/>
-  <updated>2014-01-21T09:35:25+08:00</updated>
+  <updated>2014-01-21T09:37:15+08:00</updated>
   <id>http://venj.github.io/</id>
   <author>
     <name><![CDATA[venj]]></name>
@@ -22,7 +22,10 @@
 
 <p>这种方法利用的是<code>UIImageView</code>的<code>layer</code>的属性，实现把图像显示成圆角，而无需对图像本身进行处理。在开发中，大部分情况下，我们只需要“显示”圆角，而不是“得到”圆角图像。不是么。好了，先看代码：</p>
 
-<p><code>objc UIImageView的圆角显示图像 mark:2,3
+<!-- more -->
+
+
+<p><code>objc UIImageView的圆角显示图像 start:1 mark:2-3
 UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"sample"]];
 imageView.layer.cornerRadius = 10.0;
 imageView.layer.masksToBounds = YES;

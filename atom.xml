@@ -4,7 +4,7 @@
   <title><![CDATA[Cocoa学习]]></title>
   <link href="http://venj.github.io/atom.xml" rel="self"/>
   <link href="http://venj.github.io/"/>
-  <updated>2014-01-21T09:35:25+08:00</updated>
+  <updated>2014-01-21T09:37:15+08:00</updated>
   <id>http://venj.github.io/</id>
   <author>
     <name><![CDATA[venj]]></name>
@@ -22,7 +22,12 @@
 
 <p>这种方法利用的是<code>UIImageView</code>的<code>layer</code>的属性，实现把图像显示成圆角，而无需对图像本身进行处理。在开发中，大部分情况下，我们只需要“显示”圆角，而不是“得到”圆角图像。不是么。好了，先看代码：</p>
 
-<figure class='code'><figcaption><span>UIImageView的圆角显示图像 mark:2,3</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<!-- more -->
+
+
+
+
+<figure class='code'><figcaption><span>UIImageView的圆角显示图像 start:1 mark:2-3</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 </pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">UIImageView</span> <span class="o">*</span><span class="n">imageView</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIImageView</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithImage:</span><span class="p">[</span><span class="n">UIImage</span> <span class="nl">imageNamed:</span><span class="s">@&quot;sample&quot;</span><span class="p">]];</span>
@@ -234,7 +239,7 @@
 <!-- more -->
 
 
-<p>首先，我们用图形编辑(PS, Pixelmator等)工具，做两套语言的加载屏幕。简单起见，我们就用白底加居中的黑字(“US”和“CN”)的两套图片好了（文件在示例代码中有），每套图片要三个尺寸：Default.png(320x480)，<a href="&#109;&#x61;&#x69;&#108;&#116;&#x6f;&#58;&#68;&#101;&#102;&#97;&#x75;&#108;&#x74;&#64;&#x32;&#x78;&#x2e;&#x70;&#x6e;&#x67;">&#x44;&#x65;&#102;&#97;&#117;&#x6c;&#116;&#64;&#50;&#x78;&#46;&#x70;&#x6e;&#x67;</a>(640x960)以及<a href="&#x6d;&#97;&#x69;&#x6c;&#116;&#x6f;&#x3a;&#68;&#x65;&#102;&#97;&#x75;&#x6c;&#x74;&#45;&#53;&#54;&#56;&#x68;&#x40;&#50;&#120;&#46;&#x70;&#110;&#103;">&#68;&#101;&#x66;&#x61;&#x75;&#108;&#116;&#x2d;&#x35;&#54;&#56;&#104;&#64;&#50;&#120;&#46;&#x70;&#x6e;&#x67;</a>(640x1136)。</p>
+<p>首先，我们用图形编辑(PS, Pixelmator等)工具，做两套语言的加载屏幕。简单起见，我们就用白底加居中的黑字(“US”和“CN”)的两套图片好了（文件在示例代码中有），每套图片要三个尺寸：Default.png(320x480)，<a href="&#109;&#x61;&#105;&#x6c;&#x74;&#x6f;&#58;&#68;&#101;&#x66;&#97;&#117;&#x6c;&#x74;&#64;&#x32;&#120;&#x2e;&#x70;&#110;&#x67;">&#x44;&#101;&#x66;&#97;&#117;&#108;&#116;&#x40;&#x32;&#120;&#46;&#x70;&#110;&#x67;</a>(640x960)以及<a href="&#109;&#97;&#x69;&#108;&#116;&#111;&#58;&#68;&#x65;&#x66;&#97;&#117;&#108;&#x74;&#45;&#53;&#54;&#x38;&#104;&#x40;&#x32;&#x78;&#46;&#x70;&#110;&#x67;">&#68;&#101;&#102;&#97;&#x75;&#108;&#116;&#45;&#53;&#54;&#x38;&#x68;&#64;&#50;&#120;&#46;&#x70;&#110;&#x67;</a>(640x1136)。</p>
 
 <p>做好图片之后，我们在Xcode里创建一个新项目名字可以叫做“Local Splash”，程序模板任意，简单起见，支持的设备只选iPhone。创建后，我们用“US”那套图片替换项目默认的纯黑色加载屏幕，作为默认语言的加载屏幕。</p>
 
