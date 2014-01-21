@@ -4,7 +4,7 @@
   <title><![CDATA[Category: UIImageView | Cocoa学习]]></title>
   <link href="http://venj.github.io/blog/categories/uiimageview/atom.xml" rel="self"/>
   <link href="http://venj.github.io/"/>
-  <updated>2014-01-21T09:37:15+08:00</updated>
+  <updated>2014-01-21T09:40:04+08:00</updated>
   <id>http://venj.github.io/</id>
   <author>
     <name><![CDATA[venj]]></name>
@@ -25,7 +25,7 @@
 <!-- more -->
 
 
-<p><code>objc UIImageView的圆角显示图像 start:1 mark:2-3
+<p><code>objc "UIImageView的圆角显示图像" start:1 mark:2-3
 UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"sample"]];
 imageView.layer.cornerRadius = 10.0;
 imageView.layer.masksToBounds = YES;
