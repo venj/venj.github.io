@@ -25,9 +25,9 @@ categories: [UIImage, 圆角]
 @implementation UIImage (RoundedCorner)
 
 - (UIImage *)roundedCornerImageWithCornerRadius:(CGFloat)cornerRadius {
-	CGFloat w = self.size.width;
-	CGFloat h = self.size.height;
-	CGFloat scale = [UIScreen mainScreen].scale;
+    CGFloat w = self.size.width;
+    CGFloat h = self.size.height;
+    CGFloat scale = [UIScreen mainScreen].scale;
     // 防止圆角半径小于0，或者大于宽/高中较小值的一半。
     if (cornerRadius < 0)
         cornerRadius = 0;
@@ -40,7 +40,7 @@ categories: [UIImage, 圆角]
     [[UIBezierPath bezierPathWithRoundedRect:imageFrame cornerRadius:cornerRadius] addClip];
     [self drawInRect:imageFrame];
     image = UIGraphicsGetImageFromCurrentImageContext();
-	UIGraphicsEndImageContext();
+    UIGraphicsEndImageContext();
     
     return image;
 }
