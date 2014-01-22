@@ -104,7 +104,9 @@
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
+<span class='line-number'>4</span>
 </pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">UIImageView</span> <span class="o">*</span><span class="n">imageView</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIImageView</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithImage:</span><span class="p">[</span><span class="n">UIImage</span> <span class="nl">imageNamed:</span><span class="s">@&quot;sample&quot;</span><span class="p">]];</span>
+</span><span class='line'><span class="c1">//设置圆角半径，只要是imageView的宽/高中较小的一个值的一半或更小的值就可以</span>
 </span><span class='line'><span class="n">imageView</span><span class="p">.</span><span class="n">layer</span><span class="p">.</span><span class="n">cornerRadius</span> <span class="o">=</span> <span class="mf">10.0</span><span class="p">;</span>
 </span><span class='line'><span class="n">imageView</span><span class="p">.</span><span class="n">layer</span><span class="p">.</span><span class="n">masksToBounds</span> <span class="o">=</span> <span class="n">YES</span><span class="p">;</span>
 </span></code></pre></td></tr></table></div></figure>

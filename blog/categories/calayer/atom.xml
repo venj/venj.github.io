@@ -4,7 +4,7 @@
   <title><![CDATA[Category: CALayer | Cocoa学习]]></title>
   <link href="http://venj.github.io/blog/categories/calayer/atom.xml" rel="self"/>
   <link href="http://venj.github.io/"/>
-  <updated>2014-01-21T10:00:35+08:00</updated>
+  <updated>2014-01-22T09:36:01+08:00</updated>
   <id>http://venj.github.io/</id>
   <author>
     <name><![CDATA[venj]]></name>
@@ -27,6 +27,7 @@
 
 <p><code>objc
 UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"sample"]];
+//设置圆角半径，只要是imageView的宽/高中较小的一个值的一半或更小的值就可以
 imageView.layer.cornerRadius = 10.0;
 imageView.layer.masksToBounds = YES;
 </code></p>

@@ -4,7 +4,7 @@
   <title><![CDATA[Cocoa学习]]></title>
   <link href="http://venj.github.io/atom.xml" rel="self"/>
   <link href="http://venj.github.io/"/>
-  <updated>2014-01-21T10:00:35+08:00</updated>
+  <updated>2014-01-22T09:36:01+08:00</updated>
   <id>http://venj.github.io/</id>
   <author>
     <name><![CDATA[venj]]></name>
@@ -30,7 +30,9 @@
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
+<span class='line-number'>4</span>
 </pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">UIImageView</span> <span class="o">*</span><span class="n">imageView</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIImageView</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithImage:</span><span class="p">[</span><span class="n">UIImage</span> <span class="nl">imageNamed:</span><span class="s">@&quot;sample&quot;</span><span class="p">]];</span>
+</span><span class='line'><span class="c1">//设置圆角半径，只要是imageView的宽/高中较小的一个值的一半或更小的值就可以</span>
 </span><span class='line'><span class="n">imageView</span><span class="p">.</span><span class="n">layer</span><span class="p">.</span><span class="n">cornerRadius</span> <span class="o">=</span> <span class="mf">10.0</span><span class="p">;</span>
 </span><span class='line'><span class="n">imageView</span><span class="p">.</span><span class="n">layer</span><span class="p">.</span><span class="n">masksToBounds</span> <span class="o">=</span> <span class="n">YES</span><span class="p">;</span>
 </span></code></pre></td></tr></table></div></figure>
@@ -105,9 +107,9 @@
 </span><span class='line'><span class="k">@implementation</span> <span class="nc">UIImage</span> <span class="nl">(RoundedCorner)</span>
 </span><span class='line'>
 </span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">UIImage</span> <span class="o">*</span><span class="p">)</span><span class="nf">roundedCornerImageWithCornerRadius:</span><span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span><span class="nv">cornerRadius</span> <span class="p">{</span>
-</span><span class='line'>  <span class="n">CGFloat</span> <span class="n">w</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">;</span>
-</span><span class='line'>  <span class="n">CGFloat</span> <span class="n">h</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">;</span>
-</span><span class='line'>  <span class="n">CGFloat</span> <span class="n">scale</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIScreen</span> <span class="n">mainScreen</span><span class="p">].</span><span class="n">scale</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">CGFloat</span> <span class="n">w</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">CGFloat</span> <span class="n">h</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">CGFloat</span> <span class="n">scale</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIScreen</span> <span class="n">mainScreen</span><span class="p">].</span><span class="n">scale</span><span class="p">;</span>
 </span><span class='line'>    <span class="c1">// 防止圆角半径小于0，或者大于宽/高中较小值的一半。</span>
 </span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">cornerRadius</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
 </span><span class='line'>        <span class="n">cornerRadius</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
@@ -120,7 +122,7 @@
 </span><span class='line'>    <span class="p">[[</span><span class="n">UIBezierPath</span> <span class="nl">bezierPathWithRoundedRect:</span><span class="n">imageFrame</span> <span class="nl">cornerRadius:</span><span class="n">cornerRadius</span><span class="p">]</span> <span class="n">addClip</span><span class="p">];</span>
 </span><span class='line'>    <span class="p">[</span><span class="n">self</span> <span class="nl">drawInRect:</span><span class="n">imageFrame</span><span class="p">];</span>
 </span><span class='line'>    <span class="n">image</span> <span class="o">=</span> <span class="n">UIGraphicsGetImageFromCurrentImageContext</span><span class="p">();</span>
-</span><span class='line'>  <span class="n">UIGraphicsEndImageContext</span><span class="p">();</span>
+</span><span class='line'>    <span class="n">UIGraphicsEndImageContext</span><span class="p">();</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="k">return</span> <span class="n">image</span><span class="p">;</span>
 </span><span class='line'><span class="p">}</span>
@@ -239,7 +241,7 @@
 <!-- more -->
 
 
-<p>首先，我们用图形编辑(PS, Pixelmator等)工具，做两套语言的加载屏幕。简单起见，我们就用白底加居中的黑字(“US”和“CN”)的两套图片好了（文件在示例代码中有），每套图片要三个尺寸：Default.png(320x480)，<a href="&#x6d;&#x61;&#x69;&#x6c;&#116;&#111;&#58;&#x44;&#x65;&#x66;&#x61;&#117;&#108;&#x74;&#64;&#50;&#x78;&#x2e;&#x70;&#x6e;&#103;">&#68;&#101;&#x66;&#x61;&#117;&#108;&#116;&#x40;&#x32;&#120;&#46;&#112;&#x6e;&#103;</a>(640x960)以及<a href="&#109;&#x61;&#105;&#108;&#116;&#x6f;&#x3a;&#x44;&#x65;&#102;&#x61;&#x75;&#108;&#116;&#45;&#x35;&#x36;&#56;&#x68;&#64;&#50;&#x78;&#x2e;&#112;&#110;&#103;">&#68;&#x65;&#102;&#x61;&#x75;&#108;&#116;&#x2d;&#53;&#x36;&#56;&#104;&#64;&#x32;&#120;&#x2e;&#112;&#110;&#103;</a>(640x1136)。</p>
+<p>首先，我们用图形编辑(PS, Pixelmator等)工具，做两套语言的加载屏幕。简单起见，我们就用白底加居中的黑字(“US”和“CN”)的两套图片好了（文件在示例代码中有），每套图片要三个尺寸：Default.png(320x480)，<a href="&#109;&#97;&#x69;&#108;&#116;&#111;&#x3a;&#x44;&#x65;&#x66;&#97;&#x75;&#x6c;&#x74;&#64;&#x32;&#120;&#x2e;&#x70;&#110;&#103;">&#x44;&#x65;&#102;&#97;&#x75;&#108;&#x74;&#64;&#50;&#x78;&#46;&#112;&#110;&#103;</a>(640x960)以及<a href="&#109;&#97;&#105;&#108;&#x74;&#x6f;&#58;&#68;&#101;&#x66;&#x61;&#x75;&#108;&#116;&#45;&#53;&#x36;&#56;&#x68;&#x40;&#50;&#120;&#x2e;&#x70;&#110;&#x67;">&#68;&#101;&#x66;&#97;&#x75;&#x6c;&#116;&#x2d;&#x35;&#x36;&#56;&#x68;&#64;&#50;&#x78;&#x2e;&#x70;&#x6e;&#x67;</a>(640x1136)。</p>
 
 <p>做好图片之后，我们在Xcode里创建一个新项目名字可以叫做“Local Splash”，程序模板任意，简单起见，支持的设备只选iPhone。创建后，我们用“US”那套图片替换项目默认的纯黑色加载屏幕，作为默认语言的加载屏幕。</p>
 

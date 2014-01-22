@@ -163,9 +163,9 @@
 </span><span class='line'><span class="k">@implementation</span> <span class="nc">UIImage</span> <span class="nl">(RoundedCorner)</span>
 </span><span class='line'>
 </span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">UIImage</span> <span class="o">*</span><span class="p">)</span><span class="nf">roundedCornerImageWithCornerRadius:</span><span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span><span class="nv">cornerRadius</span> <span class="p">{</span>
-</span><span class='line'>  <span class="n">CGFloat</span> <span class="n">w</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">;</span>
-</span><span class='line'>  <span class="n">CGFloat</span> <span class="n">h</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">;</span>
-</span><span class='line'>  <span class="n">CGFloat</span> <span class="n">scale</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIScreen</span> <span class="n">mainScreen</span><span class="p">].</span><span class="n">scale</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">CGFloat</span> <span class="n">w</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">CGFloat</span> <span class="n">h</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">CGFloat</span> <span class="n">scale</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIScreen</span> <span class="n">mainScreen</span><span class="p">].</span><span class="n">scale</span><span class="p">;</span>
 </span><span class='line'>    <span class="c1">// 防止圆角半径小于0，或者大于宽/高中较小值的一半。</span>
 </span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">cornerRadius</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
 </span><span class='line'>        <span class="n">cornerRadius</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
@@ -178,7 +178,7 @@
 </span><span class='line'>    <span class="p">[[</span><span class="n">UIBezierPath</span> <span class="nl">bezierPathWithRoundedRect:</span><span class="n">imageFrame</span> <span class="nl">cornerRadius:</span><span class="n">cornerRadius</span><span class="p">]</span> <span class="n">addClip</span><span class="p">];</span>
 </span><span class='line'>    <span class="p">[</span><span class="n">self</span> <span class="nl">drawInRect:</span><span class="n">imageFrame</span><span class="p">];</span>
 </span><span class='line'>    <span class="n">image</span> <span class="o">=</span> <span class="n">UIGraphicsGetImageFromCurrentImageContext</span><span class="p">();</span>
-</span><span class='line'>  <span class="n">UIGraphicsEndImageContext</span><span class="p">();</span>
+</span><span class='line'>    <span class="n">UIGraphicsEndImageContext</span><span class="p">();</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="k">return</span> <span class="n">image</span><span class="p">;</span>
 </span><span class='line'><span class="p">}</span>
