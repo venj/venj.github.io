@@ -1,0 +1,310 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>强制Label(NSTextField)重绘 - Cocoa学习</title>
+  <meta name="author" content="venj">
+
+  
+  <meta name="description" content="今天在码代码的时候遇到了标签在修改了内容后没有重绘的问题，试了n种办法，查了老半天，结果终于找到了比较好的解决方法。 首先，要说明，下面这样的方法是不能让Label(NSTextField)立刻重绘的： 1
+2
+[someLabel setStringValue:@&quot;Some new &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://venj.github.io/blog/force-label-nstextfield-redraw">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Cocoa学习" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Cocoa学习</a></h1>
+  
+    <h2>我的Cocoa/Cocoa Touch学习笔记</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:venj.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+  <li><a href="/about">关于本站</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">强制Label(NSTextField)重绘</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-04-13T22:57:00+08:00" pubdate data-updated="true">Apr 13<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>今天在码代码的时候遇到了标签在修改了内容后没有重绘的问题，试了n种办法，查了老半天，结果终于找到了比较好的解决方法。</p>
+
+<p>首先，要说明，下面这样的方法是不能让Label(<code>NSTextField</code>)立刻重绘的：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[</span><span class="n">someLabel</span> <span class="nl">setStringValue:</span><span class="s">@&quot;Some new text&quot;</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="n">someLabel</span> <span class="nl">setNeedsDisplay:</span><span class="n">YES</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<!-- more -->
+
+
+<p>
+正确的做法是：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[</span><span class="n">someLabel</span> <span class="nl">setStringValue:</span><span class="s">@&quot;Some new text&quot;</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="n">someLabel</span> <span class="n">displayIfNeeded</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这两个方法看起来似乎差不多，不过仔细读读，还是能体会到差别的。<code>-setNeedDisplay:</code>是告诉<code>NSTextField</code>实例，我需要重绘了（但是什么时候重绘，则不一定是现在）。而<code>-displayIfNeeded</code>的意思是，如果需要（这里肯定是需要的，因为我们修改了标签的文字），马上重绘。</p>
+
+<p>这个做法参考了苹果官方文档的问答里的<code>NSProgressIndicator</code>的重绘有关的提问（<a href="http://developer.apple.com/library/mac/#qa/qa1473/_index.html">详细</a>）。</p>
+
+<p>（全文完）</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">venj</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-04-13T22:57:00+08:00" pubdate data-updated="true">Apr 13<span>th</span>, 2011</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/nsprogressindicator/'>NSProgressIndicator</a>, <a class='category' href='/blog/categories/nstextfield/'>NSTextField</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://venj.github.io/blog/force-label-nstextfield-redraw/" data-via="" data-counturl="http://venj.github.io/blog/force-label-nstextfield-redraw/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/using-gravatar-in-cocoa/" title="Previous Post: 在Cocoa程序里使用Gravatar">&laquo; 在Cocoa程序里使用Gravatar</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/open-menu-with-a-button/" title="Next Post: 用Cocoa实现点击按钮打开快捷菜单">用Cocoa实现点击按钮打开快捷菜单 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Sample Code</h1>
+  <ul>
+    <li><a href="https://github.com/venj/Cocoa-blog-code">Clone on Github</a></li>
+    <li><a href="github-mac://openRepo/https://github.com/venj/Cocoa-blog-code"> Clone in Mac</a></li>
+  </ul>
+</section><section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/simple-uiimage-extension-to-create-rounded-corner-image/">一个简单的创建圆角图像的UIImage扩展实现</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/push-viewcontroller-hide-buttom-bar/">推View Controller时隐藏TabBar</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/code-box-like-window-open-animation/">CodeBox风格的窗口打开动画</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/localized-loading-screen/">本地化加载屏幕</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/venj">@venj</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'venj',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+<section>
+  <h1>Blog Roll</h1>
+  <ul>
+    <li><a href="http://blog.ilvelh.com">ilvelh's blog</a></li>
+    <li><a href="http://rajna.github.io">GUWU DESIGNER</a></li>
+  </ul>
+</section>
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2011 - 2014 - venj -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> &amp; <a href="http://pages.github.com">Github Pages</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'venj';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://venj.github.io/blog/force-label-nstextfield-redraw/';
+        var disqus_url = 'http://venj.github.io/blog/force-label-nstextfield-redraw/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

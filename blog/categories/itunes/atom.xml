@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: iTunes | Cocoa学习]]></title>
+  <link href="http://venj.github.io/blog/categories/itunes/atom.xml" rel="self"/>
+  <link href="http://venj.github.io/"/>
+  <updated>2014-01-22T11:14:45+08:00</updated>
+  <id>http://venj.github.io/</id>
+  <author>
+    <name><![CDATA[venj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[让iOS App通过iTunes进行文件交换]]></title>
+    <link href="http://venj.github.io/blog/ios-and-pc-file-exchange-using-itunes/"/>
+    <updated>2011-08-07T13:04:00+08:00</updated>
+    <id>http://venj.github.io/blog/ios-and-pc-file-exchange-using-itunes</id>
+    <content type="html"><![CDATA[<p>有一些App需要通过使用iTunes让用户上传和下载文档。要让iOS程序支持iTunes文件交换其实很简单，只需要在程序的<code>Info.plist</code>里增加一个键：<code>UIFileSharingEnabled（Application supports iTunes file sharing）</code>，赋值<code>YES</code>。</p>
+
+<p><img class="center" src="/images/posts/file-exchange-xcode.png"></p>
+
+<p>这样，编译之后进行机上运行的时候，连接设备到iTunes，就能进行文件交换了。</p>
+
+<!-- more -->
+
+
+<p>
+<img class="center" src="/images/posts/file-exchange-itunes.png"></p>
+
+<p>如果是在iOS Simulator中进行测试，可以把文件放到应用程序的“用户目录”的“Documents”下。要知道用户目录在OSX下的路径，可以<code>NSLog(@"%@", NSHomeDirectory());</code>运行一下就知道了，用户家目录在OSX下的路径类似这个：<code>/Users/venj/Library/Application Support/iPhone Simulator/4.3.2/Applications/158C149B-FF57-4C62-AEDB-DFB7A3BD8AFB</code>。我做了一个简单的程序进行测试，在Simulator中运行的时候，把文件放到用户目录下，下图是用户目录在OSX下的内容，把文件放到<code>Documents</code>下就可以了：</p>
+
+<p><img class="center" src="/images/posts/file-exchange-finder.png"></p>
+
+<p>然后在程序中测试文件有没有成功被程序识别：</p>
+
+<p>``` objc
+NSFileManager <em>manager = [NSFileManager defaultManager];
+NSString </em>dbPath = [[NSHomeDirectory() stringByAppendingPathComponent:@&ldquo;Documents&rdquo;] stringByAppendingPathComponent:@&ldquo;db.sqlite&rdquo;];</p>
+
+<p>if ([manager fileExistsAtPath:dbPath]) {</p>
+
+<pre><code>self.navigationItem.title = @"Ready To Go";
+</code></pre>
+
+<p>}
+else {</p>
+
+<pre><code>self.navigationItem.title = @"No DB File";
+</code></pre>
+
+<p>}
+```</p>
+
+<p>下面是程序在添加文件前后的运行情况：</p>
+
+<p><img class="center" src="/images/posts/file-exchange-ios.png"></p>
+
+<p>我已经把示例程序放到了<a href="https://github.com/venj/Cocoa-blog-code">Github</a>上，有兴趣的可以看看。更多详情可以参考iOS开发者文档。</p>
+
+<p>（全文完）</p>
+]]></content>
+  </entry>
+  
+</feed>

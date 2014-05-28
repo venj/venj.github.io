@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: NSText | Cocoa学习]]></title>
+  <link href="http://venj.github.io/blog/categories/nstext/atom.xml" rel="self"/>
+  <link href="http://venj.github.io/"/>
+  <updated>2014-01-22T11:14:45+08:00</updated>
+  <id>http://venj.github.io/</id>
+  <author>
+    <name><![CDATA[venj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[点击按钮复制粘贴到文本框]]></title>
+    <link href="http://venj.github.io/blog/copy-and-paste-to-text-field/"/>
+    <updated>2012-02-13T14:47:00+08:00</updated>
+    <id>http://venj.github.io/blog/copy-and-paste-to-text-field</id>
+    <content type="html"><![CDATA[<p>相信很多读者看到标题肯定会疑惑，文本框本来就支持复制粘贴，为什么要专门写一篇日志来介绍文本框的复制粘贴呢？其实，本文要讲述的是，如何通过按下按钮，来复制粘贴文本到文本框 &mdash; 不是通过菜单操作，也不是通过快捷键cmd-c和cmd-v来完成。</p>
+
+<p>提到复制粘贴的菜单操作和快捷键操作，看过“Cocoa Programming for Mac OS X”的读者肯定知道，他们属于“nil-targeted action”，也就是说，他们的receive是在运行时被指定的。在Interface Builder中，<code>-copy:</code>，<code>-paste:</code>方法都是连接到一个占位对象“First Responder”上的。而First Responder到底是谁是在程序运行过程中动态变化着的。</p>
+
+<p>事实上，在<code>NSTextField</code>这个例子中，<code>-copy:</code>和<code>-paste:</code>的Receive是一个<code>NSText</code>对象。知道了这一点，剩下的问题就是如何获取这个对象。</p>
+
+<!-- more -->
+
+
+<p>答案就是，在<code>NSWindow</code>中，有一个方法能够返回当前处于First Responder的<code>NSText</code>对象: <code>-fieldEditor:forObject:</code>。</p>
+
+<p>下面是实现代码：</p>
+
+<p>``` objc
+&ndash; (IBAction)copyText:(id)sender {</p>
+
+<pre><code>[self.sourceField becomeFirstResponder];  //让Source文本框变成First Responder
+NSText *sourceText = [self.window fieldEditor:YES forObject:self.sourceField];  //返回sourceField的NSText对象
+[sourceText selectAll:nil];  // 全选
+[sourceText copy:nil];  // 复制
+</code></pre>
+
+<p>}</p>
+
+<ul>
+<li>(IBAction)pasteText:(id)sender {
+  [self.targetField becomeFirstResponder];  //让Target文本框变成First Responder
+  NSText *targetText = [self.window fieldEditor:YES forObject:self.targetField];  //返回targetField的NSText对象
+  self.targetField.stringValue = @&ldquo;&rdquo;;  //清空原来文本框中的值
+  [targetText paste:nil];  //粘贴
+}
+```</li>
+</ul>
+
+
+<p>下面是我做的一个示例程序的运行截图：</p>
+
+<p><img class="center" src="/images/posts/copy-paste-with-button.png"></p>
+
+<p>怎么样，实现很简单吧。很惭愧的是，这个问题我研究了很久，也没有找到合适的关键词搜索到比较好的参考资料。最后还是翻阅文档才找到解决方案的。RTFM，果然是永恒的真理啊！</p>
+
+<p>本文的示例程序的源代码我已经推送到<a href="https://github.com/venj/Cocoa-blog-code/tree/master/Paste%20Button">github</a>上了，有兴趣的可以pull下来看看。</p>
+
+<p>(全文完)</p>
+]]></content>
+  </entry>
+  
+</feed>

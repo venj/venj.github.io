@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Lion | Cocoa学习]]></title>
+  <link href="http://venj.github.io/blog/categories/lion/atom.xml" rel="self"/>
+  <link href="http://venj.github.io/"/>
+  <updated>2014-01-22T11:14:45+08:00</updated>
+  <id>http://venj.github.io/</id>
+  <author>
+    <name><![CDATA[venj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[在OS X Lion下编译APUE的示例代码]]></title>
+    <link href="http://venj.github.io/blog/compile-apue-example-code-under-lion/"/>
+    <updated>2011-09-08T23:27:00+08:00</updated>
+    <id>http://venj.github.io/blog/compile-apue-example-code-under-lion</id>
+    <content type="html"><![CDATA[<p>本文和Cocoa关系不大，不过UNIX开发也是OSX开发的一个重要组成部分，所以我就放在这里了。Advanced Programming in Unix Environment这本书的源码不能直接编译，网上也没有文章（除了这篇看不懂的<a href="http://opticaller.tistory.com/78">棒子写的文章</a>）详细说明这本书源码的用法，这里简单的说明一下：</p>
+
+<!-- more -->
+
+
+<p>
+1 解包<code>src.tar.gz</code>，解包出来的<code>apue.2e</code>文件夹。你可以随意移动这个文件夹的位置。</p>
+
+<p>2 打开<code>path_to_apue_src/Make.defines.macos</code>，修改<code>WKDIR</code>的路径为<code>apue.2e</code>的绝对路径，如：</p>
+
+<p><code>
+WKDIR=/Users/venj/Developer/Sources/C/APUE/apue #也就是path_to_apue_src
+</code></p>
+
+<p>3 打开<code>path_to_apue_src/include/apue.h</code>，在第11行之后加入如下几行：</p>
+
+<p>``` c</p>
+
+<h1>ifdef MACOS</h1>
+
+<h1>define _DARWIN_C_SOURCE</h1>
+
+<h1>endif</h1>
+
+<p>```</p>
+
+<p>4 打开终端，<code>cd</code>到<code>path_to_apue_src</code>目录，运行：</p>
+
+<p><code>bash
+make all
+</code></p>
+
+<p>至此准备工作到此结束。</p>
+
+<p>5 编译源码的方法如下：</p>
+
+<p><code>bash
+gcc -Ipath_to_apue_src/include path_to_apue_src/lib/libapue.a example.c -o exec_file
+</code></p>
+
+<p>方法也不算很难吧。 :D 理论上这个方法能在OSX 10.5以上的系统都可使用。</p>
+
+<p>Happy learning!</p>
+
+<p>（全文完）</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Popover在Mac OS X Lion中已经成为正式控件]]></title>
+    <link href="http://venj.github.io/blog/popover-became-official-control-in-lion/"/>
+    <updated>2011-06-02T11:38:00+08:00</updated>
+    <id>http://venj.github.io/blog/popover-became-official-control-in-lion</id>
+    <content type="html"><![CDATA[<p>昨天心血来潮又把Lion装上了。这次是装到了移动硬盘里。效果良好。这次只要是为了看看Lion里Cocoa的新变化，顺道学习一下——虽然我对已有的Cocoa框架还没有熟悉。</p>
+
+<p>打开最新的Xcode 4.1 DP5，很高兴的发现Popover已经成为一个标准控件。Popover在Xcode 4里用的很多。因为Popover现在非常流行，所以我就忍不住要测试以下。快速搜索了一下文档，发现Popover的文档暂时还没有进入Xcode的文档系统，所以只能硬着头皮，参考头文件里的文档，做了一个测试程序，感觉良好。 ：）</p>
+
+<!-- more -->
+
+
+<p>
+先贴个截图：</p>
+
+<p><img class="center" src="/images/posts/popover.png"></p>
+
+<p>好吧，界面上目前神马东东都没有。不过这是一个很好的状态，不是么？你可以在这个界面上自由发挥呀！</p>
+
+<p>好了，下面拿代码说事儿。因为我试的时候还是走了一点点弯路的，不过既然写成文章了就不提了，直接进入正题。</p>
+
+<p>用Xcode新建一个Cocoa项目。然后，创建一个<code>NSViewController</code>的子类，记得包含上<code>xib</code>（这样能省一些步骤）。我这里用的名字是<code>MyPopoverViewController</code>。代码如下：</p>
+
+<p>``` objc
+/<em> MyPopoverViewController.h </em>/</p>
+
+<h1>import &lt;Cocoa/Cocoa.h></h1>
+
+<p>@interface MyPopoverViewController : NSViewController {</p>
+
+<pre><code>NSPopover *popOver;
+</code></pre>
+
+<p>}</p>
+
+<p>@property (retain) NSPopover *popOver;</p>
+
+<ul>
+<li>(IBAction)dismissPopover:(id)sender;
+@end</li>
+</ul>
+
+
+<p>/<em> MyPopoverViewController.m </em>/</p>
+
+<h1>import &ldquo;MyPopoverViewController.h&rdquo;</h1>
+
+<p>@implementation MyPopoverViewController
+@synthesize popOver;</p>
+
+<ul>
+<li><p>(id)initWithNibName:(NSString <em>)nibNameOrNil bundle:(NSBundle </em>)nibBundleOrNil
+{
+  self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+  if (self) {
+      // Initialization code here.
+      self.popOver = [[NSPopover alloc] init];
+      self.popOver.contentViewController = self;
+  }</p>
+
+<p>  return self;
+}</p></li>
+<li><p>(void)dealloc {
+  [self.popOver release];</p>
+
+<p>  [super dealloc];
+}</p></li>
+<li><p>(IBAction)dismissPopover:(id)sender {
+  [self.popOver performClose:sender];
+}
+@end
+```</p></li>
+</ul>
+
+
+<p>我为<code>MyPopoverViewController.xib</code>这样设计布局。当然，你可以随意，记得添加一个按钮，并设置<code>action</code>为<code>-(void)dismissPopover:(id)sender</code>。</p>
+
+<p><img class="center" src="/images/posts/popover-xcode.png"></p>
+
+<p>然后，在<code>AppDelegate</code>中这样调用：</p>
+
+<p>``` objc
+/<em> TestAppAppDelegate.h </em>/</p>
+
+<h1>import &lt;Cocoa/Cocoa.h></h1>
+
+<p>@class MyPopoverViewController;
+@interface TestAppAppDelegate : NSObject <NSApplicationDelegate> {</p>
+
+<pre><code>NSWindow *window;
+NSButton *myButton;
+MyPopoverViewController *popControl;
+</code></pre>
+
+<p>}</p>
+
+<p>@property (assign) IBOutlet NSWindow <em>window;
+@property (assign) IBOutlet NSButton </em>myButton;
+@property (retain) MyPopoverViewController *popControl;</p>
+
+<ul>
+<li>(IBAction)showPopover:(id)sender;
+@end</li>
+</ul>
+
+
+<p>/<em> TestAppAppDelegate.m </em>/</p>
+
+<h1>import &ldquo;TestAppAppDelegate.h&rdquo;</h1>
+
+<h1>import &ldquo;MyPopoverViewController.h&rdquo;</h1>
+
+<p>@implementation TestAppAppDelegate</p>
+
+<p>@synthesize window;
+@synthesize myButton;
+@synthesize popControl;</p>
+
+<ul>
+<li><p>(void)applicationDidFinishLaunching:(NSNotification *)aNotification
+{
+  // Insert code here to initialize your application
+  self.popControl = [[MyPopoverViewController alloc] init];
+}</p></li>
+<li><p>(IBAction)showPopover:(id)sender {
+  [self.popControl.popOver showRelativeToRect:[self.myButton bounds] ofView:self.myButton preferredEdge:NSMaxXEdge];
+}</p></li>
+<li><p>(void)dealloc {
+  [self.popControl release];</p>
+
+<p>  [super dealloc];
+}</p></li>
+</ul>
+
+
+<p>@end
+```</p>
+
+<p><code>MainMenu.xib</code>也是随便设计。记得添加一个按钮，做一个Outlet，指向<code>myButton</code>，一个<code>action</code>指向<code>- (IBAction)showPopover:(id)sender</code>。</p>
+
+<p>测试程序基本就是这样了。如果没啥错误的话，编译运行应该一切OK。</p>
+
+<p>应该说，Popover的使用方法也是很简单的。如果你了解一些Cocoa Touch的话，你应该会发现有样东西非常熟悉——ViewController。ViewController在Cocoa中的重要性也是越来越高了，虽然目前Cocoa的<code>NSViewController</code>还远没有<code>UIViewController</code>那么重要和完整，但是应该说，这是Cocoa今后的发展方向。</p>
+
+<p>好了，关于Popover就简单的写这么多吧，我也要继续学习了。。。</p>
+
+<p>（全文完）</p>
+]]></content>
+  </entry>
+  
+</feed>

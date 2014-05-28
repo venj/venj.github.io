@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Sparkle | Cocoa学习]]></title>
+  <link href="http://venj.github.io/blog/categories/sparkle/atom.xml" rel="self"/>
+  <link href="http://venj.github.io/"/>
+  <updated>2014-01-22T11:14:45+08:00</updated>
+  <id>http://venj.github.io/</id>
+  <author>
+    <name><![CDATA[venj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[用Sparkle为Cocoa程序增加自动升级]]></title>
+    <link href="http://venj.github.io/blog/auto-update-apps-with-sparkle/"/>
+    <updated>2011-05-27T12:52:00+08:00</updated>
+    <id>http://venj.github.io/blog/auto-update-apps-with-sparkle</id>
+    <content type="html"><![CDATA[<p>Mac OS X上的绝大部分程序都使用<a href="http://sparkle.andymatuschak.org/">Sparkle</a>来作为程序的自动升级工具。利用Sparkle，用户无需对升级过程进行干涉，只需跟着升级指示做就可以了。而Sparkle对于程序开发人员来说，使用也是相当方便。其实<a href="https://github.com/andymatuschak/Sparkle/wiki">Sparkle的文档</a>已经写的相当好了，不过我还是来简单写一下Sparkle的使用，用于备忘。</p>
+
+<p>首先到Sparkle的首页下载Sparkle框架。</p>
+
+<p><img class="center" src="/images/posts/sparkle-1.png"></p>
+
+<p>然后按照和之前<a href="/blog/add-growl-support-in-your-apps-add-growl-framework/">介绍Growl.framework的文章</a>中同样的方法，新建一个Cocoa项目（或打开一个已有的Cocoa项目）把Sparkle加入项目中，在此我就不赘述了。</p>
+
+<p>要让应用程序支持Sparkle很简单。大致分为3个大步骤：在项目中设置Sparkle；对升级包进行数字签名；设置AppCast服务器。（按：我正在用Rails编写一个AppCast服务器程序，能够简单方便的将这个过程自动化，等我测试完成之后将放到github上去。）</p>
+
+<!-- more -->
+
+
+<p>
+1. 在项目中设置Sparkle</p>
+
+<p>要让程序支持Sparkle，我们无需编写任何代码，只需做几个简单设置。简单的说，就是在<code>MainMenu.xib</code>里，增加一个新的<code>Object</code>，设置其类为<code>SUUpdator</code>。保存即可。操作顺序已经在下图中表示出来了。</p>
+
+<p><img class="center" src="/images/posts/sparkle-2.png"></p>
+
+<p>通常，我们还会在应用程序菜单中增加一个“Check for update&hellip;”的菜单项。然后把上一步中增加的<code>SUUpdater</code>对象的<code>-checkForUpdates:</code>连接到菜单项上。</p>
+
+<p><img class="center" src="/images/posts/sparkle-3.png"></p>
+
+<p>然后打开项目的<code>Info.plist</code>文件，增加两个键：<code>SUFeedURL</code>和<code>SUPublicDSAKeyFile</code>，都是字符串类型的值。<code>SUFeedURL</code>是appcast的Feed地址（后文中会讲述如何设置appcast服务器）；<code>SUPublicDSAKeyFile</code>是签署升级包的公钥，默认生成的公钥的名字是<code>dsa_pub.pem</code>。</p>
+
+<p><img class="center" src="/images/posts/sparkle-4.png"></p>
+
+<p>接着，我们设置程序的版本号，设置为1.0。注意，版本号是Bundle version string, short（CFBundleVersion）；不是Bundle version那项！</p>
+
+<p><img class="center" src="/images/posts/sparkle-5.png"></p>
+
+<p>至此，程序设置的部分差不多了。下面开始生成用于签署升级包的公钥和私钥，并对升级包进行数字签名。</p>
+
+<ol>
+<li>对升级包进行数字签名</li>
+</ol>
+
+
+<p>如果你还没有公钥私钥对，那么你需要先生成一对。生成公私钥的脚本已经包含在Sparkle的下载包里了。位于Extras/Signing Tools。里面有两个Ruby脚本，分别用于生成密钥和签署升级包。在命令行执行<code>generate_keys.rb</code>，可以得到<code>dsa_priv.pem</code>（私钥）和<code>dsa_pub.pem</code>（公钥）两个文件。你可以放在任何位置。不过私钥千万不能丢，否则将无法签署升级包。</p>
+
+<p><img class="center" src="/images/posts/sparkle-6.png"></p>
+
+<p>然后，把<code>dsa_pub.pam</code>添加到项目中。</p>
+
+<p><img class="center" src="/images/posts/sparkle-7.png"></p>
+
+<p>现在，编译程序的第一个版本Product &ndash; Build For &ndash; Build For Archiving。</p>
+
+<p><img class="center" src="/images/posts/sparkle-8.png"></p>
+
+<p>编译后，程序通常是位于<code>~/Library/Developer/Xcode/DerivedData/AppName-randomstring/Build/Products/Release</code>目录下。</p>
+
+<p><img class="center" src="/images/posts/sparkle-9.png"></p>
+
+<p>把这个程序拖到任意位置，用于后续测试。</p>
+
+<p>然后，我们把对程序做一个简单修改，比如在界面上加一个按钮，修改程序版本号为2，再次编译。把这次生成的程序打包成zip。因为这个是升级包，因此我们要对升级包进行数字签名。方法很简单：</p>
+
+<p><code>
+$ ./sign_update.rb SparkleTest.zip ~/.ssh/dsa_priv.pem
+MCwCFCV4IgyLAsp/zrg6mZXsoVRYwXsEAhQ+HKKhHzaEc3EcLOSc0X/PdKWfOA==
+</code>
+记录下返回的字符串——这是升级包的签名。后面马上就要用到。</p>
+
+<ol>
+<li>设置AppCast服务器</li>
+</ol>
+
+
+<p>最后一步，就是设置AppCast服务器了。</p>
+
+<p>为了方便测试，我们打开MacOSX的Web共享功能(具体不在此详述)；这样，我们就有了一个本地服务器来用于测试。比如，我的电脑上打开Web共享之后，就有服务器运行在<a href="http://127.0.0.1%EF%BC%8C%E8%80%8C%E5%AE%B6%E7%9B%AE%E5%BD%95%E9%87%8C%E7%9A%84%E2%80%9C%E7%AB%99%E7%82%B9%E2%80%9D%E5%B0%B1%E4%BD%8D%E4%BA%8E%EF%BC%9Ahttp://127.0.0.1/~venj/%E3%80%82">http://127.0.0.1%EF%BC%8C%E8%80%8C%E5%AE%B6%E7%9B%AE%E5%BD%95%E9%87%8C%E7%9A%84%E2%80%9C%E7%AB%99%E7%82%B9%E2%80%9D%E5%B0%B1%E4%BD%8D%E4%BA%8E%EF%BC%9Ahttp://127.0.0.1/~venj/%E3%80%82</a></p>
+
+<p>AppCast服务器主要提供两个页面：1. appcast.xml，2. release note的页面。这两种文件个格式在Sparkle的下载包中都有样例。位于Extras目录下。我们复制Sample Appcast.xml，重命名为appcast.xml，放到“站点”目录下（还记得第一步我们设置的SUFeedURL值吗？）。然后进行编辑，具体我就不说了，XML文件很容易读。修改后的appcast.xml内容如下：</p>
+
+<p>``` xml
+&lt;?xml version=&ldquo;1.0&rdquo; encoding=&ldquo;utf-8&rdquo;?>
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle"  xmlns:dc="http://purl.org/dc/elements/1.1/">
+   <channel></p>
+
+<pre><code>  &lt;title&gt;Your Great App's Changelog&lt;/title&gt;
+  &lt;link&gt;http://127.0.0.1/~venj/appcast.xml&lt;/link&gt;
+  &lt;description&gt;Most recent changes with links to updates for SparkleTest.&lt;/description&gt;
+  &lt;language&gt;en&lt;/language&gt;
+     &lt;item&gt;
+        &lt;title&gt;Version 2 (2 bugs fixed; 3 new features)&lt;/title&gt;
+    &lt;sparkle:releaseNotesLink&gt;
+        http://127.0.0.1/~venj/rnotes/rnotes2.0.html
+    &lt;/sparkle:releaseNotesLink&gt;
+        &lt;pubDate&gt;Thu, 19 May 2011 19:20:11 +0000&lt;/pubDate&gt;
+        &lt;enclosure url="http://127.0.0.1/~venj/spar.zip" sparkle:version="2.0" length="1623481" type="application/octet-stream" sparkle:dsaSignature="MCwCFCV4IgyLAsp/zrg6mZXsoVRYwXsEAhQ+HKKhHzaEc3EcLOSc0X/PdKWfOA==" /&gt;
+     &lt;/item&gt;
+</code></pre>
+
+<p>   </channel>
+</rss>
+<code>``
+我们可以任意修改</code><title><code>和</code><description><code>。</code><link><code>的值为appcast.xml的路径；</code><item><code>里根据实际修改。需要注意的是，</code><enclosure><code>的</code>sparkle:dsaSigniture`的值要设置为上面签署升级包时返回的字符串。</p>
+
+<p>再复制Extras里的Release Notes Template文件夹到“站点”目录下，把rnote.html重命名为rnote2.0.html。你可以任意修改这个HTML文件，编写详细的发行注记。</p>
+
+<p>至此，Sparkle设置完毕。开始测试：</p>
+
+<p>首先，打开我们之前保存的SparkleTest程序的第1版，然后退出；</p>
+
+<p>再次打开SparkleTest程序的第1版，这时会弹出提示是否自动检查更新。</p>
+
+<p><img class="center" src="/images/posts/sparkle-10.png"></p>
+
+<p>选择Check Automatically。然后我们就看到了自动</p>
+
+<p><img class="center" src="/images/posts/sparkle-11.png"></p>
+
+<p>升级对话框。选择Install Update，如果一切设置都没有问题，我们会看到准备就绪的对话框。选择“Install and Relaunch”。</p>
+
+<p><img class="center" src="/images/posts/sparkle-12.png"></p>
+
+<p>我们就能看到新版的程序启动了。很简单吧！</p>
+
+<p>Sparkle还支持Bundle，比如以Preference Pane方式发布的程序的升级。关于这个话题，等以后有涉及的时候再行介绍。</p>
+
+<p>（全文完）</p>
+]]></content>
+  </entry>
+  
+</feed>

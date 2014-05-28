@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Gravatar | Cocoa学习]]></title>
+  <link href="http://venj.github.io/blog/categories/gravatar/atom.xml" rel="self"/>
+  <link href="http://venj.github.io/"/>
+  <updated>2014-01-22T11:14:45+08:00</updated>
+  <id>http://venj.github.io/</id>
+  <author>
+    <name><![CDATA[venj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[在Cocoa程序里使用Gravatar]]></title>
+    <link href="http://venj.github.io/blog/using-gravatar-in-cocoa/"/>
+    <updated>2011-04-09T13:17:00+08:00</updated>
+    <id>http://venj.github.io/blog/using-gravatar-in-cocoa</id>
+    <content type="html"><![CDATA[<p>Gravatar是一个非常流行的头像服务，可以根据用户的Email获取头像。下面一段简单的代码展示了如何在Cocoa里使用Gravatar。简单的界面测试：</p>
+
+<p><img class="center" src="images/posts/gravatar.jpg"></p>
+
+<!-- more -->
+
+
+<p>
+代码如下：<br/>
+``` objc
+&ndash; (IBAction)showGravatar:(id)sender {</p>
+
+<pre><code>NSString *email_hash = [[self.emailField stringValue] md5];
+NSString *imageLink = [[NSString alloc] initWithFormat:@"http://www.gravatar.com/avatar/%@", email_hash];
+NSURL *imageURL = [[NSURL alloc] initWithString:imageLink];
+NSData *imageData = [[NSData alloc] initWithContentsOfURL:imageURL];
+NSImage *image = [[NSImage alloc] initWithData:imageData];
+[self.imageWell setImage:image];
+[image release];
+[imageData release];
+[imageURL release];
+[imageLink release];
+</code></pre>
+
+<p>}
+```
+实际的使用中，当然要使用异步请求和多线程，这里只是做一个简单的展示。另外，这里还用到了之前写的<a href="/blog/calculate-md5-for-strings/">文章</a>里提到的MD5算法。</p>
+
+<p>p.s. Gravatar的大部分子域都被墙了，唯独www尚存。</p>
+
+<p>（全文完）</p>
+]]></content>
+  </entry>
+  
+</feed>

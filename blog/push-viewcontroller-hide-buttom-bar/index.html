@@ -1,0 +1,322 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>推View Controller时隐藏TabBar - Cocoa学习</title>
+  <meta name="author" content="venj">
+
+  
+  <meta name="description" content="设想一个场景，RootViewController是一个TabBarController，里面的子Controller是一个NavigationController。NavigationController的子ViewController在执行-pushViewController: &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://venj.github.io/blog/push-viewcontroller-hide-buttom-bar">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Cocoa学习" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Cocoa学习</a></h1>
+  
+    <h2>我的Cocoa/Cocoa Touch学习笔记</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:venj.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+  <li><a href="/about">关于本站</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">推View Controller时隐藏TabBar</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-07T10:53:17+08:00" pubdate data-updated="true">Jan 7<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>设想一个场景，RootViewController是一个TabBarController，里面的子Controller是一个NavigationController。NavigationController的子ViewController在执行<code>-pushViewController:animated:</code>的时候，默认情况下，这个新的ViewController将会被UITabBar覆盖。</p>
+
+<p>但是有时，我们希望推入这个新的ViewController的时候，TabBarController也被推走。要做到这一点其实很简单，只需要在这个新的ViewController上设置<code>hidesBottomBarWhenPushed</code>属性为<code>YES</code>。</p>
+
+<p>示例代码如下：</p>
+
+<!-- more -->
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// 初始化ViewController的层级结构</span>
+</span><span class='line'><span class="n">UIViewController</span> <span class="o">*</span><span class="n">vc1</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIViewController</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithNibName:</span><span class="s">@&quot;SomeViewControllerNibName&quot;</span> <span class="nl">bundle:</span><span class="nb">nil</span><span class="p">];</span>
+</span><span class='line'><span class="n">UINavigationController</span> <span class="o">*</span><span class="n">nav</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UINavigationController</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithRootViewController:</span><span class="n">vc1</span><span class="p">];</span>
+</span><span class='line'><span class="n">UITabBarController</span> <span class="o">*</span><span class="n">tc</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UITabBarController</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+</span><span class='line'><span class="n">tc</span><span class="p">.</span><span class="n">viewControllers</span> <span class="o">=</span> <span class="err">@</span><span class="p">[</span><span class="n">nav</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">...</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// 推入新的ViewController</span>
+</span><span class='line'><span class="n">UIViewController</span> <span class="o">*</span><span class="n">vc2</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIViewController</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithNibName:</span><span class="s">@&quot;SomeOtherViewControllerNibName&quot;</span> <span class="nl">bundle:</span><span class="nb">nil</span><span class="p">];</span>
+</span><span class='line'><span class="n">vc2</span><span class="p">.</span><span class="n">hidesBottomBarWhenPushed</span> <span class="err">＝</span> <span class="n">YES</span><span class="p">;</span> <span class="c1">//这是关键！</span>
+</span><span class='line'><span class="p">[</span><span class="n">vc1</span><span class="p">.</span><span class="n">navigationController</span> <span class="nl">pushViewController:</span><span class="n">vc2</span> <span class="nl">animated:</span><span class="n">YES</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>就这么简单。</p>
+
+<p>后记：好久没有写Blog了，2014年希望自己能勤快一点，多更新些。哪怕是一些很小的知识点，也尽量记录和分享出来，就当是给自己做备忘。</p>
+
+<p>（全文完）</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">venj</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-07T10:53:17+08:00" pubdate data-updated="true">Jan 7<span>th</span>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/uinavigationcontroller/'>UINavigationController</a>, <a class='category' href='/blog/categories/uitabbarcontroller/'>UITabbarController</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://venj.github.io/blog/push-viewcontroller-hide-buttom-bar/" data-via="" data-counturl="http://venj.github.io/blog/push-viewcontroller-hide-buttom-bar/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/code-box-like-window-open-animation/" title="Previous Post: CodeBox风格的窗口打开动画">&laquo; CodeBox风格的窗口打开动画</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/simple-uiimage-extension-to-create-rounded-corner-image/" title="Next Post: 一个简单的创建圆角图像的UIImage扩展实现">一个简单的创建圆角图像的UIImage扩展实现 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Sample Code</h1>
+  <ul>
+    <li><a href="https://github.com/venj/Cocoa-blog-code">Clone on Github</a></li>
+    <li><a href="github-mac://openRepo/https://github.com/venj/Cocoa-blog-code"> Clone in Mac</a></li>
+  </ul>
+</section><section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/simple-uiimage-extension-to-create-rounded-corner-image/">一个简单的创建圆角图像的UIImage扩展实现</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/push-viewcontroller-hide-buttom-bar/">推View Controller时隐藏TabBar</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/code-box-like-window-open-animation/">CodeBox风格的窗口打开动画</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/localized-loading-screen/">本地化加载屏幕</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/venj">@venj</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'venj',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+<section>
+  <h1>Blog Roll</h1>
+  <ul>
+    <li><a href="http://blog.ilvelh.com">ilvelh's blog</a></li>
+    <li><a href="http://rajna.github.io">GUWU DESIGNER</a></li>
+  </ul>
+</section>
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2011 - 2014 - venj -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> &amp; <a href="http://pages.github.com">Github Pages</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'venj';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://venj.github.io/blog/push-viewcontroller-hide-buttom-bar/';
+        var disqus_url = 'http://venj.github.io/blog/push-viewcontroller-hide-buttom-bar/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: NSTask | Cocoa学习]]></title>
+  <link href="http://venj.github.io/blog/categories/nstask/atom.xml" rel="self"/>
+  <link href="http://venj.github.io/"/>
+  <updated>2014-01-22T11:14:45+08:00</updated>
+  <id>http://venj.github.io/</id>
+  <author>
+    <name><![CDATA[venj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[在Cocoa程序中进行屏幕截图]]></title>
+    <link href="http://venj.github.io/blog/screenshot-in-cocoa-apps/"/>
+    <updated>2011-09-01T21:10:00+08:00</updated>
+    <id>http://venj.github.io/blog/screenshot-in-cocoa-apps</id>
+    <content type="html"><![CDATA[<p>用过QQ for Mac的都知道QQ能够直接截图发送。那么，我们如何在Cocoa程序中嵌入截图支持呢？有一个最简单的方法是使用OSX自带的<code>screencapture</code>命令行工具来进行截图。</p>
+
+<p><img class="center" src="/images/posts/cocoa-screenshot-1.png"></p>
+
+<p>下面用代码来进行说明：</p>
+
+<!-- more -->
+
+
+<p>
+``` objc
+&ndash; (IBAction)grabScreen:(id)sender {</p>
+
+<pre><code>NSTask *capture = [[[NSTask alloc] init] autorelease];
+capture.launchPath = @"/usr/sbin/screencapture";
+// -i参数表示交互模式，-c参数表示把截图保存到剪贴板
+capture.arguments = [NSArray arrayWithObjects:@"-i", @"-c", nil];
+
+[capture setTerminationHandler: ^(NSTask *t) {
+    NSPasteboard *pboard = [NSPasteboard generalPasteboard];
+    NSPasteboardItem *pboardItem = [[pboard pasteboardItems] objectAtIndex:0];
+    NSString *pboardItemType = [[pboard types] objectAtIndex:0];
+    NSData *imageData = [pboardItem dataForType:pboardItemType];
+    NSImage *image = [[NSImage alloc] initWithData:imageData];
+    [self.imageView setImage:image];
+    [image release];
+}];
+
+[capture launch];
+</code></pre>
+
+<p>}
+```</p>
+
+<p>原理很简单，就是通过<code>NSTask</code>运行<code>screencapture</code>截图，并把截到的图保存在系统剪贴板。然后用<code>NSTask</code>的<code>terminationHandler:</code>来处理图片，这个例子中是显示到一个<code>imageView</code>中。</p>
+
+<p>你可以创建一个实验项目测试一下上面的代码，示例代码已经<a href="https://github.com/venj/Cocoa-blog-code/tree/master/Screen%20Grab">推送到Github上了</a>。下面是运行效果：</p>
+
+<p><img class="center" src="/images/posts/cocoa-screenshot-2.png"></p>
+
+<p>在Cocoa中屏幕截图还有很多方法，比如，苹果的开发者文档里就提供了一种用<code>CGWindow</code>截图的示例代码。这种方法无需调用外部程序，如果有需要，你可以参考一下。</p>
+
+<p>（全文完）</p>
+]]></content>
+  </entry>
+  
+</feed>

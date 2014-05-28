@@ -1,0 +1,325 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>关于NSCell - Cocoa学习</title>
+  <meta name="author" content="venj">
+
+  
+  <meta name="description" content="作为一个初学者，我一直很弄不明白NSCell的子类，比如，NSButtonCell，NSImageCell及其对应的控件之间的关系。今天，在做一个TableView实现的时候，我终于开始有点悟了——好吧，你大可以鄙视我，我的脑袋是不灵光。尽管这是一个简单的问题，但是我还是简单的记录一下我的理解。 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://venj.github.io/blog/about-nscell">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Cocoa学习" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Cocoa学习</a></h1>
+  
+    <h2>我的Cocoa/Cocoa Touch学习笔记</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:venj.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+  <li><a href="/about">关于本站</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">关于NSCell</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-04-28T22:29:00+08:00" pubdate data-updated="true">Apr 28<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>作为一个初学者，我一直很弄不明白<code>NSCell</code>的子类，比如，<code>NSButtonCell</code>，<code>NSImageCell</code>及其对应的控件之间的关系。今天，在做一个TableView实现的时候，我终于开始有点悟了——好吧，你大可以鄙视我，我的脑袋是不灵光。尽管这是一个简单的问题，但是我还是简单的记录一下我的理解。</p>
+
+<p>问题的起源是“Cocoa Programming For Mac OS X”上一段关于<code>NSCell</code>的叙述：</p>
+
+<blockquote><p>NSControl inherits from NSView. With its graphics context, NSView is a relatively large and expensive object to create. When the NSButton class was created, the first thing someone did was to create a calculator with 10 rows and 10 columns of buttons. The performance was less than it could have been because of the 100 tiny views. Later, someone had the clever idea of moving the brains of the button into another object (not a view) and creating one big view (called an NSMatrix) that would act as the view for all 100 button brains. The class for the button brains was called NSButtonCell.<br/>
+<strong>&mdash; Chapter 17. Custom Views, “For the More Curious: Cells”</strong></p></blockquote>
+
+<p>现在在此阅读这句话，我似乎已经能够基本理解，不过当时那叫一个困惑啊。为什么用Cell就比Button性能高呢？为什么Cell可以替代Button呢？</p>
+
+<!-- more -->
+
+
+<p>
+我的理解如下（可能并不是很精确）：</p>
+
+<blockquote><ul>
+<li><code>NSButton</code>的继承关系是：<code>NSButton</code> &ndash;> <code>NSControl</code> &ndash;> <code>NSView</code> &ndash;> <code>NSResponder</code> &ndash;> <code>NSObject</code>。应该说，是一个很长的继承链了。</li>
+<li><code>NSButtonCell</code>的继承关系是：<code>NSButtonCell</code> &ndash;> <code>NSCell</code> &ndash;> <code>NSObject</code>。</li>
+</ul>
+</blockquote>
+
+<p>比之<code>NSButton</code>，少了两层继承关系。光凭这一点大致就能够解释为什么Cell的性能比Control高很多了。</p>
+
+<p>但是既然Cell和Control都代表了“控件”，那么两者又是怎样的关系呢？</p>
+
+<p>查阅了苹果的文档之后，就发现里面有这么一句话：<strong>“The NSButton class uses NSButtonCell to implement its user interface.” </strong></p>
+
+<p>这么一来，一切都清楚了，<code>NSCell</code>是控件的UI显示部分。但是<code>NSCell</code>不是<code>NSView</code>的子类，它又怎么显示自己呢？在<code>NSButton</code>的文档里，又有下面的一段话：</p>
+
+<blockquote><p><strong>NSButton and NSMatrix both provide a control view, which is needed to display an NSButtonCell object.</strong> However, while NSMatrix requires you to access the NSButtonCell objects directly, most of the NSButton class&#8217; methods are “covers” for identically declared methods in NSButtonCell. (In other words, <strong>the implementation of the NSButton method invokes the corresponding NSButtonCell method for you</strong>, allowing you to be unconcerned with the existence of the NSButtonCell.)</p></blockquote>
+
+<p>这段话的大意是：</p>
+
+<p><code>NSButton</code>和<code>NSMatrix</code>能够为<code>NSButtonCell</code>提供一个控制视图，用来实现Cell的显示。不过<code>NSMatrix</code>需要直接操作<code>NSButtonCell</code>对象，而<code>NSButton</code>则不需要。因为它已经“封装”了所有<code>NSButtonCell</code>的同名方法。也就是说，对<code>NSButton</code>调用方法（不是所有的方法），实际上是对<code>NSButtonCell</code>调用方法，调用的时候，我们甚至可以无需知道<code>NSButtonCell</code>的存在。</p>
+
+<p>至此，问题解决。甚至，以前没有联系起来的一个问题也解决了：那就是，为什么在Interface Builder中，<code>NSButton</code>总是和<code>NSButtonCell</code>同时存在的——原因，当然也是上面的那段话啦～另外，在Interface Builder里，<code>NSButton</code>和<code>NSButtonCell</code>的Inspector里的属性也基本相同，也是因为上述原因。</p>
+
+<p> 一点题外话：</p>
+
+<p>UIKit里没有<code>NSCell</code>的对应类。原因并不是很清楚。不过UIKit里的类的继承结构也与AppKit有所不同。比如，<code>NSTableView</code>的列：<code>NSTableColumn</code>采用的是Cell的显示机制；而<code>UITableView</code>则采用的是<code>UITableViewCell</code>。前者继承自<code>NSObject</code>，后者继承自<code>UIView</code>。</p>
+
+<p>关于这样的区别在性能上的差别，我不敢妄下结论，也没法随便比较——毕竟是两个不同平台。似乎在iOS平台上，<code>UITableView</code>的Cell会在离开显示区域的时候被<code>release</code>掉——这可能是为什么iOS平台没有采用<code>UICell</code>（没有这个类的！！！）的原因之一。</p>
+
+<p>不过，我感觉<code>UITableView</code>比<code>NSTableView</code>更加灵活，自定义也更加方便——因为每个<code>UITableViewCell</code>可以很方便的用一个<code>Custom View</code>来做界面；而<code>NSTableColumn</code>则依赖于<code>NSCell</code>，要自定义，需要用自定义<code>NSCell</code>的子类，这样会复杂很多。</p>
+
+<p>（全文完）</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">venj</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-04-28T22:29:00+08:00" pubdate data-updated="true">Apr 28<span>th</span>, 2011</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/appkit/'>AppKit</a>, <a class='category' href='/blog/categories/nsbuttoncell/'>NSButtonCell</a>, <a class='category' href='/blog/categories/nscell/'>NSCell</a>, <a class='category' href='/blog/categories/uikit/'>UIKit</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://venj.github.io/blog/about-nscell/" data-via="" data-counturl="http://venj.github.io/blog/about-nscell/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/take-photo-with-isight-camera/" title="Previous Post: 用Cocoa实现用Mac的摄像头拍照">&laquo; 用Cocoa实现用Mac的摄像头拍照</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/open-webpage-with-mobile-safari-in-ios-apps/" title="Next Post: 在iOS程序中调用Mobile Safari打开网址">在iOS程序中调用Mobile Safari打开网址 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Sample Code</h1>
+  <ul>
+    <li><a href="https://github.com/venj/Cocoa-blog-code">Clone on Github</a></li>
+    <li><a href="github-mac://openRepo/https://github.com/venj/Cocoa-blog-code"> Clone in Mac</a></li>
+  </ul>
+</section><section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/simple-uiimage-extension-to-create-rounded-corner-image/">一个简单的创建圆角图像的UIImage扩展实现</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/push-viewcontroller-hide-buttom-bar/">推View Controller时隐藏TabBar</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/code-box-like-window-open-animation/">CodeBox风格的窗口打开动画</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/localized-loading-screen/">本地化加载屏幕</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/venj">@venj</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'venj',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+<section>
+  <h1>Blog Roll</h1>
+  <ul>
+    <li><a href="http://blog.ilvelh.com">ilvelh's blog</a></li>
+    <li><a href="http://rajna.github.io">GUWU DESIGNER</a></li>
+  </ul>
+</section>
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2011 - 2014 - venj -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> &amp; <a href="http://pages.github.com">Github Pages</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'venj';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://venj.github.io/blog/about-nscell/';
+        var disqus_url = 'http://venj.github.io/blog/about-nscell/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

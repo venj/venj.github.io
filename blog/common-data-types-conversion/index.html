@@ -1,0 +1,417 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Cocoa的几种内置数据类型之间的互转 - Cocoa学习</title>
+  <meta name="author" content="venj">
+
+  
+  <meta name="description" content="因为Cocoa的数据类型之间的互转在实际程序中应用很广泛，而我经常都会忘记，因此在此记录一下常用的几个互转。以后将会补充更多。 1 NSData和NSString之间互转： 1
+2
+3
+4
+5
+6
+7
+8
+9
+/* NSString to NSData */
+NSString *theString &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://venj.github.io/blog/common-data-types-conversion">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Cocoa学习" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Cocoa学习</a></h1>
+  
+    <h2>我的Cocoa/Cocoa Touch学习笔记</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:venj.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+  <li><a href="/about">关于本站</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Cocoa的几种内置数据类型之间的互转</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-05-28T09:42:00+08:00" pubdate data-updated="true">May 28<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>因为Cocoa的数据类型之间的互转在实际程序中应用很广泛，而我经常都会忘记，因此在此记录一下常用的几个互转。以后将会补充更多。</p>
+
+<p>1 <code>NSData</code>和<code>NSString</code>之间互转：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cm">/* NSString to NSData */</span>
+</span><span class='line'><span class="n">NSString</span> <span class="o">*</span><span class="n">theString</span> <span class="o">=</span> <span class="s">@&quot;This is a string&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="n">NSData</span> <span class="o">*</span><span class="n">theStringData</span> <span class="o">=</span> <span class="p">[</span><span class="n">theString</span> <span class="nl">dataUsingEncoding:</span><span class="n">NSUTF8StringEncoding</span><span class="p">];</span>
+</span><span class='line'><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%@</span><span class="se">\n</span><span class="s">%@&quot;</span><span class="p">,</span> <span class="n">theString</span><span class="p">,</span> <span class="n">theStringData</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/* NSData to NSString */</span>
+</span><span class='line'><span class="n">NSString</span> <span class="o">*</span><span class="n">theStringFromData</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSString</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithData:</span><span class="n">theStringData</span> <span class="nl">encoding:</span><span class="n">NSUTF8StringEncoding</span><span class="p">];</span>
+</span><span class='line'><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%@&quot;</span><span class="p">,</span> <span class="n">theStringFromData</span><span class="p">);</span>
+</span><span class='line'><span class="p">[</span><span class="n">theStringFromData</span> <span class="n">release</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这里用<code>NSUTF8StringEncoding</code>作为例子，实际可以使用更多其它的编码类型，详情可以参考文档。</p>
+
+<!-- more -->
+
+
+<p>
+2 从某个路径(<code>NSString</code>)加载图片</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSString</span> <span class="o">*</span><span class="n">imagePath</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSBundle</span> <span class="n">mainBundle</span><span class="p">]</span> <span class="nl">pathForImageResource:</span><span class="s">@&quot;some_image&quot;</span><span class="p">];</span>
+</span><span class='line'><span class="n">NSImage</span> <span class="o">*</span><span class="n">theImage</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSImage</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithContentsOfFile:</span><span class="n">imagePath</span><span class="p">];</span>
+</span><span class='line'><span class="c1">//[self.imageWell setImage:theImage];</span>
+</span><span class='line'><span class="p">[</span><span class="n">theImage</span> <span class="n">release</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>除了可以从<code>NSString</code>加载图片，也可以从<code>NSURL</code>加载。方法类似。</p>
+
+<p>3 <code>NSData</code>和<code>NSImage</code>之间互转：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cm">/* NSImage to NSData (TIFF) */</span>
+</span><span class='line'><span class="n">NSData</span> <span class="o">*</span><span class="n">someData</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSData</span> <span class="nl">dataWithContentsOfFile:</span><span class="n">imagePath</span><span class="p">];</span>
+</span><span class='line'><span class="n">NSImage</span> <span class="o">*</span><span class="n">someImage</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSImage</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithData:</span><span class="n">someData</span><span class="p">];</span>
+</span><span class='line'><span class="n">NSData</span> <span class="o">*</span><span class="n">dataFromImage</span> <span class="o">=</span> <span class="p">[</span><span class="n">someImage</span> <span class="n">TIFFRepresentation</span><span class="p">];</span>
+</span><span class='line'><span class="n">NSMutableString</span> <span class="o">*</span><span class="n">homeDir</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSMutableString</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithString:</span><span class="n">NSHomeDirectory</span><span class="p">()];</span>
+</span><span class='line'><span class="p">[</span><span class="n">dataFromImage</span> <span class="nl">writeToFile:</span><span class="p">[</span><span class="n">homeDir</span> <span class="nl">stringByAppendingPathComponent:</span><span class="s">@&quot;Desktop/image.tiff&quot;</span><span class="p">]</span> <span class="nl">atomically:</span><span class="n">NO</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/* NSImage to NSData (Any Format, use png as example) */</span>
+</span><span class='line'><span class="c1">//NSBitmapImageRep *bmprep = [NSBitmapImageRep imageRepWithData:dataFromImage]; // TIFF representation data</span>
+</span><span class='line'><span class="n">NSBitmapImageRep</span> <span class="o">*</span><span class="n">bmprep</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSBitmapImageRep</span> <span class="nl">imageRepWithData:</span><span class="n">someData</span><span class="p">];</span> <span class="c1">// PNG data from file</span>
+</span><span class='line'><span class="n">NSDictionary</span> <span class="o">*</span><span class="n">imageProperty</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSDictionary</span> <span class="nl">dictionaryWithObjectsAndKeys:</span><span class="p">[</span><span class="n">NSNumber</span> <span class="nl">numberWithFloat:</span><span class="mf">0.0</span><span class="p">],</span> <span class="n">NSImageCompressionFactor</span><span class="p">,</span> <span class="nb">nil</span><span class="p">];</span>
+</span><span class='line'><span class="n">NSData</span> <span class="o">*</span><span class="n">otherTypeImageData</span> <span class="o">=</span> <span class="p">[</span><span class="n">bmprep</span> <span class="nl">representationUsingType:</span><span class="n">NSPNGFileType</span> <span class="nl">properties:</span><span class="n">imageProperty</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="n">otherTypeImageData</span> <span class="nl">writeToFile:</span><span class="p">[</span><span class="n">homeDir</span> <span class="nl">stringByAppendingPathComponent:</span><span class="s">@&quot;Desktop/image.png&quot;</span><span class="p">]</span> <span class="nl">atomically:</span><span class="n">NO</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="n">homeDir</span> <span class="n">release</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="n">someImage</span> <span class="n">release</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>NSData</code>和<code>NSImage</code>之间互转实际上相当复杂。这里使用了<code>NSBitmapImageRep</code>作为中间对象来完成对各种图片类型的支持（主要包括TIFF，JPEG，GIF和PNG）。特别是<code>imageProperty</code>这个<code>NSDictionary</code>，在实际使用中需要参考文档进行赋值。</p>
+
+<p>4 <code>NSURL</code>和`NSString之间互转：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cm">/* NSString to NSURL */</span>
+</span><span class='line'><span class="n">NSString</span> <span class="o">*</span><span class="n">google</span> <span class="o">=</span> <span class="s">@&quot;http://google.com&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="n">NSURL</span> <span class="o">*</span><span class="n">googleURL</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSURL</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithString:</span><span class="n">google</span><span class="p">];</span>
+</span><span class='line'><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%@&quot;</span><span class="p">,</span> <span class="n">googleURL</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/* NSURL to NSString */</span>
+</span><span class='line'><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%@, %@&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">googleURL</span> <span class="n">relativeString</span><span class="p">],</span> <span class="p">[</span><span class="n">googleURL</span> <span class="n">absoluteString</span><span class="p">]);</span>
+</span><span class='line'><span class="p">[</span><span class="n">googleURL</span> <span class="n">release</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>从<code>NSString</code>到<code>NSURL</code>没什么说的；从<code>NSURL</code>到<code>NSString</code>，有两个方法，一个是绝对路径，一个是相对路径。对于本地文件的路径，这两个方法是有区别的；而对于网页等远程路径，这两个方法返回的值相同。</p>
+
+<p>5 <code>CGImage</code>转<code>NSImage</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cm">/* CGImage to NSImage */</span>
+</span><span class='line'><span class="n">NSBitmapImageRep</span> <span class="o">*</span><span class="n">bitmapRep</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSBitmapImageRep</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithCGImage:</span><span class="n">cgImage</span><span class="p">];</span>
+</span><span class='line'><span class="n">NSImage</span> <span class="o">*</span><span class="n">image</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSImage</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="n">image</span> <span class="nl">addRepresentation:</span><span class="n">bitmapRep</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="n">bitmapRep</span> <span class="n">release</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="n">imageView</span> <span class="nl">setImage:</span><span class="n">image</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="n">image</span> <span class="n">release</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>（本文会在学习中增加更多内容。）</p>
+
+<p>（全文完）</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">venj</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-05-28T09:42:00+08:00" pubdate data-updated="true">May 28<span>th</span>, 2011</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/foundation/'>Foundation</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://venj.github.io/blog/common-data-types-conversion/" data-via="" data-counturl="http://venj.github.io/blog/common-data-types-conversion/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/auto-update-apps-with-sparkle/" title="Previous Post: 用Sparkle为Cocoa程序增加自动升级">&laquo; 用Sparkle为Cocoa程序增加自动升级</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/popover-became-official-control-in-lion/" title="Next Post: Popover在Mac OS X Lion中已经成为正式控件">Popover在Mac OS X Lion中已经成为正式控件 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Sample Code</h1>
+  <ul>
+    <li><a href="https://github.com/venj/Cocoa-blog-code">Clone on Github</a></li>
+    <li><a href="github-mac://openRepo/https://github.com/venj/Cocoa-blog-code"> Clone in Mac</a></li>
+  </ul>
+</section><section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/simple-uiimage-extension-to-create-rounded-corner-image/">一个简单的创建圆角图像的UIImage扩展实现</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/push-viewcontroller-hide-buttom-bar/">推View Controller时隐藏TabBar</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/code-box-like-window-open-animation/">CodeBox风格的窗口打开动画</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/localized-loading-screen/">本地化加载屏幕</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/venj">@venj</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'venj',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+<section>
+  <h1>Blog Roll</h1>
+  <ul>
+    <li><a href="http://blog.ilvelh.com">ilvelh's blog</a></li>
+    <li><a href="http://rajna.github.io">GUWU DESIGNER</a></li>
+  </ul>
+</section>
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2011 - 2014 - venj -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> &amp; <a href="http://pages.github.com">Github Pages</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'venj';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://venj.github.io/blog/common-data-types-conversion/';
+        var disqus_url = 'http://venj.github.io/blog/common-data-types-conversion/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

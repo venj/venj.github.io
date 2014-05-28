@@ -1,0 +1,601 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Cocoa学习</title>
+  <meta name="author" content="venj">
+
+  
+  <meta name="description" content="用一个自定义按钮打开菜单已经是一个很常见的需求的。不过NSPopupButton对于我们的这种需求来说显得有点不合适。最终的结果如下所示： 实现的方法很简单，代码如下所示： ">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://venj.github.io/blog/page/9">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Cocoa学习" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Cocoa学习</a></h1>
+  
+    <h2>我的Cocoa/Cocoa Touch学习笔记</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:venj.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+  <li><a href="/about">关于本站</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/open-menu-with-a-button/">用Cocoa实现点击按钮打开快捷菜单</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-04-16T11:41:00+08:00" pubdate data-updated="true">Apr 16<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>用一个自定义按钮打开菜单已经是一个很常见的需求的。不过<code>NSPopupButton</code>对于我们的这种需求来说显得有点不合适。最终的结果如下所示：</p>
+
+<p><img class="center" src="/images/posts/image-button-menu.png" title="和自定义按钮关联的弹出菜单" ></p>
+
+<p><img class="center" src="/images/posts/normal-button-menu.png" title="和普通按钮关联的弹出菜单" ></p>
+
+<p>实现的方法很简单，代码如下所示：</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/open-menu-with-a-button/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/force-label-nstextfield-redraw/">强制Label(NSTextField)重绘</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-04-13T22:57:00+08:00" pubdate data-updated="true">Apr 13<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>今天在码代码的时候遇到了标签在修改了内容后没有重绘的问题，试了n种办法，查了老半天，结果终于找到了比较好的解决方法。</p>
+
+<p>首先，要说明，下面这样的方法是不能让Label(<code>NSTextField</code>)立刻重绘的：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[</span><span class="n">someLabel</span> <span class="nl">setStringValue:</span><span class="s">@&quot;Some new text&quot;</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="n">someLabel</span> <span class="nl">setNeedsDisplay:</span><span class="n">YES</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/force-label-nstextfield-redraw/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/using-gravatar-in-cocoa/">在Cocoa程序里使用Gravatar</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-04-09T13:17:00+08:00" pubdate data-updated="true">Apr 9<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Gravatar是一个非常流行的头像服务，可以根据用户的Email获取头像。下面一段简单的代码展示了如何在Cocoa里使用Gravatar。简单的界面测试：</p>
+
+<p><img class="center" src="images/posts/gravatar.jpg"></p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/using-gravatar-in-cocoa/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/calculate-md5-for-strings/">计算字符串的MD5哈希</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-04-09T13:07:00+08:00" pubdate data-updated="true">Apr 9<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>字符串或数据的MD5哈希值是非常常用的。在Cocoa里很容易实现。因为这类方法非常好用，因此可以做一个<code>NSString</code>或<code>NSData</code>的Catagory。如下：</p>
+
+<p><strong>NSString:</strong></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// NSString+MD5.h</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#import &lt;foundation/foundation.h&gt;</span>
+</span><span class='line'><span class="k">@interface</span> <span class="nc">NSString</span> <span class="nl">(NSString_MD5)</span>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nf">md5</span><span class="p">;</span>
+</span><span class='line'><span class="k">@end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// NSString+MD5.m</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#import &quot;NSString+MD5.h&quot;</span>
+</span><span class='line'><span class="cp">#import &lt;commoncrypto/commondigest.h&gt;</span>
+</span><span class='line'><span class="k">@implementation</span> <span class="nc">NSString</span> <span class="nl">(NSString_MD5)</span>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nf">md5</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">cStr</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span> <span class="n">UTF8String</span><span class="p">];</span>
+</span><span class='line'>    <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">result</span><span class="p">[</span><span class="mi">16</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">CC_MD5</span><span class="p">(</span><span class="n">cStr</span><span class="p">,</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span><span class="p">)</span><span class="n">strlen</span><span class="p">(</span><span class="n">cStr</span><span class="p">),</span> <span class="n">result</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">return</span> <span class="p">[</span><span class="n">NSString</span> <span class="nl">stringWithFormat:</span>
+</span><span class='line'>            <span class="s">@&quot;%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x&quot;</span><span class="p">,</span>
+</span><span class='line'>            <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span>
+</span><span class='line'>            <span class="n">result</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">7</span><span class="p">],</span>
+</span><span class='line'>            <span class="n">result</span><span class="p">[</span><span class="mi">8</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">9</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">10</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">11</span><span class="p">],</span>
+</span><span class='line'>            <span class="n">result</span><span class="p">[</span><span class="mi">12</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">13</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">14</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">15</span><span class="p">]</span>
+</span><span class='line'>            <span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="k">@end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/calculate-md5-for-strings/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/move-window-to-screen-center/">【更新】把程序窗口放在屏幕中央</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-04-09T12:55:00+08:00" pubdate data-updated="true">Apr 9<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>在写程序的时候，我们往往需要把窗口放在屏幕中央。方法其实很简单，代码如下：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">awakeFromNib</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">CGRect</span> <span class="n">windowRect</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">window</span> <span class="n">frame</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">CGRect</span> <span class="n">screenRect</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSScreen</span> <span class="n">mainScreen</span><span class="p">]</span> <span class="n">frame</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">CGPoint</span> <span class="n">newOrigin</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">newOrigin</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">screenRect</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">windowRect</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">newOrigin</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">screenRect</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">windowRect</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">window</span> <span class="nl">setFrameOrigin:</span><span class="n">newOrigin</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如果程序只有一个窗口，那么这段代码也可以放在<code>AppDelegate</code>的<code>-applicationDidFinishLaunching:</code>方法里。如果放在<code>-applicationDidFinishLaunching:</code>里，很可能会引起窗口“闪”到屏幕中央（除非程序特别小，小到几乎无需初始化），因此，放在<code>-awakeFromNib</code>里才是正确的做法。</p>
+
+<p><strong>2011-08-15更新：</strong></p>
+
+<p>事实上<code>NSWindow</code>已经有了一个专门的方法来处理窗口居中的：<code>- (void)center</code>。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">awakeFromNib</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">window</span> <span class="n">center</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>不仔细看文档害死人啊！</strong></p>
+
+<p>（全文完）</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/dynamically-change-window-size/">动态改变窗口大小</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-04-02T16:28:00+08:00" pubdate data-updated="true">Apr 2<span>nd</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>根据SubView的大小动态的改变窗口大小的操作在Cocoa编程里很常用。记录方法如下。下面的代码假定通过一个Box容器，分别容纳不同大小的SubView，在切换SubView的时候，窗口的大小适应容器大小的变化。SubView的容器可以是任何<code>NSView</code>。这个代码通常放在<code>Controller</code>里。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// 通过某个View获得需要改变大小的窗口</span>
+</span><span class='line'><span class="n">NSWindow</span> <span class="o">*</span><span class="n">window</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">box</span> <span class="n">window</span><span class="p">];</span>
+</span><span class='line'><span class="c1">// 获取新View</span>
+</span><span class='line'><span class="n">NSView</span> <span class="o">*</span><span class="n">view</span> <span class="o">=</span> <span class="p">[</span><span class="n">viewController</span> <span class="n">view</span><span class="p">];</span>
+</span><span class='line'><span class="c1">// 当前View的大小</span>
+</span><span class='line'><span class="n">NSSize</span> <span class="n">currentSize</span> <span class="o">=</span> <span class="p">[[</span><span class="n">self</span><span class="p">.</span><span class="n">box</span> <span class="n">contentView</span><span class="p">]</span> <span class="n">frame</span><span class="p">].</span><span class="n">size</span><span class="p">;</span>
+</span><span class='line'><span class="c1">// 新View的大小</span>
+</span><span class='line'><span class="n">NSSize</span> <span class="n">newSize</span> <span class="o">=</span> <span class="p">[</span><span class="n">view</span> <span class="n">frame</span><span class="p">].</span><span class="n">size</span><span class="p">;</span>
+</span><span class='line'><span class="c1">// 新旧View的宽度和高度差</span>
+</span><span class='line'><span class="n">CGFloat</span> <span class="n">deltaWidth</span> <span class="o">=</span> <span class="n">newSize</span><span class="p">.</span><span class="n">width</span> <span class="o">-</span> <span class="n">currentSize</span><span class="p">.</span><span class="n">width</span><span class="p">;</span>
+</span><span class='line'><span class="n">CGFloat</span> <span class="n">deltaHeight</span> <span class="o">=</span> <span class="n">newSize</span><span class="p">.</span><span class="n">height</span> <span class="o">-</span> <span class="n">currentSize</span><span class="p">.</span><span class="n">height</span><span class="p">;</span>
+</span><span class='line'><span class="c1">// 获取窗口大小</span>
+</span><span class='line'><span class="n">NSRect</span> <span class="n">windowFrame</span> <span class="o">=</span> <span class="p">[</span><span class="n">window</span> <span class="n">frame</span><span class="p">];</span>
+</span><span class='line'><span class="c1">// 加上SubView高度和宽度的变化值</span>
+</span><span class='line'><span class="n">windowFrame</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">+=</span> <span class="n">deltaHeight</span><span class="p">;</span>
+</span><span class='line'><span class="n">windowFrame</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">+=</span> <span class="n">deltaWidth</span><span class="p">;</span>
+</span><span class='line'><span class="c1">// 为了保持窗口左上角位置不变，需要重设窗口框的绘制起点的y值</span>
+</span><span class='line'><span class="c1">// 之所以用 -= 是因为Cocoa的绘图起点是左下角</span>
+</span><span class='line'><span class="c1">// 起点的x值无需改变。</span>
+</span><span class='line'><span class="n">windowFrame</span><span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">y</span> <span class="o">-=</span> <span class="n">deltaHeight</span><span class="p">;</span>
+</span><span class='line'><span class="c1">// 移除旧View</span>
+</span><span class='line'><span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">box</span> <span class="nl">setContentView:</span><span class="nb">nil</span><span class="p">];</span>
+</span><span class='line'><span class="c1">// 改变窗口大小，使用动画</span>
+</span><span class='line'><span class="p">[</span><span class="n">window</span> <span class="nl">setFrame:</span><span class="n">windowFrame</span> <span class="nl">display:</span><span class="n">YES</span> <span class="nl">animate:</span><span class="n">YES</span><span class="p">];</span>
+</span><span class='line'><span class="c1">// 加入新View</span>
+</span><span class='line'><span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">box</span> <span class="nl">setContentView:</span><span class="n">view</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>（全文完）</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/10/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/8/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Sample Code</h1>
+  <ul>
+    <li><a href="https://github.com/venj/Cocoa-blog-code">Clone on Github</a></li>
+    <li><a href="github-mac://openRepo/https://github.com/venj/Cocoa-blog-code"> Clone in Mac</a></li>
+  </ul>
+</section><section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/simple-uiimage-extension-to-create-rounded-corner-image/">一个简单的创建圆角图像的UIImage扩展实现</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/push-viewcontroller-hide-buttom-bar/">推View Controller时隐藏TabBar</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/code-box-like-window-open-animation/">CodeBox风格的窗口打开动画</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/localized-loading-screen/">本地化加载屏幕</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/venj">@venj</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'venj',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+<section>
+  <h1>Blog Roll</h1>
+  <ul>
+    <li><a href="http://blog.ilvelh.com">ilvelh&#8217;s blog</a></li>
+    <li><a href="http://rajna.github.io">GUWU DESIGNER</a></li>
+  </ul>
+</section>
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2011 - 2014 - venj -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> &amp; <a href="http://pages.github.com">Github Pages</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'venj';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

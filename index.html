@@ -1,0 +1,463 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Cocoa学习</title>
+  <meta name="author" content="venj">
+
+  
+  <meta name="description" content="昨天写过一个博文，介绍了创建圆角矩形图像的方法。现在，我再介绍一个“显示”圆角图像的方法。 这种方法利用的是UIImageView的layer的属性，实现把图像显示成圆角，而无需对图像本身进行处理。在开发中，大部分情况下，我们只需要“显示”圆角，而不是“得到”圆角图像。不是么。好了，先看代码： ">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://venj.github.io">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Cocoa学习" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Cocoa学习</a></h1>
+  
+    <h2>我的Cocoa/Cocoa Touch学习笔记</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:venj.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+  <li><a href="/about">关于本站</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-21T09:13:01+08:00" pubdate data-updated="true">Jan 21<span>st</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>昨天写过一个<a href="/blog/simple-uiimage-extension-to-create-rounded-corner-image/">博文</a>，介绍了创建圆角矩形图像的方法。现在，我再介绍一个<strong>“显示”</strong>圆角图像的方法。</p>
+
+<p>这种方法利用的是<code>UIImageView</code>的<code>layer</code>的属性，实现把图像显示成圆角，而无需对图像本身进行处理。在开发中，大部分情况下，我们只需要“显示”圆角，而不是“得到”圆角图像。不是么。好了，先看代码：</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/rounded-corner-image-with-layer-and-image-view/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/simple-uiimage-extension-to-create-rounded-corner-image/">一个简单的创建圆角图像的UIImage扩展实现</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-20T13:58:15+08:00" pubdate data-updated="true">Jan 20<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>在iOS开发中经常需要用到圆角图像。简单搜索一下就能找到很多创建圆角图像的实现代码。我在<a href="http://stackoverflow.com/questions/10563986/uiimage-with-rounded-corners">Stack Overflow</a>上找到了一段代码，略微修改了一下，写了个简单的Category方法，可以用来创建圆角图像。代码如下：</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/simple-uiimage-extension-to-create-rounded-corner-image/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/push-viewcontroller-hide-buttom-bar/">推View Controller时隐藏TabBar</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-07T10:53:17+08:00" pubdate data-updated="true">Jan 7<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>设想一个场景，RootViewController是一个TabBarController，里面的子Controller是一个NavigationController。NavigationController的子ViewController在执行<code>-pushViewController:animated:</code>的时候，默认情况下，这个新的ViewController将会被UITabBar覆盖。</p>
+
+<p>但是有时，我们希望推入这个新的ViewController的时候，TabBarController也被推走。要做到这一点其实很简单，只需要在这个新的ViewController上设置<code>hidesBottomBarWhenPushed</code>属性为<code>YES</code>。</p>
+
+<p>示例代码如下：</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/push-viewcontroller-hide-buttom-bar/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/code-box-like-window-open-animation/">CodeBox风格的窗口打开动画</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-06-03T16:51:00+08:00" pubdate data-updated="true">Jun 3<span>rd</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>一直觉得<a href="http://www.shpakovski.com/codebox/">CodeBox</a>的窗口呈现动画很帅气－－就是窗口Bounce了一下的那个效果。对了，就是<code>NSAlert</code>在OSX Lion下的显示的时候那个动画。我一直试图复刻那个动画，但是每次都灰头土脸的结束各种尝试。</p>
+
+<p>今天搜索网络，在StackOverflow上找到了<a href="http://stackoverflow.com/questions/14591785/how-to-open-a-nswindow-with-a-popup-animation">答案</a>－－事实上，我曾经多次无限接近正确答案，但最终还是没有成功。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/code-box-like-window-open-animation/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/localized-loading-screen/">本地化加载屏幕</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-11T09:00:00+08:00" pubdate data-updated="true">Mar 11<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>我一直有注意到“<a href="https://itunes.apple.com/app/da-ci-lin/id299029654?mt=8">大辞林</a>”程序针对不同的系统语言，加载屏幕（Loading Screen，也称Splash Screen）是不一样的。因为无可治愈的拖延症，导致我从来没有想着去研究一下为什么。今天闲来无事，简单的弄了个程序做了一下，解决了加载屏幕本地化的问题。问题的答案只有一句话：</p>
+
+<p>加载屏幕(Default.png)和其他的资源文件一样，可以在Xcode里直接设置本地化的！</p>
+
+<p><del>（全文完）</del> 等等，既然写成博文了，怎么可以这么就结束了呢！好吧，那就略微详细一点，看一下在Xcode 4.6中如何一步一步地把加载屏幕本地化。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/localized-loading-screen/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/refresh-control-gochas/">用代码触发下拉更新</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-20T14:55:00+08:00" pubdate data-updated="true">Dec 20<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><code>UIRefreshControl</code>是iOS 6中的一个新控件，这个控件就是大家熟悉的下拉更新控件。关于如何把<code>UIRefreshControl</code>集成至<code>UITableViewController</code>中相信大家都知道怎么做。至于用代码触发下拉更新，查看Apple的文档后，我们看到<code>UIRefreshControl</code>有一个方法：<code>- beginRefreshing</code>。写到这里，貌似问题依然解决，没什么好说的了。但是真是这样吗？让我们来创建一个测试项目进行验证：</p>
+
+<ol>
+<li><p>创建一个Master-Detail Application项目，取名“RefreshControl”（你可以随便取），设备选iPhone，够上“Use Automatic Reference Counting”和“Use Storyboards”（你也可以不用Storyboard，反正差不多）。</p></li>
+<li><p>（可选）打开MainStoryboard.storyboard（或MasterViewController.xib，如果你在1中没有勾选Use Storyboards），启用Master View Controller的Refreshing。</p>
+
+<p><img class="center" src="/images/posts/master_refreshcontrol.png"></p></li>
+<li><p>打开MasterViewController.m，更改代码如下：</p></li>
+</ol>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/refresh-control-gochas/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/2/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Sample Code</h1>
+  <ul>
+    <li><a href="https://github.com/venj/Cocoa-blog-code">Clone on Github</a></li>
+    <li><a href="github-mac://openRepo/https://github.com/venj/Cocoa-blog-code"> Clone in Mac</a></li>
+  </ul>
+</section><section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/simple-uiimage-extension-to-create-rounded-corner-image/">一个简单的创建圆角图像的UIImage扩展实现</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/push-viewcontroller-hide-buttom-bar/">推View Controller时隐藏TabBar</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/code-box-like-window-open-animation/">CodeBox风格的窗口打开动画</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/localized-loading-screen/">本地化加载屏幕</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/venj">@venj</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'venj',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+<section>
+  <h1>Blog Roll</h1>
+  <ul>
+    <li><a href="http://blog.ilvelh.com">ilvelh&#8217;s blog</a></li>
+    <li><a href="http://rajna.github.io">GUWU DESIGNER</a></li>
+  </ul>
+</section>
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2011 - 2014 - venj -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> &amp; <a href="http://pages.github.com">Github Pages</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'venj';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

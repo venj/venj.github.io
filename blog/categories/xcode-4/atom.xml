@@ -1,0 +1,533 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Xcode 4 | Cocoa学习]]></title>
+  <link href="http://venj.github.io/blog/categories/xcode-4/atom.xml" rel="self"/>
+  <link href="http://venj.github.io/"/>
+  <updated>2014-01-22T11:14:45+08:00</updated>
+  <id>http://venj.github.io/</id>
+  <author>
+    <name><![CDATA[venj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[iOS项目的测试简介]]></title>
+    <link href="http://venj.github.io/blog/testing-ios-projects/"/>
+    <updated>2011-08-17T15:06:00+08:00</updated>
+    <id>http://venj.github.io/blog/testing-ios-projects</id>
+    <content type="html"><![CDATA[<p>记得有人说过，写不写测试代码是判断一个开发者是否成熟的标志。良好的测试代码能够让程序代码更健壮，使重构更加方便。虽然Objective-C是一种编译语言，但是在Xcode的帮助下，做测试和测试驱动开发（Test Driven Development, TDD）也非常方便。苹果官方有一个关于如何做为项目增加测试支持的文档，不过iOS 4.3的文档包的的<a href="http://developer.apple.com/library/iOS/#documentation/Xcode/Conceptual/iphone_development/135-Unit_Testing_Applications/unit_testing_applications.html">该文档</a>已经比较老了，如果你是付费iOS开发者，那么可以看看iOS 5.0的文档包的的<a href="https://developer.apple.com/library/prerelease/ios/#documentation/Xcode/Conceptual/ios_development_workflow/135-Unit_Testing_Applications/unit_testing_applications.html">该文档</a>，已经更新为Xcode 4的教程了。</p>
+
+<p>iOS的测试分两种，一种是逻辑测试（Logic Tests）；另一种是程序测试（Application Tests）。逻辑测试主要是用来测试模块的业务逻辑的；程序测试则是测试模块在整个应用程序中的行为是否正确。逻辑测试类似单元测试；而程序测试则类似集成测试。个人感觉，逻辑测试比较适合测试模型代码；而应用程序测试则比较适合测试控制器和视图代码，考虑到视图在iOS开发中主要是通过Interface Builder来实现，因此，应用测试实际上就是测试控制器代码的。</p>
+
+<p>下面，简单的讲一下如何设置项目支持单元测试。我们要在Xcode中为项目建立两种测试的Target。</p>
+
+<!-- more -->
+
+
+<p>
+首先，打开“File” &ndash; “New” &ndash; “New Target&hellip;”。这时，选择iOS大标签下面的“Others”小标签，里面有一个“Cocoa Touch Unit Testing Bundle”。选中它，点击“Next”。（如下图所示）</p>
+
+<p><img class="center" src="/images/posts/unittest-1.png"></p>
+
+<p>在下一页里，填入测试的名字。我们现在要建的是逻辑测试，虽然名字可以随意，不过，我这里把它命名为MyTestAppLogicTests。Project当然是选择当前的项目。（如下图所示）</p>
+
+<p><img class="center" src="/images/posts/unittest-2.png"></p>
+
+<p>点击“Finish”完成。这时，在Project设置的面板里就会增加一个新的Logic Tests的Target。</p>
+
+<p><img class="center" src="/images/posts/unittest-3.png"></p>
+
+<p>同样的方法建立一个程序测试的Target，命名为MyTestAppApplicationTests。</p>
+
+<p>然后开始对两个Target进行配置。</p>
+
+<p>首先是逻辑测试。在编译设置的标签下，选择All，然后搜索：</p>
+
+<blockquote><ul>
+<li>ios deployment target，如果显示为加粗，则选中后按下Delete键。</li>
+<li>bundle loader，如果显示为加粗，则选中后按下Delete键。</li>
+<li>test host，如果显示为加粗，则选中后按下Delete键。</li>
+</ul>
+</blockquote>
+
+<p><img class="center" src="/images/posts/unittest-4.png"></p>
+
+<p>然后是程序测试。在编译设置的标签下，选择All，然后搜索：</p>
+
+<blockquote><ul>
+<li>ios deployment target，如果显示为加粗，则选中后按下Delete键。</li>
+<li>bundle loader，设置值为<code>$(BUILT_PRODUCTS_DIR)/APP_NAME.app/APP_NAME</code>。<code>APP_NAME</code>是程序的名字，比如这个例子里是<code>MyTestApp</code></li>
+<li>test host，设置值为<code>$(BUNDLE_LOADER)</code>。</li>
+</ul>
+</blockquote>
+
+<p><img class="center" src="/images/posts/unittest-5.png"></p>
+
+<p>设置完成之后，我们就可以开始试着编译一下，看看配置有没有成功。在Xcode 4的工具条的Scheme部分，选择其中一个测试，以及运行测试的设备，如“iPhone 4.3 Simulator”。然后点击菜单“Project” &ndash; “Test”，或按下cmd &ndash; u。</p>
+
+<p>因为测试bundle的代码模版里包含一个不能通过的测试例。如果你看到一个不是编译错误的问题，基本上就是配置成功了。分别试一下逻辑测试的配置和程序测试的配置，看看是否都成功。</p>
+
+<p>配置成功后，就可以开始写测试代码了。</p>
+
+<p>首先还是先开看看逻辑测试代码的写法。在MyTestAppLogicTests的类中，加入下面这些简单的测试代码。我们这里要测试的是一个名为<code>MySillyAdd</code>的类。这个类只有一个方法，<code>-addNumberA: ToNumberB:</code>，返回两个整数的和：</p>
+
+<p>``` objc
+//
+//  MyTestAppLogicTests.h
+//</p>
+
+<h1>import &lt;SenTestingKit/SenTestingKit.h></h1>
+
+<h1>import &ldquo;MySillyAdd.h&rdquo;</h1>
+
+<p>@interface MyTestAppLogicTests : SenTestCase {</p>
+
+<pre><code>MySillyAdd *mySillyAdd;
+</code></pre>
+
+<p>}</p>
+
+<p>@end</p>
+
+<p>//
+//  MyTestAppLogicTests.m
+//</p>
+
+<h1>import &ldquo;MyTestAppLogicTests.h&rdquo;</h1>
+
+<p>@implementation MyTestAppLogicTests</p>
+
+<h1>运行测试例之前的设置</h1>
+
+<ul>
+<li><p>(void)setUp
+{
+  [super setUp];</p>
+
+<p>  // Set-up code here.
+  mySillyAdd = [[MySillyAdd alloc] init];
+  STAssertNotNil(mySillyAdd, @&ldquo;Can not create MySillyAdd object.&rdquo;);
+}</p></li>
+</ul>
+
+
+<h1>运行测试例之后的清理现场</h1>
+
+<ul>
+<li><p>(void)tearDown
+{
+  // Tear-down code here.
+  [mySillyAdd release];</p>
+
+<p>  [super tearDown];
+}</p></li>
+</ul>
+
+
+<h1>测试例，都是方法名为：testXXXX，用ST&hellip;的Macro来验证测试结果。</h1>
+
+<ul>
+<li>(void)testAddOneToOne {
+  NSInteger result = [mySillyAdd addNumberA:1 ToNumberB:1];
+  STAssertEquals(2, 2, @&ldquo;Expect 2 for result, but got %d&rdquo;, result);
+}
+@end
+```</li>
+</ul>
+
+
+<p>程序测试的与逻辑测试的区别在于需要在<code>-setUp:</code>方法中获取应用程序的环境。示例代码如下：</p>
+
+<p>``` objc
+//
+//  MyTestAppApplicationTests.h
+//</p>
+
+<h1>import &lt;SenTestingKit/SenTestingKit.h></h1>
+
+<h1>import &lt;UIKit/UIKit.h></h1>
+
+<h1>import &ldquo;MyTestAppViewController.h&rdquo;</h1>
+
+<h1>import &ldquo;MyTestAppAppDelegate.h&rdquo;</h1>
+
+<p>@interface MyTestAppApplicationTests : SenTestCase {</p>
+
+<pre><code>MyTestAppViewController *vc;
+MyTestAppAppDelegate *appDelegate;
+UIView *view;
+</code></pre>
+
+<p>}</p>
+
+<ul>
+<li>(void)testAddOneToOne;</li>
+</ul>
+
+
+<p>@end</p>
+
+<p>//
+//  MyTestAppApplicationTests.m
+//</p>
+
+<h1>import &ldquo;MyTestAppApplicationTests.h&rdquo;</h1>
+
+<p>@implementation MyTestAppApplicationTests</p>
+
+<h1>设置测试环境，获取应用程序实例。</h1>
+
+<ul>
+<li><p>(void)setUp
+{
+  [super setUp];</p>
+
+<p>  // Set-up code here.
+  appDelegate = [[UIApplication sharedApplication] delegate];
+  vc = (MyTestAppViewController *)appDelegate.window.rootViewController;
+  view = vc.view;
+}</p></li>
+<li><p>(void)tearDown
+{
+  // Tear-down code here.</p>
+
+<p>  [super tearDown];
+}</p></li>
+<li><p>(void) testAppDelegate {
+  STAssertNotNil(appDelegate, @&ldquo;Cannot find the application delegate&rdquo;);
+}</p></li>
+</ul>
+
+
+<h1>测试1+1的结果是不是等于2</h1>
+
+<ul>
+<li><p>(void)testAddOneToOne {
+  vc.numberA.text = @&ldquo;1&rdquo;;
+  vc.numberB.text = @&ldquo;1&rdquo;;</p>
+
+<p>  [vc calc:[view viewWithTag:3]]; // The Tag Button;</p>
+
+<p>  NSString *resultString = vc.resultLabel.text;</p>
+
+<p>  STAssertEqualObjects(@&ldquo;2&rdquo;, resultString, @&ldquo;Expect 2 for result, but got %@&rdquo;, resultString);
+}
+@end
+```</p></li>
+</ul>
+
+
+<p>上例测试的是<code>MyTestAppViewController</code>中的<code>-calc:</code>方法。我们先来测试一个<code>-calc:</code>的实现：</p>
+
+<p>``` objc
+&ndash; (IBAction)calc:(id)sender {</p>
+
+<pre><code>NSInteger a = [self.numberA.text integerValue];
+NSInteger b = [self.numberB.text integerValue];
+
+self.resultLabel.text = [NSString stringWithFormat:@"%d", a + b];
+</code></pre>
+
+<p>}
+```</p>
+
+<p>运行测试，我们就可以看到这个测试例顺利通过。</p>
+
+<p>然后，我们对上述方法进行重构，用我们的<code>MySillyAdd</code>类来实现1+1。再次运行测试例。</p>
+
+<p>``` objc
+&ndash; (IBAction)calc:(id)sender {</p>
+
+<pre><code>NSInteger a = [self.numberA.text integerValue];
+NSInteger b = [self.numberB.text integerValue];
+
+self.resultLabel.text = [NSString stringWithFormat:@"%d", [mySillyAdd addNumberA:a ToNumberB:b]];
+</code></pre>
+
+<p>}
+```</p>
+
+<p>在<code>MySillyAdd</code>中，<code>-addNumberA:ToNumberB:</code>的实现如下：</p>
+
+<p>``` objc
+&ndash; (NSInteger)addNumberA:(NSInteger)theNumberA ToNumberB:(NSInteger)theNumberB {</p>
+
+<pre><code>return theNumberA + theNumberB;
+</code></pre>
+
+<p>}
+```</p>
+
+<p>测试运行结果是顺利通过。虽然这个例子非常傻，不过基本上描述了写测试的大致过程。本文的示例代码在这里，有兴趣的可以看看。</p>
+
+<p>通过这个简单的例子，我们了解了如何在iOS开发中加入测试，以后，我们就能通过编写测试代码来使我们写的代码更加健壮了。</p>
+
+<p>最后附上逻辑测试和程序测试的输出。</p>
+
+<p><strong>逻辑测试</strong></p>
+
+<p>```
+Test Suite &lsquo;/Users/venj/Library/Developer/Xcode/DerivedData/MyTestApp-cyecpqfpcbcdlcgizexbrsjxlngw/Build/Products/Debug-iphonesimulator/MyTestAppLogicTests.octest(Tests)&rsquo; started at 2011-08-17 07:41:15 +0000
+Test Suite &lsquo;MyTestAppLogicTests&rsquo; started at 2011-08-17 07:41:15 +0000
+Test Case &lsquo;&ndash;[MyTestAppLogicTests testAddOneToOne]&rsquo; started.
+Test Case &lsquo;&ndash;[MyTestAppLogicTests testAddOneToOne]&rsquo; passed (0.000 seconds).
+Test Suite &lsquo;MyTestAppLogicTests&rsquo; finished at 2011-08-17 07:41:15 +0000.
+Executed 1 test, with 0 failures (0 unexpected) in 0.000 (0.001) seconds</p>
+
+<p>Test Suite &lsquo;/Users/venj/Library/Developer/Xcode/DerivedData/MyTestApp-cyecpqfpcbcdlcgizexbrsjxlngw/Build/Products/Debug-iphonesimulator/MyTestAppLogicTests.octest(Tests)&rsquo; finished at 2011-08-17 07:41:15 +0000.
+Executed 1 test, with 0 failures (0 unexpected) in 0.000 (0.002) seconds
+```</p>
+
+<p><strong>程序测试</strong></p>
+
+<p>```
+Test Suite &lsquo;All tests&rsquo; started at 2011-08-17 07:43:20 +0000
+Test Suite &lsquo;/Users/venj/Library/Developer/Xcode/DerivedData/MyTestApp-cyecpqfpcbcdlcgizexbrsjxlngw/Build/Products/Debug-iphonesimulator/MyTestAppApplicationTests.octest(Tests)&rsquo; started at 2011-08-17 07:43:20 +0000
+Test Suite &lsquo;MyTestAppApplicationTests&rsquo; started at 2011-08-17 07:43:20 +0000
+Test Case &lsquo;&ndash;[MyTestAppApplicationTests testAddOneToOne]&rsquo; started.
+Test Case &lsquo;&ndash;[MyTestAppApplicationTests testAddOneToOne]&rsquo; passed (0.001 seconds).
+Test Case &lsquo;&ndash;[MyTestAppApplicationTests testAppDelegate]&rsquo; started.
+Test Case &lsquo;&ndash;[MyTestAppApplicationTests testAppDelegate]&rsquo; passed (0.001 seconds).
+Test Suite &lsquo;MyTestAppApplicationTests&rsquo; finished at 2011-08-17 07:43:20 +0000.
+Executed 2 tests, with 0 failures (0 unexpected) in 0.002 (0.004) seconds</p>
+
+<p>Test Suite &lsquo;/Users/venj/Library/Developer/Xcode/DerivedData/MyTestApp-cyecpqfpcbcdlcgizexbrsjxlngw/Build/Products/Debug-iphonesimulator/MyTestAppApplicationTests.octest(Tests)&rsquo; finished at 2011-08-17 07:43:20 +0000.
+Executed 2 tests, with 0 failures (0 unexpected) in 0.002 (0.007) seconds</p>
+
+<p>Test Suite &lsquo;/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.3.sdk/Developer/Library/Frameworks/SenTestingKit.framework(Tests)&rsquo; started at 2011-08-17 07:43:20 +0000
+Test Suite &lsquo;SenInterfaceTestCase&rsquo; started at 2011-08-17 07:43:20 +0000
+Test Suite &lsquo;SenInterfaceTestCase&rsquo; finished at 2011-08-17 07:43:20 +0000.
+Executed 0 tests, with 0 failures (0 unexpected) in 0.000 (0.001) seconds</p>
+
+<p>Test Suite &lsquo;/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.3.sdk/Developer/Library/Frameworks/SenTestingKit.framework(Tests)&rsquo; finished at 2011-08-17 07:43:20 +0000.
+Executed 0 tests, with 0 failures (0 unexpected) in 0.000 (0.003) seconds</p>
+
+<p>Test Suite &lsquo;All tests&rsquo; finished at 2011-08-17 07:43:20 +0000.
+Executed 2 tests, with 0 failures (0 unexpected) in 0.002 (0.086) seconds
+```</p>
+
+<p>(全文完)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[用Sparkle为Cocoa程序增加自动升级]]></title>
+    <link href="http://venj.github.io/blog/auto-update-apps-with-sparkle/"/>
+    <updated>2011-05-27T12:52:00+08:00</updated>
+    <id>http://venj.github.io/blog/auto-update-apps-with-sparkle</id>
+    <content type="html"><![CDATA[<p>Mac OS X上的绝大部分程序都使用<a href="http://sparkle.andymatuschak.org/">Sparkle</a>来作为程序的自动升级工具。利用Sparkle，用户无需对升级过程进行干涉，只需跟着升级指示做就可以了。而Sparkle对于程序开发人员来说，使用也是相当方便。其实<a href="https://github.com/andymatuschak/Sparkle/wiki">Sparkle的文档</a>已经写的相当好了，不过我还是来简单写一下Sparkle的使用，用于备忘。</p>
+
+<p>首先到Sparkle的首页下载Sparkle框架。</p>
+
+<p><img class="center" src="/images/posts/sparkle-1.png"></p>
+
+<p>然后按照和之前<a href="/blog/add-growl-support-in-your-apps-add-growl-framework/">介绍Growl.framework的文章</a>中同样的方法，新建一个Cocoa项目（或打开一个已有的Cocoa项目）把Sparkle加入项目中，在此我就不赘述了。</p>
+
+<p>要让应用程序支持Sparkle很简单。大致分为3个大步骤：在项目中设置Sparkle；对升级包进行数字签名；设置AppCast服务器。（按：我正在用Rails编写一个AppCast服务器程序，能够简单方便的将这个过程自动化，等我测试完成之后将放到github上去。）</p>
+
+<!-- more -->
+
+
+<p>
+1. 在项目中设置Sparkle</p>
+
+<p>要让程序支持Sparkle，我们无需编写任何代码，只需做几个简单设置。简单的说，就是在<code>MainMenu.xib</code>里，增加一个新的<code>Object</code>，设置其类为<code>SUUpdator</code>。保存即可。操作顺序已经在下图中表示出来了。</p>
+
+<p><img class="center" src="/images/posts/sparkle-2.png"></p>
+
+<p>通常，我们还会在应用程序菜单中增加一个“Check for update&hellip;”的菜单项。然后把上一步中增加的<code>SUUpdater</code>对象的<code>-checkForUpdates:</code>连接到菜单项上。</p>
+
+<p><img class="center" src="/images/posts/sparkle-3.png"></p>
+
+<p>然后打开项目的<code>Info.plist</code>文件，增加两个键：<code>SUFeedURL</code>和<code>SUPublicDSAKeyFile</code>，都是字符串类型的值。<code>SUFeedURL</code>是appcast的Feed地址（后文中会讲述如何设置appcast服务器）；<code>SUPublicDSAKeyFile</code>是签署升级包的公钥，默认生成的公钥的名字是<code>dsa_pub.pem</code>。</p>
+
+<p><img class="center" src="/images/posts/sparkle-4.png"></p>
+
+<p>接着，我们设置程序的版本号，设置为1.0。注意，版本号是Bundle version string, short（CFBundleVersion）；不是Bundle version那项！</p>
+
+<p><img class="center" src="/images/posts/sparkle-5.png"></p>
+
+<p>至此，程序设置的部分差不多了。下面开始生成用于签署升级包的公钥和私钥，并对升级包进行数字签名。</p>
+
+<ol>
+<li>对升级包进行数字签名</li>
+</ol>
+
+
+<p>如果你还没有公钥私钥对，那么你需要先生成一对。生成公私钥的脚本已经包含在Sparkle的下载包里了。位于Extras/Signing Tools。里面有两个Ruby脚本，分别用于生成密钥和签署升级包。在命令行执行<code>generate_keys.rb</code>，可以得到<code>dsa_priv.pem</code>（私钥）和<code>dsa_pub.pem</code>（公钥）两个文件。你可以放在任何位置。不过私钥千万不能丢，否则将无法签署升级包。</p>
+
+<p><img class="center" src="/images/posts/sparkle-6.png"></p>
+
+<p>然后，把<code>dsa_pub.pam</code>添加到项目中。</p>
+
+<p><img class="center" src="/images/posts/sparkle-7.png"></p>
+
+<p>现在，编译程序的第一个版本Product &ndash; Build For &ndash; Build For Archiving。</p>
+
+<p><img class="center" src="/images/posts/sparkle-8.png"></p>
+
+<p>编译后，程序通常是位于<code>~/Library/Developer/Xcode/DerivedData/AppName-randomstring/Build/Products/Release</code>目录下。</p>
+
+<p><img class="center" src="/images/posts/sparkle-9.png"></p>
+
+<p>把这个程序拖到任意位置，用于后续测试。</p>
+
+<p>然后，我们把对程序做一个简单修改，比如在界面上加一个按钮，修改程序版本号为2，再次编译。把这次生成的程序打包成zip。因为这个是升级包，因此我们要对升级包进行数字签名。方法很简单：</p>
+
+<p><code>
+$ ./sign_update.rb SparkleTest.zip ~/.ssh/dsa_priv.pem
+MCwCFCV4IgyLAsp/zrg6mZXsoVRYwXsEAhQ+HKKhHzaEc3EcLOSc0X/PdKWfOA==
+</code>
+记录下返回的字符串——这是升级包的签名。后面马上就要用到。</p>
+
+<ol>
+<li>设置AppCast服务器</li>
+</ol>
+
+
+<p>最后一步，就是设置AppCast服务器了。</p>
+
+<p>为了方便测试，我们打开MacOSX的Web共享功能(具体不在此详述)；这样，我们就有了一个本地服务器来用于测试。比如，我的电脑上打开Web共享之后，就有服务器运行在<a href="http://127.0.0.1%EF%BC%8C%E8%80%8C%E5%AE%B6%E7%9B%AE%E5%BD%95%E9%87%8C%E7%9A%84%E2%80%9C%E7%AB%99%E7%82%B9%E2%80%9D%E5%B0%B1%E4%BD%8D%E4%BA%8E%EF%BC%9Ahttp://127.0.0.1/~venj/%E3%80%82">http://127.0.0.1%EF%BC%8C%E8%80%8C%E5%AE%B6%E7%9B%AE%E5%BD%95%E9%87%8C%E7%9A%84%E2%80%9C%E7%AB%99%E7%82%B9%E2%80%9D%E5%B0%B1%E4%BD%8D%E4%BA%8E%EF%BC%9Ahttp://127.0.0.1/~venj/%E3%80%82</a></p>
+
+<p>AppCast服务器主要提供两个页面：1. appcast.xml，2. release note的页面。这两种文件个格式在Sparkle的下载包中都有样例。位于Extras目录下。我们复制Sample Appcast.xml，重命名为appcast.xml，放到“站点”目录下（还记得第一步我们设置的SUFeedURL值吗？）。然后进行编辑，具体我就不说了，XML文件很容易读。修改后的appcast.xml内容如下：</p>
+
+<p>``` xml
+&lt;?xml version=&ldquo;1.0&rdquo; encoding=&ldquo;utf-8&rdquo;?>
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle"  xmlns:dc="http://purl.org/dc/elements/1.1/">
+   <channel></p>
+
+<pre><code>  &lt;title&gt;Your Great App's Changelog&lt;/title&gt;
+  &lt;link&gt;http://127.0.0.1/~venj/appcast.xml&lt;/link&gt;
+  &lt;description&gt;Most recent changes with links to updates for SparkleTest.&lt;/description&gt;
+  &lt;language&gt;en&lt;/language&gt;
+     &lt;item&gt;
+        &lt;title&gt;Version 2 (2 bugs fixed; 3 new features)&lt;/title&gt;
+    &lt;sparkle:releaseNotesLink&gt;
+        http://127.0.0.1/~venj/rnotes/rnotes2.0.html
+    &lt;/sparkle:releaseNotesLink&gt;
+        &lt;pubDate&gt;Thu, 19 May 2011 19:20:11 +0000&lt;/pubDate&gt;
+        &lt;enclosure url="http://127.0.0.1/~venj/spar.zip" sparkle:version="2.0" length="1623481" type="application/octet-stream" sparkle:dsaSignature="MCwCFCV4IgyLAsp/zrg6mZXsoVRYwXsEAhQ+HKKhHzaEc3EcLOSc0X/PdKWfOA==" /&gt;
+     &lt;/item&gt;
+</code></pre>
+
+<p>   </channel>
+</rss>
+<code>``
+我们可以任意修改</code><title><code>和</code><description><code>。</code><link><code>的值为appcast.xml的路径；</code><item><code>里根据实际修改。需要注意的是，</code><enclosure><code>的</code>sparkle:dsaSigniture`的值要设置为上面签署升级包时返回的字符串。</p>
+
+<p>再复制Extras里的Release Notes Template文件夹到“站点”目录下，把rnote.html重命名为rnote2.0.html。你可以任意修改这个HTML文件，编写详细的发行注记。</p>
+
+<p>至此，Sparkle设置完毕。开始测试：</p>
+
+<p>首先，打开我们之前保存的SparkleTest程序的第1版，然后退出；</p>
+
+<p>再次打开SparkleTest程序的第1版，这时会弹出提示是否自动检查更新。</p>
+
+<p><img class="center" src="/images/posts/sparkle-10.png"></p>
+
+<p>选择Check Automatically。然后我们就看到了自动</p>
+
+<p><img class="center" src="/images/posts/sparkle-11.png"></p>
+
+<p>升级对话框。选择Install Update，如果一切设置都没有问题，我们会看到准备就绪的对话框。选择“Install and Relaunch”。</p>
+
+<p><img class="center" src="/images/posts/sparkle-12.png"></p>
+
+<p>我们就能看到新版的程序启动了。很简单吧！</p>
+
+<p>Sparkle还支持Bundle，比如以Preference Pane方式发布的程序的升级。关于这个话题，等以后有涉及的时候再行介绍。</p>
+
+<p>（全文完）</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[为应用程序增加Growl支持（上）：在项目中加入Growl.Framework]]></title>
+    <link href="http://venj.github.io/blog/add-growl-support-in-your-apps-add-growl-framework/"/>
+    <updated>2011-05-26T10:12:00+08:00</updated>
+    <id>http://venj.github.io/blog/add-growl-support-in-your-apps-add-growl-framework</id>
+    <content type="html"><![CDATA[<p>Growl是啥，用来干什么的我就不介绍了。Growl的文档说实话，写的挺抽象的。不是Step by Step的文档，对我来说就有点困难了。所以，我决定把Growl支持写成几篇短文，简单介绍一下如何在程序中增加Growl支持。【为啥要分几篇？嘛，因为我自己也是边学边写文章的吗。。。Orz】</p>
+
+<p>首先，介绍一下原文是怎么写的。</p>
+
+<blockquote><ol>
+<li>Download the frameworks from the Downloads page from there.</li>
+<li>Copy the Growl framework to your application&rsquo;s project folder (or any subdirectory of it).</li>
+<li>Add the Growl framework to your project, making sure that all the relevant target checkboxes are checked. The header files in the framework use UTF-8 encoding.</li>
+<li>Add a Copy Files phase to your application&rsquo;s target.</li>
+<li>Get Info on the Copy Files phase.</li>
+<li>Set the destination to “Frameworks”, with no subpath (clear the field).</li>
+<li>Drag the framework from the group tree into the Copy Files phase.</li>
+</ol>
+</blockquote>
+
+<p>其实描述的听清楚的。奈何，我的理解能力太差，搞不定。俗话说，<strong>A picture worth a thousand words</strong>，所以我就以Xcode 4为例，把上述过程做一遍。（下面的编号基本对应上文中的1-7所述的步骤）</p>
+
+<!-- more -->
+
+
+<p>
+1 下载SDK（<a href="http://growl.info/index.php">下载页</a>）。</p>
+
+<p><img class="center" src="/images/posts/growl-1.png"></p>
+
+<p>2 挂载DMG，把Framework里的Growl.framwork或Growl-WithInstaller.framework（根据需要选择）拖拽到Xcode4的左侧项目树下。</p>
+
+<p><img class="center" src="/images/posts/growl-2.png"></p>
+
+<p>3 这时会弹出Sheet。选择“Copy items into destination group&rsquo;s folder(if needed)”。至于文中提到的UTF-8什么的，这个是Xcode 3.x中的东西了，现在已经没有了。</p>
+
+<p><img class="center" src="/images/posts/growl-3.png"></p>
+
+<p>4 增加一个Build Phase，操作顺序如下图。</p>
+
+<p><img class="center" src="/images/posts/growl-4.png"></p>
+
+<p>5 &ndash; 6. 在Copy Files Build Phase窗口中，将Destination设置为Framework，subpath保持默认的留空状态。</p>
+
+<p><img class="center" src="/images/posts/growl-5.png"></p>
+
+<p>7 把左侧栏里的Growl.framework拖进Copy Files Build Phase。</p>
+
+<p><img class="center" src="/images/posts/growl-6.png"></p>
+
+<p>至此，设置的部分完成了。简单测试一下：</p>
+
+<p><img class="center" src="/images/posts/growl-7.png"></p>
+
+<p>在<code>AppDelegate</code>里，加入如下代码：</p>
+
+<p>``` objc
+/<em> TestAppDelegate.h </em>/</p>
+
+<h1>import &ldquo;Growl/Growl.h&rdquo;  // 增加这行！</h1>
+
+<p>@interface TestAppAppDelegate : NSObject &lt;NSApplicationDele, GrowlApplicationBridgeDelegate>
+// 省去其它代码
+@end</p>
+
+<p>/<em> TestAppDelegate.m </em>/
+// 省去其它代码
+@implementation TestAppAppDelegate
+// 省去其它代码
+&ndash; (void)applicationDidFinishLaunching:(NSNotification *)note {</p>
+
+<pre><code> [GrowlApplicationBridge setGrowlDelegate:self]; // 增加这行！
+</code></pre>
+
+<p>// 省去其它代码
+}
+```</p>
+
+<p>然后选择“Product &ndash; Build”，或者按下cmd-b。如果编译成功，表示你的应用程序的Growl支持已经设置成功。现在你就可以开始利用Growl了。</p>
+
+<p>关于怎么在代码中利用Growl，我会在<a href="/blog/add-growl-support-in-your-apps-coding-growl/">后续文章</a>中讲述。</p>
+
+<p>（本文完）</p>
+]]></content>
+  </entry>
+  
+</feed>

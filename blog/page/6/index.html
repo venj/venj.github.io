@@ -1,0 +1,497 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Cocoa学习</title>
+  <meta name="author" content="venj">
+
+  
+  <meta name="description" content="今天在测试代码的时候发现了一个诡异的问题，那就是NSImage加载图片的时候无法准确获得图片的大小。 最初的代码是这样的： 1
+2
+3
+4
+NSImage *image = [NSImage imageNamed:@&quot;image&quot;];
+NSLog(@&quot;%f, %f& &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://venj.github.io/blog/page/6">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Cocoa学习" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Cocoa学习</a></h1>
+  
+    <h2>我的Cocoa/Cocoa Touch学习笔记</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:venj.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+  <li><a href="/about">关于本站</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/get-real-size-of-nsimage/">获取NSImage图片的准确大小</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-08-19T23:58:00+08:00" pubdate data-updated="true">Aug 19<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>今天在测试代码的时候发现了一个诡异的问题，那就是<code>NSImage</code>加载图片的时候无法准确获得图片的大小。</p>
+
+<p>最初的代码是这样的：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSImage</span> <span class="o">*</span><span class="n">image</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSImage</span> <span class="nl">imageNamed:</span><span class="s">@&quot;image&quot;</span><span class="p">];</span>
+</span><span class='line'><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%f, %f&quot;</span><span class="p">,</span> <span class="n">image</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="n">image</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">);</span>
+</span><span class='line'><span class="c1">//终端Log到的图片的尺寸是：185.250000, 106.500000，而实际的大小是274.0, 142.0。</span>
+</span><span class='line'><span class="c1">//image.size = NSMakeSize(247.0, 142.0); //强制指定尺寸能够解决问题</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>我用一个Image Well来显示图片的时候，发现图片居然比实际的要小！我试着<code>NSLog</code>图片的大小，发现<code>NSImage</code>加载的图片的<code>size</code>根本就是错的！我根据图片的实际大小，强制设置了图片的尺寸，图片就显示正常了，而且也没有被拉伸的痕迹。这说明图片数据在加载后并没有损耗，只是图片的<code>size</code>属性出错了，因此，强制设置<code>size</code>属性，图片就能正常显示了。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/get-real-size-of-nsimage/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/testing-ios-projects/">iOS项目的测试简介</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-08-17T15:06:00+08:00" pubdate data-updated="true">Aug 17<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>记得有人说过，写不写测试代码是判断一个开发者是否成熟的标志。良好的测试代码能够让程序代码更健壮，使重构更加方便。虽然Objective-C是一种编译语言，但是在Xcode的帮助下，做测试和测试驱动开发（Test Driven Development, TDD）也非常方便。苹果官方有一个关于如何做为项目增加测试支持的文档，不过iOS 4.3的文档包的的<a href="http://developer.apple.com/library/iOS/#documentation/Xcode/Conceptual/iphone_development/135-Unit_Testing_Applications/unit_testing_applications.html">该文档</a>已经比较老了，如果你是付费iOS开发者，那么可以看看iOS 5.0的文档包的的<a href="https://developer.apple.com/library/prerelease/ios/#documentation/Xcode/Conceptual/ios_development_workflow/135-Unit_Testing_Applications/unit_testing_applications.html">该文档</a>，已经更新为Xcode 4的教程了。</p>
+
+<p>iOS的测试分两种，一种是逻辑测试（Logic Tests）；另一种是程序测试（Application Tests）。逻辑测试主要是用来测试模块的业务逻辑的；程序测试则是测试模块在整个应用程序中的行为是否正确。逻辑测试类似单元测试；而程序测试则类似集成测试。个人感觉，逻辑测试比较适合测试模型代码；而应用程序测试则比较适合测试控制器和视图代码，考虑到视图在iOS开发中主要是通过Interface Builder来实现，因此，应用测试实际上就是测试控制器代码的。</p>
+
+<p>下面，简单的讲一下如何设置项目支持单元测试。我们要在Xcode中为项目建立两种测试的Target。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/testing-ios-projects/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/ios-and-pc-file-exchange-using-itunes/">让iOS App通过iTunes进行文件交换</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-08-07T13:04:00+08:00" pubdate data-updated="true">Aug 7<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>有一些App需要通过使用iTunes让用户上传和下载文档。要让iOS程序支持iTunes文件交换其实很简单，只需要在程序的<code>Info.plist</code>里增加一个键：<code>UIFileSharingEnabled（Application supports iTunes file sharing）</code>，赋值<code>YES</code>。</p>
+
+<p><img class="center" src="/images/posts/file-exchange-xcode.png"></p>
+
+<p>这样，编译之后进行机上运行的时候，连接设备到iTunes，就能进行文件交换了。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/ios-and-pc-file-exchange-using-itunes/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/dynamically-show-and-hide-dock-icon/">在程序中动态设置是否显示Dock图标</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-08-06T21:50:00+08:00" pubdate data-updated="true">Aug 6<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>关于如何隐藏Dock图标的方法，相信大家都知道——即使没有没有编程经验的老用户都知道。那就是，在Application Bundle里的<code>Info.plist</code>中增加一个<code>LSUIElement</code>的键，设置值为<code>YES</code>。但是，在程序中往往要让用户选择是否启用或禁用Dock图标。而程序是不能修改Application Bundle里的<code>Info.plist</code>的，因为这样会破坏程序的数字签名，所以只能在程序代码中动态的设置Dock图标的状态。</p>
+
+<p>其实动态设置Dock图标的方法很简单严格的说只有两行代码：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">ProcessSerialNumber</span> <span class="n">psn</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">0</span><span class="p">,</span> <span class="n">kCurrentProcess</span> <span class="p">};</span>
+</span><span class='line'><span class="n">TransformProcessType</span><span class="p">(</span><span class="o">&amp;</span><span class="n">psn</span><span class="p">,</span> <span class="n">kProcessTransformToForegroundApplication</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>在设置隐藏Dock图标的时候需要重启应用程序，无法在运行时动态完成的，而在显示Dock图标的时候则不需要。我做了一个简单的Demo程序。放到了Github上，有兴趣的可以看看。（以后在这里出现的其他示例代码也会放到那里。）</p>
+
+<p><img class="center" src="/images/posts/dynamic-dock-icon.png"></p>
+
+<p>程序很简单，就一个复选框，用来设置是否显示Dock图标。通过一个<code>-toggleDockIcon:</code>方法来设置是否显示Dock图标。并且在<code>-applicationDidFinishLaunching:</code>方法，设置在程序初始化的时候是否需要显示Dock图标。主要代码如下：</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/dynamically-show-and-hide-dock-icon/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/draw-round-rectangle-with-quartz-on-ios/">在iOS上用Quartz绘制圆角矩形</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-08-06T00:28:00+08:00" pubdate data-updated="true">Aug 6<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Bezels是Mac OS X下，苹果私有的UI控件，用来提示用户某些信息。不过iOS下，就有很多第三方的Bezels风格的提示控件实现了。相信大家也见过很多了。下图左侧是OSX的提示音量变化的Bezels，右侧是iOS上的Bezels风格的进度提示。</p>
+
+<p><img class="center" src="/images/posts/quartz-1.png"></p>
+
+<p>在iOS上做Bezels的思路很简单，无非就是在<code>UIView</code>里绘制一个半透明的圆角矩形，然后加入其他的<code>SubView</code>。因为没有现成的绘制圆角矩形的API可用，所以我们来自己绘制一个——反正是为了学习嘛。</p>
+
+<p>新建项目，添加一个<code>UIView</code>的子类，修改<code>drawRect</code>方法，如下：</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/draw-round-rectangle-with-quartz-on-ios/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/geocoding-in-ios-5/">iOS 5的Geocoding</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-07-06T23:44:00+08:00" pubdate data-updated="true">Jul 6<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>很明显，本文有标题党的嫌疑。其实本文要说的是“<a href="http://www.bignerdranch.com/book/ios_programming_the_big_nerd_ranch_guide_nd_edition_">iPhone Programming: The Big Nerd Ranch Guide</a>”一书中第5章里的Whereami的例子。我照着书本做下来，但是感觉例子似乎有点问题。可能是我看书不仔细，不过这个例子要实现的功能很诡异——定位自己，然后自己用文本框加上一个Annotation(？)这太诡异了吧。</p>
+
+<p>我现在对这个例子小做修改，那就是，在文本框中输入任何地址字符串，然后地图自动定位到该位置——类似Google Map的搜索。我基于书本上的代码，做一些小修改。</p>
+
+<p>首先，注释掉<code>-locationManager:didUpdateToLocation:fromLocation:</code>这个方法里的所有代码。主要对<code>-findLocation</code>方法作出修改，实现地图搜索功能。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/geocoding-in-ios-5/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/7/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/5/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Sample Code</h1>
+  <ul>
+    <li><a href="https://github.com/venj/Cocoa-blog-code">Clone on Github</a></li>
+    <li><a href="github-mac://openRepo/https://github.com/venj/Cocoa-blog-code"> Clone in Mac</a></li>
+  </ul>
+</section><section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/simple-uiimage-extension-to-create-rounded-corner-image/">一个简单的创建圆角图像的UIImage扩展实现</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/push-viewcontroller-hide-buttom-bar/">推View Controller时隐藏TabBar</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/code-box-like-window-open-animation/">CodeBox风格的窗口打开动画</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/localized-loading-screen/">本地化加载屏幕</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/venj">@venj</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'venj',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+<section>
+  <h1>Blog Roll</h1>
+  <ul>
+    <li><a href="http://blog.ilvelh.com">ilvelh&#8217;s blog</a></li>
+    <li><a href="http://rajna.github.io">GUWU DESIGNER</a></li>
+  </ul>
+</section>
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2011 - 2014 - venj -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> &amp; <a href="http://pages.github.com">Github Pages</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'venj';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

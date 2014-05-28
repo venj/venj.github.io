@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Dock | Cocoa学习]]></title>
+  <link href="http://venj.github.io/blog/categories/dock/atom.xml" rel="self"/>
+  <link href="http://venj.github.io/"/>
+  <updated>2014-01-22T11:14:45+08:00</updated>
+  <id>http://venj.github.io/</id>
+  <author>
+    <name><![CDATA[venj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[跳动Dock图标的实现]]></title>
+    <link href="http://venj.github.io/blog/bounce-dock-icon/"/>
+    <updated>2012-03-09T09:13:00+08:00</updated>
+    <id>http://venj.github.io/blog/bounce-dock-icon</id>
+    <content type="html"><![CDATA[<p>OS X程序，在执行后台任务的时候，有时需要通过跳动Dock图标来提示用户进行操作或某项操作已经执行完成。方法很简单，<code>NSApplication</code>有一个<code>-requestUserAttention:</code>的方法可以跳动Dock图标。</p>
+
+<p>下面是实例代码：</p>
+
+<p>``` objc
+//跳动一次
+&ndash; (void)bounceOnce:(id)sender {</p>
+
+<pre><code>[NSApp requestUserAttention:NSInformationalRequest];
+</code></pre>
+
+<p>}
+//总是跳动，直到用户干预为止
+&ndash; (void)bounceAlways:(id)sender {</p>
+
+<pre><code>[NSApp requestUserAttention:NSCriticalRequest];
+</code></pre>
+
+<p>}
+```</p>
+
+<p>FYI: <code>NSApp</code>是一个指向当前运行的程序实例的全局变量，等同于调用：<code>[NSApplication sharedApplication]</code>。</p>
+
+<p>示例代码已经上传到<a href="https://github.com/venj/Cocoa-blog-code/tree/master/Bounce%20Icon">github</a>，有兴趣的可以看看。不过记得在测试示例程序的时候，点击按钮后就让程序进入后台运行。5秒钟后就能看到效果了。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[在Cocoa里玩转Dock图标]]></title>
+    <link href="http://venj.github.io/blog/play-with-dock-icon/"/>
+    <updated>2011-09-03T00:35:00+08:00</updated>
+    <id>http://venj.github.io/blog/play-with-dock-icon</id>
+    <content type="html"><![CDATA[<p>今天我们来看一看如何在Cocoa程序中自定义Dock图标。Dock图标的自定义主要包括四方面：</p>
+
+<blockquote><ul>
+<li>加徽章（Badge）</li>
+<li>换图标</li>
+<li>隐藏和显示最小化时的图标徽章</li>
+<li>增加自定义Dock菜单</li>
+</ul>
+</blockquote>
+
+<p>本文将对如何进行这四方面的自定义进行简单的介绍，并且在最后研究一下腾讯QQ for Mac独特的Badge机制。本文的示例代码使用了Acorn和腾讯QQ的图标做例子，请这两家厂商不要介意。</p>
+
+<!-- more -->
+
+
+<p>
+<strong>1 Dock徽章</strong></p>
+
+<p><img class="center" src="/images/posts/cocoa-dock-1.png" title="Dock徽章" ></p>
+
+<p>给Dock图标加Badge的方法很常见，也很简单，用代码来说事吧。</p>
+
+<p>``` objc
+// Add badge
+&ndash; (IBAction)addBadge:(id)sender {</p>
+
+<pre><code>[[NSApp dockTile] setBadgeLabel:[NSString stringWithFormat:@"%d", random() % 11]];
+</code></pre>
+
+<p>}</p>
+
+<p>// Remove badge
+&ndash; (IBAction)removeBadge:(id)sender  {</p>
+
+<pre><code>[[NSApp dockTile] setBadgeLabel:nil];
+</code></pre>
+
+<p>}
+```</p>
+
+<p>加Badge是用<code>NSDockTile</code>类的<code>-setBadgeLabel:</code>方法；移除Badge是把<code>badgeLabel</code>的内容设置为<code>nil</code>。这个方法在10.5以上都可以使用，除非需要兼容10.4以下的OSX－－现在似乎已经没有很大的必要了，或者是有其他特别的理由，否则真的很难拒绝使用Cocoa的这个简单的API调用。 ;)</p>
+
+<p><strong>2 更换Dock图标</strong></p>
+
+<p><img class="center" src="/images/posts/cocoa-dock-2.png" title="Dock图标" ></p>
+
+<p>有很多程序能够动态的修改程序图标，如，Adium和iCal。我们通过代码，我们可以在程序运行的时候动态设置Dock图标。修改图标有两种方法，一种是直接指定一个<code>NSImage</code>对象设置应用程序的图标；另一种是用一个自定义的View，来显示为Dock图标。</p>
+
+<p>``` objc
+// Customize Dock Icon
+&ndash; (IBAction)changeDockIcon:(id)sender {</p>
+
+<pre><code>[NSApp setApplicationIconImage:[NSImage imageNamed:@"Icon"]];
+</code></pre>
+
+<p>}</p>
+
+<p>// Restore Dock Icon
+&ndash; (IBAction)restoreDockIcon:(id)sender {</p>
+
+<pre><code>[NSApp setApplicationIconImage:nil];
+</code></pre>
+
+<p>}</p>
+
+<p>// Draw Dock Icon with Custom View
+&ndash; (IBAction)changeDockIconWithCustomView:(id)sender {</p>
+
+<pre><code>DockIconView *dockView = [[[DockIconView alloc] init] autorelease];
+[[NSApp dockTile] setContentView: dockView];
+[[NSApp dockTile] display];
+</code></pre>
+
+<p>}
+```</p>
+
+<p>用自定义View做图标不能自动刷新，所以如果Dock图标有所改变－－如加Badge时，可能需要手动通过<code>-display</code>方法刷新。</p>
+
+<p>上面介绍的两种方法修改的程序图标会在程序退出之后还原为在<code>Info.plist</code>里指定的应用程序图标。要永久的改变程序图标（也就是退出程序的时候也能显示修改后的图标）的方法是创建Dock图标的插件。因为这个话题涉及Bundle相关的内容，在这里就不详述了，详情可以参考苹果的文档，以后有机会我会专门写文章介绍Dock图标插件的话题。</p>
+
+<p><strong>3 隐藏和显示最小化时的图标徽章</strong></p>
+
+<p><img class="center" src="/images/posts/cocoa-dock-3.png" title="最小化图标徽章" ></p>
+
+<p>OSX的窗口在最小化的时候，在缩略图的右下角会显示一个程序图标徽章。我们可以通过程序来显示和隐藏最小化图标的徽章。方法很简单如下：</p>
+
+<p>``` objc
+// Show minimize icon badge
+&ndash; (IBAction)showMinimizeBadge:(id)sender {</p>
+
+<pre><code>[[self.window dockTile] setShowsApplicationBadge:YES];
+</code></pre>
+
+<p>}</p>
+
+<p>// Remove minimize icon badge
+&ndash; (IBAction)removeMinimizeBadge:(id)sender {</p>
+
+<pre><code>[[self.window dockTile] setShowsApplicationBadge:NO];
+</code></pre>
+
+<p>}
+```</p>
+
+<p><strong>4 Dock菜单</strong></p>
+
+<p><img class="center" src="/images/posts/cocoa-dock-4.png" title="Dock菜单" ></p>
+
+<p>Dock菜单有两种方法指定－－一种是直接在XIB中静态的设计菜单，然后通过Interface Builder关联到<code>NSApp</code>的<code>dockMenu</code>属性；另一种是通过<code>ApplicationDelegate</code>的<code>-applicationDockMenu:</code>方法，在程序中动态指定菜单。静态Dock菜单的指定方法如下：</p>
+
+<p><img class="center" src="/images/posts/cocoa-dock-5.png"></p>
+
+<p>所有操作通过Interface Builder就能完成。</p>
+
+<p>动态指定Dock菜单的方法如下面的代码所示：</p>
+
+<p>``` objc
+&ndash; (NSMenu <em>)applicationDockMenu:(NSApplication </em>)sender {</p>
+
+<pre><code>return self.dynamicMenu;
+</code></pre>
+
+<p>}
+```</p>
+
+<p>为了简便起见，我实际上并没有通过代码动态的创建菜单，上面的示例代码仅仅是引用了一个XIB里的菜单对象，通过<code>-applicationDockMenu:</code>方法返回。</p>
+
+<p><strong>5 QQ风格的Dock徽章</strong></p>
+
+<p><img class="center" src="/images/posts/cocoa-dock-6.png" title="QQ的Badge" ></p>
+
+<p>你可能已经注意到了这个QQ图标的Badge和最上方的那个QQ图标的Badge有些不一样。没错，最上方的那个Badge是Lion的默认的风格的图标，是我做的一个示例，图标借用了腾讯QQ的图标。不过实际的QQ的Badge并不是使用OSX的系统Badge。具体腾讯怎么做的我也不是很清楚，不过我用自定义View用腾讯的空白Badge图标做了一个模仿的例子：</p>
+
+<p><img class="center" src="/images/posts/cocoa-dock-7.png" title="QQ风格的Badge" ></p>
+
+<p>我做的这个模仿示例，字体有些不太像，Badge文字的定位也有点不准确，不过我猜想腾讯的思路基本是和我类似，现在给出我写的实现。再次强调一下，这并非腾讯官方的方法，示例代码仅供参考：</p>
+
+<p>``` objc
+&ndash; (void)drawRect:(NSRect)dirtyRect
+{</p>
+
+<pre><code>// Drawing code here.
+
+// Draw Dock Icon
+NSImage *image = [NSImage imageNamed:@"qqbadge"];
+NSImageView *imageView = [[NSImageView alloc] initWithFrame:self.frame];
+imageView.image = image;
+[self addSubview:imageView];
+[imageView release];
+
+// Draw Badge Label
+NSRect labelFrame;
+CGFloat width = self.frame.size.width;
+CGFloat height = self.frame.size.height;
+labelFrame.origin = CGPointMake(width * 0.62, height * 0.60);
+labelFrame.size = CGSizeMake(width * 0.25, height * 0.25);
+self.label = [[NSTextField alloc] initWithFrame:labelFrame];
+self.label.backgroundColor = [NSColor clearColor];
+self.label.textColor = [NSColor whiteColor];
+self.label.drawsBackground = NO;
+self.label.stringValue = self.labelText;
+//在使用的时候，需要修改徽章Label，只需设置这个view对象的labelText属性即可
+NSFont *font = [NSFont fontWithName:@"Arial" size:32];
+[self.label setFont:font];
+[self.label sizeToFit];
+[self.label setBordered:NO];
+[self addSubview:self.label];
+[self.label release];
+</code></pre>
+
+<p>}
+```</p>
+
+<p>方法大致是，通过自定义View，绘制一个带空白Badge的图标，然后绘制一个图标徽章Label到Badge的位置，控制其大小，使其正好位于Label内部。</p>
+
+<p>不过这种方法绘制的Badge有一个缺陷，那就是Badge的Label的长度不能太长，超过2个数字就不适合用这样的方法了。相比起来，用系统自带的Badge在Label很长的时候会自动拉长，更加灵活，而且只需一行代码，简单很多。可能腾讯这么做的目的最初是为了兼容Mac OS X 10.4才用了自定义View来绘制Badge；不过时代在进步，既然Cocoa已经提供了一个很简单的绘制Badge的API，腾讯是不是也应该更新一下了，况且，QQ for Mac现在的版本已经不再兼容10.6以下的系统了。</p>
+
+<p><img class="center" src="/images/posts/cocoa-dock-8.png"></p>
+
+<p>最后，本文的所有代码都已经包含在了一个示例项目<a href="https://github.com/venj/Cocoa-blog-code/tree/master/Play%20With%20Dock">Play With Dock</a>中了，上图是运行的例子，代码已经<a href="https://github.com/venj/Cocoa-blog-code">推送到Github上了</a>，有兴趣的可以看看，并且批评指正。</p>
+
+<p>（全文完）</p>
+]]></content>
+  </entry>
+  
+</feed>

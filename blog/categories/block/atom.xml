@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Block | Cocoa学习]]></title>
+  <link href="http://venj.github.io/blog/categories/block/atom.xml" rel="self"/>
+  <link href="http://venj.github.io/"/>
+  <updated>2014-01-22T11:14:45+08:00</updated>
+  <id>http://venj.github.io/</id>
+  <author>
+    <name><![CDATA[venj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Block的Retain Cycle的解决方法]]></title>
+    <link href="http://venj.github.io/blog/prevent-block-instance-retain-cycle/"/>
+    <updated>2012-05-21T10:49:00+08:00</updated>
+    <id>http://venj.github.io/blog/prevent-block-instance-retain-cycle</id>
+    <content type="html"><![CDATA[<p>一个使用Block语法的实例变量，在引用另一个实例变量的时候，经常会引起retain cycle。这个问题在使用ASIHTTPRequest的block语法的时候会时不时的碰到。这个问题困扰了我这个小白很久。终于有一天，在Advanced Mac OS X Programming上，看到了这个问题的解决方案。</p>
+
+<p>先用代码描述一下症状：</p>
+
+<!-- more -->
+
+
+<p>``` objc
+/<em> ViewController.h </em>/</p>
+
+<h1>import &lt;UIKit/UIKit.h></h1>
+
+<p>typedef void (^ABlock)(void); //定义一个简单的Block</p>
+
+<p>@interface ViewController : UIViewController {</p>
+
+<pre><code>NSMutableArray *_items;
+ABlock _block;
+</code></pre>
+
+<p>}</p>
+
+<p>@end</p>
+
+<p>/<em> ViewController.m </em>/</p>
+
+<h1>import &ldquo;ViewController.h&rdquo;</h1>
+
+<p>@implementation ViewController</p>
+
+<ul>
+<li>(void)viewDidLoad
+{
+  [super viewDidLoad];
+  // Do any additional setup after loading the view, typically from a nib.
+  <em>items = [[NSMutableArray alloc] init];
+  </em>block = ^{
+      [<em>items addObject:@&ldquo;Hello!&rdquo;]; //</em>block引用了_items，导致retain cycle。
+  };
+}</li>
+</ul>
+
+
+<p>@end
+```</p>
+
+<p>Xcode在编译以上程序的时候会给出一个警告：Captureing &lsquo;self&rsquo; strongly in this block is likely to lead to a retain cycle。原因是<code>_items</code>实际上是<code>self-&gt;items</code>。<code>_block</code>对象在创建的时候会被<code>retain</code>一次，因此会导致<code>self</code>也被<code>retain</code>一次。这样就形成了一个retain cycle。</p>
+
+<p>解决方法就是，创建一个本地变量<code>blockSelf</code>，指向<code>self</code>，然后用结构体语法访问实例变量。代码如下：</p>
+
+<p>``` objc
+<em>_block ViewController *blockSelf = self;
+</em>block = ^{</p>
+
+<pre><code>[blockSelf-&gt;_items addObject:@"Hello!"];
+</code></pre>
+
+<p>};
+```</p>
+
+<p>这么修改之后，<code>blockSelf</code>是本地变量，是弱引用，因此在<code>_block</code>被<code>retain</code>的时候，并不会增加retain count，所以retain cycle就解除了，Xcode也不再出现警告了，问题解决。</p>
+
+<p>注：本文并非原创，详情请参阅<a href="http://www.amazon.com/Advanced-Mac-OS-Programming-Guides/dp/0321706250">Advanced Mac OS X Programming</a>，第92页“Block Retain Cycles”。</p>
+
+<p>(全文完)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[用NSOpenPanel打开文件]]></title>
+    <link href="http://venj.github.io/blog/open-file-with-nsopenpanel/"/>
+    <updated>2011-03-29T00:00:00+08:00</updated>
+    <id>http://venj.github.io/blog/open-file-with-nsopenpanel</id>
+    <content type="html"><![CDATA[<p><code>NSOpenPanel</code>和<code>NSSavePanel</code>从Mac OS X 10.6开始把很多方法都标记为了Deprecated，文档里也很详尽的给出了替代方法。</p>
+
+<p>比如，要打开一个选文件的ModalView，以前是用<code>NSOpenPanel</code>的<code>– beginSheetForDirectory:file:types:modalForWindow:modalDelegate:didEndSelector:contextInfo:</code>方法。现在，必须用新的方法替代。示例代码如下：</p>
+
+<p>``` objc
+&ndash;(IBAction)showOpenPanel:(id)sender {</p>
+
+<pre><code>NSOpenPanel *panel = [NSOpenPanel openPanel];
+[panel setDirectory:NSHomeDirectory()]; // Set panel's default directory.
+[panel setAllowedFileTypes:[NSImage imageFileTypes]]; // Set what kind of file to select.
+// More panel configure code.
+[panel beginSheetModalForWindow:[myView window] completionHandler: (^(NSInteger result){
+    if(result == NSOKButton) {
+        NSArray *fileURLs = [panel URLs];
+        NSImage *image = [[NSImage alloc] initWithContentsOfURL:
+                          [fileURLs objectAtIndex:0]];
+        NSLog(@"%@", [fileURLs objectAtIndex:0]);
+        // Deal with the image.
+        [image release];
+    }
+})];
+</code></pre>
+
+<p>}
+```</p>
+
+<p>用这个新方法利用了Objective-C 2.0的新特征：Block。在引入了Block之后，这个方法也就变成了多线程的了——这是Grand Central Dispatch的使用实例之一。</p>
+
+<p>这段代码的调试输出如下（多线程）：</p>
+
+<p><code>
+2011-03-29 13:49:54.204 CustomView[50396:903] In app delegate: 1.000000
+[Switching to process 50396 thread 0xad07]
+[Switching to process 50396 thread 0x903]
+[Switching to process 50396 thread 0x9633]
+[Switching to process 50396 thread 0x903]
+2011-03-29 13:50:04.528 CustomView[50396:903] x-marsedit-filelocal://localhost/Users/venj/Pictures/Old%20Photo/IMG_2443.JPG
+Program ended with exit code: 0
+</code></p>
+
+<p>详情参考ADC文档：<a href="http://developer.apple.com/library/mac/#documentation/cocoa/reference/ApplicationKit/Classes/NSOpenPanel_Class/DeprecationAppendix/AppendixADeprecatedAPI.html%23//apple_ref/occ/instm/NSOpenPanel/beginSheetForDirectory:file:types:modalForWindow:modalDelegate:didEndSelector:contextInfo:">在这里</a>。</p>
+
+<p><strong>Updated：</strong>另外，值得注意的是，<code>NSOpenPanel</code>是<code>NSSavePanel</code>的子类。</p>
+
+<p>（全文完）</p>
+]]></content>
+  </entry>
+  
+</feed>

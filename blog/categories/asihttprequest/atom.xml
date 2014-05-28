@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: ASIHTTPRequest, | Cocoa学习]]></title>
+  <link href="http://venj.github.io/blog/categories/asihttprequest/atom.xml" rel="self"/>
+  <link href="http://venj.github.io/"/>
+  <updated>2014-01-22T11:14:45+08:00</updated>
+  <id>http://venj.github.io/</id>
+  <author>
+    <name><![CDATA[venj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[用NSMutableURLRequest发送图片]]></title>
+    <link href="http://venj.github.io/blog/send-image-with-nsmutableurlrequest/"/>
+    <updated>2011-04-16T16:12:00+08:00</updated>
+    <id>http://venj.github.io/blog/send-image-with-nsmutableurlrequest</id>
+    <content type="html"><![CDATA[<p>DragFan目前的网络连接使用了ASIHTTPRequest这个第三方库。<a href="http://allseeing-i.com/ASIHTTPRequest/"><code>ASIHTTPRequest</code></a>是一个相对非常庞大的库，在心理上我总觉得用在<a href="http://itunes.apple.com/app/dragfan/id441435736?mt=12">DragFan</a>里有点大材小用了。因此，我今天试着寻找了一下替代方案。很幸运，我找到了一个不错的替代方案，而且是利用现有的Cocoa API，而且在iOS下也是能使用的。</p>
+
+<p>尽管印象中看到过文章说用Cocoa的网络API的性能没有用CoreFoundation的性能好，但是目前我在写的程序并没有特别的需要高性能，而且用Cocoa的API，程序的可读性和内存管理也更加直观，应该说，是一个比较好的方案。</p>
+
+<p>废话了一通，下面来看看究竟是如何实现的：</p>
+
+<!-- more -->
+
+
+<p>
+``` objc</p>
+
+<h1>define FANFOU_SEND_PHOTO_API @&ldquo;<a href="http://api.fanfou.com/photos/upload.json">http://api.fanfou.com/photos/upload.json</a>&rdquo;</h1>
+
+<ul>
+<li><p>(IBAction)sendMessage:(id)sender {
+  // 创建Request对象
+  NSMutableURLRequest <em>req = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:FANFOU_SEND_PHOTO_API]
+                                                          cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                      timeoutInterval:60.0];
+  // 定义boundary
+  NSString </em>boundary = @&ldquo;&mdash;&mdash;Boundary+WhateverYouLikeToPutInHere&mdash;&mdash;datatata&mdash;done&rdquo;;
+  // 使用POST方法
+  [req setHTTPMethod:@&ldquo;POST&rdquo;];
+  // 设置Content-Type
+  [req setValue:[NSString stringWithFormat:@&ldquo;multipart/form-data; boundary=%@&rdquo;, boundary, nil] forHTTPHeaderField:@&ldquo;Content-Type&rdquo;];</p>
+
+<p>  // 把图片变成data。
+  NSImage <em>theImage = [self.imageView image];
+  NSBitmapImageRep </em>bitmap = [[theImage representations] objectAtIndex:0];
+  NSData *imageData = [bitmap representationUsingType:NSJPEGFileType properties: nil];</p>
+
+<p>  // 需要POST的键值对
+  NSDictionary *values = [NSDictionary dictionaryWithObjectsAndKeys:[messageField string], @&ldquo;status&rdquo;, imageData, @&ldquo;photo&rdquo;, nil];</p>
+
+<p>  // 初始化POST Data
+  NSMutableData *d = [NSMutableData data];</p>
+
+<p>  // 遍历键值对，将其转换成NSData
+  for (NSString *key in [values allKeys]) {</p>
+
+<pre><code>  // Append一个Boundary
+  [d appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+
+  id currentValue = [values objectForKey:key];
+
+  if( [currentValue isKindOfClass:[NSData class]] &amp;&amp; [NSImageRep imageRepClassForData:currentValue] != nil ) {
+      // 如果是图片对象的处理方法。
+      // 设置Content-Disposition，这里设置图片对应的key的名字
+      [d appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"; filename=\"image.png\"\r\n", key]
+                     dataUsingEncoding:NSUTF8StringEncoding]];
+      // 设置图片的Content-Type
+      [d appendData:[@"Content-Type: image/png\r\n" dataUsingEncoding:NSASCIIStringEncoding]];
+      // 设置传输编码为二进制
+      [d appendData:[@"Content-Transfer-Encoding: binary\r\n\r\n" dataUsingEncoding:NSASCIIStringEncoding]];
+      // Append图片
+      [d appendData:currentValue];
+  }
+  else {
+      // 字符串值的处理方法
+      // Append一个Boundary
+      [d appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+      // 设置字符串键
+      [d appendData:[@"Content-Disposition: form-data; name=\"status\"\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+      // 设置字符串值
+      [d appendData:[[NSString stringWithFormat:@"%@", currentValue] dataUsingEncoding:NSUTF8StringEncoding]];
+  }
+</code></pre>
+
+<p>  }
+  // 最后Append一个Boundary
+  [d appendData:[[NSString stringWithFormat:@&ldquo;\r\n&mdash;%@&mdash;\r\n&rdquo;, boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+  // 设置数据为请求的Body
+  [req setHTTPBody:d];</p>
+
+<p>  // 建立一个连接，用来发送请求，并且设置delegate为self，这里主要用来处理BasicAuth
+  NSURLConnection *theConnection=[[NSURLConnection alloc] initWithRequest:req delegate:self];
+  if (theConnection) {
+      // 处理连接成功
+  } else {
+      // 处理链接失败
+  }
+  [req release];
+}</p></li>
+</ul>
+
+
+<p>// NSURLConnection的Delegate方法，用来处理Basic Auth。
+ &ndash;(void)connection:(NSURLConnection <em>)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge </em>)challenge
+{</p>
+
+<pre><code>if ([challenge previousFailureCount] == 0) {
+    NSURLCredential *newCredential;
+    newCredential = [NSURLCredential credentialWithUser:@"YOUR_USER_NAME"
+                                               password:@"YOUR_PASSWORD"
+                                            persistence:NSURLCredentialPersistenceNone];
+    [[challenge sender] useCredential:newCredential
+           forAuthenticationChallenge:challenge];
+} else {
+    [[challenge sender] cancelAuthenticationChallenge:challenge];
+    // 处理认证失败
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>利用<code>NSMutableURLRequest</code>应该也能够轻松的实现饭否Basic Auth API的Cocoa封装，配合其他的一些库，要实现OAuth的封装应该也没有什么问题的。我目前对<code>NSMutableURLRequest</code>的理解还只是一知半解，所以继续研究文档去。。。下一版DragFan中，我会用<code>NSMutableURLRequest</code>替代<code>ASIHTTPRequest</code>，实现DragFan的图片发送功能。</p>
+
+<p>（本文参考了<a href="http://www.travisdunn.com/posting-multipart-file-uploads-on-the-iphone">这里</a>和<a href="http://www.travisdunn.com/posting-multipart-file-uploads-on-the-iphone">这里</a>）</p>
+
+<p>（全文完）</p>
+]]></content>
+  </entry>
+  
+</feed>

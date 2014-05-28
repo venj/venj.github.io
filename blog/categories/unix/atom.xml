@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: UNIX | Cocoa学习]]></title>
+  <link href="http://venj.github.io/blog/categories/unix/atom.xml" rel="self"/>
+  <link href="http://venj.github.io/"/>
+  <updated>2014-01-22T11:14:45+08:00</updated>
+  <id>http://venj.github.io/</id>
+  <author>
+    <name><![CDATA[venj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[在OS X Lion下编译APUE的示例代码]]></title>
+    <link href="http://venj.github.io/blog/compile-apue-example-code-under-lion/"/>
+    <updated>2011-09-08T23:27:00+08:00</updated>
+    <id>http://venj.github.io/blog/compile-apue-example-code-under-lion</id>
+    <content type="html"><![CDATA[<p>本文和Cocoa关系不大，不过UNIX开发也是OSX开发的一个重要组成部分，所以我就放在这里了。Advanced Programming in Unix Environment这本书的源码不能直接编译，网上也没有文章（除了这篇看不懂的<a href="http://opticaller.tistory.com/78">棒子写的文章</a>）详细说明这本书源码的用法，这里简单的说明一下：</p>
+
+<!-- more -->
+
+
+<p>
+1 解包<code>src.tar.gz</code>，解包出来的<code>apue.2e</code>文件夹。你可以随意移动这个文件夹的位置。</p>
+
+<p>2 打开<code>path_to_apue_src/Make.defines.macos</code>，修改<code>WKDIR</code>的路径为<code>apue.2e</code>的绝对路径，如：</p>
+
+<p><code>
+WKDIR=/Users/venj/Developer/Sources/C/APUE/apue #也就是path_to_apue_src
+</code></p>
+
+<p>3 打开<code>path_to_apue_src/include/apue.h</code>，在第11行之后加入如下几行：</p>
+
+<p>``` c</p>
+
+<h1>ifdef MACOS</h1>
+
+<h1>define _DARWIN_C_SOURCE</h1>
+
+<h1>endif</h1>
+
+<p>```</p>
+
+<p>4 打开终端，<code>cd</code>到<code>path_to_apue_src</code>目录，运行：</p>
+
+<p><code>bash
+make all
+</code></p>
+
+<p>至此准备工作到此结束。</p>
+
+<p>5 编译源码的方法如下：</p>
+
+<p><code>bash
+gcc -Ipath_to_apue_src/include path_to_apue_src/lib/libapue.a example.c -o exec_file
+</code></p>
+
+<p>方法也不算很难吧。 :D 理论上这个方法能在OSX 10.5以上的系统都可使用。</p>
+
+<p>Happy learning!</p>
+
+<p>（全文完）</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Foundation | Cocoa学习]]></title>
+  <link href="http://venj.github.io/blog/categories/foundation/atom.xml" rel="self"/>
+  <link href="http://venj.github.io/"/>
+  <updated>2014-01-22T11:14:45+08:00</updated>
+  <id>http://venj.github.io/</id>
+  <author>
+    <name><![CDATA[venj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Cocoa的几种内置数据类型之间的互转]]></title>
+    <link href="http://venj.github.io/blog/common-data-types-conversion/"/>
+    <updated>2011-05-28T09:42:00+08:00</updated>
+    <id>http://venj.github.io/blog/common-data-types-conversion</id>
+    <content type="html"><![CDATA[<p>因为Cocoa的数据类型之间的互转在实际程序中应用很广泛，而我经常都会忘记，因此在此记录一下常用的几个互转。以后将会补充更多。</p>
+
+<p>1 <code>NSData</code>和<code>NSString</code>之间互转：</p>
+
+<p>``` objc
+/<em> NSString to NSData </em>/
+NSString <em>theString = @&ldquo;This is a string&rdquo;;
+NSData </em>theStringData = [theString dataUsingEncoding:NSUTF8StringEncoding];
+NSLog(@&ldquo;%@\n%@&rdquo;, theString, theStringData);</p>
+
+<p>/<em> NSData to NSString </em>/
+NSString *theStringFromData = [[NSString alloc] initWithData:theStringData encoding:NSUTF8StringEncoding];
+NSLog(@&ldquo;%@&rdquo;, theStringFromData);
+[theStringFromData release];
+```</p>
+
+<p>这里用<code>NSUTF8StringEncoding</code>作为例子，实际可以使用更多其它的编码类型，详情可以参考文档。</p>
+
+<!-- more -->
+
+
+<p>
+2 从某个路径(<code>NSString</code>)加载图片</p>
+
+<p><code>objc
+NSString *imagePath = [[NSBundle mainBundle] pathForImageResource:@"some_image"];
+NSImage *theImage = [[NSImage alloc] initWithContentsOfFile:imagePath];
+//[self.imageWell setImage:theImage];
+[theImage release];
+</code></p>
+
+<p>除了可以从<code>NSString</code>加载图片，也可以从<code>NSURL</code>加载。方法类似。</p>
+
+<p>3 <code>NSData</code>和<code>NSImage</code>之间互转：</p>
+
+<p>``` objc
+/<em> NSImage to NSData (TIFF) </em>/
+NSData <em>someData = [NSData dataWithContentsOfFile:imagePath];
+NSImage </em>someImage = [[NSImage alloc] initWithData:someData];
+NSData <em>dataFromImage = [someImage TIFFRepresentation];
+NSMutableString </em>homeDir = [[NSMutableString alloc] initWithString:NSHomeDirectory()];
+[dataFromImage writeToFile:[homeDir stringByAppendingPathComponent:@&ldquo;Desktop/image.tiff&rdquo;] atomically:NO];</p>
+
+<p>/<em> NSImage to NSData (Any Format, use png as example) </em>/
+//NSBitmapImageRep <em>bmprep = [NSBitmapImageRep imageRepWithData:dataFromImage]; // TIFF representation data
+NSBitmapImageRep </em>bmprep = [NSBitmapImageRep imageRepWithData:someData]; // PNG data from file
+NSDictionary <em>imageProperty = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:0.0], NSImageCompressionFactor, nil];
+NSData </em>otherTypeImageData = [bmprep representationUsingType:NSPNGFileType properties:imageProperty];
+[otherTypeImageData writeToFile:[homeDir stringByAppendingPathComponent:@&ldquo;Desktop/image.png&rdquo;] atomically:NO];
+[homeDir release];
+[someImage release];
+```</p>
+
+<p><code>NSData</code>和<code>NSImage</code>之间互转实际上相当复杂。这里使用了<code>NSBitmapImageRep</code>作为中间对象来完成对各种图片类型的支持（主要包括TIFF，JPEG，GIF和PNG）。特别是<code>imageProperty</code>这个<code>NSDictionary</code>，在实际使用中需要参考文档进行赋值。</p>
+
+<p>4 <code>NSURL</code>和`NSString之间互转：</p>
+
+<p>``` objc
+/<em> NSString to NSURL </em>/
+NSString <em>google = @&ldquo;<a href="http://google.com">http://google.com</a>&rdquo;;
+NSURL </em>googleURL = [[NSURL alloc] initWithString:google];
+NSLog(@&ldquo;%@&rdquo;, googleURL);</p>
+
+<p>/<em> NSURL to NSString </em>/
+NSLog(@&ldquo;%@, %@&rdquo;, [googleURL relativeString], [googleURL absoluteString]);
+[googleURL release];
+```</p>
+
+<p>从<code>NSString</code>到<code>NSURL</code>没什么说的；从<code>NSURL</code>到<code>NSString</code>，有两个方法，一个是绝对路径，一个是相对路径。对于本地文件的路径，这两个方法是有区别的；而对于网页等远程路径，这两个方法返回的值相同。</p>
+
+<p>5 <code>CGImage</code>转<code>NSImage</code></p>
+
+<p><code>objc
+/* CGImage to NSImage */
+NSBitmapImageRep *bitmapRep = [[NSBitmapImageRep alloc] initWithCGImage:cgImage];
+NSImage *image = [[NSImage alloc] init];
+[image addRepresentation:bitmapRep];
+[bitmapRep release];
+[imageView setImage:image];
+[image release];
+</code></p>
+
+<p>（本文会在学习中增加更多内容。）</p>
+
+<p>（全文完）</p>
+]]></content>
+  </entry>
+  
+</feed>

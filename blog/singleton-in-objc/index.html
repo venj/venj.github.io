@@ -1,0 +1,639 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Objective-C中单例模式的实现 - Cocoa学习</title>
+  <meta name="author" content="venj">
+
+  
+  <meta name="description" content="单例模式在Cocoa和Cocoa Touch中非常常见。比如这两个，[UIApplication sharedApplication]和[NSApplication sharedApplication]，大家应该都见过。但是我们应该如何在代码中实现一个单例模式呢？ 如果你对苹果的文档很熟悉的话， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://venj.github.io/blog/singleton-in-objc">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Cocoa学习" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Cocoa学习</a></h1>
+  
+    <h2>我的Cocoa/Cocoa Touch学习笔记</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:venj.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+  <li><a href="/about">关于本站</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Objective-C中单例模式的实现</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-02-07T20:29:00+08:00" pubdate data-updated="true">Feb 7<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>单例模式在Cocoa和Cocoa Touch中非常常见。比如这两个，<code>[UIApplication sharedApplication]</code>和<code>[NSApplication sharedApplication]</code>，大家应该都见过。但是我们应该如何在代码中实现一个单例模式呢？</p>
+
+<p>如果你对苹果的文档很熟悉的话，你一定知道，在<a href="https://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/CocoaFundamentals/Introduction/Introduction.html">Cocoa Foundamentals Guide</a>中有一段<a href="https://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/CocoaFundamentals/CocoaObjects/CocoaObjects.html#//apple_ref/doc/uid/TP40002974-CH4-SW32">实现单例模式的示例代码</a>。大致如下：</p>
+
+<!-- more -->
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cm">/* Singleton.h */</span>
+</span><span class='line'><span class="cp">#import &amp;lt;Foundation/Foundation.h&amp;gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@interface</span> <span class="nc">Singleton</span> : <span class="nc">NSObject</span>
+</span><span class='line'><span class="k">+</span> <span class="p">(</span><span class="n">Singleton</span> <span class="o">*</span><span class="p">)</span><span class="nf">instance</span><span class="p">;</span>
+</span><span class='line'><span class="k">@end</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/* Singleton.m */</span>
+</span><span class='line'><span class="cp">#import &quot;Singleton.h&quot;</span>
+</span><span class='line'><span class="k">static</span> <span class="n">Singleton</span> <span class="o">*</span><span class="n">instance</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@implementation</span> <span class="nc">Singleton</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">+</span> <span class="p">(</span><span class="n">Singleton</span> <span class="o">*</span><span class="p">)</span><span class="nf">instance</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">instance</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">instance</span> <span class="o">=</span> <span class="p">[[</span><span class="n">super</span> <span class="nl">allocWithZone:</span><span class="nb">NULL</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">instance</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">+</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nf">allocWithZone:</span><span class="p">(</span><span class="n">NSZone</span> <span class="o">*</span><span class="p">)</span><span class="nv">zone</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="p">[</span><span class="n">self</span> <span class="n">instance</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nf">copyWithZone:</span><span class="p">(</span><span class="n">NSZone</span> <span class="o">*</span><span class="p">)</span><span class="nv">zone</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">self</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nf">init</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">instance</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">instance</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="n">self</span> <span class="o">=</span> <span class="p">[</span><span class="n">super</span> <span class="n">init</span><span class="p">];</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">self</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nf">retain</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">self</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">oneway</span> <span class="kt">void</span><span class="p">)</span><span class="nf">release</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">// Do nothing</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nf">autorelease</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">self</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSUInteger</span><span class="p">)</span><span class="nf">retainCount</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">NSUIntegerMax</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这是一种很标准的Singleton实现，中规中矩。不过这种实现并不是线程安全的。所以各路大神都各显神威，给出了多种单例模式的实现。</p>
+
+<p>Matt Gallagher在<a href="http://cocoawithlove.com/2008/11/singletons-appdelegates-and-top-level.html">博客</a>中放出了一个Macro，用来实现单例模式。虽然是一个宏定义的代码，但是具体实现还是很清楚的。代码如下：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">//</span>
+</span><span class='line'><span class="c1">//  SynthesizeSingleton.h</span>
+</span><span class='line'><span class="c1">//  CocoaWithLove</span>
+</span><span class='line'><span class="c1">//</span>
+</span><span class='line'><span class="c1">//  Created by Matt Gallagher on 20/10/08.</span>
+</span><span class='line'><span class="c1">//  Copyright 2009 Matt Gallagher. All rights reserved.</span>
+</span><span class='line'><span class="c1">//</span>
+</span><span class='line'><span class="c1">//  Permission is given to use this source code file without charge in any</span>
+</span><span class='line'><span class="c1">//  project, commercial or otherwise, entirely at your risk, with the condition</span>
+</span><span class='line'><span class="c1">//  that any redistribution (in part or whole) of source code must retain</span>
+</span><span class='line'><span class="c1">//  this copyright and permission notice. Attribution in compiled projects is</span>
+</span><span class='line'><span class="c1">//  appreciated but not required.</span>
+</span><span class='line'><span class="c1">//</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define SYNTHESIZE_SINGLETON_FOR_CLASS(classname) \</span>
+</span><span class='line'><span class="cp"> \</span>
+</span><span class='line'><span class="cp">static classname *shared##classname = nil; \</span>
+</span><span class='line'><span class="cp"> \</span>
+</span><span class='line'><span class="cp">+ (classname *)shared##classname \</span>
+</span><span class='line'><span class="cp">{ \</span>
+</span><span class='line'><span class="cp">    @synchronized(self) \</span>
+</span><span class='line'><span class="cp">    { \</span>
+</span><span class='line'><span class="cp">        if (shared##classname == nil) \</span>
+</span><span class='line'><span class="cp">        { \</span>
+</span><span class='line'><span class="cp">            shared##classname = [[self alloc] init]; \</span>
+</span><span class='line'><span class="cp">        } \</span>
+</span><span class='line'><span class="cp">    } \</span>
+</span><span class='line'><span class="cp">     \</span>
+</span><span class='line'><span class="cp">    return shared##classname; \</span>
+</span><span class='line'><span class="cp">} \</span>
+</span><span class='line'><span class="cp"> \</span>
+</span><span class='line'><span class="cp">+ (id)allocWithZone:(NSZone *)zone \</span>
+</span><span class='line'><span class="cp">{ \</span>
+</span><span class='line'><span class="cp">    @synchronized(self) \</span>
+</span><span class='line'><span class="cp">    { \</span>
+</span><span class='line'><span class="cp">        if (shared##classname == nil) \</span>
+</span><span class='line'><span class="cp">        { \</span>
+</span><span class='line'><span class="cp">            shared##classname = [super allocWithZone:zone]; \</span>
+</span><span class='line'><span class="cp">            return shared##classname; \</span>
+</span><span class='line'><span class="cp">        } \</span>
+</span><span class='line'><span class="cp">    } \</span>
+</span><span class='line'><span class="cp">     \</span>
+</span><span class='line'><span class="cp">    return nil; \</span>
+</span><span class='line'><span class="cp">} \</span>
+</span><span class='line'><span class="cp"> \</span>
+</span><span class='line'><span class="cp">- (id)copyWithZone:(NSZone *)zone \</span>
+</span><span class='line'><span class="cp">{ \</span>
+</span><span class='line'><span class="cp">    return self; \</span>
+</span><span class='line'><span class="cp">} \</span>
+</span><span class='line'><span class="cp"> \</span>
+</span><span class='line'><span class="cp">- (id)retain \</span>
+</span><span class='line'><span class="cp">{ \</span>
+</span><span class='line'><span class="cp">    return self; \</span>
+</span><span class='line'><span class="cp">} \</span>
+</span><span class='line'><span class="cp"> \</span>
+</span><span class='line'><span class="cp">- (NSUInteger)retainCount \</span>
+</span><span class='line'><span class="cp">{ \</span>
+</span><span class='line'><span class="cp">    return NSUIntegerMax; \</span>
+</span><span class='line'><span class="cp">} \</span>
+</span><span class='line'><span class="cp"> \</span>
+</span><span class='line'><span class="cp">- (void)release \</span>
+</span><span class='line'><span class="cp">{ \</span>
+</span><span class='line'><span class="cp">} \</span>
+</span><span class='line'><span class="cp"> \</span>
+</span><span class='line'><span class="cp">- (id)autorelease \</span>
+</span><span class='line'><span class="cp">{ \</span>
+</span><span class='line'><span class="cp">    return self; \</span>
+</span><span class='line'><span class="cp">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然而，eschaton则觉得这些实现都太繁琐了，他给出的实现如下：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">@interface</span> <span class="nc">SomeManager</span> : <span class="nc">NSObject</span>
+</span><span class='line'><span class="k">+</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nf">sharedManager</span><span class="p">;</span>
+</span><span class='line'><span class="k">@end</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/* 非线程安全的实现 */</span>
+</span><span class='line'><span class="k">@implementation</span> <span class="nc">SomeManager</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">+</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nf">sharedManager</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">static</span> <span class="kt">id</span> <span class="n">sharedManager</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">sharedManager</span> <span class="o">==</span> <span class="nb">nil</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">sharedManager</span> <span class="o">=</span> <span class="p">[[</span><span class="n">self</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="n">sharedManager</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="k">@end</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/* 线程安全的实现 */</span>
+</span><span class='line'><span class="k">@implementation</span> <span class="nc">SomeManager</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">static</span> <span class="kt">id</span> <span class="n">sharedManager</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">+</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">initialize</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">self</span> <span class="o">==</span> <span class="p">[</span><span class="n">SomeManager</span> <span class="n">class</span><span class="p">])</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">sharedManager</span> <span class="o">=</span> <span class="p">[[</span><span class="n">self</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">+</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nf">sharedManager</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">sharedManager</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="k">@end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>关于为什么上述代码就能实现单例模式，以及关于线程安全问题的考量，请参考他的<a href="http://eschatologist.net/blog/?p=178">博客</a>。</p>
+
+<p>最后介绍一个比较<a href="http://lukeredpath.co.uk/blog/a-note-on-objective-c-singletons.html">现代的单例模式实现</a>。为什么说现代呢？因为这种实现利用了GCD（Grand Central Dispatch）和ARC（Automatic Reference Counting）。核心代码如下：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">+</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nf">sharedInstance</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="k">static</span> <span class="n">dispatch_once_t</span> <span class="n">pred</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">__strong</span> <span class="k">static</span> <span class="kt">id</span> <span class="n">_sharedObject</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">dispatch_once</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pred</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+</span><span class='line'>    <span class="n">_sharedObject</span> <span class="o">=</span> <span class="p">[[</span><span class="n">self</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span> <span class="c1">// or some other init method</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">_sharedObject</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>作者还写了一个宏（<a href="https://gist.github.com/1057420">gist</a>）来方便使用，大家可以阅读作者的博文<a href="http://lukeredpath.co.uk/blog/a-note-on-objective-c-singletons.html">A note on Objective-C singletons</a>了解详情。</p>
+
+<p>大多数情况下，Apple官方文档里的单例模式的示例代码实现已经够用了。虽然它最繁琐，但是也是本文介绍的几种单例模式中最容易理解的一个。至于其他的实现就留给读者们根据需要选择和应用了。</p>
+
+<p>(全文完)</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">venj</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-02-07T20:29:00+08:00" pubdate data-updated="true">Feb 7<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/cocoa/'>Cocoa</a>, <a class='category' href='/blog/categories/cocoa-touch/'>Cocoa Touch</a>, <a class='category' href='/blog/categories/objective-c/'>Objective-C</a>, <a class='category' href='/blog/categories/dan-li-mo-shi/'>单例模式</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://venj.github.io/blog/singleton-in-objc/" data-via="" data-counturl="http://venj.github.io/blog/singleton-in-objc/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/custom-navbar-background/" title="Previous Post: 自定义UINavigationBar的背景">&laquo; 自定义UINavigationBar的背景</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/copy-and-paste-to-text-field/" title="Next Post: 点击按钮复制粘贴到文本框">点击按钮复制粘贴到文本框 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Sample Code</h1>
+  <ul>
+    <li><a href="https://github.com/venj/Cocoa-blog-code">Clone on Github</a></li>
+    <li><a href="github-mac://openRepo/https://github.com/venj/Cocoa-blog-code"> Clone in Mac</a></li>
+  </ul>
+</section><section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/simple-uiimage-extension-to-create-rounded-corner-image/">一个简单的创建圆角图像的UIImage扩展实现</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/push-viewcontroller-hide-buttom-bar/">推View Controller时隐藏TabBar</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/code-box-like-window-open-animation/">CodeBox风格的窗口打开动画</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/localized-loading-screen/">本地化加载屏幕</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/venj">@venj</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'venj',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+<section>
+  <h1>Blog Roll</h1>
+  <ul>
+    <li><a href="http://blog.ilvelh.com">ilvelh's blog</a></li>
+    <li><a href="http://rajna.github.io">GUWU DESIGNER</a></li>
+  </ul>
+</section>
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2011 - 2014 - venj -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> &amp; <a href="http://pages.github.com">Github Pages</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'venj';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://venj.github.io/blog/singleton-in-objc/';
+        var disqus_url = 'http://venj.github.io/blog/singleton-in-objc/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

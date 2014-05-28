@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: UINavigationBar | Cocoa学习]]></title>
+  <link href="http://venj.github.io/blog/categories/uinavigationbar/atom.xml" rel="self"/>
+  <link href="http://venj.github.io/"/>
+  <updated>2014-01-22T11:14:45+08:00</updated>
+  <id>http://venj.github.io/</id>
+  <author>
+    <name><![CDATA[venj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[再谈iOS 4下NavigationBar的自定义]]></title>
+    <link href="http://venj.github.io/blog/more-on-navigationbar-customization/"/>
+    <updated>2012-02-29T10:30:00+08:00</updated>
+    <id>http://venj.github.io/blog/more-on-navigationbar-customization</id>
+    <content type="html"><![CDATA[<p>iOS 5已经有了很方便的自定义<code>UINavigationBar</code>的方法，但是iOS 4现在还远未完全被iOS 5取代，因此，在做程序开发的时候必须要考虑对iOS 4的兼容。因此，要自定义<code>UINavigationBar</code>还不能简单的直接用iOS 5中才有的自定义API。</p>
+
+<p>关于这个话题，我曾经写过<a href="http://cocoa.venj.me/blog/custom-navbar-background/">一篇日志</a>，但是后来发现那篇日志里面的实现方法有诸多缺陷。因此我后来对那篇文章做过部分删改。这两天，我再次研究了一下NavigationBar的自定义，总算找到了一个近乎完美的解决方法，因此，我决定写出来和大家分享一下。</p>
+
+<p>本文中的实现方法很大程度上参考了<a href="http://idevrecipes.com/2011/01/12/how-do-iphone-apps-instagramreederdailybooth-implement-custom-navigationbar-with-variable-width-back-buttons/">这篇文章</a>，不过我这里介绍的实现方法在原方法的基础上加入了对设备旋转的支持。</p>
+
+<p>方法的核心思想是创建一个<code>UINavigationBar</code>的子类，让这个子类支持背景图，然后在项目中用自定义类替换<code>UINavigationController</code>的<code>navgationBar</code>。不过有一个问题是，<code>UINavigationController</code>的<code>navgationBar</code>属性是一个只读属性，因此我们只能在xib中将<code>navgationBar</code>的类改成我们的自定义类。</p>
+
+<p>我还没有找到适合StoryBoard的无xib的解决方法，因此我在上面说这个方法是“近乎完美”。不过既然是部署到iOS 4，那项目不采用StoryBoard也不算特别反人类。好了，下面开始代码说话（注：代码用了ARC）：</p>
+
+<!-- more -->
+
+
+<p>``` objc
+/<em> VCCustomNavigationBar.h </em>/</p>
+
+<h1>import &lt;UIKit/UIKit.h></h1>
+
+<p>@interface VCCustomNavigationBar : UINavigationBar
+@property (nonatomic, strong) UIImageView <em>navigationBarBackgroundImage;
+@property (nonatomic, strong) UIImage </em>landscapeBarBackground;
+@property (nonatomic, strong) UIImage *portraitBarBackground;
+&ndash; (void)setBackgroundForDeviceOrientation:(UIDeviceOrientation)orientation;
+&ndash; (void)clearBackground;
+@end</p>
+
+<p>/<em> VCCustomNavigationBar.m </em>/</p>
+
+<h1>import &ldquo;VCCustomNavigationBar.h&rdquo;</h1>
+
+<p>@implementation VCCustomNavigationBar
+@synthesize navigationBarBackgroundImage = <em>navigationBarBackgroundImage;
+@synthesize landscapeBarBackground = </em>landscapeBarBackground;
+@synthesize portraitBarBackground = _portraitBarBackground;</p>
+
+<ul>
+<li><p>(id)initWithFrame:(CGRect)frame
+{
+  self = [super initWithFrame:frame];
+  if (self) {
+      // Initialization code
+  }
+  return self;
+}</p></li>
+<li><p>(void)awakeFromNib {
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeBackgroundImage:) name:UIDeviceOrientationDidChangeNotification object:NULL];
+}</p></li>
+<li><p>(void)drawRect:(CGRect)rect
+{
+  if (self.navigationBarBackgroundImage)
+      [self.navigationBarBackgroundImage.image drawInRect:rect];
+  else
+      [super drawRect:rect];
+}</p></li>
+<li><p>(void)setBackgroundForDeviceOrientation:(UIDeviceOrientation)orientation;
+{
+  self.navigationBarBackgroundImage = [[UIImageView alloc] initWithFrame:self.frame];
+  if ((orientation == UIDeviceOrientationLandscapeLeft)
+      || (orientation == UIDeviceOrientationLandscapeRight)) {
+      self.navigationBarBackgroundImage.image = self.landscapeBarBackground;
+  }
+  else if (orientation == UIDeviceOrientationPortrait) {
+      self.navigationBarBackgroundImage.image = self.portraitBarBackground;
+  }
+  [self setNeedsDisplay];
+}</p></li>
+<li><p>(void)clearBackground
+{
+  self.navigationBarBackgroundImage = nil;
+  [self setNeedsDisplay];
+}</p></li>
+<li><p>(void)dealloc {
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+}</p></li>
+<li><p>(void)changeBackgroundImage:(NSNotification *)notification {
+  UIDeviceOrientation currentOrientation = [[UIDevice currentDevice] orientation];
+  if (currentOrientation == UIDeviceOrientationPortraitUpsideDown) {
+      return;
+  }
+  [self setBackgroundForDeviceOrientation:currentOrientation];
+}</p></li>
+</ul>
+
+
+<p>@end</p>
+
+<p>```</p>
+
+<p>在需要修改<code>NavigationBar</code>的<code>ViewController</code>中，在<code>-viewDidLoad</code>方法中设置自定义背景图：</p>
+
+<p>``` objc
+&ndash; (void)viewDidLoad
+{</p>
+
+<pre><code>[super viewDidLoad];
+
+//设置合适的NavBar背景(按钮)颜色，配合背景图
+self.navigationController.navigationBar.tintColor = [UIColor brownColor];
+
+//自定义NavBar背景
+VCCustomNavigationBar *customBar = (VCCustomNavigationBar *)self.navigationController.navigationBar;
+customBar.landscapeBarBackground = [UIImage imageNamed:@"landscapeBarBackground"];
+customBar.portraitBarBackground = [UIImage imageNamed:@"portraitBarBackground"];
+[customBar setBackgroundForDeviceOrientation:[[UIDevice currentDevice] orientation]];
+
+//其他自定义代码
+</code></pre>
+
+<p>}
+```</p>
+
+<p>效果图如下：</p>
+
+<p><img class="center" src="/images/posts/navbar_bg_portrait.png"></p>
+
+<p><img class="center" src="/images/posts/navbar_bg_landscape.png"></p>
+
+<p>我已经把项目推送到<a href="https://github.com/venj/Cocoa-blog-code/tree/master/Custom%20NavBar">github</a>上了，有兴趣的可以拉下来研究一下。因为现在Xcode 4生成的模版已经默认不使用MainWindow.xib了，因此，你在测试的时候可能要自己创建一个Window.xib，并且自己创建所有对象，并连接Outlet等。</p>
+
+<p>(全文完)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[自定义UINavigationBar的背景]]></title>
+    <link href="http://venj.github.io/blog/custom-navbar-background/"/>
+    <updated>2012-01-11T15:20:00+08:00</updated>
+    <id>http://venj.github.io/blog/custom-navbar-background</id>
+    <content type="html"><![CDATA[<p>为了让我们的应用程序更加美观，我们往往希望对iPhone自带的控件进行一点自定义。比如，本文即将要讲述的，给<code>UINavigationBar</code>加一个背景。</p>
+
+<p>最简单的一个自定义方法就是修改一下背景色。方法非常简单，那就是使用它的<code>tintColor</code>属性：</p>
+
+<!-- more -->
+
+
+<p><code>objc
+self.navigationController.navigationBar.tintColor = [UIColor redColor];
+</code></p>
+
+<p>这样就轻松地为<code>UINavigationBar</code>加上了红色的背景色&mdash;当然你可以使用任何颜色。下面是模拟器中的测试效果：</p>
+
+<p><img class="center" src="/images/posts/custom-navbar-bg-color.png"></p>
+
+<p>另外，就是为<code>UINavigationBar</code>加背景图片。这个稍稍复杂一些&mdash;特别是对于iOS 5之前的iOS来说。先说说简单的，iOS 5已经为<code>UINavigationBar</code>增加了一个新的方法<code>-setBackgroundImage:forBarMetrics:</code>，专门用于设置<code>UINavigationBar</code>的背景图片。</p>
+
+<p><strong>Updated</strong></p>
+
+<p>删除了在iOS4下有问题的方法。</p>
+
+<p><strong>Update</strong></p>
+
+<p>适用于iOS 4的方法是在<code>AppDelegate.m</code>中创建一个<code>UINavigationBar</code>的Catagory，覆盖<code>-drawRect:</code>方法，如下：</p>
+
+<p>``` objc
+@implementation UINavigationBar (CustomImage)
+&ndash; (void)drawRect:(CGRect)rect {</p>
+
+<pre><code>UIImage *img = [UIImage imageNamed:@"navbar"];
+[img drawInRect:rect];
+</code></pre>
+
+<p>}
+@end</p>
+
+<p>&hellip;</p>
+
+<p>//在后面加入判断是否支持iOS 5的代码，来提供对iOS 5的支持：</p>
+
+<p>if ([bar respondsToSelector:@selector(setBackgroundImage:forBarMetrics:)]) {</p>
+
+<pre><code>[bar setBackgroundImage:bg forBarMetrics:UIBarMetricsDefault];
+</code></pre>
+
+<p>}
+```</p>
+
+<p>这种方法将应用到程序中所有的<code>UINavigationBar</code>实例。但是通常来说，是不推荐覆盖系统自带的类中的方法的，所以我并不推荐使用这种方法。</p>
+
+<p><a href="http://idevrecipes.com/2011/01/12/how-do-iphone-apps-instagramreederdailybooth-implement-custom-navigationbar-with-variable-width-back-buttons/">这里</a>介绍了更好的方法。</p>
+
+<p>(全文完)</p>
+]]></content>
+  </entry>
+  
+</feed>

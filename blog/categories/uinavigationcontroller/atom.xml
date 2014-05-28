@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: UINavigationController | Cocoa学习]]></title>
+  <link href="http://venj.github.io/blog/categories/uinavigationcontroller/atom.xml" rel="self"/>
+  <link href="http://venj.github.io/"/>
+  <updated>2014-01-22T11:14:45+08:00</updated>
+  <id>http://venj.github.io/</id>
+  <author>
+    <name><![CDATA[venj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[推View Controller时隐藏TabBar]]></title>
+    <link href="http://venj.github.io/blog/push-viewcontroller-hide-buttom-bar/"/>
+    <updated>2014-01-07T10:53:17+08:00</updated>
+    <id>http://venj.github.io/blog/push-viewcontroller-hide-buttom-bar</id>
+    <content type="html"><![CDATA[<p>设想一个场景，RootViewController是一个TabBarController，里面的子Controller是一个NavigationController。NavigationController的子ViewController在执行<code>-pushViewController:animated:</code>的时候，默认情况下，这个新的ViewController将会被UITabBar覆盖。</p>
+
+<p>但是有时，我们希望推入这个新的ViewController的时候，TabBarController也被推走。要做到这一点其实很简单，只需要在这个新的ViewController上设置<code>hidesBottomBarWhenPushed</code>属性为<code>YES</code>。</p>
+
+<p>示例代码如下：</p>
+
+<!-- more -->
+
+
+<p>```objc
+// 初始化ViewController的层级结构
+UIViewController <em>vc1 = [[UIViewController alloc] initWithNibName:@&ldquo;SomeViewControllerNibName&rdquo; bundle:nil];
+UINavigationController </em>nav = [[UINavigationController alloc] initWithRootViewController:vc1];
+UITabBarController *tc = [[UITabBarController alloc] init];
+tc.viewControllers = @[nav];</p>
+
+<p>&hellip;</p>
+
+<p>// 推入新的ViewController
+UIViewController *vc2 = [[UIViewController alloc] initWithNibName:@&ldquo;SomeOtherViewControllerNibName&rdquo; bundle:nil];
+vc2.hidesBottomBarWhenPushed ＝ YES; //这是关键！
+[vc1.navigationController pushViewController:vc2 animated:YES];
+```</p>
+
+<p>就这么简单。</p>
+
+<p>后记：好久没有写Blog了，2014年希望自己能勤快一点，多更新些。哪怕是一些很小的知识点，也尽量记录和分享出来，就当是给自己做备忘。</p>
+
+<p>（全文完）</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[在iOS 4中自定义BarButtonItem]]></title>
+    <link href="http://venj.github.io/blog/custom-barbuttomitem-for-ios4/"/>
+    <updated>2012-02-29T15:08:00+08:00</updated>
+    <id>http://venj.github.io/blog/custom-barbuttomitem-for-ios4</id>
+    <content type="html"><![CDATA[<p>在iOS 5中已经有了自定义<code>UIBarButtonItem</code>背景的API。但是在iOS 4中，自定义BarButtonItem背景就复杂很多了。其中最典型也最容易实现的一种是方法是试用<code>UIBarButtonItem</code>的<code>-initWithCustomView:</code>方法，传递一个自定义<code>UIButton</code>对象进去。</p>
+
+<p>在深入讨论自定义<code>UIBarButtonItem</code>，让我们来先解决自定义<code>UIButton</code>的一个问题：那就是Button的标题的长度是变化的，我们应该通过什么方法让背景图片适应标题长度的变化呢？</p>
+
+<p>下面是解决方案：</p>
+
+<!-- more -->
+
+
+<p>``` objc
+if ([image respondsToSelector:@selector(resizableImageWithCapInsets:)]) {</p>
+
+<pre><code>// iOS 5中的方法。
+buttonImage = [image resizableImageWithCapInsets:UIEdgeInsetsMake(0, leftcap, 0, rightcap)];
+</code></pre>
+
+<p>}
+else {</p>
+
+<pre><code>// iOS 4-中的方法。该方法在iOS 5中已经标注为“Depreciated”。
+buttonImage = [image stretchableImageWithLeftCapWidth:leftcap topCapHeight:0];
+</code></pre>
+
+<p>}
+```</p>
+
+<p>这个解决方案的核心是<code>-stretchableImageWithLeftCapWidth:topCapHeight:</code>（或iOS 5中的<code>- resizableImageWithCapInsets:</code>）方法。这个方法能够根据指定的左右两侧“帽子”的尺寸（当然，上下拉伸也可以），拉伸图片的中间部分。具体效果你可以亲自试验一下。</p>
+
+<p>好了，回到自定义<code>UIBarButtonItem</code>的问题上来。既然<code>UIButton</code>背景的问题解决之后，我们就可以创建基于<code>UIButton</code>对象的<code>UIBarButtonItem</code>了：</p>
+
+<p>``` objc
+// 用来被拉伸的图片
+UIImage <em>originalImage = [UIImage imageNamed:@&ldquo;backButton&rdquo;];
+UIImage </em>buttonImage;
+// 拉伸图片
+if ([[UIImage class] respondsToSelector:@selector(resizableImageWithCapInsets:)]) {</p>
+
+<pre><code>buttonImage = [originalImage resizableImageWithCapInsets:UIEdgeInsetsMake(0, 13, 0, 8)];
+</code></pre>
+
+<p>}
+else {</p>
+
+<pre><code>buttonImage = [originalImage stretchableImageWithLeftCapWidth:13 topCapHeight:0];
+</code></pre>
+
+<p>}
+// 创建自定义按钮
+UIButton <em>backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+[backButton setBackgroundImage:buttonImage forState:UIControlStateNormal];
+NSString </em>title = @&ldquo;Back&rdquo;;
+[backButton setTitle:title forState:UIControlStateNormal];
+UIFont *font = [UIFont boldSystemFontOfSize:12];
+backButton.titleLabel.font = font;
+CGSize labelSize = [title sizeWithFont:font];
+// 模拟系统按钮，设置文字阴影
+backButton.titleLabel.shadowColor = [UIColor grayColor];
+backButton.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+// 设置按钮的Frame，宽度为文字的宽度加上拉伸图宽度的和
+backButton.frame = CGRectMake(0, 0, labelSize.width + buttonImage.size.width, buttonImage.size.height);
+// 设置按钮的target和action
+[backButton addTarget:self action:@selector(back)</p>
+
+<pre><code> forControlEvents:UIControlEventTouchUpInside];
+</code></pre>
+
+<p>//创建UIBarButtonItem
+self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]</p>
+
+<pre><code>                                     initWithCustomView:backButton];
+</code></pre>
+
+<p>```</p>
+
+<p>这就是实现自定义<code>UIBarButtonItem</code>对象的核心了。我写了一个<code>UIBarButtonItem</code>的subclass，有点粗糙，但是能够实现上述的所有功能，并且能够响应设备方向的变化对按钮的宽度作出调整。用法很简单：</p>
+
+<p><code>objc
+VCTranslucentBarButtonItem *item = [[VCTranslucentBarButtonItem alloc] initWithType:VCTranslucentBarButtonItemTypeBackward title:@"Test Button" target:self action:@selector(buttonClicked)];
+self.navigationItem.leftBarButtonItem = item;
+</code></p>
+
+<p>完整的源码我就不在本文中贴出来了，反正已经推送到github上了。效果如下图所示：</p>
+
+<p><img class="center" src="/images/posts/barbuttonportrait.png"></p>
+
+<p><img class="center" src="/images/posts/barbuttonlandscape.png"></p>
+
+<p>上图中显示的是<code>DetailViewController</code>的自定义后退按钮，注意颜色上和<code>MasterViewController</code>中按钮的区别。因为用的按钮素材的问题，效果图未能完整复制系统的按钮样式，不过这已经足够说明问题了。实战中，你可以让设计师做更好，更美观的按钮。</p>
+
+<p>有兴趣的可以把<a href="https://github.com/venj/Cocoa-blog-code/tree/master/Custom%20NavBar">github</a>上的源码拉下来看看。本文和前一篇文章的源码在同一个项目中。</p>
+
+<p>注：本文所有的代码都用了ARC，以后的文章中将不再特别说明。如果你看到本博客的示例代码没有<code>release</code>，那么基本上都是用了ARC。</p>
+
+<p>(全文完)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[自定义UINavigationBar的背景]]></title>
+    <link href="http://venj.github.io/blog/custom-navbar-background/"/>
+    <updated>2012-01-11T15:20:00+08:00</updated>
+    <id>http://venj.github.io/blog/custom-navbar-background</id>
+    <content type="html"><![CDATA[<p>为了让我们的应用程序更加美观，我们往往希望对iPhone自带的控件进行一点自定义。比如，本文即将要讲述的，给<code>UINavigationBar</code>加一个背景。</p>
+
+<p>最简单的一个自定义方法就是修改一下背景色。方法非常简单，那就是使用它的<code>tintColor</code>属性：</p>
+
+<!-- more -->
+
+
+<p><code>objc
+self.navigationController.navigationBar.tintColor = [UIColor redColor];
+</code></p>
+
+<p>这样就轻松地为<code>UINavigationBar</code>加上了红色的背景色&mdash;当然你可以使用任何颜色。下面是模拟器中的测试效果：</p>
+
+<p><img class="center" src="/images/posts/custom-navbar-bg-color.png"></p>
+
+<p>另外，就是为<code>UINavigationBar</code>加背景图片。这个稍稍复杂一些&mdash;特别是对于iOS 5之前的iOS来说。先说说简单的，iOS 5已经为<code>UINavigationBar</code>增加了一个新的方法<code>-setBackgroundImage:forBarMetrics:</code>，专门用于设置<code>UINavigationBar</code>的背景图片。</p>
+
+<p><strong>Updated</strong></p>
+
+<p>删除了在iOS4下有问题的方法。</p>
+
+<p><strong>Update</strong></p>
+
+<p>适用于iOS 4的方法是在<code>AppDelegate.m</code>中创建一个<code>UINavigationBar</code>的Catagory，覆盖<code>-drawRect:</code>方法，如下：</p>
+
+<p>``` objc
+@implementation UINavigationBar (CustomImage)
+&ndash; (void)drawRect:(CGRect)rect {</p>
+
+<pre><code>UIImage *img = [UIImage imageNamed:@"navbar"];
+[img drawInRect:rect];
+</code></pre>
+
+<p>}
+@end</p>
+
+<p>&hellip;</p>
+
+<p>//在后面加入判断是否支持iOS 5的代码，来提供对iOS 5的支持：</p>
+
+<p>if ([bar respondsToSelector:@selector(setBackgroundImage:forBarMetrics:)]) {</p>
+
+<pre><code>[bar setBackgroundImage:bg forBarMetrics:UIBarMetricsDefault];
+</code></pre>
+
+<p>}
+```</p>
+
+<p>这种方法将应用到程序中所有的<code>UINavigationBar</code>实例。但是通常来说，是不推荐覆盖系统自带的类中的方法的，所以我并不推荐使用这种方法。</p>
+
+<p><a href="http://idevrecipes.com/2011/01/12/how-do-iphone-apps-instagramreederdailybooth-implement-custom-navigationbar-with-variable-width-back-buttons/">这里</a>介绍了更好的方法。</p>
+
+<p>(全文完)</p>
+]]></content>
+  </entry>
+  
+</feed>

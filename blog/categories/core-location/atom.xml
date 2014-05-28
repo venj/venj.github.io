@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Core Location | Cocoa学习]]></title>
+  <link href="http://venj.github.io/blog/categories/core-location/atom.xml" rel="self"/>
+  <link href="http://venj.github.io/"/>
+  <updated>2014-01-22T11:14:45+08:00</updated>
+  <id>http://venj.github.io/</id>
+  <author>
+    <name><![CDATA[venj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[iOS 5的Geocoding]]></title>
+    <link href="http://venj.github.io/blog/geocoding-in-ios-5/"/>
+    <updated>2011-07-06T23:44:00+08:00</updated>
+    <id>http://venj.github.io/blog/geocoding-in-ios-5</id>
+    <content type="html"><![CDATA[<p>很明显，本文有标题党的嫌疑。其实本文要说的是“<a href="http://www.bignerdranch.com/book/ios_programming_the_big_nerd_ranch_guide_nd_edition_">iPhone Programming: The Big Nerd Ranch Guide</a>”一书中第5章里的Whereami的例子。我照着书本做下来，但是感觉例子似乎有点问题。可能是我看书不仔细，不过这个例子要实现的功能很诡异——定位自己，然后自己用文本框加上一个Annotation(？)这太诡异了吧。</p>
+
+<p>我现在对这个例子小做修改，那就是，在文本框中输入任何地址字符串，然后地图自动定位到该位置——类似Google Map的搜索。我基于书本上的代码，做一些小修改。</p>
+
+<p>首先，注释掉<code>-locationManager:didUpdateToLocation:fromLocation:</code>这个方法里的所有代码。主要对<code>-findLocation</code>方法作出修改，实现地图搜索功能。</p>
+
+<!-- more -->
+
+
+<p>
+``` objc
+&ndash; (void)findLocation {</p>
+
+<pre><code>CLGeocoder *geoCoder = [CLGeocoder new];
+[geoCoder geocodeAddressString:locationString completionHandler:^(NSArray *placemarks, NSError *error) {
+    if (error) {
+        NSLog(@"%@", [error description]);
+        return;
+    }
+    else {
+        CLPlacemark *m = [placemarks objectAtIndex:0];
+        MapPoint *mp = [[MapPoint alloc] initWithCoordinate:[[m location] coordinate] title:[locationTitleField text]];
+        [mapView addAnnotation:mp];
+        [mp release];
+        [mapView setCenterCoordinate:[[m location] coordinate] animated:YES];
+        [self foundLocation];
+    }
+}];
+
+[locationManager startUpdatingLocation];
+[activityIndicator startAnimating];
+[locationTitleField setHidden:YES];
+</code></pre>
+
+<p>}
+```</p>
+
+<p>这里用到了iOS5里的一个全新的类：<code>CLGeocoder</code>。现在Reverse Geocoding也能够通过这个类实现了，之前的<code>MKReverseGeocoder</code>类在iOS5里已经变成Depreciated了。获取地址使用了<code>CLGeocoder</code>类中的<code>– geocodeAddressString:completionHandler:</code>的方法。这个方法接受一个地址字符串和一个处理Block，用来在找到结果的时候对结果进行处理。简单起见，上面的实现里直接取了获得的所有可能位置里的第一个结果。在实际的实现中应该将所有可能的结果都展示给用户，让用户决定选择正确的位置。</p>
+
+<p>iOS 5的<code>MapKit</code>和<code>CoreLocation</code>框架都有比较大的变化，所以有可能的话可以了解一下API变化是非常有好处的——因为API变得越来越好用了。</p>
+
+<p>（全文完）</p>
+]]></content>
+  </entry>
+  
+</feed>

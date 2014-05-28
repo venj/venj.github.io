@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: NSApp | Cocoa学习]]></title>
+  <link href="http://venj.github.io/blog/categories/nsapp/atom.xml" rel="self"/>
+  <link href="http://venj.github.io/"/>
+  <updated>2014-01-22T11:14:45+08:00</updated>
+  <id>http://venj.github.io/</id>
+  <author>
+    <name><![CDATA[venj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[跳动Dock图标的实现]]></title>
+    <link href="http://venj.github.io/blog/bounce-dock-icon/"/>
+    <updated>2012-03-09T09:13:00+08:00</updated>
+    <id>http://venj.github.io/blog/bounce-dock-icon</id>
+    <content type="html"><![CDATA[<p>OS X程序，在执行后台任务的时候，有时需要通过跳动Dock图标来提示用户进行操作或某项操作已经执行完成。方法很简单，<code>NSApplication</code>有一个<code>-requestUserAttention:</code>的方法可以跳动Dock图标。</p>
+
+<p>下面是实例代码：</p>
+
+<p>``` objc
+//跳动一次
+&ndash; (void)bounceOnce:(id)sender {</p>
+
+<pre><code>[NSApp requestUserAttention:NSInformationalRequest];
+</code></pre>
+
+<p>}
+//总是跳动，直到用户干预为止
+&ndash; (void)bounceAlways:(id)sender {</p>
+
+<pre><code>[NSApp requestUserAttention:NSCriticalRequest];
+</code></pre>
+
+<p>}
+```</p>
+
+<p>FYI: <code>NSApp</code>是一个指向当前运行的程序实例的全局变量，等同于调用：<code>[NSApplication sharedApplication]</code>。</p>
+
+<p>示例代码已经上传到<a href="https://github.com/venj/Cocoa-blog-code/tree/master/Bounce%20Icon">github</a>，有兴趣的可以看看。不过记得在测试示例程序的时候，点击按钮后就让程序进入后台运行。5秒钟后就能看到效果了。</p>
+]]></content>
+  </entry>
+  
+</feed>

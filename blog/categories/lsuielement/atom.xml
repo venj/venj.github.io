@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: LSUIElement | Cocoa学习]]></title>
+  <link href="http://venj.github.io/blog/categories/lsuielement/atom.xml" rel="self"/>
+  <link href="http://venj.github.io/"/>
+  <updated>2014-01-22T11:14:45+08:00</updated>
+  <id>http://venj.github.io/</id>
+  <author>
+    <name><![CDATA[venj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[在程序中动态设置是否显示Dock图标]]></title>
+    <link href="http://venj.github.io/blog/dynamically-show-and-hide-dock-icon/"/>
+    <updated>2011-08-06T21:50:00+08:00</updated>
+    <id>http://venj.github.io/blog/dynamically-show-and-hide-dock-icon</id>
+    <content type="html"><![CDATA[<p>关于如何隐藏Dock图标的方法，相信大家都知道——即使没有没有编程经验的老用户都知道。那就是，在Application Bundle里的<code>Info.plist</code>中增加一个<code>LSUIElement</code>的键，设置值为<code>YES</code>。但是，在程序中往往要让用户选择是否启用或禁用Dock图标。而程序是不能修改Application Bundle里的<code>Info.plist</code>的，因为这样会破坏程序的数字签名，所以只能在程序代码中动态的设置Dock图标的状态。</p>
+
+<p>其实动态设置Dock图标的方法很简单严格的说只有两行代码：</p>
+
+<p><code>objc
+ProcessSerialNumber psn = { 0, kCurrentProcess };
+TransformProcessType(&amp;psn, kProcessTransformToForegroundApplication);
+</code></p>
+
+<p>在设置隐藏Dock图标的时候需要重启应用程序，无法在运行时动态完成的，而在显示Dock图标的时候则不需要。我做了一个简单的Demo程序。放到了Github上，有兴趣的可以看看。（以后在这里出现的其他示例代码也会放到那里。）</p>
+
+<p><img class="center" src="/images/posts/dynamic-dock-icon.png"></p>
+
+<p>程序很简单，就一个复选框，用来设置是否显示Dock图标。通过一个<code>-toggleDockIcon:</code>方法来设置是否显示Dock图标。并且在<code>-applicationDidFinishLaunching:</code>方法，设置在程序初始化的时候是否需要显示Dock图标。主要代码如下：</p>
+
+<!-- more -->
+
+
+<p>
+``` objc
+&ndash; (void)applicationDidFinishLaunching:(NSNotification *)aNotification
+{</p>
+
+<pre><code>// 读取用户设置，判断是否显示Dock图标，并且设置复选框的状态。
+defaults = [NSUserDefaults standardUserDefaults];
+BOOL iconInDock = [[NSUserDefaults standardUserDefaults] boolForKey:kShowDockIcon];
+
+if (iconInDock) {
+    ProcessSerialNumber psn = { 0, kCurrentProcess };
+    TransformProcessType(&amp;psn, kProcessTransformToForegroundApplication);
+    [self.dockIconSelector setState:NSOnState];
+}
+else {
+    [self.dockIconSelector setState:NSOffState];
+}
+</code></pre>
+
+<p>   // 省略其他用来处理Menulet的代码。
+}</p>
+
+<ul>
+<li><p>(IBAction)toggleDockIcon:(id)sender {
+  NSUInteger state = [sender state];
+  // 根据复选框是否选中，设置用户值，并且改变程序运行状态。
+  if (state == NSOnState) {
+      ProcessSerialNumber psn = { 0, kCurrentProcess };
+      TransformProcessType(&amp;psn, kProcessTransformToForegroundApplication);
+      self.infoText.hidden = YES;</p>
+
+<pre><code>  [defaults setBool:YES forKey:kShowDockIcon];
+  [defaults synchronize];
+</code></pre>
+
+<p>  }
+  else {
+      [defaults setBool:NO forKey:kShowDockIcon];
+      self.infoText.hidden = NO;
+      [defaults synchronize];
+  }
+}
+```</p></li>
+</ul>
+
+
+<p>虽然本文比较水，并且实际上只介绍了2行代码，但是这个技巧非常实用，所以推荐之。</p>
+
+<p>（全文完）</p>
+]]></content>
+  </entry>
+  
+</feed>
