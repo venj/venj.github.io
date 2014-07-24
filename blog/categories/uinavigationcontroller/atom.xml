@@ -4,7 +4,7 @@
   <title><![CDATA[Category: UINavigationController | Cocoa学习]]></title>
   <link href="http://venj.github.io/blog/categories/uinavigationcontroller/atom.xml" rel="self"/>
   <link href="http://venj.github.io/"/>
-  <updated>2014-07-24T11:06:31+08:00</updated>
+  <updated>2014-07-24T11:13:09+08:00</updated>
   <id>http://venj.github.io/</id>
   <author>
     <name><![CDATA[venj]]></name>
@@ -70,6 +70,8 @@ extension UINavigationController {</p>
 <p>要使用View Controller Based Status Bar Style，你可能需要在项目的的Info.plist里增加一条记录：“View controller-based status bar appearance”，并将其值设置成<code>YES</code>。</p>
 
 <p>参考来源：<a href="http://mythodeia.wordpress.com/2014/05/09/view-controller-based-status-bar-appearance/">Being Objective…</a></p>
+
+<p>示例代码(Swift)：<a href="https://github.com/venj/Cocoa-blog-code/tree/master/NavStatusStyle">NavStatusStyle</a></p>
 
 <p>（全文完）</p>
 ]]></content>
