@@ -49,4 +49,6 @@ extension UINavigationController {
 
 参考来源：[Being Objective…](http://mythodeia.wordpress.com/2014/05/09/view-controller-based-status-bar-appearance/)
 
+示例代码(Swift)：[NavStatusStyle](https://github.com/venj/Cocoa-blog-code/tree/master/NavStatusStyle)
+
 （全文完）
