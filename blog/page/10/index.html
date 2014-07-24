@@ -9,7 +9,7 @@
   <meta name="author" content="venj">
 
   
-  <meta name="description" content="NSOpenPanel和NSSavePanel从Mac OS X 10.6开始把很多方法都标记为了Deprecated，文档里也很详尽的给出了替代方法。 比如，要打开一个选文件的ModalView，以前是用NSOpenPanel的– beginSheetForDirectory:file: &hellip;">
+  <meta name="description" content="根据SubView的大小动态的改变窗口大小的操作在Cocoa编程里很常用。记录方法如下。下面的代码假定通过一个Box容器，分别容纳不同大小的SubView，在切换SubView的时候，窗口的大小适应容器大小的变化。SubView的容器可以是任何NSView。这个代码通常放在Controller里 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -66,6 +66,99 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/dynamically-change-window-size/">动态改变窗口大小</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-04-02T16:28:00+08:00" pubdate data-updated="true">Apr 2<span>nd</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>根据SubView的大小动态的改变窗口大小的操作在Cocoa编程里很常用。记录方法如下。下面的代码假定通过一个Box容器，分别容纳不同大小的SubView，在切换SubView的时候，窗口的大小适应容器大小的变化。SubView的容器可以是任何<code>NSView</code>。这个代码通常放在<code>Controller</code>里。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// 通过某个View获得需要改变大小的窗口</span>
+</span><span class='line'><span class="n">NSWindow</span> <span class="o">*</span><span class="n">window</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">box</span> <span class="n">window</span><span class="p">];</span>
+</span><span class='line'><span class="c1">// 获取新View</span>
+</span><span class='line'><span class="n">NSView</span> <span class="o">*</span><span class="n">view</span> <span class="o">=</span> <span class="p">[</span><span class="n">viewController</span> <span class="n">view</span><span class="p">];</span>
+</span><span class='line'><span class="c1">// 当前View的大小</span>
+</span><span class='line'><span class="n">NSSize</span> <span class="n">currentSize</span> <span class="o">=</span> <span class="p">[[</span><span class="n">self</span><span class="p">.</span><span class="n">box</span> <span class="n">contentView</span><span class="p">]</span> <span class="n">frame</span><span class="p">].</span><span class="n">size</span><span class="p">;</span>
+</span><span class='line'><span class="c1">// 新View的大小</span>
+</span><span class='line'><span class="n">NSSize</span> <span class="n">newSize</span> <span class="o">=</span> <span class="p">[</span><span class="n">view</span> <span class="n">frame</span><span class="p">].</span><span class="n">size</span><span class="p">;</span>
+</span><span class='line'><span class="c1">// 新旧View的宽度和高度差</span>
+</span><span class='line'><span class="n">CGFloat</span> <span class="n">deltaWidth</span> <span class="o">=</span> <span class="n">newSize</span><span class="p">.</span><span class="n">width</span> <span class="o">-</span> <span class="n">currentSize</span><span class="p">.</span><span class="n">width</span><span class="p">;</span>
+</span><span class='line'><span class="n">CGFloat</span> <span class="n">deltaHeight</span> <span class="o">=</span> <span class="n">newSize</span><span class="p">.</span><span class="n">height</span> <span class="o">-</span> <span class="n">currentSize</span><span class="p">.</span><span class="n">height</span><span class="p">;</span>
+</span><span class='line'><span class="c1">// 获取窗口大小</span>
+</span><span class='line'><span class="n">NSRect</span> <span class="n">windowFrame</span> <span class="o">=</span> <span class="p">[</span><span class="n">window</span> <span class="n">frame</span><span class="p">];</span>
+</span><span class='line'><span class="c1">// 加上SubView高度和宽度的变化值</span>
+</span><span class='line'><span class="n">windowFrame</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">+=</span> <span class="n">deltaHeight</span><span class="p">;</span>
+</span><span class='line'><span class="n">windowFrame</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">+=</span> <span class="n">deltaWidth</span><span class="p">;</span>
+</span><span class='line'><span class="c1">// 为了保持窗口左上角位置不变，需要重设窗口框的绘制起点的y值</span>
+</span><span class='line'><span class="c1">// 之所以用 -= 是因为Cocoa的绘图起点是左下角</span>
+</span><span class='line'><span class="c1">// 起点的x值无需改变。</span>
+</span><span class='line'><span class="n">windowFrame</span><span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">y</span> <span class="o">-=</span> <span class="n">deltaHeight</span><span class="p">;</span>
+</span><span class='line'><span class="c1">// 移除旧View</span>
+</span><span class='line'><span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">box</span> <span class="nl">setContentView:</span><span class="nb">nil</span><span class="p">];</span>
+</span><span class='line'><span class="c1">// 改变窗口大小，使用动画</span>
+</span><span class='line'><span class="p">[</span><span class="n">window</span> <span class="nl">setFrame:</span><span class="n">windowFrame</span> <span class="nl">display:</span><span class="n">YES</span> <span class="nl">animate:</span><span class="n">YES</span><span class="p">];</span>
+</span><span class='line'><span class="c1">// 加入新View</span>
+</span><span class='line'><span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">box</span> <span class="nl">setContentView:</span><span class="n">view</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>（全文完）</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -188,6 +281,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/view-controller-based-status-bar-style-and-uinavigationcontroller/">UINavigationController和View Controller-based状态栏风格</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
       </li>
     
@@ -201,10 +298,6 @@
     
       <li class="post">
         <a href="/blog/code-box-like-window-open-animation/">CodeBox风格的窗口打开动画</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/localized-loading-screen/">本地化加载屏幕</a>
       </li>
     
   </ul>

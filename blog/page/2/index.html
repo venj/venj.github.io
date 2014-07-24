@@ -9,12 +9,7 @@
   <meta name="author" content="venj">
 
   
-  <meta name="description" content="好久没有写Blog了，今天正好碰上了一个问题，于是决定写一写博客简单描述下。情况是这样的：之前，在iOS 5下，要显示一个从当前为止到目标位置的驾车导航可以使用如下的代码来搞定（参考这里）： 1
-2
-3
-4
-//基于地名调用iOS自带的Google Maps导航
-NSString * &hellip;">
+  <meta name="description" content="UIRefreshControl是iOS 6中的一个新控件，这个控件就是大家熟悉的下拉更新控件。关于如何把UIRefreshControl集成至UITableViewController中相信大家都知道怎么做。至于用代码触发下拉更新，查看Apple的文档后， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -71,6 +66,56 @@ NSString * &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/refresh-control-gochas/">用代码触发下拉更新</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-20T14:55:00+08:00" pubdate data-updated="true">Dec 20<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><code>UIRefreshControl</code>是iOS 6中的一个新控件，这个控件就是大家熟悉的下拉更新控件。关于如何把<code>UIRefreshControl</code>集成至<code>UITableViewController</code>中相信大家都知道怎么做。至于用代码触发下拉更新，查看Apple的文档后，我们看到<code>UIRefreshControl</code>有一个方法：<code>- beginRefreshing</code>。写到这里，貌似问题依然解决，没什么好说的了。但是真是这样吗？让我们来创建一个测试项目进行验证：</p>
+
+<ol>
+<li><p>创建一个Master-Detail Application项目，取名“RefreshControl”（你可以随便取），设备选iPhone，够上“Use Automatic Reference Counting”和“Use Storyboards”（你也可以不用Storyboard，反正差不多）。</p></li>
+<li><p>（可选）打开MainStoryboard.storyboard（或MasterViewController.xib，如果你在1中没有勾选Use Storyboards），启用Master View Controller的Refreshing。</p>
+
+<p><img class="center" src="/images/posts/master_refreshcontrol.png"></p></li>
+<li><p>打开MasterViewController.m，更改代码如下：</p></li>
+</ol>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/refresh-control-gochas/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -375,51 +420,6 @@ NSString * &hellip;">
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/simulate-low-speed-network-connection-for-ios-apps/">模拟低速网络，测试iOS程序的表现</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-03-29T11:56:00+08:00" pubdate data-updated="true">Mar 29<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>因为没有考虑程序在低速网络下的表现，昨天在测试公司的一个程序的时候出了点丑，于是痛定思痛，要解决模拟低速网络连接的问题。遗憾的是iOS Simulator并没有提供模拟低速网络的功能。</p>
-
-<p>经过一番STFW之后，发现原来苹果从Xcode 4.1开始提供了一款叫做“Network Link Connector”的工具。但是如今我已经升级到Xcode 4.3.2，用SpotLight搜索了一番之后也没有发现系统里已经安装了这样的一个工具。</p>
-
-<p>又经过一番搜索，我发现原来“Network Link Connector”是一个prefPane程序，从Xcode 4.3开始已经不再默认包含在程序里了，而是需要从developer.apple.com/download上单独下载，它位于“Hardware IO Tools”的一个包中。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/simulate-low-speed-network-connection-for-ios-apps/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -443,6 +443,10 @@ NSString * &hellip;">
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/view-controller-based-status-bar-style-and-uinavigationcontroller/">UINavigationController和View Controller-based状态栏风格</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
       </li>
     
@@ -456,10 +460,6 @@ NSString * &hellip;">
     
       <li class="post">
         <a href="/blog/code-box-like-window-open-animation/">CodeBox风格的窗口打开动画</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/localized-loading-screen/">本地化加载屏幕</a>
       </li>
     
   </ul>

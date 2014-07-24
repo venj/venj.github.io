@@ -9,7 +9,7 @@
   <meta name="author" content="venj">
 
   
-  <meta name="description" content="Growl是啥，用来干什么的我就不介绍了。Growl的文档说实话，写的挺抽象的。不是Step by Step的文档，对我来说就有点困难了。所以，我决定把Growl支持写成几篇短文，简单介绍一下如何在程序中增加Growl支持。【为啥要分几篇？嘛，因为我自己也是边学边写文章的吗。。。Orz】 首先， &hellip;">
+  <meta name="description" content="在之前一篇日志里，我简单的介绍了一下如何在项目中增加Growl.framework。现在，我来介绍一下如何使用Growl。在之前的日志里，我演示的时候，是往项目中加入Growl.framework，这次，为了完整起见，我将使用Growl-WithInstaller.framework来演示。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -66,6 +66,51 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/add-growl-support-in-your-apps-coding-growl/">为应用程序增加Growl支持（下）：在代码中应用Growl</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-05-26T21:07:00+08:00" pubdate data-updated="true">May 26<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>在<a href="/blog/add-growl-support-in-your-apps-add-growl-framework/">之前一篇日志</a>里，我简单的介绍了一下如何在项目中增加Growl.framework。现在，我来介绍一下如何使用Growl。在之前的日志里，我演示的时候，是往项目中加入Growl.framework，这次，为了完整起见，我将使用Growl-WithInstaller.framework来演示。</p>
+
+<p>这两个框架的区别在于后者把Growl安装程序打包进了框架中。如果用户没有安装Growl，并且愿意安装，可以马上安装。但是很多人并不喜欢这种捆绑安装的方式，很多人把责任归咎于Growl，Growl甚至专门为此<a href="http://growl.info/thirdpartyinstallations.php">写了个网页</a>解释。其实Growl是出于好意，并且，选择哪个框架是开发人员的事情。作为用户，如果你真的不喜欢Growl，Growl能够很方便的删除；而作为开发人员，应该根据目标用户谨慎选择捆绑Growl安装程序的包。</p>
+
+<p>好了，题外话不多说，言归正传。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/add-growl-support-in-your-apps-coding-growl/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -322,51 +367,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/send-image-with-nsmutableurlrequest/">用NSMutableURLRequest发送图片</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-04-16T16:12:00+08:00" pubdate data-updated="true">Apr 16<span>th</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>DragFan目前的网络连接使用了ASIHTTPRequest这个第三方库。<a href="http://allseeing-i.com/ASIHTTPRequest/"><code>ASIHTTPRequest</code></a>是一个相对非常庞大的库，在心理上我总觉得用在<a href="http://itunes.apple.com/app/dragfan/id441435736?mt=12">DragFan</a>里有点大材小用了。因此，我今天试着寻找了一下替代方案。很幸运，我找到了一个不错的替代方案，而且是利用现有的Cocoa API，而且在iOS下也是能使用的。</p>
-
-<p>尽管印象中看到过文章说用Cocoa的网络API的性能没有用CoreFoundation的性能好，但是目前我在写的程序并没有特别的需要高性能，而且用Cocoa的API，程序的可读性和内存管理也更加直观，应该说，是一个比较好的方案。</p>
-
-<p>废话了一通，下面来看看究竟是如何实现的：</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/send-image-with-nsmutableurlrequest/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/9/">&larr; Older</a>
@@ -390,6 +390,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/view-controller-based-status-bar-style-and-uinavigationcontroller/">UINavigationController和View Controller-based状态栏风格</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
       </li>
     
@@ -403,10 +407,6 @@
     
       <li class="post">
         <a href="/blog/code-box-like-window-open-animation/">CodeBox风格的窗口打开动画</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/localized-loading-screen/">本地化加载屏幕</a>
       </li>
     
   </ul>

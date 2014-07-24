@@ -9,7 +9,7 @@
   <meta name="author" content="venj">
 
   
-  <meta name="description" content="我之前曾经写过一篇关于NSAttributedString转HTML的文章，因为没有得到理想的结果，而TextEdit的另存为HTML却非常漂亮，所以对此我一直耿耿于怀。今天又研究了一下TextEdit将文档另存为HTML的方法，总算能把这个问题画上一个圆满的句号了。 &hellip;">
+  <meta name="description" content="很明显，本文有标题党的嫌疑。其实本文要说的是“iPhone Programming: The Big Nerd Ranch Guide”一书中第5章里的Whereami的例子。我照着书本做下来，但是感觉例子似乎有点问题。可能是我看书不仔细，不过这个例子要实现的功能很诡异——定位自己， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -66,6 +66,51 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/geocoding-in-ios-5/">iOS 5的Geocoding</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-07-06T23:44:00+08:00" pubdate data-updated="true">Jul 6<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>很明显，本文有标题党的嫌疑。其实本文要说的是“<a href="http://www.bignerdranch.com/book/ios_programming_the_big_nerd_ranch_guide_nd_edition_">iPhone Programming: The Big Nerd Ranch Guide</a>”一书中第5章里的Whereami的例子。我照着书本做下来，但是感觉例子似乎有点问题。可能是我看书不仔细，不过这个例子要实现的功能很诡异——定位自己，然后自己用文本框加上一个Annotation(？)这太诡异了吧。</p>
+
+<p>我现在对这个例子小做修改，那就是，在文本框中输入任何地址字符串，然后地图自动定位到该位置——类似Google Map的搜索。我基于书本上的代码，做一些小修改。</p>
+
+<p>首先，注释掉<code>-locationManager:didUpdateToLocation:fromLocation:</code>这个方法里的所有代码。主要对<code>-findLocation</code>方法作出修改，实现地图搜索功能。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/geocoding-in-ios-5/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -354,51 +399,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/add-growl-support-in-your-apps-coding-growl/">为应用程序增加Growl支持（下）：在代码中应用Growl</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-05-26T21:07:00+08:00" pubdate data-updated="true">May 26<span>th</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>在<a href="/blog/add-growl-support-in-your-apps-add-growl-framework/">之前一篇日志</a>里，我简单的介绍了一下如何在项目中增加Growl.framework。现在，我来介绍一下如何使用Growl。在之前的日志里，我演示的时候，是往项目中加入Growl.framework，这次，为了完整起见，我将使用Growl-WithInstaller.framework来演示。</p>
-
-<p>这两个框架的区别在于后者把Growl安装程序打包进了框架中。如果用户没有安装Growl，并且愿意安装，可以马上安装。但是很多人并不喜欢这种捆绑安装的方式，很多人把责任归咎于Growl，Growl甚至专门为此<a href="http://growl.info/thirdpartyinstallations.php">写了个网页</a>解释。其实Growl是出于好意，并且，选择哪个框架是开发人员的事情。作为用户，如果你真的不喜欢Growl，Growl能够很方便的删除；而作为开发人员，应该根据目标用户谨慎选择捆绑Growl安装程序的包。</p>
-
-<p>好了，题外话不多说，言归正传。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/add-growl-support-in-your-apps-coding-growl/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/8/">&larr; Older</a>
@@ -422,6 +422,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/view-controller-based-status-bar-style-and-uinavigationcontroller/">UINavigationController和View Controller-based状态栏风格</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
       </li>
     
@@ -435,10 +439,6 @@
     
       <li class="post">
         <a href="/blog/code-box-like-window-open-animation/">CodeBox风格的窗口打开动画</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/localized-loading-screen/">本地化加载屏幕</a>
       </li>
     
   </ul>

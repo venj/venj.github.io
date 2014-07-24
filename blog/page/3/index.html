@@ -9,16 +9,7 @@
   <meta name="author" content="venj">
 
   
-  <meta name="description" content="OS X程序，在执行后台任务的时候，有时需要通过跳动Dock图标来提示用户进行操作或某项操作已经执行完成。方法很简单，NSApplication有一个-requestUserAttention:的方法可以跳动Dock图标。 下面是实例代码： 1
-2
-3
-4
-5
-6
-7
-8
-//跳动一次
-- ( &hellip;">
+  <meta name="description" content="因为没有考虑程序在低速网络下的表现，昨天在测试公司的一个程序的时候出了点丑，于是痛定思痛，要解决模拟低速网络连接的问题。遗憾的是iOS Simulator并没有提供模拟低速网络的功能。 经过一番STFW之后，发现原来苹果从Xcode 4.1开始提供了一款叫做“Network Link &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -75,6 +66,51 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/simulate-low-speed-network-connection-for-ios-apps/">模拟低速网络，测试iOS程序的表现</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-03-29T11:56:00+08:00" pubdate data-updated="true">Mar 29<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>因为没有考虑程序在低速网络下的表现，昨天在测试公司的一个程序的时候出了点丑，于是痛定思痛，要解决模拟低速网络连接的问题。遗憾的是iOS Simulator并没有提供模拟低速网络的功能。</p>
+
+<p>经过一番STFW之后，发现原来苹果从Xcode 4.1开始提供了一款叫做“Network Link Connector”的工具。但是如今我已经升级到Xcode 4.3.2，用SpotLight搜索了一番之后也没有发现系统里已经安装了这样的一个工具。</p>
+
+<p>又经过一番搜索，我发现原来“Network Link Connector”是一个prefPane程序，从Xcode 4.3开始已经不再默认包含在程序里了，而是需要从developer.apple.com/download上单独下载，它位于“Hardware IO Tools”的一个包中。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/simulate-low-speed-network-connection-for-ios-apps/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -331,51 +367,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/copy-and-paste-to-text-field/">点击按钮复制粘贴到文本框</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-02-13T14:47:00+08:00" pubdate data-updated="true">Feb 13<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>相信很多读者看到标题肯定会疑惑，文本框本来就支持复制粘贴，为什么要专门写一篇日志来介绍文本框的复制粘贴呢？其实，本文要讲述的是，如何通过按下按钮，来复制粘贴文本到文本框 &mdash; 不是通过菜单操作，也不是通过快捷键cmd-c和cmd-v来完成。</p>
-
-<p>提到复制粘贴的菜单操作和快捷键操作，看过“Cocoa Programming for Mac OS X”的读者肯定知道，他们属于“nil-targeted action”，也就是说，他们的receive是在运行时被指定的。在Interface Builder中，<code>-copy:</code>，<code>-paste:</code>方法都是连接到一个占位对象“First Responder”上的。而First Responder到底是谁是在程序运行过程中动态变化着的。</p>
-
-<p>事实上，在<code>NSTextField</code>这个例子中，<code>-copy:</code>和<code>-paste:</code>的Receive是一个<code>NSText</code>对象。知道了这一点，剩下的问题就是如何获取这个对象。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/copy-and-paste-to-text-field/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/4/">&larr; Older</a>
@@ -399,6 +390,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/view-controller-based-status-bar-style-and-uinavigationcontroller/">UINavigationController和View Controller-based状态栏风格</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
       </li>
     
@@ -412,10 +407,6 @@
     
       <li class="post">
         <a href="/blog/code-box-like-window-open-animation/">CodeBox风格的窗口打开动画</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/localized-loading-screen/">本地化加载屏幕</a>
       </li>
     
   </ul>

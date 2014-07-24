@@ -4,7 +4,7 @@
   <title><![CDATA[Cocoa学习]]></title>
   <link href="http://venj.github.io/atom.xml" rel="self"/>
   <link href="http://venj.github.io/"/>
-  <updated>2014-01-22T11:14:45+08:00</updated>
+  <updated>2014-07-24T11:00:54+08:00</updated>
   <id>http://venj.github.io/</id>
   <author>
     <name><![CDATA[venj]]></name>
@@ -12,6 +12,78 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[UINavigationController和View Controller-based状态栏风格]]></title>
+    <link href="http://venj.github.io/blog/view-controller-based-status-bar-style-and-uinavigationcontroller/"/>
+    <updated>2014-07-24T10:30:22+08:00</updated>
+    <id>http://venj.github.io/blog/view-controller-based-status-bar-style-and-uinavigationcontroller</id>
+    <content type="html"><![CDATA[<p>从iOS 7开始， <code>UIViewController</code>有了一个新的方法：<code>- preferredStatusBarStyle</code>，可以让用户指定状态栏风格。但问题是这个方法只有在<code>ViewController</code>不包含在<code>UINavigationController</code>中时才起作用。大部分情况下，<code>ViewController</code>不会单独使用，一般都会嵌套在<code>UINavigationController</code>中的。因为不知道这一点，所以在很长一段时间内，我都很困惑，明明我已经在我的<code>ViewController</code>里写了<code>- preferredStatusBarStyle</code>, 却一点都不起作用。</p>
+
+<p>知道了原因，接下来就简单了。我们可以写一个<code>UINavigationController</code>的扩展，覆盖其默认实现，返回最上面的<code>ViewController</code>的<code>preferredStatusBarStyle</code>。</p>
+
+<p>代码如下：</p>
+
+<!-- more -->
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">//UINavigationController+StatusBar.h</span>
+</span><span class='line'><span class="cp">#import &lt;UIKit/UIKit.h&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@interface</span> <span class="nc">UINavigationController</span> <span class="nl">(StatusBar)</span>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">UIStatusBarStyle</span><span class="p">)</span><span class="nf">preferredStatusBarStyle</span><span class="p">;</span>
+</span><span class='line'><span class="k">@end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//UINavigationController+StatusBar.m</span>
+</span><span class='line'><span class="cp">#import &quot;UINavigationController+StatusBar.h&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@implementation</span> <span class="nc">UINavigationController</span> <span class="nl">(StatusBar)</span>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">UIStatusBarStyle</span><span class="p">)</span><span class="nf">preferredStatusBarStyle</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="p">[[</span><span class="n">self</span> <span class="n">topViewController</span><span class="p">]</span> <span class="n">preferredStatusBarStyle</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="k">@end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>用Swift来写：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">extension</span> <span class="n">UINavigationController</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">override</span> <span class="n">public</span> <span class="n">func</span> <span class="n">preferredStatusBarStyle</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">UIStatusBarStyle</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">topViewController</span><span class="p">.</span><span class="n">preferredStatusBarStyle</span><span class="p">();</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然后，在需要使用<code>UINavigationController</code>的时候，引入<code>UINavigationController+StatusBar.h</code>头文件就可以了。如果你用Swift，增加了<code>extension</code>就完成了。</p>
+
+<p>参考来源：<a href="http://mythodeia.wordpress.com/2014/05/09/view-controller-based-status-bar-appearance/">Being Objective…</a></p>
+
+<p>（全文完）</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[用ImageView和Layer实现图像的圆角显示]]></title>
@@ -241,7 +313,7 @@
 <!-- more -->
 
 
-<p>首先，我们用图形编辑(PS, Pixelmator等)工具，做两套语言的加载屏幕。简单起见，我们就用白底加居中的黑字(“US”和“CN”)的两套图片好了（文件在示例代码中有），每套图片要三个尺寸：Default.png(320x480)，<a href="&#x6d;&#97;&#x69;&#108;&#x74;&#111;&#x3a;&#68;&#101;&#x66;&#x61;&#117;&#108;&#x74;&#64;&#x32;&#120;&#x2e;&#112;&#x6e;&#x67;">&#x44;&#101;&#x66;&#x61;&#117;&#108;&#116;&#64;&#x32;&#x78;&#x2e;&#x70;&#110;&#x67;</a>(640x960)以及<a href="&#109;&#97;&#x69;&#108;&#x74;&#111;&#x3a;&#x44;&#101;&#102;&#x61;&#x75;&#108;&#x74;&#45;&#x35;&#54;&#x38;&#x68;&#x40;&#x32;&#120;&#46;&#x70;&#110;&#x67;">&#68;&#x65;&#102;&#97;&#117;&#108;&#x74;&#x2d;&#53;&#54;&#x38;&#x68;&#x40;&#50;&#x78;&#46;&#x70;&#110;&#x67;</a>(640x1136)。</p>
+<p>首先，我们用图形编辑(PS, Pixelmator等)工具，做两套语言的加载屏幕。简单起见，我们就用白底加居中的黑字(“US”和“CN”)的两套图片好了（文件在示例代码中有），每套图片要三个尺寸：Default.png(320x480)，<a href="&#109;&#97;&#x69;&#x6c;&#x74;&#111;&#x3a;&#x44;&#x65;&#x66;&#x61;&#x75;&#108;&#116;&#64;&#x32;&#120;&#46;&#112;&#110;&#x67;">&#x44;&#x65;&#x66;&#97;&#x75;&#x6c;&#116;&#x40;&#x32;&#x78;&#x2e;&#x70;&#110;&#103;</a>(640x960)以及<a href="&#x6d;&#x61;&#x69;&#108;&#116;&#111;&#x3a;&#68;&#x65;&#x66;&#97;&#117;&#108;&#116;&#45;&#53;&#x36;&#x38;&#x68;&#64;&#x32;&#120;&#x2e;&#112;&#x6e;&#103;">&#x44;&#101;&#102;&#97;&#117;&#x6c;&#x74;&#x2d;&#x35;&#x36;&#56;&#x68;&#x40;&#x32;&#120;&#x2e;&#x70;&#110;&#x67;</a>(640x1136)。</p>
 
 <p>做好图片之后，我们在Xcode里创建一个新项目名字可以叫做“Local Splash”，程序模板任意，简单起见，支持的设备只选iPhone。创建后，我们用“US”那套图片替换项目默认的纯黑色加载屏幕，作为默认语言的加载屏幕。</p>
 
@@ -1971,76 +2043,6 @@
 <p>作者还写了一个宏（<a href="https://gist.github.com/1057420">gist</a>）来方便使用，大家可以阅读作者的博文<a href="http://lukeredpath.co.uk/blog/a-note-on-objective-c-singletons.html">A note on Objective-C singletons</a>了解详情。</p>
 
 <p>大多数情况下，Apple官方文档里的单例模式的示例代码实现已经够用了。虽然它最繁琐，但是也是本文介绍的几种单例模式中最容易理解的一个。至于其他的实现就留给读者们根据需要选择和应用了。</p>
-
-<p>(全文完)</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[自定义UINavigationBar的背景]]></title>
-    <link href="http://venj.github.io/blog/custom-navbar-background/"/>
-    <updated>2012-01-11T15:20:00+08:00</updated>
-    <id>http://venj.github.io/blog/custom-navbar-background</id>
-    <content type="html"><![CDATA[<p>为了让我们的应用程序更加美观，我们往往希望对iPhone自带的控件进行一点自定义。比如，本文即将要讲述的，给<code>UINavigationBar</code>加一个背景。</p>
-
-<p>最简单的一个自定义方法就是修改一下背景色。方法非常简单，那就是使用它的<code>tintColor</code>属性：</p>
-
-<!-- more -->
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">self</span><span class="p">.</span><span class="n">navigationController</span><span class="p">.</span><span class="n">navigationBar</span><span class="p">.</span><span class="n">tintColor</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIColor</span> <span class="n">redColor</span><span class="p">];</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>这样就轻松地为<code>UINavigationBar</code>加上了红色的背景色&mdash;当然你可以使用任何颜色。下面是模拟器中的测试效果：</p>
-
-<p><img class="center" src="http://venj.github.io/images/posts/custom-navbar-bg-color.png"></p>
-
-<p>另外，就是为<code>UINavigationBar</code>加背景图片。这个稍稍复杂一些&mdash;特别是对于iOS 5之前的iOS来说。先说说简单的，iOS 5已经为<code>UINavigationBar</code>增加了一个新的方法<code>-setBackgroundImage:forBarMetrics:</code>，专门用于设置<code>UINavigationBar</code>的背景图片。</p>
-
-<p><strong>Updated</strong></p>
-
-<p>删除了在iOS4下有问题的方法。</p>
-
-<p><strong>Update</strong></p>
-
-<p>适用于iOS 4的方法是在<code>AppDelegate.m</code>中创建一个<code>UINavigationBar</code>的Catagory，覆盖<code>-drawRect:</code>方法，如下：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">@implementation</span> <span class="nc">UINavigationBar</span> <span class="nl">(CustomImage)</span>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">drawRect:</span><span class="p">(</span><span class="n">CGRect</span><span class="p">)</span><span class="nv">rect</span> <span class="p">{</span>
-</span><span class='line'>    <span class="n">UIImage</span> <span class="o">*</span><span class="n">img</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIImage</span> <span class="nl">imageNamed:</span><span class="s">@&quot;navbar&quot;</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">img</span> <span class="nl">drawInRect:</span><span class="n">rect</span><span class="p">];</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="k">@end</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">...</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">//在后面加入判断是否支持iOS 5的代码，来提供对iOS 5的支持：</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">if</span> <span class="p">([</span><span class="n">bar</span> <span class="nl">respondsToSelector:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">setBackgroundImage:forBarMetrics:</span><span class="p">)])</span> <span class="p">{</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">bar</span> <span class="nl">setBackgroundImage:</span><span class="n">bg</span> <span class="nl">forBarMetrics:</span><span class="n">UIBarMetricsDefault</span><span class="p">];</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>这种方法将应用到程序中所有的<code>UINavigationBar</code>实例。但是通常来说，是不推荐覆盖系统自带的类中的方法的，所以我并不推荐使用这种方法。</p>
-
-<p><a href="http://idevrecipes.com/2011/01/12/how-do-iphone-apps-instagramreederdailybooth-implement-custom-navigationbar-with-variable-width-back-buttons/">这里</a>介绍了更好的方法。</p>
 
 <p>(全文完)</p>
 ]]></content>

@@ -9,12 +9,7 @@
   <meta name="author" content="venj">
 
   
-  <meta name="description" content="今天在测试代码的时候发现了一个诡异的问题，那就是NSImage加载图片的时候无法准确获得图片的大小。 最初的代码是这样的： 1
-2
-3
-4
-NSImage *image = [NSImage imageNamed:@&quot;image&quot;];
-NSLog(@&quot;%f, %f& &hellip;">
+  <meta name="description" content="今天偶尔看到了用Quartz绘制UIImage圆角图像的源码的Snippet，因此心血来潮，简单的改了几行，把它移植到NSImage上了。也正是因为研究这个问题，我才发现了NSImage不能准确获得图片的实际像素大小的问题。说实话，那个代码片断我也是一知半解，因此我只是依样画葫芦，也直接把源码附上 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -71,6 +66,47 @@ NSLog(@&quot;%f, %f& &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/draw-rounded-rectangle-nsimage-with-quartz/">用Quartz绘制NSImage圆角图像</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-08-20T00:42:00+08:00" pubdate data-updated="true">Aug 20<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>今天偶尔看到了<a href="http://www.wattz.net/snippets/iphone_round_corners/">用Quartz绘制<code>UIImage</code>圆角图像的源码的Snippet</a>，因此心血来潮，简单的改了几行，把它移植到NSImage上了。也正是因为研究这个问题，我才发现了<a href="/blog/get-real-size-of-nsimage/"><code>NSImage</code>不能准确获得图片的实际像素大小的问题</a>。说实话，那个代码片断我也是一知半解，因此我只是依样画葫芦，也直接把源码附上，也不知道有没有更好的方法，仅供参考。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/draw-rounded-rectangle-nsimage-with-quartz/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -321,51 +357,6 @@ NSLog(@&quot;%f, %f& &hellip;">
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/geocoding-in-ios-5/">iOS 5的Geocoding</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-07-06T23:44:00+08:00" pubdate data-updated="true">Jul 6<span>th</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>很明显，本文有标题党的嫌疑。其实本文要说的是“<a href="http://www.bignerdranch.com/book/ios_programming_the_big_nerd_ranch_guide_nd_edition_">iPhone Programming: The Big Nerd Ranch Guide</a>”一书中第5章里的Whereami的例子。我照着书本做下来，但是感觉例子似乎有点问题。可能是我看书不仔细，不过这个例子要实现的功能很诡异——定位自己，然后自己用文本框加上一个Annotation(？)这太诡异了吧。</p>
-
-<p>我现在对这个例子小做修改，那就是，在文本框中输入任何地址字符串，然后地图自动定位到该位置——类似Google Map的搜索。我基于书本上的代码，做一些小修改。</p>
-
-<p>首先，注释掉<code>-locationManager:didUpdateToLocation:fromLocation:</code>这个方法里的所有代码。主要对<code>-findLocation</code>方法作出修改，实现地图搜索功能。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/geocoding-in-ios-5/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/7/">&larr; Older</a>
@@ -389,6 +380,10 @@ NSLog(@&quot;%f, %f& &hellip;">
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/view-controller-based-status-bar-style-and-uinavigationcontroller/">UINavigationController和View Controller-based状态栏风格</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
       </li>
     
@@ -402,10 +397,6 @@ NSLog(@&quot;%f, %f& &hellip;">
     
       <li class="post">
         <a href="/blog/code-box-like-window-open-animation/">CodeBox风格的窗口打开动画</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/localized-loading-screen/">本地化加载屏幕</a>
       </li>
     
   </ul>

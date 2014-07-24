@@ -9,7 +9,7 @@
   <meta name="author" content="venj">
 
   
-  <meta name="description" content="昨天写过一个博文，介绍了创建圆角矩形图像的方法。现在，我再介绍一个“显示”圆角图像的方法。 这种方法利用的是UIImageView的layer的属性，实现把图像显示成圆角，而无需对图像本身进行处理。在开发中，大部分情况下，我们只需要“显示”圆角，而不是“得到”圆角图像。不是么。好了，先看代码： ">
+  <meta name="description" content="从iOS 7开始， UIViewController有了一个新的方法：- preferredStatusBarStyle，可以让用户指定状态栏风格。但问题是这个方法只有在ViewController不包含在UINavigationController中时才起作用。大部分情况下， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -66,6 +66,51 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/view-controller-based-status-bar-style-and-uinavigationcontroller/">UINavigationController和View Controller-based状态栏风格</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-07-24T10:30:22+08:00" pubdate data-updated="true">Jul 24<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>从iOS 7开始， <code>UIViewController</code>有了一个新的方法：<code>- preferredStatusBarStyle</code>，可以让用户指定状态栏风格。但问题是这个方法只有在<code>ViewController</code>不包含在<code>UINavigationController</code>中时才起作用。大部分情况下，<code>ViewController</code>不会单独使用，一般都会嵌套在<code>UINavigationController</code>中的。因为不知道这一点，所以在很长一段时间内，我都很困惑，明明我已经在我的<code>ViewController</code>里写了<code>- preferredStatusBarStyle</code>, 却一点都不起作用。</p>
+
+<p>知道了原因，接下来就简单了。我们可以写一个<code>UINavigationController</code>的扩展，覆盖其默认实现，返回最上面的<code>ViewController</code>的<code>preferredStatusBarStyle</code>。</p>
+
+<p>代码如下：</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/view-controller-based-status-bar-style-and-uinavigationcontroller/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -284,56 +329,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/refresh-control-gochas/">用代码触发下拉更新</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-20T14:55:00+08:00" pubdate data-updated="true">Dec 20<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><code>UIRefreshControl</code>是iOS 6中的一个新控件，这个控件就是大家熟悉的下拉更新控件。关于如何把<code>UIRefreshControl</code>集成至<code>UITableViewController</code>中相信大家都知道怎么做。至于用代码触发下拉更新，查看Apple的文档后，我们看到<code>UIRefreshControl</code>有一个方法：<code>- beginRefreshing</code>。写到这里，貌似问题依然解决，没什么好说的了。但是真是这样吗？让我们来创建一个测试项目进行验证：</p>
-
-<ol>
-<li><p>创建一个Master-Detail Application项目，取名“RefreshControl”（你可以随便取），设备选iPhone，够上“Use Automatic Reference Counting”和“Use Storyboards”（你也可以不用Storyboard，反正差不多）。</p></li>
-<li><p>（可选）打开MainStoryboard.storyboard（或MasterViewController.xib，如果你在1中没有勾选Use Storyboards），启用Master View Controller的Refreshing。</p>
-
-<p><img class="center" src="/images/posts/master_refreshcontrol.png"></p></li>
-<li><p>打开MasterViewController.m，更改代码如下：</p></li>
-</ol>
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/refresh-control-gochas/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -355,6 +350,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/view-controller-based-status-bar-style-and-uinavigationcontroller/">UINavigationController和View Controller-based状态栏风格</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
       </li>
     
@@ -368,10 +367,6 @@
     
       <li class="post">
         <a href="/blog/code-box-like-window-open-animation/">CodeBox风格的窗口打开动画</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/localized-loading-screen/">本地化加载屏幕</a>
       </li>
     
   </ul>

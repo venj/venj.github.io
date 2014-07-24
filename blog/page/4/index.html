@@ -9,7 +9,7 @@
   <meta name="author" content="venj">
 
   
-  <meta name="description" content="单例模式在Cocoa和Cocoa Touch中非常常见。比如这两个，[UIApplication sharedApplication]和[NSApplication sharedApplication]，大家应该都见过。但是我们应该如何在代码中实现一个单例模式呢？ 如果你对苹果的文档很熟悉的话， &hellip;">
+  <meta name="description" content="相信很多读者看到标题肯定会疑惑，文本框本来就支持复制粘贴，为什么要专门写一篇日志来介绍文本框的复制粘贴呢？其实，本文要讲述的是，如何通过按下按钮，来复制粘贴文本到文本框 &mdash; 不是通过菜单操作，也不是通过快捷键cmd-c和cmd-v来完成。 提到复制粘贴的菜单操作和快捷键操作，看过“ &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -66,6 +66,51 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/copy-and-paste-to-text-field/">点击按钮复制粘贴到文本框</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-02-13T14:47:00+08:00" pubdate data-updated="true">Feb 13<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>相信很多读者看到标题肯定会疑惑，文本框本来就支持复制粘贴，为什么要专门写一篇日志来介绍文本框的复制粘贴呢？其实，本文要讲述的是，如何通过按下按钮，来复制粘贴文本到文本框 &mdash; 不是通过菜单操作，也不是通过快捷键cmd-c和cmd-v来完成。</p>
+
+<p>提到复制粘贴的菜单操作和快捷键操作，看过“Cocoa Programming for Mac OS X”的读者肯定知道，他们属于“nil-targeted action”，也就是说，他们的receive是在运行时被指定的。在Interface Builder中，<code>-copy:</code>，<code>-paste:</code>方法都是连接到一个占位对象“First Responder”上的。而First Responder到底是谁是在程序运行过程中动态变化着的。</p>
+
+<p>事实上，在<code>NSTextField</code>这个例子中，<code>-copy:</code>和<code>-paste:</code>的Receive是一个<code>NSText</code>对象。知道了这一点，剩下的问题就是如何获取这个对象。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/copy-and-paste-to-text-field/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -290,47 +335,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/compile-apue-example-code-under-lion/">在OS X Lion下编译APUE的示例代码</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-09-08T23:27:00+08:00" pubdate data-updated="true">Sep 8<span>th</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>本文和Cocoa关系不大，不过UNIX开发也是OSX开发的一个重要组成部分，所以我就放在这里了。Advanced Programming in Unix Environment这本书的源码不能直接编译，网上也没有文章（除了这篇看不懂的<a href="http://opticaller.tistory.com/78">棒子写的文章</a>）详细说明这本书源码的用法，这里简单的说明一下：</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/compile-apue-example-code-under-lion/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/5/">&larr; Older</a>
@@ -354,6 +358,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/view-controller-based-status-bar-style-and-uinavigationcontroller/">UINavigationController和View Controller-based状态栏风格</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
       </li>
     
@@ -367,10 +375,6 @@
     
       <li class="post">
         <a href="/blog/code-box-like-window-open-animation/">CodeBox风格的窗口打开动画</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/localized-loading-screen/">本地化加载屏幕</a>
       </li>
     
   </ul>
