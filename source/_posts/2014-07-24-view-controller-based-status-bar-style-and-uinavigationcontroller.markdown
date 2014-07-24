@@ -43,6 +43,10 @@ extension UINavigationController {
 
 然后，在需要使用`UINavigationController`的时候，引入`UINavigationController+StatusBar.h`头文件就可以了。如果你用Swift，增加了`extension`就完成了。
 
+补充：
+
+要使用View Controller Based Status Bar Style，你可能需要在项目的的Info.plist里增加一条记录：“View controller-based status bar appearance”，并将其值设置成`YES`。
+
 参考来源：[Being Objective…](http://mythodeia.wordpress.com/2014/05/09/view-controller-based-status-bar-appearance/)
 
 （全文完）
