@@ -95,7 +95,7 @@ disqus_short_name: venj
 disqus_show_comment_count: false
 
 # Google Analytics
-google_analytics_tracking_id: "UA-27797653-1"
+google_analytics_tracking_id:
 
 # Facebook Like
 facebook_like: false
