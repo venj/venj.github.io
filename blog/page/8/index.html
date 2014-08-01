@@ -9,7 +9,7 @@
   <meta name="author" content="venj">
 
   
-  <meta name="description" content="在之前一篇日志里，我简单的介绍了一下如何在项目中增加Growl.framework。现在，我来介绍一下如何使用Growl。在之前的日志里，我演示的时候，是往项目中加入Growl.framework，这次，为了完整起见，我将使用Growl-WithInstaller.framework来演示。 &hellip;">
+  <meta name="description" content="Mac OS X上的绝大部分程序都使用Sparkle来作为程序的自动升级工具。利用Sparkle，用户无需对升级过程进行干涉，只需跟着升级指示做就可以了。而Sparkle对于程序开发人员来说，使用也是相当方便。其实Sparkle的文档已经写的相当好了，不过我还是来简单写一下Sparkle的使用， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -78,6 +78,55 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/auto-update-apps-with-sparkle/">用Sparkle为Cocoa程序增加自动升级</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-05-27T12:52:00+08:00" pubdate data-updated="true">May 27<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Mac OS X上的绝大部分程序都使用<a href="http://sparkle.andymatuschak.org/">Sparkle</a>来作为程序的自动升级工具。利用Sparkle，用户无需对升级过程进行干涉，只需跟着升级指示做就可以了。而Sparkle对于程序开发人员来说，使用也是相当方便。其实<a href="https://github.com/andymatuschak/Sparkle/wiki">Sparkle的文档</a>已经写的相当好了，不过我还是来简单写一下Sparkle的使用，用于备忘。</p>
+
+<p>首先到Sparkle的首页下载Sparkle框架。</p>
+
+<p><img class="center" src="/images/posts/sparkle-1.png"></p>
+
+<p>然后按照和之前<a href="/blog/add-growl-support-in-your-apps-add-growl-framework/">介绍Growl.framework的文章</a>中同样的方法，新建一个Cocoa项目（或打开一个已有的Cocoa项目）把Sparkle加入项目中，在此我就不赘述了。</p>
+
+<p>要让应用程序支持Sparkle很简单。大致分为3个大步骤：在项目中设置Sparkle；对升级包进行数字签名；设置AppCast服务器。（按：我正在用Rails编写一个AppCast服务器程序，能够简单方便的将这个过程自动化，等我测试完成之后将放到github上去。）</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/auto-update-apps-with-sparkle/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -333,52 +382,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/a-not-so-good-way-to-convert-nsattributesstring-to-html/">一个不是很好的NSAttributedString转HTML的方法</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-04-22T13:17:00+08:00" pubdate data-updated="true">Apr 22<span>nd</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>本文中的方法存在问题。保留本文仅为存档。如果你想了解如何将<code>NSAttributedString</code>转成HTML，请阅读我后来补充的文章。</p>
-
-<p>从HTML转<code>NSAttributesString</code>相对简单，因为Cocoa已经提供了相应的方法。昨晚我花了一点点时间研究了一下从<code>NSAttributesString</code>转HTML的方法，不过依然没有找到非常理想的方法。</p>
-
-<p>搜索了一番之后，找到了一个并不是很好的方法，因为暂时实在找不到好方法，所以先贴出来，等找到更好的方法之后再说。
-先上代码：</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/a-not-so-good-way-to-convert-nsattributesstring-to-html/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/9/">&larr; Older</a>
@@ -402,6 +405,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/scripty-swift/">把Swift用作脚本语言</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/view-controller-based-status-bar-style-and-uinavigationcontroller/">UINavigationController和View Controller-based状态栏风格</a>
       </li>
     
@@ -415,10 +422,6 @@
     
       <li class="post">
         <a href="/blog/push-viewcontroller-hide-buttom-bar/">推View Controller时隐藏TabBar</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/code-box-like-window-open-animation/">CodeBox风格的窗口打开动画</a>
       </li>
     
   </ul>

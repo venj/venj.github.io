@@ -9,7 +9,7 @@
   <meta name="author" content="venj">
 
   
-  <meta name="description" content="本文和Cocoa关系不大，不过UNIX开发也是OSX开发的一个重要组成部分，所以我就放在这里了。Advanced Programming in Unix Environment这本书的源码不能直接编译，网上也没有文章（除了这篇看不懂的棒子写的文章）详细说明这本书源码的用法，这里简单的说明一下： ">
+  <meta name="description" content="OSX有一个非常好的文件系统结构，默认的文件系统职能明确。一个很典型的例子是Applications文件夹，专门用来存放Mac应用程序。不过有时用户在下载了你的应用程序之后并没有养成把程序放到/Applications的习惯，你可以选择不去干预，也可以通过一个友好的提示来帮助用户把程序移动到/ &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -78,6 +78,49 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/move-app-to-application-folder-at-runtime/">把程序移动到/Applications文件夹</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-09-10T15:46:00+08:00" pubdate data-updated="true">Sep 10<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>OSX有一个非常好的文件系统结构，默认的文件系统职能明确。一个很典型的例子是<code>Applications</code>文件夹，专门用来存放Mac应用程序。不过有时用户在下载了你的应用程序之后并没有养成把程序放到<code>/Applications</code>的习惯，你可以选择不去干预，也可以通过一个友好的提示来帮助用户把程序移动到<code>/Application</code>文件夹中。</p>
+
+<p>要在程序中实现这样的功能其实很简单，因为已经有人帮我们实现了这样的一个方法：<a href="https://github.com/potionfactory/LetsMove">LetsMove</a>。使用方法也很简单，在<code>ApplicationDelegate</code>中的<code>-applicationDidFinishLaunching:</code>方法的最前面增加一行代码，如下：</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/move-app-to-application-folder-at-runtime/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -300,67 +343,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/open-uiwebview-link-in-mobile-safari/">用Mobile Safari打开UIWebView里的链接</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-08-21T00:31:00+08:00" pubdate data-updated="true">Aug 21<span>st</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><code>UIWebView</code>本身就是一个功能非常完整的浏览器。<code>UIWebView</code>经常被用来向用户展示打包在应用程序中的HTML帮助文档。有时，很多时候，帮助文档需要提供一些外链的链接。如果直接在<code>UIWebView</code>中打开这些链接，不仅会使显示帮助文档的<code>ViewController</code>变得臃肿，而且也没有Mobile Safari那么好的阅读体验。因此，大多数时候，在Mobile Safari中打开外链的链接是一个比较好的解决方法。</p>
-
-<p>方法很简单，如下：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">webView:</span><span class="p">(</span><span class="n">UIWebView</span> <span class="o">*</span><span class="p">)</span><span class="nv">inWeb</span> <span class="nf">shouldStartLoadWithRequest:</span><span class="p">(</span><span class="n">NSURLRequest</span> <span class="o">*</span><span class="p">)</span><span class="nv">inRequest</span> <span class="nf">navigationType:</span><span class="p">(</span><span class="n">UIWebViewNavigationType</span><span class="p">)</span><span class="nv">inType</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">inType</span> <span class="o">==</span> <span class="n">UIWebViewNavigationTypeLinkClicked</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="p">[[</span><span class="n">UIApplication</span> <span class="n">sharedApplication</span><span class="p">]</span> <span class="nl">openURL:</span><span class="p">[</span><span class="n">inRequest</span> <span class="n">URL</span><span class="p">]];</span>
-</span><span class='line'>        <span class="k">return</span> <span class="n">NO</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">return</span> <span class="n">YES</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>这里用到的是<code>UIWebViewDelegate</code>的<code>-webView:shouldStartLoadWithRequest:navigationType:</code>方法。在示例代码中，我只是简单的在用户点击链接的时候调用Mobile Safari打开链接。在实际应用中，完全可以加入一些判断条件来针对不同的URL选择是否直接在<code>UIWebView</code>里打开或在Mobile Safari里打开。</p>
-
-<p>（全文完）</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/6/">&larr; Older</a>
@@ -384,6 +366,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/scripty-swift/">把Swift用作脚本语言</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/view-controller-based-status-bar-style-and-uinavigationcontroller/">UINavigationController和View Controller-based状态栏风格</a>
       </li>
     
@@ -397,10 +383,6 @@
     
       <li class="post">
         <a href="/blog/push-viewcontroller-hide-buttom-bar/">推View Controller时隐藏TabBar</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/code-box-like-window-open-animation/">CodeBox风格的窗口打开动画</a>
       </li>
     
   </ul>

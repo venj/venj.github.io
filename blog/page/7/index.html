@@ -9,7 +9,7 @@
   <meta name="author" content="venj">
 
   
-  <meta name="description" content="很明显，本文有标题党的嫌疑。其实本文要说的是“iPhone Programming: The Big Nerd Ranch Guide”一书中第5章里的Whereami的例子。我照着书本做下来，但是感觉例子似乎有点问题。可能是我看书不仔细，不过这个例子要实现的功能很诡异——定位自己， &hellip;">
+  <meta name="description" content="Bezels是Mac OS X下，苹果私有的UI控件，用来提示用户某些信息。不过iOS下，就有很多第三方的Bezels风格的提示控件实现了。相信大家也见过很多了。下图左侧是OSX的提示音量变化的Bezels，右侧是iOS上的Bezels风格的进度提示。 在iOS上做Bezels的思路很简单， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -78,6 +78,53 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/draw-round-rectangle-with-quartz-on-ios/">在iOS上用Quartz绘制圆角矩形</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-08-06T00:28:00+08:00" pubdate data-updated="true">Aug 6<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Bezels是Mac OS X下，苹果私有的UI控件，用来提示用户某些信息。不过iOS下，就有很多第三方的Bezels风格的提示控件实现了。相信大家也见过很多了。下图左侧是OSX的提示音量变化的Bezels，右侧是iOS上的Bezels风格的进度提示。</p>
+
+<p><img class="center" src="/images/posts/quartz-1.png"></p>
+
+<p>在iOS上做Bezels的思路很简单，无非就是在<code>UIView</code>里绘制一个半透明的圆角矩形，然后加入其他的<code>SubView</code>。因为没有现成的绘制圆角矩形的API可用，所以我们来自己绘制一个——反正是为了学习嘛。</p>
+
+<p>新建项目，添加一个<code>UIView</code>的子类，修改<code>drawRect</code>方法，如下：</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/draw-round-rectangle-with-quartz-on-ios/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -362,55 +409,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/auto-update-apps-with-sparkle/">用Sparkle为Cocoa程序增加自动升级</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-05-27T12:52:00+08:00" pubdate data-updated="true">May 27<span>th</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Mac OS X上的绝大部分程序都使用<a href="http://sparkle.andymatuschak.org/">Sparkle</a>来作为程序的自动升级工具。利用Sparkle，用户无需对升级过程进行干涉，只需跟着升级指示做就可以了。而Sparkle对于程序开发人员来说，使用也是相当方便。其实<a href="https://github.com/andymatuschak/Sparkle/wiki">Sparkle的文档</a>已经写的相当好了，不过我还是来简单写一下Sparkle的使用，用于备忘。</p>
-
-<p>首先到Sparkle的首页下载Sparkle框架。</p>
-
-<p><img class="center" src="/images/posts/sparkle-1.png"></p>
-
-<p>然后按照和之前<a href="/blog/add-growl-support-in-your-apps-add-growl-framework/">介绍Growl.framework的文章</a>中同样的方法，新建一个Cocoa项目（或打开一个已有的Cocoa项目）把Sparkle加入项目中，在此我就不赘述了。</p>
-
-<p>要让应用程序支持Sparkle很简单。大致分为3个大步骤：在项目中设置Sparkle；对升级包进行数字签名；设置AppCast服务器。（按：我正在用Rails编写一个AppCast服务器程序，能够简单方便的将这个过程自动化，等我测试完成之后将放到github上去。）</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/auto-update-apps-with-sparkle/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/8/">&larr; Older</a>
@@ -434,6 +432,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/scripty-swift/">把Swift用作脚本语言</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/view-controller-based-status-bar-style-and-uinavigationcontroller/">UINavigationController和View Controller-based状态栏风格</a>
       </li>
     
@@ -447,10 +449,6 @@
     
       <li class="post">
         <a href="/blog/push-viewcontroller-hide-buttom-bar/">推View Controller时隐藏TabBar</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/code-box-like-window-open-animation/">CodeBox风格的窗口打开动画</a>
       </li>
     
   </ul>

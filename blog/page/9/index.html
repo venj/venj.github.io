@@ -9,7 +9,7 @@
   <meta name="author" content="venj">
 
   
-  <meta name="description" content="DragFan目前的网络连接使用了ASIHTTPRequest这个第三方库。ASIHTTPRequest是一个相对非常庞大的库，在心理上我总觉得用在DragFan里有点大材小用了。因此，我今天试着寻找了一下替代方案。很幸运，我找到了一个不错的替代方案，而且是利用现有的Cocoa API， &hellip;">
+  <meta name="description" content="本文中的方法存在问题。保留本文仅为存档。如果你想了解如何将NSAttributedString转成HTML，请阅读我后来补充的文章。 从HTML转NSAttributesString相对简单，因为Cocoa已经提供了相应的方法。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -78,6 +78,52 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/a-not-so-good-way-to-convert-nsattributesstring-to-html/">一个不是很好的NSAttributedString转HTML的方法</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-04-22T13:17:00+08:00" pubdate data-updated="true">Apr 22<span>nd</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>本文中的方法存在问题。保留本文仅为存档。如果你想了解如何将<code>NSAttributedString</code>转成HTML，请阅读我后来补充的文章。</p>
+
+<p>从HTML转<code>NSAttributesString</code>相对简单，因为Cocoa已经提供了相应的方法。昨晚我花了一点点时间研究了一下从<code>NSAttributesString</code>转HTML的方法，不过依然没有找到非常理想的方法。</p>
+
+<p>搜索了一番之后，找到了一个并不是很好的方法，因为暂时实在找不到好方法，所以先贴出来，等找到更好的方法之后再说。
+先上代码：</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/a-not-so-good-way-to-convert-nsattributesstring-to-html/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -360,80 +406,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/move-window-to-screen-center/">【更新】把程序窗口放在屏幕中央</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-04-09T12:55:00+08:00" pubdate data-updated="true">Apr 9<span>th</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>在写程序的时候，我们往往需要把窗口放在屏幕中央。方法其实很简单，代码如下：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">awakeFromNib</span> <span class="p">{</span>
-</span><span class='line'>    <span class="n">CGRect</span> <span class="n">windowRect</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">window</span> <span class="n">frame</span><span class="p">];</span>
-</span><span class='line'>    <span class="n">CGRect</span> <span class="n">screenRect</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSScreen</span> <span class="n">mainScreen</span><span class="p">]</span> <span class="n">frame</span><span class="p">];</span>
-</span><span class='line'>    <span class="n">CGPoint</span> <span class="n">newOrigin</span><span class="p">;</span>
-</span><span class='line'>    <span class="n">newOrigin</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">screenRect</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">windowRect</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">newOrigin</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">screenRect</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">windowRect</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">window</span> <span class="nl">setFrameOrigin:</span><span class="n">newOrigin</span><span class="p">];</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>如果程序只有一个窗口，那么这段代码也可以放在<code>AppDelegate</code>的<code>-applicationDidFinishLaunching:</code>方法里。如果放在<code>-applicationDidFinishLaunching:</code>里，很可能会引起窗口“闪”到屏幕中央（除非程序特别小，小到几乎无需初始化），因此，放在<code>-awakeFromNib</code>里才是正确的做法。</p>
-
-<p><strong>2011-08-15更新：</strong></p>
-
-<p>事实上<code>NSWindow</code>已经有了一个专门的方法来处理窗口居中的：<code>- (void)center</code>。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">awakeFromNib</span> <span class="p">{</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">window</span> <span class="n">center</span><span class="p">];</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><strong>不仔细看文档害死人啊！</strong></p>
-
-<p>（全文完）</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/10/">&larr; Older</a>
@@ -457,6 +429,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/scripty-swift/">把Swift用作脚本语言</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/view-controller-based-status-bar-style-and-uinavigationcontroller/">UINavigationController和View Controller-based状态栏风格</a>
       </li>
     
@@ -470,10 +446,6 @@
     
       <li class="post">
         <a href="/blog/push-viewcontroller-hide-buttom-bar/">推View Controller时隐藏TabBar</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/code-box-like-window-open-animation/">CodeBox风格的窗口打开动画</a>
       </li>
     
   </ul>

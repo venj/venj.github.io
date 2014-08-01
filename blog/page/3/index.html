@@ -9,7 +9,7 @@
   <meta name="author" content="venj">
 
   
-  <meta name="description" content="因为没有考虑程序在低速网络下的表现，昨天在测试公司的一个程序的时候出了点丑，于是痛定思痛，要解决模拟低速网络连接的问题。遗憾的是iOS Simulator并没有提供模拟低速网络的功能。 经过一番STFW之后，发现原来苹果从Xcode 4.1开始提供了一款叫做“Network Link &hellip;">
+  <meta name="description" content="腾讯一直被大家吐槽山寨别人，这次我决定山寨一下腾讯，对象就是QQ for Mac的头像选择菜单。下面是原版的头像选择菜单： ">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -78,6 +78,49 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/make-a-qq-mac-avatar-menu-clone/">山寨一下QQ for Mac样式的头像选择菜单</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-03-29T17:02:00+08:00" pubdate data-updated="true">Mar 29<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>腾讯一直被大家吐槽山寨别人，这次我决定山寨一下腾讯，对象就是QQ for Mac的头像选择菜单。下面是原版的头像选择菜单：</p>
+
+<p><img class="center" src="/images/posts/qq-avatar-menu-original.png"></p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/make-a-qq-mac-avatar-menu-clone/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -332,53 +375,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/twitter-style-sheet-positioning/">Twitter for Mac风格的Sheet定位</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-02-15T17:29:00+08:00" pubdate data-updated="true">Feb 15<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>昨天在用Twitter的时候，突然意识到，在删除Twitter消息的时候弹出的Sheet是定位在要删除的那条消息的顶部，而不是窗口标题栏的下方。</p>
-
-<p><img class="center" src="/images/posts/twitter-sheet.png"></p>
-
-<p>我很好奇这是如何做到的。今天抽了点时间，在简单的查阅<a href="https://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/Sheets/Tasks/PositioningSheets.html#//apple_ref/doc/uid/20002082-BAJDAJHF">文档</a>之后，我找到了答案。其核心就是<code>NSWindowDelegate</code>的一个方法：<code>-window:willPositionSheet:usingRect:</code>，可以指定Sheet的显示位置。</p>
-
-<p>我做了一个简单的View-based Table View（Lion下），然后用下面的方法做了实现：</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/twitter-style-sheet-positioning/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/4/">&larr; Older</a>
@@ -402,6 +398,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/scripty-swift/">把Swift用作脚本语言</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/view-controller-based-status-bar-style-and-uinavigationcontroller/">UINavigationController和View Controller-based状态栏风格</a>
       </li>
     
@@ -415,10 +415,6 @@
     
       <li class="post">
         <a href="/blog/push-viewcontroller-hide-buttom-bar/">推View Controller时隐藏TabBar</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/code-box-like-window-open-animation/">CodeBox风格的窗口打开动画</a>
       </li>
     
   </ul>
