@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Swift | Cocoa学习]]></title>
   <link href="http://venj.github.io/blog/categories/swift/atom.xml" rel="self"/>
   <link href="http://venj.github.io/"/>
-  <updated>2014-08-01T15:30:33+08:00</updated>
+  <updated>2014-08-05T09:56:24+08:00</updated>
   <id>http://venj.github.io/</id>
   <author>
     <name><![CDATA[venj]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[把Swift用作脚本语言]]></title>
+    <title type="html"><![CDATA[［更新］把Swift用作脚本语言]]></title>
     <link href="http://venj.github.io/blog/scripty-swift/"/>
     <updated>2014-08-01T15:23:18+08:00</updated>
     <id>http://venj.github.io/blog/scripty-swift</id>
@@ -70,6 +70,38 @@ sudo xcode-select -s /Applications/Xcode6-Beta?.app
 </code></p>
 
 <p>将上面的<code>?</code>替换为您实际在使用的beta版的版本号。Xcode 6正式发布后，直接用<code>Xcode.app</code>就可以了。</p>
+
+<p>更新（2014-8-5）：</p>
+
+<p>在刚刚发布的Xcode6 DP5中，把<code>xcrun swift</code>用在<code>#!</code>行里，不再需要加<code>-i</code>参数，读取命令行参数的时候，也无需使用<code>--</code>来分隔脚本和参数列表了。如下：</p>
+
+<p>```</p>
+
+<h1>!/usr/bin/env swift</h1>
+
+<p>// Install Xcode6 DP5 and up to run this script.
+let args = Process.arguments</p>
+
+<p>for a in args {</p>
+
+<pre><code>println("Arg: \(a)")
+</code></pre>
+
+<p>}
+```</p>
+
+<p>执行<code>./test.swift a b c d e</code>，将输出如下内容：</p>
+
+<p><code>
+Arg: ./test.swift
+Arg: a
+Arg: b
+Arg: c
+Arg: d
+Arg: e
+</code></p>
+
+<p>再次给Swift点个赞，看来Swift开发团队听到了大家想把Swift用于脚本开发的声音了。</p>
 
 <p>（全文完）</p>
 ]]></content>

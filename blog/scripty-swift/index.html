@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>把Swift用作脚本语言 - Cocoa学习</title>
+  <title>［更新］把Swift用作脚本语言 - Cocoa学习</title>
   <meta name="author" content="venj">
 
   
@@ -69,7 +69,7 @@
   
   <header>
     
-      <h1 class="entry-title">把Swift用作脚本语言</h1>
+      <h1 class="entry-title">［更新］把Swift用作脚本语言</h1>
     
     
       <p class="meta">
@@ -148,6 +148,46 @@
 
 <p>将上面的<code>?</code>替换为您实际在使用的beta版的版本号。Xcode 6正式发布后，直接用<code>Xcode.app</code>就可以了。</p>
 
+<p>更新（2014-8-5）：</p>
+
+<p>在刚刚发布的Xcode6 DP5中，把<code>xcrun swift</code>用在<code>#!</code>行里，不再需要加<code>-i</code>参数，读取命令行参数的时候，也无需使用<code>--</code>来分隔脚本和参数列表了。如下：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c">#!/usr/bin/env swift</span>
+</span><span class='line'>// Install Xcode6 DP5 and up to run this script.
+</span><span class='line'><span class="nb">let </span><span class="nv">args</span> <span class="o">=</span> Process.arguments
+</span><span class='line'>
+</span><span class='line'><span class="k">for </span>a in args <span class="o">{</span>
+</span><span class='line'>    println<span class="o">(</span><span class="s2">&quot;Arg: \(a)&quot;</span><span class="o">)</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>执行<code>./test.swift a b c d e</code>，将输出如下内容：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>Arg: ./test.swift
+</span><span class='line'>Arg: a
+</span><span class='line'>Arg: b
+</span><span class='line'>Arg: c
+</span><span class='line'>Arg: d
+</span><span class='line'>Arg: e
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>再次给Swift点个赞，看来Swift开发团队听到了大家想把Swift用于脚本开发的声音了。</p>
+
 <p>（全文完）</p>
 </div>
 
@@ -222,7 +262,7 @@
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/scripty-swift/">把Swift用作脚本语言</a>
+        <a href="/blog/scripty-swift/">［更新］把Swift用作脚本语言</a>
       </li>
     
       <li class="post">
