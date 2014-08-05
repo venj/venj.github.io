@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Swift | Cocoa学习]]></title>
   <link href="http://venj.github.io/blog/categories/swift/atom.xml" rel="self"/>
   <link href="http://venj.github.io/"/>
-  <updated>2014-08-05T09:56:24+08:00</updated>
+  <updated>2014-08-05T10:12:04+08:00</updated>
   <id>http://venj.github.io/</id>
   <author>
     <name><![CDATA[venj]]></name>
@@ -77,7 +77,7 @@ sudo xcode-select -s /Applications/Xcode6-Beta?.app
 
 <p>```</p>
 
-<h1>!/usr/bin/env swift</h1>
+<h1>!/usr/bin/env xcrun swift</h1>
 
 <p>// Install Xcode6 DP5 and up to run this script.
 let args = Process.arguments</p>
