@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "把Swift用作脚本语言"
+title: "［更新］把Swift用作脚本语言"
 date: 2014-08-01 15:23:18 +0800
 comments: true
 categories: [Swift, Script]
@@ -51,5 +51,32 @@ sudo xcode-select -s /Applications/Xcode6-Beta?.app
 ```
 
 将上面的`?`替换为您实际在使用的beta版的版本号。Xcode 6正式发布后，直接用`Xcode.app`就可以了。
+
+更新（2014-8-5）：
+
+在刚刚发布的Xcode6 DP5中，把`xcrun swift`用在`#!`行里，不再需要加`-i`参数，读取命令行参数的时候，也无需使用`--`来分隔脚本和参数列表了。如下：
+
+```
+#!/usr/bin/env swift
+// Install Xcode6 DP5 and up to run this script.
+let args = Process.arguments
+
+for a in args {
+    println("Arg: \(a)")
+}
+```
+
+执行`./test.swift a b c d e`，将输出如下内容：
+
+```
+Arg: ./test.swift
+Arg: a
+Arg: b
+Arg: c
+Arg: d
+Arg: e
+```
+
+再次给Swift点个赞，看来Swift开发团队听到了大家想把Swift用于脚本开发的声音了。
 
 （全文完）
