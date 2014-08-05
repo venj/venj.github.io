@@ -57,7 +57,7 @@ sudo xcode-select -s /Applications/Xcode6-Beta?.app
 在刚刚发布的Xcode6 DP5中，把`xcrun swift`用在`#!`行里，不再需要加`-i`参数，读取命令行参数的时候，也无需使用`--`来分隔脚本和参数列表了。如下：
 
 ```
-#!/usr/bin/env swift
+#!/usr/bin/env xcrun swift
 // Install Xcode6 DP5 and up to run this script.
 let args = Process.arguments
 
