@@ -4,7 +4,7 @@
   <title><![CDATA[Cocoa学习]]></title>
   <link href="http://venj.github.io/atom.xml" rel="self"/>
   <link href="http://venj.github.io/"/>
-  <updated>2014-08-05T10:12:04+08:00</updated>
+  <updated>2015-02-01T14:40:20+08:00</updated>
   <id>http://venj.github.io/</id>
   <author>
     <name><![CDATA[venj]]></name>
@@ -12,6 +12,101 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[禁用OS X Yosemite上的Core Storage]]></title>
+    <link href="http://venj.github.io/blog/disable-corestorage-on-os-x-yosemite/"/>
+    <updated>2015-02-01T14:04:30+08:00</updated>
+    <id>http://venj.github.io/blog/disable-corestorage-on-os-x-yosemite</id>
+    <content type="html"><![CDATA[<p>不管你发现没有，OS X Yosemite已经悄悄的把你的磁盘转成Core Storage了。做过Fusion Drive的同学一定知道Core Storage是实现Fusion Drive的核心技术。不过对于只有一个磁盘的MacBook来说，我有点不太理解苹果强制启用CoreStorage的理由。</p>
+
+<p><strong> 为什么要关闭Core Storage </strong></p>
+
+<p>当然，如果你在用Fusion Drive，那么Core Storage是你的好朋友。<span style="color:red;">如果你正在使用Fusion Drive，请无视本文！！！</span></p>
+
+<p>不过对于单磁盘的Mac来说，Core Storage有如下问题：</p>
+
+<ol>
+<li>按住Option开机，Recovery分区不见了；（当然，你可以按住Command + R启动，进Recovery。）</li>
+<li>无法随意调整Mac的分区了；</li>
+<li>磁盘实用工具尚未对Core Storage提供完整支持；</li>
+<li>Windows下无法挂载Core Storage分区，即使你装过BootCamp驱动；</li>
+<li>磁盘性能下降？（这个可能是个例。我升级OS X 10.10.2之后，明显感到系统卡顿，关闭Core Storage之后恢复正常。）</li>
+</ol>
+
+
+<!-- more -->
+
+
+<p><strong> 如何知道是否已经启用了Core Storage </strong></p>
+
+<p>首先，确定你的系统是OS X Yosemite 10.10.x。然后，打开“磁盘实用工具”，如果你看到启动磁盘的显示为2个Macintosh HD（如下图），那么基本上你已经在用Core Storage了。</p>
+
+<p><img class="center" src="http://venj.github.io/images/posts/cs_du.png"></p>
+
+<p>打开“终端”，执行如下命令：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>diskutil cs list
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如果你看到一个逻辑磁盘阵列的树形结构，而不是：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>No CoreStorage logical volume groups found
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>那么，恭喜你，你正在使用Core Storage。耶。</p>
+
+<p><strong> 你需要关闭Core Storage吗？ </strong></p>
+
+<p>如果你不在意上面提到的1-4，并且，你也没有遇到磁盘性能下降的问题，那么你大可不必去禁用Core Storage。如果你仔细问过自己之后，还是决定要关掉Core Storage，那么请继续往下读。</p>
+
+<p><strong> 如何关闭Core Storage </strong></p>
+
+<p>首先，请备份好您重要的数据。如果你有Time Machine备份的话，那么请放心的继续进行下面的操作。</p>
+
+<p>我一再强调备份数据的重要性，倒并不是说这个操作有多大的风险；而是提醒你数据安全的重要性。如果一切就绪，那么我们开始把。</p>
+
+<p>打开终端，执行如下命令：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo diskutil cs revert /
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>输入密码，稍等片刻即可完成。命令执行完毕后提示你尽快重新启动系统。我的建议是立刻重启。重启完成后，检查一下Core Storage是否已经成功关闭。如果你在磁盘实用工具里，看到如下的状况，那么您已经成功了。副产品是，按住Option启动时，Recovery分区也回来了。</p>
+
+<p><img class="center" src="http://venj.github.io/images/posts/cs_du2.png"></p>
+
+<p><strong> 总结 </strong></p>
+
+<p>如果你搜索过这个话题，并且搜索到各种复杂的关闭Core Storage的方案，请千万不要尝试。关闭Core Storage只需1条命令，就这么简单！如果你执行失败，请进入恢复模式后尝试一次。最后祝你操作顺利。</p>
+
+<p>（全文完）</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Xcode 6 Color Themes (颜色主题) 的路径]]></title>
+    <link href="http://venj.github.io/blog/xcode-6-color-theme-path/"/>
+    <updated>2015-01-27T16:27:37+08:00</updated>
+    <id>http://venj.github.io/blog/xcode-6-color-theme-path</id>
+    <content type="html"><![CDATA[<p>搜索引擎有时候并不能给你最好的结果，于是便有了这篇文章。今天为了找Xcode 6的配色主题路径，我搜了好久，结果找到的都是过时的信息。经过摸索终于找到正确答案，现贴在这里，希望能冲刷一下搜索引擎的旧信息。</p>
+
+<p>Xcode 6的颜色主题路径位于：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>~/Library/Developer/Xcode/UserData/FontAndColorThemes</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如果你下载了别人提供的漂亮的代码高亮颜色主题，比如<a href="https://github.com/tursunovic/xcode-themes">这个</a>，记得放到上面那个路径下。</p>
+
+<p>(全文完)</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[［更新］把Swift用作脚本语言]]></title>
@@ -424,7 +519,7 @@
 <!-- more -->
 
 
-<p>首先，我们用图形编辑(PS, Pixelmator等)工具，做两套语言的加载屏幕。简单起见，我们就用白底加居中的黑字(“US”和“CN”)的两套图片好了（文件在示例代码中有），每套图片要三个尺寸：Default.png(320x480)，<a href="&#109;&#97;&#105;&#x6c;&#x74;&#x6f;&#58;&#x44;&#101;&#102;&#x61;&#117;&#x6c;&#116;&#x40;&#50;&#x78;&#46;&#x70;&#x6e;&#x67;">&#68;&#x65;&#x66;&#x61;&#x75;&#x6c;&#116;&#64;&#50;&#120;&#46;&#x70;&#110;&#x67;</a>(640x960)以及<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#x3a;&#68;&#x65;&#x66;&#x61;&#x75;&#108;&#116;&#x2d;&#x35;&#x36;&#x38;&#104;&#64;&#50;&#x78;&#x2e;&#112;&#x6e;&#103;">&#x44;&#x65;&#x66;&#x61;&#x75;&#x6c;&#x74;&#x2d;&#x35;&#x36;&#x38;&#104;&#64;&#50;&#x78;&#x2e;&#x70;&#x6e;&#x67;</a>(640x1136)。</p>
+<p>首先，我们用图形编辑(PS, Pixelmator等)工具，做两套语言的加载屏幕。简单起见，我们就用白底加居中的黑字(“US”和“CN”)的两套图片好了（文件在示例代码中有），每套图片要三个尺寸：Default.png(320x480)，<a href="&#x6d;&#97;&#105;&#108;&#116;&#x6f;&#x3a;&#68;&#101;&#102;&#x61;&#117;&#108;&#116;&#64;&#x32;&#x78;&#x2e;&#112;&#x6e;&#103;">&#x44;&#101;&#x66;&#x61;&#117;&#108;&#x74;&#64;&#50;&#x78;&#x2e;&#112;&#x6e;&#x67;</a>(640x960)以及<a href="&#109;&#97;&#x69;&#x6c;&#116;&#x6f;&#58;&#68;&#x65;&#102;&#97;&#117;&#x6c;&#x74;&#45;&#53;&#x36;&#56;&#104;&#64;&#x32;&#120;&#46;&#112;&#110;&#103;">&#x44;&#x65;&#102;&#97;&#x75;&#x6c;&#x74;&#45;&#53;&#x36;&#x38;&#104;&#64;&#50;&#120;&#46;&#112;&#x6e;&#103;</a>(640x1136)。</p>
 
 <p>做好图片之后，我们在Xcode里创建一个新项目名字可以叫做“Local Splash”，程序模板任意，简单起见，支持的设备只选iPhone。创建后，我们用“US”那套图片替换项目默认的纯黑色加载屏幕，作为默认语言的加载屏幕。</p>
 
@@ -1664,128 +1759,6 @@
 <p><img class="center" src="http://venj.github.io/images/posts/navbar_bg_landscape.png"></p>
 
 <p>我已经把项目推送到<a href="https://github.com/venj/Cocoa-blog-code/tree/master/Custom%20NavBar">github</a>上了，有兴趣的可以拉下来研究一下。因为现在Xcode 4生成的模版已经默认不使用MainWindow.xib了，因此，你在测试的时候可能要自己创建一个Window.xib，并且自己创建所有对象，并连接Outlet等。</p>
-
-<p>(全文完)</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Twitter for Mac风格的Sheet定位]]></title>
-    <link href="http://venj.github.io/blog/twitter-style-sheet-positioning/"/>
-    <updated>2012-02-15T17:29:00+08:00</updated>
-    <id>http://venj.github.io/blog/twitter-style-sheet-positioning</id>
-    <content type="html"><![CDATA[<p>昨天在用Twitter的时候，突然意识到，在删除Twitter消息的时候弹出的Sheet是定位在要删除的那条消息的顶部，而不是窗口标题栏的下方。</p>
-
-<p><img class="center" src="http://venj.github.io/images/posts/twitter-sheet.png"></p>
-
-<p>我很好奇这是如何做到的。今天抽了点时间，在简单的查阅<a href="https://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/Sheets/Tasks/PositioningSheets.html#//apple_ref/doc/uid/20002082-BAJDAJHF">文档</a>之后，我找到了答案。其核心就是<code>NSWindowDelegate</code>的一个方法：<code>-window:willPositionSheet:usingRect:</code>，可以指定Sheet的显示位置。</p>
-
-<p>我做了一个简单的View-based Table View（Lion下），然后用下面的方法做了实现：</p>
-
-<!-- more -->
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// 创建一个NSAlert，并以Sheet的形式呈现</span>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">removeRow:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
-</span><span class='line'>    <span class="n">NSAlert</span> <span class="o">*</span><span class="n">alert</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSAlert</span> <span class="nl">alertWithMessageText:</span><span class="s">@&quot;Are you sure?&quot;</span> <span class="nl">defaultButton:</span><span class="s">@&quot;Yes&quot;</span> <span class="nl">alternateButton:</span><span class="s">@&quot;No&quot;</span> <span class="nl">otherButton:</span><span class="nb">nil</span> <span class="nl">informativeTextWithFormat:</span><span class="s">@&quot;Deleting a table cell is not reversable.&quot;</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">alert</span> <span class="nl">beginSheetModalForWindow:</span><span class="n">self</span><span class="p">.</span><span class="n">window</span> <span class="nl">modalDelegate:</span><span class="n">self</span> <span class="nl">didEndSelector:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">alertDidEnd:returnCode:contextInfo:</span><span class="p">)</span> <span class="nl">contextInfo:</span><span class="nb">NULL</span><span class="p">];</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// NSWindowDelegate方法，用来指定Sheet的显示位置</span>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSRect</span><span class="p">)</span><span class="nf">window:</span><span class="p">(</span><span class="n">NSWindow</span> <span class="o">*</span><span class="p">)</span><span class="nv">window</span> <span class="nf">willPositionSheet:</span><span class="p">(</span><span class="n">NSWindow</span> <span class="o">*</span><span class="p">)</span><span class="nv">sheet</span> <span class="nf">usingRect:</span><span class="p">(</span><span class="n">NSRect</span><span class="p">)</span><span class="nv">rect</span> <span class="p">{</span>
-</span><span class='line'>    <span class="kt">id</span> <span class="n">cell</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">tableView</span> <span class="nl">rowViewAtRow:</span><span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">tableView</span> <span class="n">selectedRow</span><span class="p">]</span> <span class="nl">makeIfNecessary:</span><span class="n">YES</span><span class="p">];</span>
-</span><span class='line'>    <span class="n">NSRect</span> <span class="n">cellRect</span> <span class="o">=</span> <span class="p">[</span><span class="n">cell</span> <span class="n">frame</span><span class="p">];</span>
-</span><span class='line'>    <span class="n">NSRect</span> <span class="n">scrollViewRect</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">tableView</span><span class="p">.</span><span class="n">superview</span> <span class="n">frame</span><span class="p">];</span>
-</span><span class='line'>    <span class="n">cellRect</span><span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">scrollViewRect</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">-</span> <span class="n">cellRect</span><span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">y</span><span class="p">;</span> <span class="c1">// View-based table view is flipped?</span>
-</span><span class='line'>    <span class="n">cellRect</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">return</span> <span class="n">cellRect</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>这个实现中，有一行用了并不漂亮的方法设置了<code>cellRect.origin.y</code>的值。这可能是因为Table View的坐标系是Flipped的，因此需要倒置一下，Sheet才能正确定位(注)。我做的示例程序的运行效果如下：</p>
-
-<p><img class="center" src="http://venj.github.io/images/posts/twitter-style-sheet.png"></p>
-
-<p>我已经把示例程序的源码推送到<a href="https://github.com/venj/Cocoa-blog-code/tree/master/TwiTable">github</a>上了，有兴趣的读者可以clone下来研究一下。示例程序运行的时候，选中一个表格，按下cmd &ndash; delete（或者Edit &ndash; Delete菜单操作），你就能看到运行效果了。</p>
-
-<p>这次碰到问题的经历再次证明了RTFM的威力所在。Happy coding and RTFM.</p>
-
-<p>(注) 我不确定View-based table view是否是一个flipped的View，仅仅从实现的时候发现似乎是这样的（RTFM做的还不够好，自pia）。如果你知道细节，请留言告知，鄙人不胜感谢！</p>
-
-<p>(全文完)</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[点击按钮复制粘贴到文本框]]></title>
-    <link href="http://venj.github.io/blog/copy-and-paste-to-text-field/"/>
-    <updated>2012-02-13T14:47:00+08:00</updated>
-    <id>http://venj.github.io/blog/copy-and-paste-to-text-field</id>
-    <content type="html"><![CDATA[<p>相信很多读者看到标题肯定会疑惑，文本框本来就支持复制粘贴，为什么要专门写一篇日志来介绍文本框的复制粘贴呢？其实，本文要讲述的是，如何通过按下按钮，来复制粘贴文本到文本框 &mdash; 不是通过菜单操作，也不是通过快捷键cmd-c和cmd-v来完成。</p>
-
-<p>提到复制粘贴的菜单操作和快捷键操作，看过“Cocoa Programming for Mac OS X”的读者肯定知道，他们属于“nil-targeted action”，也就是说，他们的receive是在运行时被指定的。在Interface Builder中，<code>-copy:</code>，<code>-paste:</code>方法都是连接到一个占位对象“First Responder”上的。而First Responder到底是谁是在程序运行过程中动态变化着的。</p>
-
-<p>事实上，在<code>NSTextField</code>这个例子中，<code>-copy:</code>和<code>-paste:</code>的Receive是一个<code>NSText</code>对象。知道了这一点，剩下的问题就是如何获取这个对象。</p>
-
-<!-- more -->
-
-
-<p>答案就是，在<code>NSWindow</code>中，有一个方法能够返回当前处于First Responder的<code>NSText</code>对象: <code>-fieldEditor:forObject:</code>。</p>
-
-<p>下面是实现代码：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">copyText:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">sourceField</span> <span class="n">becomeFirstResponder</span><span class="p">];</span>  <span class="c1">//让Source文本框变成First Responder</span>
-</span><span class='line'>    <span class="n">NSText</span> <span class="o">*</span><span class="n">sourceText</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">window</span> <span class="nl">fieldEditor:</span><span class="n">YES</span> <span class="nl">forObject:</span><span class="n">self</span><span class="p">.</span><span class="n">sourceField</span><span class="p">];</span>  <span class="c1">//返回sourceField的NSText对象</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">sourceText</span> <span class="nl">selectAll:</span><span class="nb">nil</span><span class="p">];</span>  <span class="c1">// 全选</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">sourceText</span> <span class="nl">copy:</span><span class="nb">nil</span><span class="p">];</span>  <span class="c1">// 复制</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">pasteText:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">targetField</span> <span class="n">becomeFirstResponder</span><span class="p">];</span>  <span class="c1">//让Target文本框变成First Responder</span>
-</span><span class='line'>    <span class="n">NSText</span> <span class="o">*</span><span class="n">targetText</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">window</span> <span class="nl">fieldEditor:</span><span class="n">YES</span> <span class="nl">forObject:</span><span class="n">self</span><span class="p">.</span><span class="n">targetField</span><span class="p">];</span>  <span class="c1">//返回targetField的NSText对象</span>
-</span><span class='line'>    <span class="n">self</span><span class="p">.</span><span class="n">targetField</span><span class="p">.</span><span class="n">stringValue</span> <span class="o">=</span> <span class="s">@&quot;&quot;</span><span class="p">;</span>  <span class="c1">//清空原来文本框中的值</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">targetText</span> <span class="nl">paste:</span><span class="nb">nil</span><span class="p">];</span>  <span class="c1">//粘贴</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>下面是我做的一个示例程序的运行截图：</p>
-
-<p><img class="center" src="http://venj.github.io/images/posts/copy-paste-with-button.png"></p>
-
-<p>怎么样，实现很简单吧。很惭愧的是，这个问题我研究了很久，也没有找到合适的关键词搜索到比较好的参考资料。最后还是翻阅文档才找到解决方案的。RTFM，果然是永恒的真理啊！</p>
-
-<p>本文的示例程序的源代码我已经推送到<a href="https://github.com/venj/Cocoa-blog-code/tree/master/Paste%20Button">github</a>上了，有兴趣的可以pull下来看看。</p>
 
 <p>(全文完)</p>
 ]]></content>

@@ -9,7 +9,7 @@
   <meta name="author" content="venj">
 
   
-  <meta name="description" content="UIWebView本身就是一个功能非常完整的浏览器。UIWebView经常被用来向用户展示打包在应用程序中的HTML帮助文档。有时，很多时候，帮助文档需要提供一些外链的链接。如果直接在UIWebView中打开这些链接，不仅会使显示帮助文档的ViewController变得臃肿， &hellip;">
+  <meta name="description" content="如果你用过Acorn的试用版，你一定知道Acorn的试用版的文档窗口的标题栏上有一个提示过期的按钮。虽然标题栏不能被滥用来绘制控件，但是有时候，恰到好处的使用会改善用户体验。比如说，Lion的全屏按钮就是放在标题栏上的；Chocolat文本编辑器也放了一个新建标签的按钮在标题栏上， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -66,6 +66,90 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/draw-accessory-view-on-window-title-bar/">在NSWindow窗口标题栏上绘制辅助视图</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-08-27T01:25:00+08:00" pubdate data-updated="true">Aug 27<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>如果你用过<a href="http://flyingmeat.com/acorn/">Acorn</a>的试用版，你一定知道Acorn的试用版的文档窗口的标题栏上有一个提示过期的按钮。虽然标题栏不能被滥用来绘制控件，但是有时候，恰到好处的使用会改善用户体验。比如说，Lion的全屏按钮就是放在标题栏上的；<a href="http://chocolatapp.com/">Chocolat</a>文本编辑器也放了一个新建标签的按钮在标题栏上，Lion全屏按钮的旁边。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/draw-accessory-view-on-window-title-bar/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/ios5-story-board-a-brief-discussion/">浅谈iOS 5的StoryBoard</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-08-24T00:34:00+08:00" pubdate data-updated="true">Aug 24<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>StoryBoard是iOS 5的新特征，旨在代替历史悠久的NIB/XIB（其实<strong>StoryBoard还是基于NIB/XIB的</strong>，不过开发人员已经无需直接跟NIB打交道了）。目前关于StoryBoard的文档并不多，苹果的iOS 5的开发者文档里也仅有不多的介绍。所以，本文只是简单的谈谈本人对StoryBoard的一些粗浅的理解。（StoryBoard有时也叫做StoryBoarding，我不太注意这种细节，所以两个词经常会混用，如果你英语可以的话，能体会到两者的细微差别）</p>
+
+<p><img class="center" src="/images/posts/storyboard-1.png"></p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/ios5-story-board-a-brief-discussion/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -270,107 +354,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/ios-and-pc-file-exchange-using-itunes/">让iOS App通过iTunes进行文件交换</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-08-07T13:04:00+08:00" pubdate data-updated="true">Aug 7<span>th</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>有一些App需要通过使用iTunes让用户上传和下载文档。要让iOS程序支持iTunes文件交换其实很简单，只需要在程序的<code>Info.plist</code>里增加一个键：<code>UIFileSharingEnabled（Application supports iTunes file sharing）</code>，赋值<code>YES</code>。</p>
-
-<p><img class="center" src="/images/posts/file-exchange-xcode.png"></p>
-
-<p>这样，编译之后进行机上运行的时候，连接设备到iTunes，就能进行文件交换了。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/ios-and-pc-file-exchange-using-itunes/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/dynamically-show-and-hide-dock-icon/">在程序中动态设置是否显示Dock图标</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-08-06T21:50:00+08:00" pubdate data-updated="true">Aug 6<span>th</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>关于如何隐藏Dock图标的方法，相信大家都知道——即使没有没有编程经验的老用户都知道。那就是，在Application Bundle里的<code>Info.plist</code>中增加一个<code>LSUIElement</code>的键，设置值为<code>YES</code>。但是，在程序中往往要让用户选择是否启用或禁用Dock图标。而程序是不能修改Application Bundle里的<code>Info.plist</code>的，因为这样会破坏程序的数字签名，所以只能在程序代码中动态的设置Dock图标的状态。</p>
-
-<p>其实动态设置Dock图标的方法很简单严格的说只有两行代码：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">ProcessSerialNumber</span> <span class="n">psn</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">0</span><span class="p">,</span> <span class="n">kCurrentProcess</span> <span class="p">};</span>
-</span><span class='line'><span class="n">TransformProcessType</span><span class="p">(</span><span class="o">&amp;</span><span class="n">psn</span><span class="p">,</span> <span class="n">kProcessTransformToForegroundApplication</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>在设置隐藏Dock图标的时候需要重启应用程序，无法在运行时动态完成的，而在显示Dock图标的时候则不需要。我做了一个简单的Demo程序。放到了Github上，有兴趣的可以看看。（以后在这里出现的其他示例代码也会放到那里。）</p>
-
-<p><img class="center" src="/images/posts/dynamic-dock-icon.png"></p>
-
-<p>程序很简单，就一个复选框，用来设置是否显示Dock图标。通过一个<code>-toggleDockIcon:</code>方法来设置是否显示Dock图标。并且在<code>-applicationDidFinishLaunching:</code>方法，设置在程序初始化的时候是否需要显示Dock图标。主要代码如下：</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/dynamically-show-and-hide-dock-icon/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/7/">&larr; Older</a>
@@ -394,6 +377,14 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/disable-corestorage-on-os-x-yosemite/">禁用OS X Yosemite上的Core Storage</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/xcode-6-color-theme-path/">Xcode 6 Color Themes (颜色主题) 的路径</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/scripty-swift/">［更新］把Swift用作脚本语言</a>
       </li>
     
@@ -403,14 +394,6 @@
     
       <li class="post">
         <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/simple-uiimage-extension-to-create-rounded-corner-image/">一个简单的创建圆角图像的UIImage扩展实现</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/push-viewcontroller-hide-buttom-bar/">推View Controller时隐藏TabBar</a>
       </li>
     
   </ul>
@@ -458,7 +441,7 @@
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2011 - 2014 - venj -
+  Copyright &copy; 2011 - 2015 - venj -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> &amp; <a href="http://pages.github.com">Github Pages</a></span>
 </p>
 

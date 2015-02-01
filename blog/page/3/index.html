@@ -9,7 +9,7 @@
   <meta name="author" content="venj">
 
   
-  <meta name="description" content="腾讯一直被大家吐槽山寨别人，这次我决定山寨一下腾讯，对象就是QQ for Mac的头像选择菜单。下面是原版的头像选择菜单： ">
+  <meta name="description" content="一个使用Block语法的实例变量，在引用另一个实例变量的时候，经常会引起retain cycle。这个问题在使用ASIHTTPRequest的block语法的时候会时不时的碰到。这个问题困扰了我这个小白很久。终于有一天，在Advanced Mac OS X Programming上， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -66,6 +66,92 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/prevent-block-instance-retain-cycle/">Block的Retain Cycle的解决方法</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-05-21T10:49:00+08:00" pubdate data-updated="true">May 21<span>st</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>一个使用Block语法的实例变量，在引用另一个实例变量的时候，经常会引起retain cycle。这个问题在使用ASIHTTPRequest的block语法的时候会时不时的碰到。这个问题困扰了我这个小白很久。终于有一天，在Advanced Mac OS X Programming上，看到了这个问题的解决方案。</p>
+
+<p>先用代码描述一下症状：</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/prevent-block-instance-retain-cycle/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/warn-no-network-and-show-settings/">检测iOS的网络可用性并打开网络设置</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-05-08T10:39:00+08:00" pubdate data-updated="true">May 8<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>今天接到个需求，要求程序能够检测网络可用性，并在没有网络可用的时候能够弹出对话框，并允许用户点击按钮打开网络设置。</p>
+
+<p>这个问题，我首先想到的就是用一个方法检测网络可用性，然后用<code>UIApplication</code>的<code>openURL</code>方法打开某个特殊URL，就可以进入设置了。于是，我迅速地建了个测试项目，写了个简单的实现，如下：</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/warn-no-network-and-show-settings/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -269,100 +355,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/custom-barbuttomitem-for-ios4/">在iOS 4中自定义BarButtonItem</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-02-29T15:08:00+08:00" pubdate data-updated="true">Feb 29<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>在iOS 5中已经有了自定义<code>UIBarButtonItem</code>背景的API。但是在iOS 4中，自定义BarButtonItem背景就复杂很多了。其中最典型也最容易实现的一种是方法是试用<code>UIBarButtonItem</code>的<code>-initWithCustomView:</code>方法，传递一个自定义<code>UIButton</code>对象进去。</p>
-
-<p>在深入讨论自定义<code>UIBarButtonItem</code>，让我们来先解决自定义<code>UIButton</code>的一个问题：那就是Button的标题的长度是变化的，我们应该通过什么方法让背景图片适应标题长度的变化呢？</p>
-
-<p>下面是解决方案：</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/custom-barbuttomitem-for-ios4/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/more-on-navigationbar-customization/">再谈iOS 4下NavigationBar的自定义</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-02-29T10:30:00+08:00" pubdate data-updated="true">Feb 29<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>iOS 5已经有了很方便的自定义<code>UINavigationBar</code>的方法，但是iOS 4现在还远未完全被iOS 5取代，因此，在做程序开发的时候必须要考虑对iOS 4的兼容。因此，要自定义<code>UINavigationBar</code>还不能简单的直接用iOS 5中才有的自定义API。</p>
-
-<p>关于这个话题，我曾经写过<a href="http://cocoa.venj.me/blog/custom-navbar-background/">一篇日志</a>，但是后来发现那篇日志里面的实现方法有诸多缺陷。因此我后来对那篇文章做过部分删改。这两天，我再次研究了一下NavigationBar的自定义，总算找到了一个近乎完美的解决方法，因此，我决定写出来和大家分享一下。</p>
-
-<p>本文中的实现方法很大程度上参考了<a href="http://idevrecipes.com/2011/01/12/how-do-iphone-apps-instagramreederdailybooth-implement-custom-navigationbar-with-variable-width-back-buttons/">这篇文章</a>，不过我这里介绍的实现方法在原方法的基础上加入了对设备旋转的支持。</p>
-
-<p>方法的核心思想是创建一个<code>UINavigationBar</code>的子类，让这个子类支持背景图，然后在项目中用自定义类替换<code>UINavigationController</code>的<code>navgationBar</code>。不过有一个问题是，<code>UINavigationController</code>的<code>navgationBar</code>属性是一个只读属性，因此我们只能在xib中将<code>navgationBar</code>的类改成我们的自定义类。</p>
-
-<p>我还没有找到适合StoryBoard的无xib的解决方法，因此我在上面说这个方法是“近乎完美”。不过既然是部署到iOS 4，那项目不采用StoryBoard也不算特别反人类。好了，下面开始代码说话（注：代码用了ARC）：</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/more-on-navigationbar-customization/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/4/">&larr; Older</a>
@@ -386,6 +378,14 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/disable-corestorage-on-os-x-yosemite/">禁用OS X Yosemite上的Core Storage</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/xcode-6-color-theme-path/">Xcode 6 Color Themes (颜色主题) 的路径</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/scripty-swift/">［更新］把Swift用作脚本语言</a>
       </li>
     
@@ -395,14 +395,6 @@
     
       <li class="post">
         <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/simple-uiimage-extension-to-create-rounded-corner-image/">一个简单的创建圆角图像的UIImage扩展实现</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/push-viewcontroller-hide-buttom-bar/">推View Controller时隐藏TabBar</a>
       </li>
     
   </ul>
@@ -450,7 +442,7 @@
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2011 - 2014 - venj -
+  Copyright &copy; 2011 - 2015 - venj -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> &amp; <a href="http://pages.github.com">Github Pages</a></span>
 </p>
 

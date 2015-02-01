@@ -9,7 +9,7 @@
   <meta name="author" content="venj">
 
   
-  <meta name="description" content="本文中的方法存在问题。保留本文仅为存档。如果你想了解如何将NSAttributedString转成HTML，请阅读我后来补充的文章。 从HTML转NSAttributesString相对简单，因为Cocoa已经提供了相应的方法。 &hellip;">
+  <meta name="description" content="作为一个初学者，我一直很弄不明白NSCell的子类，比如，NSButtonCell，NSImageCell及其对应的控件之间的关系。今天，在做一个TableView实现的时候，我终于开始有点悟了——好吧，你大可以鄙视我，我的脑袋是不灵光。尽管这是一个简单的问题，但是我还是简单的记录一下我的理解。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -66,6 +66,99 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/about-nscell/">关于NSCell</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-04-28T22:29:00+08:00" pubdate data-updated="true">Apr 28<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>作为一个初学者，我一直很弄不明白<code>NSCell</code>的子类，比如，<code>NSButtonCell</code>，<code>NSImageCell</code>及其对应的控件之间的关系。今天，在做一个TableView实现的时候，我终于开始有点悟了——好吧，你大可以鄙视我，我的脑袋是不灵光。尽管这是一个简单的问题，但是我还是简单的记录一下我的理解。</p>
+
+<p>问题的起源是“Cocoa Programming For Mac OS X”上一段关于<code>NSCell</code>的叙述：</p>
+
+<blockquote><p>NSControl inherits from NSView. With its graphics context, NSView is a relatively large and expensive object to create. When the NSButton class was created, the first thing someone did was to create a calculator with 10 rows and 10 columns of buttons. The performance was less than it could have been because of the 100 tiny views. Later, someone had the clever idea of moving the brains of the button into another object (not a view) and creating one big view (called an NSMatrix) that would act as the view for all 100 button brains. The class for the button brains was called NSButtonCell.<br/>
+<strong>&mdash; Chapter 17. Custom Views, “For the More Curious: Cells”</strong></p></blockquote>
+
+<p>现在在此阅读这句话，我似乎已经能够基本理解，不过当时那叫一个困惑啊。为什么用Cell就比Button性能高呢？为什么Cell可以替代Button呢？</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/about-nscell/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/take-photo-with-isight-camera/">用Cocoa实现用Mac的摄像头拍照</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-04-23T23:10:00+08:00" pubdate data-updated="true">Apr 23<span>rd</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>我一直有一种错觉，似乎在Mac上通过Cocoa API，用iSight拍照会有点困难。但是我彻底错了！用Cocoa拍照非常非常简单。甚至比Cocoa Touch拍照还简单！</p>
+
+<p>首先，我们来看看测试效果：</p>
+
+<p><img class="center" src="/images/posts/picture-taker.png"></p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/take-photo-with-isight-camera/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -255,145 +348,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/using-gravatar-in-cocoa/">在Cocoa程序里使用Gravatar</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-04-09T13:17:00+08:00" pubdate data-updated="true">Apr 9<span>th</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Gravatar是一个非常流行的头像服务，可以根据用户的Email获取头像。下面一段简单的代码展示了如何在Cocoa里使用Gravatar。简单的界面测试：</p>
-
-<p><img class="center" src="images/posts/gravatar.jpg"></p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/using-gravatar-in-cocoa/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/calculate-md5-for-strings/">计算字符串的MD5哈希</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-04-09T13:07:00+08:00" pubdate data-updated="true">Apr 9<span>th</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>字符串或数据的MD5哈希值是非常常用的。在Cocoa里很容易实现。因为这类方法非常好用，因此可以做一个<code>NSString</code>或<code>NSData</code>的Catagory。如下：</p>
-
-<p><strong>NSString:</strong></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// NSString+MD5.h</span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#import &lt;foundation/foundation.h&gt;</span>
-</span><span class='line'><span class="k">@interface</span> <span class="nc">NSString</span> <span class="nl">(NSString_MD5)</span>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nf">md5</span><span class="p">;</span>
-</span><span class='line'><span class="k">@end</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// NSString+MD5.m</span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#import &quot;NSString+MD5.h&quot;</span>
-</span><span class='line'><span class="cp">#import &lt;commoncrypto/commondigest.h&gt;</span>
-</span><span class='line'><span class="k">@implementation</span> <span class="nc">NSString</span> <span class="nl">(NSString_MD5)</span>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nf">md5</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">cStr</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span> <span class="n">UTF8String</span><span class="p">];</span>
-</span><span class='line'>    <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">result</span><span class="p">[</span><span class="mi">16</span><span class="p">];</span>
-</span><span class='line'>    <span class="n">CC_MD5</span><span class="p">(</span><span class="n">cStr</span><span class="p">,</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span><span class="p">)</span><span class="n">strlen</span><span class="p">(</span><span class="n">cStr</span><span class="p">),</span> <span class="n">result</span><span class="p">);</span>
-</span><span class='line'>    <span class="k">return</span> <span class="p">[</span><span class="n">NSString</span> <span class="nl">stringWithFormat:</span>
-</span><span class='line'>            <span class="s">@&quot;%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x&quot;</span><span class="p">,</span>
-</span><span class='line'>            <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span>
-</span><span class='line'>            <span class="n">result</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">7</span><span class="p">],</span>
-</span><span class='line'>            <span class="n">result</span><span class="p">[</span><span class="mi">8</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">9</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">10</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">11</span><span class="p">],</span>
-</span><span class='line'>            <span class="n">result</span><span class="p">[</span><span class="mi">12</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">13</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">14</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">15</span><span class="p">]</span>
-</span><span class='line'>            <span class="p">];</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="k">@end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/calculate-md5-for-strings/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/10/">&larr; Older</a>
@@ -417,6 +371,14 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/disable-corestorage-on-os-x-yosemite/">禁用OS X Yosemite上的Core Storage</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/xcode-6-color-theme-path/">Xcode 6 Color Themes (颜色主题) 的路径</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/scripty-swift/">［更新］把Swift用作脚本语言</a>
       </li>
     
@@ -426,14 +388,6 @@
     
       <li class="post">
         <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/simple-uiimage-extension-to-create-rounded-corner-image/">一个简单的创建圆角图像的UIImage扩展实现</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/push-viewcontroller-hide-buttom-bar/">推View Controller时隐藏TabBar</a>
       </li>
     
   </ul>
@@ -481,7 +435,7 @@
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2011 - 2014 - venj -
+  Copyright &copy; 2011 - 2015 - venj -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> &amp; <a href="http://pages.github.com">Github Pages</a></span>
 </p>
 
