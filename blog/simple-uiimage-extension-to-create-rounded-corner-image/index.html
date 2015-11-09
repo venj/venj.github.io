@@ -100,7 +100,7 @@
   
 
 
-<time datetime="2014-01-20T13:58:15+08:00" pubdate data-updated="true">Jan 20<span>th</span>, 2014</time>
+<time datetime="2014-01-20T13:58:15+08:00" pubdate data-updated="true"></time>
         
       </p>
     
@@ -152,31 +152,31 @@
 </pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cm">/* UIImage+RoundedRect.h*/</span>
 </span><span class='line'><span class="cp">#import &lt;UIKit/UIKit.h&gt;</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">@interface</span> <span class="nc">UIImage</span> <span class="nl">(RoundedCorner)</span>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">UIImage</span> <span class="o">*</span><span class="p">)</span><span class="nf">roundedCornerImageWithCornerRadius:</span><span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span><span class="nv">cornerRadius</span><span class="p">;</span>
+</span><span class='line'><span class="k">@interface</span> <span class="bp">UIImage</span> <span class="nl">(RoundedCorner)</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="bp">UIImage</span> <span class="o">*</span><span class="p">)</span><span class="nf">roundedCornerImageWithCornerRadius:</span><span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span><span class="nv">cornerRadius</span><span class="p">;</span>
 </span><span class='line'><span class="k">@end</span>
 </span><span class='line'>
 </span><span class='line'><span class="cm">/* UIImage+RoundedRect.m*/</span>
 </span><span class='line'>
 </span><span class='line'><span class="cp">#import &quot;UIImage+RoundedCorner.h&quot;</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">@implementation</span> <span class="nc">UIImage</span> <span class="nl">(RoundedCorner)</span>
+</span><span class='line'><span class="k">@implementation</span> <span class="bp">UIImage</span> <span class="nl">(RoundedCorner)</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">UIImage</span> <span class="o">*</span><span class="p">)</span><span class="nf">roundedCornerImageWithCornerRadius:</span><span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span><span class="nv">cornerRadius</span> <span class="p">{</span>
-</span><span class='line'>    <span class="n">CGFloat</span> <span class="n">w</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">;</span>
-</span><span class='line'>    <span class="n">CGFloat</span> <span class="n">h</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">;</span>
-</span><span class='line'>    <span class="n">CGFloat</span> <span class="n">scale</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIScreen</span> <span class="n">mainScreen</span><span class="p">].</span><span class="n">scale</span><span class="p">;</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="bp">UIImage</span> <span class="o">*</span><span class="p">)</span><span class="nf">roundedCornerImageWithCornerRadius:</span><span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span><span class="nv">cornerRadius</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">CGFloat</span> <span class="n">w</span> <span class="o">=</span> <span class="nb">self</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">CGFloat</span> <span class="n">h</span> <span class="o">=</span> <span class="nb">self</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">CGFloat</span> <span class="n">scale</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIScreen</span> <span class="n">mainScreen</span><span class="p">].</span><span class="n">scale</span><span class="p">;</span>
 </span><span class='line'>    <span class="c1">// 防止圆角半径小于0，或者大于宽/高中较小值的一半。</span>
 </span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">cornerRadius</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
 </span><span class='line'>        <span class="n">cornerRadius</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 </span><span class='line'>    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">cornerRadius</span> <span class="o">&gt;</span> <span class="n">MIN</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">))</span>
 </span><span class='line'>        <span class="n">cornerRadius</span> <span class="o">=</span> <span class="n">MIN</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.</span><span class="p">;</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="n">UIImage</span> <span class="o">*</span><span class="n">image</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
-</span><span class='line'>    <span class="n">CGRect</span> <span class="n">imageFrame</span> <span class="o">=</span> <span class="n">CGRectMake</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">UIGraphicsBeginImageContextWithOptions</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">size</span><span class="p">,</span> <span class="n">NO</span><span class="p">,</span> <span class="n">scale</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">[[</span><span class="n">UIBezierPath</span> <span class="nl">bezierPathWithRoundedRect:</span><span class="n">imageFrame</span> <span class="nl">cornerRadius:</span><span class="n">cornerRadius</span><span class="p">]</span> <span class="n">addClip</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">self</span> <span class="nl">drawInRect:</span><span class="n">imageFrame</span><span class="p">];</span>
+</span><span class='line'>    <span class="bp">UIImage</span> <span class="o">*</span><span class="n">image</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+</span><span class='line'>    <span class="bp">CGRect</span> <span class="n">imageFrame</span> <span class="o">=</span> <span class="n">CGRectMake</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">UIGraphicsBeginImageContextWithOptions</span><span class="p">(</span><span class="nb">self</span><span class="p">.</span><span class="n">size</span><span class="p">,</span> <span class="nb">NO</span><span class="p">,</span> <span class="n">scale</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">[[</span><span class="bp">UIBezierPath</span> <span class="nl">bezierPathWithRoundedRect</span><span class="p">:</span><span class="n">imageFrame</span> <span class="nl">cornerRadius</span><span class="p">:</span><span class="n">cornerRadius</span><span class="p">]</span> <span class="n">addClip</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="nb">self</span> <span class="nl">drawInRect</span><span class="p">:</span><span class="n">imageFrame</span><span class="p">];</span>
 </span><span class='line'>    <span class="n">image</span> <span class="o">=</span> <span class="n">UIGraphicsGetImageFromCurrentImageContext</span><span class="p">();</span>
 </span><span class='line'>    <span class="n">UIGraphicsEndImageContext</span><span class="p">();</span>
 </span><span class='line'>
@@ -212,12 +212,12 @@
   
 
 
-<time datetime="2014-01-20T13:58:15+08:00" pubdate data-updated="true">Jan 20<span>th</span>, 2014</time>
+<time datetime="2014-01-20T13:58:15+08:00" pubdate data-updated="true"></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/uiimage/'>UIImage</a>, <a class='category' href='/blog/categories/yuan-jiao/'>圆角</a>
+    <a class='category' href='/blog/categories/uiimage/'>uiimage</a>, <a class='category' href='/blog/categories/yuan-jiao/'>圆角</a>
   
 </span>
 
@@ -265,23 +265,23 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/openurl-on-ios9/">iOS 9下使用openURL:</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/app-transportation-security/">iOS 9中的App Transport Security</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/alamofire-ssl/">让Alamofire使用自签名证书</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/disable-corestorage-on-os-x-yosemite/">禁用OS X Yosemite上的Core Storage</a>
       </li>
     
       <li class="post">
         <a href="/blog/xcode-6-color-theme-path/">Xcode 6 Color Themes (颜色主题) 的路径</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/scripty-swift/">［更新］把Swift用作脚本语言</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/view-controller-based-status-bar-style-and-uinavigationcontroller/">UINavigationController和View Controller-based状态栏风格</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
       </li>
     
   </ul>

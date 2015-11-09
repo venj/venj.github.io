@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: UINavigationController | Cocoa学习]]></title>
+  <title><![CDATA[Category: Uinavigationcontroller | Cocoa学习]]></title>
   <link href="http://venj.github.io/blog/categories/uinavigationcontroller/atom.xml" rel="self"/>
   <link href="http://venj.github.io/"/>
-  <updated>2015-02-01T14:40:20+08:00</updated>
+  <updated>2015-11-09T20:47:16+08:00</updated>
   <id>http://venj.github.io/</id>
   <author>
     <name><![CDATA[venj]]></name>
@@ -27,41 +27,31 @@
 <!-- more -->
 
 
-<p>```objc
-//UINavigationController+StatusBar.h</p>
+<pre><code class="objc">//UINavigationController+StatusBar.h
+#import &lt;UIKit/UIKit.h&gt;
 
-<h1>import &lt;UIKit/UIKit.h></h1>
-
-<p>@interface UINavigationController (StatusBar)
-&ndash; (UIStatusBarStyle)preferredStatusBarStyle;
-@end</p>
-
-<p>//UINavigationController+StatusBar.m</p>
-
-<h1>import &ldquo;UINavigationController+StatusBar.h&rdquo;</h1>
-
-<p>@implementation UINavigationController (StatusBar)
-&ndash; (UIStatusBarStyle)preferredStatusBarStyle {</p>
-
-<pre><code>return [[self topViewController] preferredStatusBarStyle];
-</code></pre>
-
-<p>}
+@interface UINavigationController (StatusBar)
+- (UIStatusBarStyle)preferredStatusBarStyle;
 @end
-```</p>
+
+//UINavigationController+StatusBar.m
+#import "UINavigationController+StatusBar.h"
+
+@implementation UINavigationController (StatusBar)
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return [[self topViewController] preferredStatusBarStyle];
+}
+@end
+</code></pre>
 
 <p>用Swift来写：</p>
 
-<p>```
-extension UINavigationController {</p>
-
-<pre><code>override public func preferredStatusBarStyle() -&gt; UIStatusBarStyle {
-    return self.topViewController.preferredStatusBarStyle();
+<pre><code>extension UINavigationController {
+    override public func preferredStatusBarStyle() -&gt; UIStatusBarStyle {
+        return self.topViewController.preferredStatusBarStyle();
+    }
 }
 </code></pre>
-
-<p>}
-```</p>
 
 <p>然后，在需要使用<code>UINavigationController</code>的时候，引入<code>UINavigationController+StatusBar.h</code>头文件就可以了。如果你用Swift，增加了<code>extension</code>就完成了。</p>
 
@@ -91,20 +81,19 @@ extension UINavigationController {</p>
 <!-- more -->
 
 
-<p>```objc
-// 初始化ViewController的层级结构
-UIViewController <em>vc1 = [[UIViewController alloc] initWithNibName:@&ldquo;SomeViewControllerNibName&rdquo; bundle:nil];
-UINavigationController </em>nav = [[UINavigationController alloc] initWithRootViewController:vc1];
+<pre><code class="objc">// 初始化ViewController的层级结构
+UIViewController *vc1 = [[UIViewController alloc] initWithNibName:@"SomeViewControllerNibName" bundle:nil];
+UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc1];
 UITabBarController *tc = [[UITabBarController alloc] init];
-tc.viewControllers = @[nav];</p>
+tc.viewControllers = @[nav];
 
-<p>&hellip;</p>
+...
 
-<p>// 推入新的ViewController
-UIViewController *vc2 = [[UIViewController alloc] initWithNibName:@&ldquo;SomeOtherViewControllerNibName&rdquo; bundle:nil];
+// 推入新的ViewController
+UIViewController *vc2 = [[UIViewController alloc] initWithNibName:@"SomeOtherViewControllerNibName" bundle:nil];
 vc2.hidesBottomBarWhenPushed ＝ YES; //这是关键！
 [vc1.navigationController pushViewController:vc2 animated:YES];
-```</p>
+</code></pre>
 
 <p>就这么简单。</p>
 
@@ -128,48 +117,34 @@ vc2.hidesBottomBarWhenPushed ＝ YES; //这是关键！
 <!-- more -->
 
 
-<p>``` objc
-if ([image respondsToSelector:@selector(resizableImageWithCapInsets:)]) {</p>
-
-<pre><code>// iOS 5中的方法。
-buttonImage = [image resizableImageWithCapInsets:UIEdgeInsetsMake(0, leftcap, 0, rightcap)];
+<pre><code class="objc">if ([image respondsToSelector:@selector(resizableImageWithCapInsets:)]) {
+    // iOS 5中的方法。
+    buttonImage = [image resizableImageWithCapInsets:UIEdgeInsetsMake(0, leftcap, 0, rightcap)];
+}
+else {
+    // iOS 4-中的方法。该方法在iOS 5中已经标注为“Depreciated”。
+    buttonImage = [image stretchableImageWithLeftCapWidth:leftcap topCapHeight:0];
+}
 </code></pre>
-
-<p>}
-else {</p>
-
-<pre><code>// iOS 4-中的方法。该方法在iOS 5中已经标注为“Depreciated”。
-buttonImage = [image stretchableImageWithLeftCapWidth:leftcap topCapHeight:0];
-</code></pre>
-
-<p>}
-```</p>
 
 <p>这个解决方案的核心是<code>-stretchableImageWithLeftCapWidth:topCapHeight:</code>（或iOS 5中的<code>- resizableImageWithCapInsets:</code>）方法。这个方法能够根据指定的左右两侧“帽子”的尺寸（当然，上下拉伸也可以），拉伸图片的中间部分。具体效果你可以亲自试验一下。</p>
 
 <p>好了，回到自定义<code>UIBarButtonItem</code>的问题上来。既然<code>UIButton</code>背景的问题解决之后，我们就可以创建基于<code>UIButton</code>对象的<code>UIBarButtonItem</code>了：</p>
 
-<p>``` objc
-// 用来被拉伸的图片
-UIImage <em>originalImage = [UIImage imageNamed:@&ldquo;backButton&rdquo;];
-UIImage </em>buttonImage;
+<pre><code class="objc">// 用来被拉伸的图片
+UIImage *originalImage = [UIImage imageNamed:@"backButton"];
+UIImage *buttonImage;
 // 拉伸图片
-if ([[UIImage class] respondsToSelector:@selector(resizableImageWithCapInsets:)]) {</p>
-
-<pre><code>buttonImage = [originalImage resizableImageWithCapInsets:UIEdgeInsetsMake(0, 13, 0, 8)];
-</code></pre>
-
-<p>}
-else {</p>
-
-<pre><code>buttonImage = [originalImage stretchableImageWithLeftCapWidth:13 topCapHeight:0];
-</code></pre>
-
-<p>}
+if ([[UIImage class] respondsToSelector:@selector(resizableImageWithCapInsets:)]) {
+    buttonImage = [originalImage resizableImageWithCapInsets:UIEdgeInsetsMake(0, 13, 0, 8)];
+}
+else {
+    buttonImage = [originalImage stretchableImageWithLeftCapWidth:13 topCapHeight:0];
+}
 // 创建自定义按钮
-UIButton <em>backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
 [backButton setBackgroundImage:buttonImage forState:UIControlStateNormal];
-NSString </em>title = @&ldquo;Back&rdquo;;
+NSString *title = @"Back";
 [backButton setTitle:title forState:UIControlStateNormal];
 UIFont *font = [UIFont boldSystemFontOfSize:12];
 backButton.titleLabel.font = font;
@@ -180,25 +155,18 @@ backButton.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
 // 设置按钮的Frame，宽度为文字的宽度加上拉伸图宽度的和
 backButton.frame = CGRectMake(0, 0, labelSize.width + buttonImage.size.width, buttonImage.size.height);
 // 设置按钮的target和action
-[backButton addTarget:self action:@selector(back)</p>
-
-<pre><code> forControlEvents:UIControlEventTouchUpInside];
+[backButton addTarget:self action:@selector(back) 
+     forControlEvents:UIControlEventTouchUpInside];
+//创建UIBarButtonItem
+self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] 
+                                         initWithCustomView:backButton];
 </code></pre>
-
-<p>//创建UIBarButtonItem
-self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]</p>
-
-<pre><code>                                     initWithCustomView:backButton];
-</code></pre>
-
-<p>```</p>
 
 <p>这就是实现自定义<code>UIBarButtonItem</code>对象的核心了。我写了一个<code>UIBarButtonItem</code>的subclass，有点粗糙，但是能够实现上述的所有功能，并且能够响应设备方向的变化对按钮的宽度作出调整。用法很简单：</p>
 
-<p><code>objc
-VCTranslucentBarButtonItem *item = [[VCTranslucentBarButtonItem alloc] initWithType:VCTranslucentBarButtonItemTypeBackward title:@"Test Button" target:self action:@selector(buttonClicked)];
+<pre><code class="objc">VCTranslucentBarButtonItem *item = [[VCTranslucentBarButtonItem alloc] initWithType:VCTranslucentBarButtonItemTypeBackward title:@"Test Button" target:self action:@selector(buttonClicked)];
 self.navigationItem.leftBarButtonItem = item;
-</code></p>
+</code></pre>
 
 <p>完整的源码我就不在本文中贴出来了，反正已经推送到github上了。效果如下图所示：</p>
 
@@ -228,15 +196,14 @@ self.navigationItem.leftBarButtonItem = item;
 <!-- more -->
 
 
-<p><code>objc
-self.navigationController.navigationBar.tintColor = [UIColor redColor];
-</code></p>
+<pre><code class="objc">self.navigationController.navigationBar.tintColor = [UIColor redColor];
+</code></pre>
 
-<p>这样就轻松地为<code>UINavigationBar</code>加上了红色的背景色&mdash;当然你可以使用任何颜色。下面是模拟器中的测试效果：</p>
+<p>这样就轻松地为<code>UINavigationBar</code>加上了红色的背景色&ndash;当然你可以使用任何颜色。下面是模拟器中的测试效果：</p>
 
 <p><img class="center" src="/images/posts/custom-navbar-bg-color.png"></p>
 
-<p>另外，就是为<code>UINavigationBar</code>加背景图片。这个稍稍复杂一些&mdash;特别是对于iOS 5之前的iOS来说。先说说简单的，iOS 5已经为<code>UINavigationBar</code>增加了一个新的方法<code>-setBackgroundImage:forBarMetrics:</code>，专门用于设置<code>UINavigationBar</code>的背景图片。</p>
+<p>另外，就是为<code>UINavigationBar</code>加背景图片。这个稍稍复杂一些&ndash;特别是对于iOS 5之前的iOS来说。先说说简单的，iOS 5已经为<code>UINavigationBar</code>增加了一个新的方法<code>-setBackgroundImage:forBarMetrics:</code>，专门用于设置<code>UINavigationBar</code>的背景图片。</p>
 
 <p><strong>Updated</strong></p>
 
@@ -246,28 +213,21 @@ self.navigationController.navigationBar.tintColor = [UIColor redColor];
 
 <p>适用于iOS 4的方法是在<code>AppDelegate.m</code>中创建一个<code>UINavigationBar</code>的Catagory，覆盖<code>-drawRect:</code>方法，如下：</p>
 
-<p>``` objc
-@implementation UINavigationBar (CustomImage)
-&ndash; (void)drawRect:(CGRect)rect {</p>
+<pre><code class="objc">@implementation UINavigationBar (CustomImage)
+- (void)drawRect:(CGRect)rect {
+    UIImage *img = [UIImage imageNamed:@"navbar"];
+    [img drawInRect:rect];
+}
+@end
 
-<pre><code>UIImage *img = [UIImage imageNamed:@"navbar"];
-[img drawInRect:rect];
+...
+
+//在后面加入判断是否支持iOS 5的代码，来提供对iOS 5的支持：
+
+if ([bar respondsToSelector:@selector(setBackgroundImage:forBarMetrics:)]) {
+    [bar setBackgroundImage:bg forBarMetrics:UIBarMetricsDefault];
+}
 </code></pre>
-
-<p>}
-@end</p>
-
-<p>&hellip;</p>
-
-<p>//在后面加入判断是否支持iOS 5的代码，来提供对iOS 5的支持：</p>
-
-<p>if ([bar respondsToSelector:@selector(setBackgroundImage:forBarMetrics:)]) {</p>
-
-<pre><code>[bar setBackgroundImage:bg forBarMetrics:UIBarMetricsDefault];
-</code></pre>
-
-<p>}
-```</p>
 
 <p>这种方法将应用到程序中所有的<code>UINavigationBar</code>实例。但是通常来说，是不推荐覆盖系统自带的类中的方法的，所以我并不推荐使用这种方法。</p>
 

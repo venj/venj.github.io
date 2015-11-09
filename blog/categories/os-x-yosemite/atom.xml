@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: OS X Yosemite | Cocoa学习]]></title>
+  <title><![CDATA[Category: Os X Yosemite | Cocoa学习]]></title>
   <link href="http://venj.github.io/blog/categories/os-x-yosemite/atom.xml" rel="self"/>
   <link href="http://venj.github.io/"/>
-  <updated>2015-02-01T14:40:20+08:00</updated>
+  <updated>2015-11-09T20:47:16+08:00</updated>
   <id>http://venj.github.io/</id>
   <author>
     <name><![CDATA[venj]]></name>
@@ -46,15 +46,13 @@
 
 <p>打开“终端”，执行如下命令：</p>
 
-<p><code>bash
-diskutil cs list
-</code></p>
+<pre><code class="bash">diskutil cs list
+</code></pre>
 
 <p>如果你看到一个逻辑磁盘阵列的树形结构，而不是：</p>
 
-<p><code>
-No CoreStorage logical volume groups found
-</code></p>
+<pre><code>No CoreStorage logical volume groups found
+</code></pre>
 
 <p>那么，恭喜你，你正在使用Core Storage。耶。</p>
 
@@ -70,9 +68,8 @@ No CoreStorage logical volume groups found
 
 <p>打开终端，执行如下命令：</p>
 
-<p><code>bash
-sudo diskutil cs revert /
-</code></p>
+<pre><code class="bash">sudo diskutil cs revert /
+</code></pre>
 
 <p>输入密码，稍等片刻即可完成。命令执行完毕后提示你尽快重新启动系统。我的建议是立刻重启。重启完成后，检查一下Core Storage是否已经成功关闭。如果你在磁盘实用工具里，看到如下的状况，那么您已经成功了。副产品是，按住Option启动时，Recovery分区也回来了。</p>
 

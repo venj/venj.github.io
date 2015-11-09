@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Status Bar Style | Cocoa学习]]></title>
   <link href="http://venj.github.io/blog/categories/status-bar-style/atom.xml" rel="self"/>
   <link href="http://venj.github.io/"/>
-  <updated>2015-02-01T14:40:20+08:00</updated>
+  <updated>2015-11-09T20:47:16+08:00</updated>
   <id>http://venj.github.io/</id>
   <author>
     <name><![CDATA[venj]]></name>
@@ -27,41 +27,31 @@
 <!-- more -->
 
 
-<p>```objc
-//UINavigationController+StatusBar.h</p>
+<pre><code class="objc">//UINavigationController+StatusBar.h
+#import &lt;UIKit/UIKit.h&gt;
 
-<h1>import &lt;UIKit/UIKit.h></h1>
-
-<p>@interface UINavigationController (StatusBar)
-&ndash; (UIStatusBarStyle)preferredStatusBarStyle;
-@end</p>
-
-<p>//UINavigationController+StatusBar.m</p>
-
-<h1>import &ldquo;UINavigationController+StatusBar.h&rdquo;</h1>
-
-<p>@implementation UINavigationController (StatusBar)
-&ndash; (UIStatusBarStyle)preferredStatusBarStyle {</p>
-
-<pre><code>return [[self topViewController] preferredStatusBarStyle];
-</code></pre>
-
-<p>}
+@interface UINavigationController (StatusBar)
+- (UIStatusBarStyle)preferredStatusBarStyle;
 @end
-```</p>
+
+//UINavigationController+StatusBar.m
+#import "UINavigationController+StatusBar.h"
+
+@implementation UINavigationController (StatusBar)
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return [[self topViewController] preferredStatusBarStyle];
+}
+@end
+</code></pre>
 
 <p>用Swift来写：</p>
 
-<p>```
-extension UINavigationController {</p>
-
-<pre><code>override public func preferredStatusBarStyle() -&gt; UIStatusBarStyle {
-    return self.topViewController.preferredStatusBarStyle();
+<pre><code>extension UINavigationController {
+    override public func preferredStatusBarStyle() -&gt; UIStatusBarStyle {
+        return self.topViewController.preferredStatusBarStyle();
+    }
 }
 </code></pre>
-
-<p>}
-```</p>
 
 <p>然后，在需要使用<code>UINavigationController</code>的时候，引入<code>UINavigationController+StatusBar.h</code>头文件就可以了。如果你用Swift，增加了<code>extension</code>就完成了。</p>
 

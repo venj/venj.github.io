@@ -101,7 +101,7 @@
   
 
 
-<time datetime="2011-09-01T21:10:00+08:00" pubdate data-updated="true">Sep 1<span>st</span>, 2011</time>
+<time datetime="2011-09-01T21:10:00+08:00" pubdate data-updated="true"></time>
         
       </p>
     
@@ -137,20 +137,20 @@
 <span class='line-number'>16</span>
 <span class='line-number'>17</span>
 <span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">grabScreen:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">grabScreen:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
 </span><span class='line'>    <span class="n">NSTask</span> <span class="o">*</span><span class="n">capture</span> <span class="o">=</span> <span class="p">[[[</span><span class="n">NSTask</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">]</span> <span class="n">autorelease</span><span class="p">];</span>
 </span><span class='line'>    <span class="n">capture</span><span class="p">.</span><span class="n">launchPath</span> <span class="o">=</span> <span class="s">@&quot;/usr/sbin/screencapture&quot;</span><span class="p">;</span>
 </span><span class='line'>    <span class="c1">// -i参数表示交互模式，-c参数表示把截图保存到剪贴板</span>
-</span><span class='line'>    <span class="n">capture</span><span class="p">.</span><span class="n">arguments</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSArray</span> <span class="nl">arrayWithObjects:</span><span class="s">@&quot;-i&quot;</span><span class="p">,</span> <span class="s">@&quot;-c&quot;</span><span class="p">,</span> <span class="nb">nil</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">capture</span><span class="p">.</span><span class="n">arguments</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSArray</span> <span class="nl">arrayWithObjects</span><span class="p">:</span><span class="s">@&quot;-i&quot;</span><span class="p">,</span> <span class="s">@&quot;-c&quot;</span><span class="p">,</span> <span class="nb">nil</span><span class="p">];</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="p">[</span><span class="n">capture</span> <span class="nl">setTerminationHandler:</span> <span class="o">^</span><span class="p">(</span><span class="n">NSTask</span> <span class="o">*</span><span class="n">t</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">capture</span> <span class="nl">setTerminationHandler</span><span class="p">:</span> <span class="o">^</span><span class="p">(</span><span class="n">NSTask</span> <span class="o">*</span><span class="n">t</span><span class="p">)</span> <span class="p">{</span>
 </span><span class='line'>        <span class="n">NSPasteboard</span> <span class="o">*</span><span class="n">pboard</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSPasteboard</span> <span class="n">generalPasteboard</span><span class="p">];</span>
-</span><span class='line'>        <span class="n">NSPasteboardItem</span> <span class="o">*</span><span class="n">pboardItem</span> <span class="o">=</span> <span class="p">[[</span><span class="n">pboard</span> <span class="n">pasteboardItems</span><span class="p">]</span> <span class="nl">objectAtIndex:</span><span class="mi">0</span><span class="p">];</span>
-</span><span class='line'>        <span class="n">NSString</span> <span class="o">*</span><span class="n">pboardItemType</span> <span class="o">=</span> <span class="p">[[</span><span class="n">pboard</span> <span class="n">types</span><span class="p">]</span> <span class="nl">objectAtIndex:</span><span class="mi">0</span><span class="p">];</span>
-</span><span class='line'>        <span class="n">NSData</span> <span class="o">*</span><span class="n">imageData</span> <span class="o">=</span> <span class="p">[</span><span class="n">pboardItem</span> <span class="nl">dataForType:</span><span class="n">pboardItemType</span><span class="p">];</span>
-</span><span class='line'>        <span class="n">NSImage</span> <span class="o">*</span><span class="n">image</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSImage</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithData:</span><span class="n">imageData</span><span class="p">];</span>
-</span><span class='line'>        <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">imageView</span> <span class="nl">setImage:</span><span class="n">image</span><span class="p">];</span>
-</span><span class='line'>        <span class="p">[</span><span class="n">image</span> <span class="n">release</span><span class="p">];</span>
+</span><span class='line'>        <span class="n">NSPasteboardItem</span> <span class="o">*</span><span class="n">pboardItem</span> <span class="o">=</span> <span class="p">[[</span><span class="n">pboard</span> <span class="n">pasteboardItems</span><span class="p">]</span> <span class="nl">objectAtIndex</span><span class="p">:</span><span class="mi">0</span><span class="p">];</span>
+</span><span class='line'>        <span class="bp">NSString</span> <span class="o">*</span><span class="n">pboardItemType</span> <span class="o">=</span> <span class="p">[[</span><span class="n">pboard</span> <span class="n">types</span><span class="p">]</span> <span class="nl">objectAtIndex</span><span class="p">:</span><span class="mi">0</span><span class="p">];</span>
+</span><span class='line'>        <span class="bp">NSData</span> <span class="o">*</span><span class="n">imageData</span> <span class="o">=</span> <span class="p">[</span><span class="n">pboardItem</span> <span class="nl">dataForType</span><span class="p">:</span><span class="n">pboardItemType</span><span class="p">];</span>
+</span><span class='line'>        <span class="n">NSImage</span> <span class="o">*</span><span class="n">image</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSImage</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithData</span><span class="p">:</span><span class="n">imageData</span><span class="p">];</span>
+</span><span class='line'>        <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">imageView</span> <span class="nl">setImage</span><span class="p">:</span><span class="n">image</span><span class="p">];</span>
+</span><span class='line'>        <span class="p">[</span><span class="n">image</span> <span class="k">release</span><span class="p">];</span>
 </span><span class='line'>    <span class="p">}];</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="p">[</span><span class="n">capture</span> <span class="n">launch</span><span class="p">];</span>
@@ -189,12 +189,12 @@
   
 
 
-<time datetime="2011-09-01T21:10:00+08:00" pubdate data-updated="true">Sep 1<span>st</span>, 2011</time>
+<time datetime="2011-09-01T21:10:00+08:00" pubdate data-updated="true"></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/nstask/'>NSTask</a>
+    <a class='category' href='/blog/categories/nstask/'>nstask</a>
   
 </span>
 
@@ -242,23 +242,23 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/openurl-on-ios9/">iOS 9下使用openURL:</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/app-transportation-security/">iOS 9中的App Transport Security</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/alamofire-ssl/">让Alamofire使用自签名证书</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/disable-corestorage-on-os-x-yosemite/">禁用OS X Yosemite上的Core Storage</a>
       </li>
     
       <li class="post">
         <a href="/blog/xcode-6-color-theme-path/">Xcode 6 Color Themes (颜色主题) 的路径</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/scripty-swift/">［更新］把Swift用作脚本语言</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/view-controller-based-status-bar-style-and-uinavigationcontroller/">UINavigationController和View Controller-based状态栏风格</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
       </li>
     
   </ul>

@@ -85,7 +85,7 @@
   
 
 
-<time datetime="2012-02-29T10:30:00+08:00" pubdate data-updated="true">Feb 29<span>th</span>, 2012</time>
+<time datetime="2012-02-29T10:30:00+08:00" pubdate data-updated="true"></time>
         
       </p>
     
@@ -185,12 +185,12 @@
 </span><span class='line'>
 </span><span class='line'><span class="cp">#import &lt;UIKit/UIKit.h&gt;</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">@interface</span> <span class="nc">VCCustomNavigationBar</span> : <span class="nc">UINavigationBar</span>
-</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">)</span> <span class="n">UIImageView</span> <span class="o">*</span><span class="n">navigationBarBackgroundImage</span><span class="p">;</span>
-</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">)</span> <span class="n">UIImage</span> <span class="o">*</span><span class="n">landscapeBarBackground</span><span class="p">;</span>
-</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">)</span> <span class="n">UIImage</span> <span class="o">*</span><span class="n">portraitBarBackground</span><span class="p">;</span>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">setBackgroundForDeviceOrientation:</span><span class="p">(</span><span class="n">UIDeviceOrientation</span><span class="p">)</span><span class="nv">orientation</span><span class="p">;</span>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">clearBackground</span><span class="p">;</span>
+</span><span class='line'><span class="k">@interface</span> <span class="nc">VCCustomNavigationBar</span> : <span class="bp">UINavigationBar</span>
+</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">strong</span><span class="p">)</span> <span class="bp">UIImageView</span> <span class="o">*</span><span class="n">navigationBarBackgroundImage</span><span class="p">;</span>
+</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">strong</span><span class="p">)</span> <span class="bp">UIImage</span> <span class="o">*</span><span class="n">landscapeBarBackground</span><span class="p">;</span>
+</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">strong</span><span class="p">)</span> <span class="bp">UIImage</span> <span class="o">*</span><span class="n">portraitBarBackground</span><span class="p">;</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">setBackgroundForDeviceOrientation:</span><span class="p">(</span><span class="n">UIDeviceOrientation</span><span class="p">)</span><span class="nv">orientation</span><span class="p">;</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">clearBackground</span><span class="p">;</span>
 </span><span class='line'><span class="k">@end</span>
 </span><span class='line'>
 </span><span class='line'><span class="cm">/* VCCustomNavigationBar.m */</span>
@@ -202,56 +202,56 @@
 </span><span class='line'><span class="k">@synthesize</span> <span class="n">landscapeBarBackground</span> <span class="o">=</span> <span class="n">_landscapeBarBackground</span><span class="p">;</span>
 </span><span class='line'><span class="k">@synthesize</span> <span class="n">portraitBarBackground</span> <span class="o">=</span> <span class="n">_portraitBarBackground</span><span class="p">;</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nf">initWithFrame:</span><span class="p">(</span><span class="n">CGRect</span><span class="p">)</span><span class="nv">frame</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nf">initWithFrame:</span><span class="p">(</span><span class="bp">CGRect</span><span class="p">)</span><span class="nv">frame</span>
 </span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="n">self</span> <span class="o">=</span> <span class="p">[</span><span class="n">super</span> <span class="nl">initWithFrame:</span><span class="n">frame</span><span class="p">];</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nb">self</span> <span class="o">=</span> <span class="p">[</span><span class="nb">super</span> <span class="nl">initWithFrame</span><span class="p">:</span><span class="n">frame</span><span class="p">];</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nb">self</span><span class="p">)</span> <span class="p">{</span>
 </span><span class='line'>        <span class="c1">// Initialization code</span>
 </span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">return</span> <span class="n">self</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nb">self</span><span class="p">;</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">awakeFromNib</span> <span class="p">{</span>
-</span><span class='line'>    <span class="p">[[</span><span class="n">NSNotificationCenter</span> <span class="n">defaultCenter</span><span class="p">]</span> <span class="nl">addObserver:</span><span class="n">self</span> <span class="nl">selector:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">changeBackgroundImage:</span><span class="p">)</span> <span class="nl">name:</span><span class="n">UIDeviceOrientationDidChangeNotification</span> <span class="nl">object:</span><span class="nb">NULL</span><span class="p">];</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">awakeFromNib</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[[</span><span class="bp">NSNotificationCenter</span> <span class="n">defaultCenter</span><span class="p">]</span> <span class="nl">addObserver</span><span class="p">:</span><span class="nb">self</span> <span class="nl">selector</span><span class="p">:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">changeBackgroundImage</span><span class="p">:)</span> <span class="nl">name</span><span class="p">:</span><span class="n">UIDeviceOrientationDidChangeNotification</span> <span class="nl">object</span><span class="p">:</span><span class="nb">NULL</span><span class="p">];</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">drawRect:</span><span class="p">(</span><span class="n">CGRect</span><span class="p">)</span><span class="nv">rect</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">drawRect:</span><span class="p">(</span><span class="bp">CGRect</span><span class="p">)</span><span class="nv">rect</span>
 </span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">navigationBarBackgroundImage</span><span class="p">)</span>
-</span><span class='line'>        <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">navigationBarBackgroundImage</span><span class="p">.</span><span class="n">image</span> <span class="nl">drawInRect:</span><span class="n">rect</span><span class="p">];</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nb">self</span><span class="p">.</span><span class="n">navigationBarBackgroundImage</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">navigationBarBackgroundImage</span><span class="p">.</span><span class="n">image</span> <span class="nl">drawInRect</span><span class="p">:</span><span class="n">rect</span><span class="p">];</span>
 </span><span class='line'>    <span class="k">else</span>
-</span><span class='line'>        <span class="p">[</span><span class="n">super</span> <span class="nl">drawRect:</span><span class="n">rect</span><span class="p">];</span>
+</span><span class='line'>        <span class="p">[</span><span class="nb">super</span> <span class="nl">drawRect</span><span class="p">:</span><span class="n">rect</span><span class="p">];</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">setBackgroundForDeviceOrientation:</span><span class="p">(</span><span class="n">UIDeviceOrientation</span><span class="p">)</span><span class="nv">orientation</span><span class="p">;</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">setBackgroundForDeviceOrientation:</span><span class="p">(</span><span class="n">UIDeviceOrientation</span><span class="p">)</span><span class="nv">orientation</span><span class="p">;</span>
 </span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="n">self</span><span class="p">.</span><span class="n">navigationBarBackgroundImage</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIImageView</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFrame:</span><span class="n">self</span><span class="p">.</span><span class="n">frame</span><span class="p">];</span>
+</span><span class='line'>    <span class="nb">self</span><span class="p">.</span><span class="n">navigationBarBackgroundImage</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UIImageView</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFrame</span><span class="p">:</span><span class="nb">self</span><span class="p">.</span><span class="n">frame</span><span class="p">];</span>
 </span><span class='line'>    <span class="k">if</span> <span class="p">((</span><span class="n">orientation</span> <span class="o">==</span> <span class="n">UIDeviceOrientationLandscapeLeft</span><span class="p">)</span>
 </span><span class='line'>        <span class="o">||</span> <span class="p">(</span><span class="n">orientation</span> <span class="o">==</span> <span class="n">UIDeviceOrientationLandscapeRight</span><span class="p">))</span> <span class="p">{</span>
-</span><span class='line'>        <span class="n">self</span><span class="p">.</span><span class="n">navigationBarBackgroundImage</span><span class="p">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">landscapeBarBackground</span><span class="p">;</span>
+</span><span class='line'>        <span class="nb">self</span><span class="p">.</span><span class="n">navigationBarBackgroundImage</span><span class="p">.</span><span class="n">image</span> <span class="o">=</span> <span class="nb">self</span><span class="p">.</span><span class="n">landscapeBarBackground</span><span class="p">;</span>
 </span><span class='line'>    <span class="p">}</span>
 </span><span class='line'>    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">orientation</span> <span class="o">==</span> <span class="n">UIDeviceOrientationPortrait</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="n">self</span><span class="p">.</span><span class="n">navigationBarBackgroundImage</span><span class="p">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">portraitBarBackground</span><span class="p">;</span>
+</span><span class='line'>        <span class="nb">self</span><span class="p">.</span><span class="n">navigationBarBackgroundImage</span><span class="p">.</span><span class="n">image</span> <span class="o">=</span> <span class="nb">self</span><span class="p">.</span><span class="n">portraitBarBackground</span><span class="p">;</span>
 </span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">self</span> <span class="n">setNeedsDisplay</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="nb">self</span> <span class="n">setNeedsDisplay</span><span class="p">];</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
 </span><span class='line'><span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">clearBackground</span>
 </span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="n">self</span><span class="p">.</span><span class="n">navigationBarBackgroundImage</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">self</span> <span class="n">setNeedsDisplay</span><span class="p">];</span>
+</span><span class='line'>    <span class="nb">self</span><span class="p">.</span><span class="n">navigationBarBackgroundImage</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">[</span><span class="nb">self</span> <span class="n">setNeedsDisplay</span><span class="p">];</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
 </span><span class='line'><span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">dealloc</span> <span class="p">{</span>
-</span><span class='line'>    <span class="p">[[</span><span class="n">NSNotificationCenter</span> <span class="n">defaultCenter</span><span class="p">]</span> <span class="nl">removeObserver:</span><span class="n">self</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[[</span><span class="bp">NSNotificationCenter</span> <span class="n">defaultCenter</span><span class="p">]</span> <span class="nl">removeObserver</span><span class="p">:</span><span class="nb">self</span><span class="p">];</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'><span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nl">changeBackgroundImage:</span><span class="p">(</span><span class="n">NSNotification</span> <span class="o">*</span><span class="p">)</span><span class="n">notification</span> <span class="p">{</span>
-</span><span class='line'>    <span class="n">UIDeviceOrientation</span> <span class="n">currentOrientation</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIDevice</span> <span class="n">currentDevice</span><span class="p">]</span> <span class="n">orientation</span><span class="p">];</span>
+</span><span class='line'><span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nl">changeBackgroundImage</span><span class="p">:(</span><span class="bp">NSNotification</span> <span class="o">*</span><span class="p">)</span><span class="n">notification</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">UIDeviceOrientation</span> <span class="n">currentOrientation</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UIDevice</span> <span class="n">currentDevice</span><span class="p">]</span> <span class="n">orientation</span><span class="p">];</span>
 </span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">currentOrientation</span> <span class="o">==</span> <span class="n">UIDeviceOrientationPortraitUpsideDown</span><span class="p">)</span> <span class="p">{</span>
 </span><span class='line'>        <span class="k">return</span><span class="p">;</span>
 </span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">self</span> <span class="nl">setBackgroundForDeviceOrientation:</span><span class="n">currentOrientation</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="nb">self</span> <span class="nl">setBackgroundForDeviceOrientation</span><span class="p">:</span><span class="n">currentOrientation</span><span class="p">];</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
 </span><span class='line'><span class="k">@end</span>
@@ -275,18 +275,18 @@
 <span class='line-number'>13</span>
 <span class='line-number'>14</span>
 <span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">viewDidLoad</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">viewDidLoad</span>
 </span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">super</span> <span class="n">viewDidLoad</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="nb">super</span> <span class="n">viewDidLoad</span><span class="p">];</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="c1">//设置合适的NavBar背景(按钮)颜色，配合背景图</span>
-</span><span class='line'>    <span class="n">self</span><span class="p">.</span><span class="n">navigationController</span><span class="p">.</span><span class="n">navigationBar</span><span class="p">.</span><span class="n">tintColor</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIColor</span> <span class="n">brownColor</span><span class="p">];</span>
+</span><span class='line'>    <span class="nb">self</span><span class="p">.</span><span class="n">navigationController</span><span class="p">.</span><span class="n">navigationBar</span><span class="p">.</span><span class="n">tintColor</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIColor</span> <span class="n">brownColor</span><span class="p">];</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="c1">//自定义NavBar背景</span>
-</span><span class='line'>    <span class="n">VCCustomNavigationBar</span> <span class="o">*</span><span class="n">customBar</span> <span class="o">=</span> <span class="p">(</span><span class="n">VCCustomNavigationBar</span> <span class="o">*</span><span class="p">)</span><span class="n">self</span><span class="p">.</span><span class="n">navigationController</span><span class="p">.</span><span class="n">navigationBar</span><span class="p">;</span>
-</span><span class='line'>    <span class="n">customBar</span><span class="p">.</span><span class="n">landscapeBarBackground</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIImage</span> <span class="nl">imageNamed:</span><span class="s">@&quot;landscapeBarBackground&quot;</span><span class="p">];</span>
-</span><span class='line'>    <span class="n">customBar</span><span class="p">.</span><span class="n">portraitBarBackground</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIImage</span> <span class="nl">imageNamed:</span><span class="s">@&quot;portraitBarBackground&quot;</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">customBar</span> <span class="nl">setBackgroundForDeviceOrientation:</span><span class="p">[[</span><span class="n">UIDevice</span> <span class="n">currentDevice</span><span class="p">]</span> <span class="n">orientation</span><span class="p">]];</span>
+</span><span class='line'>    <span class="n">VCCustomNavigationBar</span> <span class="o">*</span><span class="n">customBar</span> <span class="o">=</span> <span class="p">(</span><span class="n">VCCustomNavigationBar</span> <span class="o">*</span><span class="p">)</span><span class="nb">self</span><span class="p">.</span><span class="n">navigationController</span><span class="p">.</span><span class="n">navigationBar</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">customBar</span><span class="p">.</span><span class="n">landscapeBarBackground</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIImage</span> <span class="nl">imageNamed</span><span class="p">:</span><span class="s">@&quot;landscapeBarBackground&quot;</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">customBar</span><span class="p">.</span><span class="n">portraitBarBackground</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIImage</span> <span class="nl">imageNamed</span><span class="p">:</span><span class="s">@&quot;portraitBarBackground&quot;</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">customBar</span> <span class="nl">setBackgroundForDeviceOrientation</span><span class="p">:[[</span><span class="bp">UIDevice</span> <span class="n">currentDevice</span><span class="p">]</span> <span class="n">orientation</span><span class="p">]];</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="c1">//其他自定义代码</span>
 </span><span class='line'><span class="p">}</span>
@@ -324,12 +324,12 @@
   
 
 
-<time datetime="2012-02-29T10:30:00+08:00" pubdate data-updated="true">Feb 29<span>th</span>, 2012</time>
+<time datetime="2012-02-29T10:30:00+08:00" pubdate data-updated="true"></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/uinavigationbar/'>UINavigationBar</a>, <a class='category' href='/blog/categories/ios-4/'>iOS 4</a>
+    <a class='category' href='/blog/categories/ios-4/'>ios 4</a>, <a class='category' href='/blog/categories/uinavigationbar/'>uinavigationbar</a>
   
 </span>
 
@@ -377,23 +377,23 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/openurl-on-ios9/">iOS 9下使用openURL:</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/app-transportation-security/">iOS 9中的App Transport Security</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/alamofire-ssl/">让Alamofire使用自签名证书</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/disable-corestorage-on-os-x-yosemite/">禁用OS X Yosemite上的Core Storage</a>
       </li>
     
       <li class="post">
         <a href="/blog/xcode-6-color-theme-path/">Xcode 6 Color Themes (颜色主题) 的路径</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/scripty-swift/">［更新］把Swift用作脚本语言</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/view-controller-based-status-bar-style-and-uinavigationcontroller/">UINavigationController和View Controller-based状态栏风格</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
       </li>
     
   </ul>

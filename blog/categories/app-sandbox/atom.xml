@@ -4,7 +4,7 @@
   <title><![CDATA[Category: App Sandbox | Cocoa学习]]></title>
   <link href="http://venj.github.io/blog/categories/app-sandbox/atom.xml" rel="self"/>
   <link href="http://venj.github.io/"/>
-  <updated>2015-02-01T14:40:20+08:00</updated>
+  <updated>2015-11-09T20:47:16+08:00</updated>
   <id>http://venj.github.io/</id>
   <author>
     <name><![CDATA[venj]]></name>
@@ -41,11 +41,10 @@
 
 <p>假设，我们把SDK里的<code>XPC Client</code>文件夹复制到项目目录中，在Build Phase中添加下列shell脚本：</p>
 
-<p><code>bash
-XPC_START="$BUILT_PRODUCTS_DIR"
+<pre><code class="bash">XPC_START="$BUILT_PRODUCTS_DIR"
 XPC_SCRIPT="$SRCROOT/XPC Client/xpc-rename-move.rb"
 ruby "$XPC_SCRIPT" "$SRCROOT/XPC Client/" "$BUILT_PRODUCTS_DIR/$WRAPPER_NAME" "$CODE_SIGN_IDENTITY"
-</code></p>
+</code></pre>
 
 <p><img class="center" src="/images/posts/growl-script-phase.png"></p>
 
@@ -53,14 +52,10 @@ ruby "$XPC_SCRIPT" "$SRCROOT/XPC Client/" "$BUILT_PRODUCTS_DIR/$WRAPPER_NAME" "$
 
 <p>要让Growl支持Sandbox的程序，你还要实现一个delegate方法，告诉Growl.framework程序是否有网络访问的Entitlement。我的示例程序中如下：</p>
 
-<p>``` objc
-&ndash; (BOOL) hasNetworkClientEntitlement {</p>
-
-<pre><code>return NO;
+<pre><code class="objc">- (BOOL) hasNetworkClientEntitlement {
+    return NO;
+}
 </code></pre>
-
-<p>}
-```</p>
 
 <p>完成之后，你就可以启用Entitlement，指定Code Sign的数字签名，开始编译了。</p>
 

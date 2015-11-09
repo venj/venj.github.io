@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: AppKit | Cocoa学习]]></title>
+  <title><![CDATA[Category: Appkit | Cocoa学习]]></title>
   <link href="http://venj.github.io/blog/categories/appkit/atom.xml" rel="self"/>
   <link href="http://venj.github.io/"/>
-  <updated>2015-02-01T14:40:20+08:00</updated>
+  <updated>2015-11-09T20:47:16+08:00</updated>
   <id>http://venj.github.io/</id>
   <author>
     <name><![CDATA[venj]]></name>
@@ -24,59 +24,45 @@
 
 <p><code>NSString</code>的<code>UIStringDrawing</code>这个Catagory中，有一个非常方便调用的方法：<code>- sizeWithFont:forWidth:lineBreakMode:</code>。看下面的示例代码：</p>
 
-<p>```objc
-&ndash; (UITableViewCell <em>)tableView:(UITableView </em>)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {</p>
-
-<pre><code>...
-cell.textLabel.lineBreakMode = UILineBreakModeWordWrap; //设置换行模式
-cell.textLabel.numberOfLines = 0; //允许多行
-...
-</code></pre>
-
-<p>}</p>
-
-<ul>
-<li><p>(CGFloat)tableView:(UITableView <em>)tableView heightForRowAtIndexPath:(NSIndexPath </em>)indexPath {
-  &hellip;
-  NSString cellText = &hellip;;
-  CGSize maximumSize = CGSizeMake(280., 9999.); //指定一个宽度为实际宽度，高度为极大指的尺寸
-  CGSize labelSize = [cellText sizeWithFont:[UIFont systemFontOfSize:14.] constrainedToSize:maximumSize lineBreakMode:UILineBreakModeWordWrap]; //调用方法，获取字符串的尺寸</p>
-
-<p>  return labelSize.height + SOME_SPECE_FOR_OTHER_CONTROL; //返回字符串的高度，加上一些自由空间的高度或其他空间所占的高度。
+<pre><code class="objc">- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    ...
+    cell.textLabel.lineBreakMode = UILineBreakModeWordWrap; //设置换行模式
+    cell.textLabel.numberOfLines = 0; //允许多行
+    ...
 }
-```</p></li>
-</ul>
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    ...
+    NSString cellText = ...;
+    CGSize maximumSize = CGSizeMake(280., 9999.); //指定一个宽度为实际宽度，高度为极大指的尺寸
+    CGSize labelSize = [cellText sizeWithFont:[UIFont systemFontOfSize:14.] constrainedToSize:maximumSize lineBreakMode:UILineBreakModeWordWrap]; //调用方法，获取字符串的尺寸
+
+    return labelSize.height + SOME_SPECE_FOR_OTHER_CONTROL; //返回字符串的高度，加上一些自由空间的高度或其他空间所占的高度。
+}
+</code></pre>
 
 <p>遗憾的是，AppKit里没有对应于上述调用的简便方法。这时候，苹果的文档就发挥作用了。在<a href="http://developer.apple.com/documentation/Cocoa/Conceptual/TextLayout/TextLayout.html">Text Layout Programming Guide</a>中有一段示例代码，展示了如何使用<code>NSString</code>以及一些其他的类，来实现类似的功能。下面是我自己用在NSTableView中的的一段代码，照抄了文档中的示例代码，如下：</p>
 
-<p>```objc
-&ndash; (CGFloat)tableView:(NSTableView *)tableView heightOfRow:(NSInteger)row {</p>
+<pre><code class="objc">- (CGFloat)tableView:(NSTableView *)tableView heightOfRow:(NSInteger)row {
+    NSString *statusText = [[_statusMessages objectAtIndex:row] text];
+    return [self heightForStringDrawing:statusText font:[NSFont systemFontOfSize:12] width:tableView.frame.size.width] + 8;
+}
 
-<pre><code>NSString *statusText = [[_statusMessages objectAtIndex:row] text];
-return [self heightForStringDrawing:statusText font:[NSFont systemFontOfSize:12] width:tableView.frame.size.width] + 8;
+//苹果官方文档中的示例方法
+- (CGFloat)heightForStringDrawing:(NSString *)myString font:(NSFont *)myFont width:(CGFloat)myWidth {
+    NSTextStorage *textStorage = [[NSTextStorage alloc] initWithString:myString];
+    NSTextContainer *textContainer = [[NSTextContainer alloc] initWithContainerSize: NSMakeSize(myWidth, FLT_MAX)];
+    NSLayoutManager *layoutManager = [[NSLayoutManager alloc] init];
+
+    [layoutManager addTextContainer:textContainer];
+    [textStorage addLayoutManager:layoutManager];
+    [textStorage addAttribute:NSFontAttributeName value:myFont range:NSMakeRange(0, [textStorage length])];
+    [textContainer setLineFragmentPadding:0.0];
+
+    [layoutManager glyphRangeForTextContainer:textContainer];
+    return [layoutManager usedRectForTextContainer:textContainer].size.height;
+}
 </code></pre>
-
-<p>}</p>
-
-<p>//苹果官方文档中的示例方法
-&ndash; (CGFloat)heightForStringDrawing:(NSString <em>)myString font:(NSFont </em>)myFont width:(CGFloat)myWidth {</p>
-
-<pre><code>NSTextStorage *textStorage = [[NSTextStorage alloc] initWithString:myString];
-NSTextContainer *textContainer = [[NSTextContainer alloc] initWithContainerSize: NSMakeSize(myWidth, FLT_MAX)];
-NSLayoutManager *layoutManager = [[NSLayoutManager alloc] init];
-
-[layoutManager addTextContainer:textContainer];
-[textStorage addLayoutManager:layoutManager];
-[textStorage addAttribute:NSFontAttributeName value:myFont range:NSMakeRange(0, [textStorage length])];
-[textContainer setLineFragmentPadding:0.0];
-
-[layoutManager glyphRangeForTextContainer:textContainer];
-return [layoutManager usedRectForTextContainer:textContainer].size.height;
-</code></pre>
-
-<p>}
-```</p>
 
 <p>上述代码中涉及了<code>NSTextStorage</code>，<code>NSTextContainer</code>，<code>NSLayoutManager</code>等多个比较复杂的方法，我对这些类也不是很熟悉，因此我就不详细注释了，有兴趣的同学可以查阅这些类的文档。你也可以将上述方法稍作修改，自己写一个<code>NSString</code>的Catagory，方便以后使用。你甚至可以基于上述方法，写一个/一组对应于<code>NSString(UIStringDrawing)</code>里计算字符串尺寸的快捷方法。</p>
 
@@ -96,7 +82,7 @@ return [layoutManager usedRectForTextContainer:textContainer].size.height;
 <p>问题的起源是“Cocoa Programming For Mac OS X”上一段关于<code>NSCell</code>的叙述：</p>
 
 <blockquote><p>NSControl inherits from NSView. With its graphics context, NSView is a relatively large and expensive object to create. When the NSButton class was created, the first thing someone did was to create a calculator with 10 rows and 10 columns of buttons. The performance was less than it could have been because of the 100 tiny views. Later, someone had the clever idea of moving the brains of the button into another object (not a view) and creating one big view (called an NSMatrix) that would act as the view for all 100 button brains. The class for the button brains was called NSButtonCell.<br/>
-<strong>&mdash; Chapter 17. Custom Views, “For the More Curious: Cells”</strong></p></blockquote>
+<strong>&ndash; Chapter 17. Custom Views, “For the More Curious: Cells”</strong></p></blockquote>
 
 <p>现在在此阅读这句话，我似乎已经能够基本理解，不过当时那叫一个困惑啊。为什么用Cell就比Button性能高呢？为什么Cell可以替代Button呢？</p>
 
@@ -107,8 +93,8 @@ return [layoutManager usedRectForTextContainer:textContainer].size.height;
 我的理解如下（可能并不是很精确）：</p>
 
 <blockquote><ul>
-<li><code>NSButton</code>的继承关系是：<code>NSButton</code> &ndash;> <code>NSControl</code> &ndash;> <code>NSView</code> &ndash;> <code>NSResponder</code> &ndash;> <code>NSObject</code>。应该说，是一个很长的继承链了。</li>
-<li><code>NSButtonCell</code>的继承关系是：<code>NSButtonCell</code> &ndash;> <code>NSCell</code> &ndash;> <code>NSObject</code>。</li>
+<li><code>NSButton</code>的继承关系是：<code>NSButton</code> -> <code>NSControl</code> -> <code>NSView</code> -> <code>NSResponder</code> -> <code>NSObject</code>。应该说，是一个很长的继承链了。</li>
+<li><code>NSButtonCell</code>的继承关系是：<code>NSButtonCell</code> -> <code>NSCell</code> -> <code>NSObject</code>。</li>
 </ul>
 </blockquote>
 

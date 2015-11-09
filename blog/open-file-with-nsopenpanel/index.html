@@ -85,7 +85,7 @@
   
 
 
-<time datetime="2011-03-29T00:00:00+08:00" pubdate data-updated="true">Mar 29<span>th</span>, 2011</time>
+<time datetime="2011-03-29T00:00:00+08:00" pubdate data-updated="true"></time>
         
       </p>
     
@@ -112,19 +112,19 @@
 <span class='line-number'>14</span>
 <span class='line-number'>15</span>
 <span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span><span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">showOpenPanel:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">showOpenPanel:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
 </span><span class='line'>    <span class="n">NSOpenPanel</span> <span class="o">*</span><span class="n">panel</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSOpenPanel</span> <span class="n">openPanel</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">panel</span> <span class="nl">setDirectory:</span><span class="n">NSHomeDirectory</span><span class="p">()];</span> <span class="c1">// Set panel&#39;s default directory.</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">panel</span> <span class="nl">setAllowedFileTypes:</span><span class="p">[</span><span class="n">NSImage</span> <span class="n">imageFileTypes</span><span class="p">]];</span> <span class="c1">// Set what kind of file to select.</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">panel</span> <span class="nl">setDirectory</span><span class="p">:</span><span class="n">NSHomeDirectory</span><span class="p">()];</span> <span class="c1">// Set panel&#39;s default directory.</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">panel</span> <span class="nl">setAllowedFileTypes</span><span class="p">:[</span><span class="n">NSImage</span> <span class="n">imageFileTypes</span><span class="p">]];</span> <span class="c1">// Set what kind of file to select.</span>
 </span><span class='line'>    <span class="c1">// More panel configure code.</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">panel</span> <span class="nl">beginSheetModalForWindow:</span><span class="p">[</span><span class="n">myView</span> <span class="n">window</span><span class="p">]</span> <span class="nl">completionHandler:</span> <span class="p">(</span><span class="o">^</span><span class="p">(</span><span class="n">NSInteger</span> <span class="n">result</span><span class="p">){</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">panel</span> <span class="nl">beginSheetModalForWindow</span><span class="p">:[</span><span class="n">myView</span> <span class="n">window</span><span class="p">]</span> <span class="nl">completionHandler</span><span class="p">:</span> <span class="p">(</span><span class="o">^</span><span class="p">(</span><span class="bp">NSInteger</span> <span class="n">result</span><span class="p">){</span>
 </span><span class='line'>        <span class="k">if</span><span class="p">(</span><span class="n">result</span> <span class="o">==</span> <span class="n">NSOKButton</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>            <span class="n">NSArray</span> <span class="o">*</span><span class="n">fileURLs</span> <span class="o">=</span> <span class="p">[</span><span class="n">panel</span> <span class="n">URLs</span><span class="p">];</span>
-</span><span class='line'>            <span class="n">NSImage</span> <span class="o">*</span><span class="n">image</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSImage</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithContentsOfURL:</span>
-</span><span class='line'>                              <span class="p">[</span><span class="n">fileURLs</span> <span class="nl">objectAtIndex:</span><span class="mi">0</span><span class="p">]];</span>
-</span><span class='line'>            <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%@&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">fileURLs</span> <span class="nl">objectAtIndex:</span><span class="mi">0</span><span class="p">]);</span>
+</span><span class='line'>            <span class="bp">NSArray</span> <span class="o">*</span><span class="n">fileURLs</span> <span class="o">=</span> <span class="p">[</span><span class="n">panel</span> <span class="n">URLs</span><span class="p">];</span>
+</span><span class='line'>            <span class="n">NSImage</span> <span class="o">*</span><span class="n">image</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSImage</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithContentsOfURL</span><span class="p">:</span>
+</span><span class='line'>                              <span class="p">[</span><span class="n">fileURLs</span> <span class="nl">objectAtIndex</span><span class="p">:</span><span class="mi">0</span><span class="p">]];</span>
+</span><span class='line'>            <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%@&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">fileURLs</span> <span class="nl">objectAtIndex</span><span class="p">:</span><span class="mi">0</span><span class="p">]);</span>
 </span><span class='line'>            <span class="c1">// Deal with the image.</span>
-</span><span class='line'>            <span class="p">[</span><span class="n">image</span> <span class="n">release</span><span class="p">];</span>
+</span><span class='line'>            <span class="p">[</span><span class="n">image</span> <span class="k">release</span><span class="p">];</span>
 </span><span class='line'>        <span class="p">}</span>
 </span><span class='line'>    <span class="p">})];</span>
 </span><span class='line'><span class="p">}</span>
@@ -142,13 +142,13 @@
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="mi">2011</span><span class="o">-</span><span class="mo">03</span><span class="o">-</span><span class="mi">29</span> <span class="mi">13</span><span class="o">:</span><span class="mi">49</span><span class="o">:</span><span class="mf">54.204</span> <span class="n">CustomView</span><span class="p">[</span><span class="mi">50396</span><span class="o">:</span><span class="mi">903</span><span class="p">]</span> <span class="n">In</span> <span class="n">app</span> <span class="nl">delegate:</span> <span class="mf">1.000000</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="mi">2011</span><span class="o">-</span><span class="mo">03</span><span class="o">-</span><span class="mi">29</span> <span class="mi">13</span><span class="o">:</span><span class="mi">49</span><span class="o">:</span><span class="mf">54.204</span> <span class="n">CustomView</span><span class="p">[</span><span class="mi">50396</span><span class="o">:</span><span class="mi">903</span><span class="p">]</span> <span class="n">In</span> <span class="n">app</span> <span class="nl">delegate</span><span class="p">:</span> <span class="mf">1.000000</span>
 </span><span class='line'><span class="p">[</span><span class="n">Switching</span> <span class="n">to</span> <span class="n">process</span> <span class="mi">50396</span> <span class="kr">thread</span> <span class="mh">0xad07</span><span class="p">]</span>
 </span><span class='line'><span class="p">[</span><span class="n">Switching</span> <span class="n">to</span> <span class="n">process</span> <span class="mi">50396</span> <span class="kr">thread</span> <span class="mh">0x903</span><span class="p">]</span>
 </span><span class='line'><span class="p">[</span><span class="n">Switching</span> <span class="n">to</span> <span class="n">process</span> <span class="mi">50396</span> <span class="kr">thread</span> <span class="mh">0x9633</span><span class="p">]</span>
 </span><span class='line'><span class="p">[</span><span class="n">Switching</span> <span class="n">to</span> <span class="n">process</span> <span class="mi">50396</span> <span class="kr">thread</span> <span class="mh">0x903</span><span class="p">]</span>
-</span><span class='line'><span class="mi">2011</span><span class="o">-</span><span class="mo">03</span><span class="o">-</span><span class="mi">29</span> <span class="mi">13</span><span class="o">:</span><span class="mi">50</span><span class="o">:</span><span class="mf">04.528</span> <span class="n">CustomView</span><span class="p">[</span><span class="mi">50396</span><span class="o">:</span><span class="mi">903</span><span class="p">]</span> <span class="n">x</span><span class="o">-</span><span class="n">marsedit</span><span class="o">-</span><span class="nl">filelocal:</span><span class="c1">//localhost/Users/venj/Pictures/Old%20Photo/IMG_2443.JPG</span>
-</span><span class='line'><span class="n">Program</span> <span class="n">ended</span> <span class="n">with</span> <span class="n">exit</span> <span class="nl">code:</span> <span class="mi">0</span>
+</span><span class='line'><span class="mi">2011</span><span class="o">-</span><span class="mo">03</span><span class="o">-</span><span class="mi">29</span> <span class="mi">13</span><span class="o">:</span><span class="mi">50</span><span class="o">:</span><span class="mf">04.528</span> <span class="n">CustomView</span><span class="p">[</span><span class="mi">50396</span><span class="o">:</span><span class="mi">903</span><span class="p">]</span> <span class="n">x</span><span class="o">-</span><span class="n">marsedit</span><span class="o">-</span><span class="nl">filelocal</span><span class="p">:</span><span class="c1">//localhost/Users/venj/Pictures/Old%20Photo/IMG_2443.JPG</span>
+</span><span class='line'><span class="n">Program</span> <span class="n">ended</span> <span class="n">with</span> <span class="n">exit</span> <span class="nl">code</span><span class="p">:</span> <span class="mi">0</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -179,12 +179,12 @@
   
 
 
-<time datetime="2011-03-29T00:00:00+08:00" pubdate data-updated="true">Mar 29<span>th</span>, 2011</time>
+<time datetime="2011-03-29T00:00:00+08:00" pubdate data-updated="true"></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/block/'>Block</a>, <a class='category' href='/blog/categories/grand-central-dispatch/'>Grand Central Dispatch</a>, <a class='category' href='/blog/categories/panel/'>Panel</a>
+    <a class='category' href='/blog/categories/block/'>block</a>, <a class='category' href='/blog/categories/grand-central-dispatch/'>grand central dispatch</a>, <a class='category' href='/blog/categories/panel/'>panel</a>
   
 </span>
 
@@ -230,23 +230,23 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/openurl-on-ios9/">iOS 9下使用openURL:</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/app-transportation-security/">iOS 9中的App Transport Security</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/alamofire-ssl/">让Alamofire使用自签名证书</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/disable-corestorage-on-os-x-yosemite/">禁用OS X Yosemite上的Core Storage</a>
       </li>
     
       <li class="post">
         <a href="/blog/xcode-6-color-theme-path/">Xcode 6 Color Themes (颜色主题) 的路径</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/scripty-swift/">［更新］把Swift用作脚本语言</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/view-controller-based-status-bar-style-and-uinavigationcontroller/">UINavigationController和View Controller-based状态栏风格</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
       </li>
     
   </ul>

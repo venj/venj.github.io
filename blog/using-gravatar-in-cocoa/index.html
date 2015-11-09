@@ -97,7 +97,7 @@
   
 
 
-<time datetime="2011-04-09T13:17:00+08:00" pubdate data-updated="true">Apr 9<span>th</span>, 2011</time>
+<time datetime="2011-04-09T13:17:00+08:00" pubdate data-updated="true"></time>
         
       </p>
     
@@ -126,17 +126,17 @@
 <span class='line-number'>10</span>
 <span class='line-number'>11</span>
 <span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">showGravatar:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
-</span><span class='line'>    <span class="n">NSString</span> <span class="o">*</span><span class="n">email_hash</span> <span class="o">=</span> <span class="p">[[</span><span class="n">self</span><span class="p">.</span><span class="n">emailField</span> <span class="n">stringValue</span><span class="p">]</span> <span class="n">md5</span><span class="p">];</span>
-</span><span class='line'>    <span class="n">NSString</span> <span class="o">*</span><span class="n">imageLink</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSString</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFormat:</span><span class="s">@&quot;http://www.gravatar.com/avatar/%@&quot;</span><span class="p">,</span> <span class="n">email_hash</span><span class="p">];</span>
-</span><span class='line'>    <span class="n">NSURL</span> <span class="o">*</span><span class="n">imageURL</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSURL</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithString:</span><span class="n">imageLink</span><span class="p">];</span>
-</span><span class='line'>    <span class="n">NSData</span> <span class="o">*</span><span class="n">imageData</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSData</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithContentsOfURL:</span><span class="n">imageURL</span><span class="p">];</span>
-</span><span class='line'>    <span class="n">NSImage</span> <span class="o">*</span><span class="n">image</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSImage</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithData:</span><span class="n">imageData</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">imageWell</span> <span class="nl">setImage:</span><span class="n">image</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">image</span> <span class="n">release</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">imageData</span> <span class="n">release</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">imageURL</span> <span class="n">release</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">imageLink</span> <span class="n">release</span><span class="p">];</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">showGravatar:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
+</span><span class='line'>    <span class="bp">NSString</span> <span class="o">*</span><span class="n">email_hash</span> <span class="o">=</span> <span class="p">[[</span><span class="nb">self</span><span class="p">.</span><span class="n">emailField</span> <span class="n">stringValue</span><span class="p">]</span> <span class="n">md5</span><span class="p">];</span>
+</span><span class='line'>    <span class="bp">NSString</span> <span class="o">*</span><span class="n">imageLink</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NSString</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFormat</span><span class="p">:</span><span class="s">@&quot;http://www.gravatar.com/avatar/%@&quot;</span><span class="p">,</span> <span class="n">email_hash</span><span class="p">];</span>
+</span><span class='line'>    <span class="bp">NSURL</span> <span class="o">*</span><span class="n">imageURL</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NSURL</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithString</span><span class="p">:</span><span class="n">imageLink</span><span class="p">];</span>
+</span><span class='line'>    <span class="bp">NSData</span> <span class="o">*</span><span class="n">imageData</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NSData</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithContentsOfURL</span><span class="p">:</span><span class="n">imageURL</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">NSImage</span> <span class="o">*</span><span class="n">image</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSImage</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithData</span><span class="p">:</span><span class="n">imageData</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">imageWell</span> <span class="nl">setImage</span><span class="p">:</span><span class="n">image</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">image</span> <span class="k">release</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">imageData</span> <span class="k">release</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">imageURL</span> <span class="k">release</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">imageLink</span> <span class="k">release</span><span class="p">];</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
@@ -168,12 +168,12 @@
   
 
 
-<time datetime="2011-04-09T13:17:00+08:00" pubdate data-updated="true">Apr 9<span>th</span>, 2011</time>
+<time datetime="2011-04-09T13:17:00+08:00" pubdate data-updated="true"></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/gravatar/'>Gravatar</a>
+    <a class='category' href='/blog/categories/gravatar/'>gravatar</a>
   
 </span>
 
@@ -221,23 +221,23 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/openurl-on-ios9/">iOS 9下使用openURL:</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/app-transportation-security/">iOS 9中的App Transport Security</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/alamofire-ssl/">让Alamofire使用自签名证书</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/disable-corestorage-on-os-x-yosemite/">禁用OS X Yosemite上的Core Storage</a>
       </li>
     
       <li class="post">
         <a href="/blog/xcode-6-color-theme-path/">Xcode 6 Color Themes (颜色主题) 的路径</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/scripty-swift/">［更新］把Swift用作脚本语言</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/view-controller-based-status-bar-style-and-uinavigationcontroller/">UINavigationController和View Controller-based状态栏风格</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
       </li>
     
   </ul>

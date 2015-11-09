@@ -85,7 +85,7 @@
   
 
 
-<time datetime="2011-04-16T16:12:00+08:00" pubdate data-updated="true">Apr 16<span>th</span>, 2011</time>
+<time datetime="2011-04-16T16:12:00+08:00" pubdate data-updated="true"></time>
         
       </p>
     
@@ -190,86 +190,86 @@
 <span class='line-number'>85</span>
 </pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cp">#define FANFOU_SEND_PHOTO_API @&quot;http:</span><span class="c1">//api.fanfou.com/photos/upload.json&quot;</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">sendMessage:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">sendMessage:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
 </span><span class='line'>    <span class="c1">// 创建Request对象</span>
-</span><span class='line'>    <span class="n">NSMutableURLRequest</span> <span class="o">*</span><span class="n">req</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSMutableURLRequest</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithURL:</span><span class="p">[</span><span class="n">NSURL</span> <span class="nl">URLWithString:</span><span class="n">FANFOU_SEND_PHOTO_API</span><span class="p">]</span>
-</span><span class='line'>                                                            <span class="nl">cachePolicy:</span><span class="n">NSURLRequestUseProtocolCachePolicy</span>
-</span><span class='line'>                                                        <span class="nl">timeoutInterval:</span><span class="mf">60.0</span><span class="p">];</span>
+</span><span class='line'>    <span class="bp">NSMutableURLRequest</span> <span class="o">*</span><span class="n">req</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NSMutableURLRequest</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithURL</span><span class="p">:[</span><span class="bp">NSURL</span> <span class="nl">URLWithString</span><span class="p">:</span><span class="n">FANFOU_SEND_PHOTO_API</span><span class="p">]</span>
+</span><span class='line'>                                                            <span class="nl">cachePolicy</span><span class="p">:</span><span class="n">NSURLRequestUseProtocolCachePolicy</span>
+</span><span class='line'>                                                        <span class="nl">timeoutInterval</span><span class="p">:</span><span class="mf">60.0</span><span class="p">];</span>
 </span><span class='line'>    <span class="c1">// 定义boundary</span>
-</span><span class='line'>    <span class="n">NSString</span> <span class="o">*</span><span class="n">boundary</span> <span class="o">=</span> <span class="s">@&quot;----Boundary+WhateverYouLikeToPutInHere----datatata--done&quot;</span><span class="p">;</span>
+</span><span class='line'>    <span class="bp">NSString</span> <span class="o">*</span><span class="n">boundary</span> <span class="o">=</span> <span class="s">@&quot;----Boundary+WhateverYouLikeToPutInHere----datatata--done&quot;</span><span class="p">;</span>
 </span><span class='line'>    <span class="c1">// 使用POST方法</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">req</span> <span class="nl">setHTTPMethod:</span><span class="s">@&quot;POST&quot;</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">req</span> <span class="nl">setHTTPMethod</span><span class="p">:</span><span class="s">@&quot;POST&quot;</span><span class="p">];</span>
 </span><span class='line'>    <span class="c1">// 设置Content-Type</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">req</span> <span class="nl">setValue:</span><span class="p">[</span><span class="n">NSString</span> <span class="nl">stringWithFormat:</span><span class="s">@&quot;multipart/form-data; boundary=%@&quot;</span><span class="p">,</span> <span class="n">boundary</span><span class="p">,</span> <span class="nb">nil</span><span class="p">]</span> <span class="nl">forHTTPHeaderField:</span><span class="s">@&quot;Content-Type&quot;</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">req</span> <span class="nl">setValue</span><span class="p">:[</span><span class="bp">NSString</span> <span class="nl">stringWithFormat</span><span class="p">:</span><span class="s">@&quot;multipart/form-data; boundary=%@&quot;</span><span class="p">,</span> <span class="n">boundary</span><span class="p">,</span> <span class="nb">nil</span><span class="p">]</span> <span class="nl">forHTTPHeaderField</span><span class="p">:</span><span class="s">@&quot;Content-Type&quot;</span><span class="p">];</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="c1">// 把图片变成data。</span>
-</span><span class='line'>    <span class="n">NSImage</span> <span class="o">*</span><span class="n">theImage</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">imageView</span> <span class="n">image</span><span class="p">];</span>
-</span><span class='line'>    <span class="n">NSBitmapImageRep</span> <span class="o">*</span><span class="n">bitmap</span> <span class="o">=</span> <span class="p">[[</span><span class="n">theImage</span> <span class="n">representations</span><span class="p">]</span> <span class="nl">objectAtIndex:</span><span class="mi">0</span><span class="p">];</span>
-</span><span class='line'>    <span class="n">NSData</span> <span class="o">*</span><span class="n">imageData</span> <span class="o">=</span> <span class="p">[</span><span class="n">bitmap</span> <span class="nl">representationUsingType:</span><span class="n">NSJPEGFileType</span> <span class="nl">properties:</span> <span class="nb">nil</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">NSImage</span> <span class="o">*</span><span class="n">theImage</span> <span class="o">=</span> <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">imageView</span> <span class="n">image</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">NSBitmapImageRep</span> <span class="o">*</span><span class="n">bitmap</span> <span class="o">=</span> <span class="p">[[</span><span class="n">theImage</span> <span class="n">representations</span><span class="p">]</span> <span class="nl">objectAtIndex</span><span class="p">:</span><span class="mi">0</span><span class="p">];</span>
+</span><span class='line'>    <span class="bp">NSData</span> <span class="o">*</span><span class="n">imageData</span> <span class="o">=</span> <span class="p">[</span><span class="n">bitmap</span> <span class="nl">representationUsingType</span><span class="p">:</span><span class="n">NSJPEGFileType</span> <span class="nl">properties</span><span class="p">:</span> <span class="nb">nil</span><span class="p">];</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="c1">// 需要POST的键值对</span>
-</span><span class='line'>    <span class="n">NSDictionary</span> <span class="o">*</span><span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSDictionary</span> <span class="nl">dictionaryWithObjectsAndKeys:</span><span class="p">[</span><span class="n">messageField</span> <span class="n">string</span><span class="p">],</span> <span class="s">@&quot;status&quot;</span><span class="p">,</span> <span class="n">imageData</span><span class="p">,</span> <span class="s">@&quot;photo&quot;</span><span class="p">,</span> <span class="nb">nil</span><span class="p">];</span>
+</span><span class='line'>    <span class="bp">NSDictionary</span> <span class="o">*</span><span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSDictionary</span> <span class="nl">dictionaryWithObjectsAndKeys</span><span class="p">:[</span><span class="n">messageField</span> <span class="n">string</span><span class="p">],</span> <span class="s">@&quot;status&quot;</span><span class="p">,</span> <span class="n">imageData</span><span class="p">,</span> <span class="s">@&quot;photo&quot;</span><span class="p">,</span> <span class="nb">nil</span><span class="p">];</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="c1">// 初始化POST Data</span>
-</span><span class='line'>    <span class="n">NSMutableData</span> <span class="o">*</span><span class="n">d</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSMutableData</span> <span class="n">data</span><span class="p">];</span>
+</span><span class='line'>    <span class="bp">NSMutableData</span> <span class="o">*</span><span class="n">d</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSMutableData</span> <span class="n">data</span><span class="p">];</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="c1">// 遍历键值对，将其转换成NSData</span>
-</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="n">key</span> <span class="k">in</span> <span class="p">[</span><span class="n">values</span> <span class="n">allKeys</span><span class="p">])</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="n">key</span> <span class="k">in</span> <span class="p">[</span><span class="n">values</span> <span class="n">allKeys</span><span class="p">])</span> <span class="p">{</span>
 </span><span class='line'>
 </span><span class='line'>        <span class="c1">// Append一个Boundary</span>
-</span><span class='line'>        <span class="p">[</span><span class="n">d</span> <span class="nl">appendData:</span><span class="p">[[</span><span class="n">NSString</span> <span class="nl">stringWithFormat:</span><span class="s">@&quot;</span><span class="se">\r\n</span><span class="s">--%@</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">boundary</span><span class="p">]</span> <span class="nl">dataUsingEncoding:</span><span class="n">NSUTF8StringEncoding</span><span class="p">]];</span>
+</span><span class='line'>        <span class="p">[</span><span class="n">d</span> <span class="nl">appendData</span><span class="p">:[[</span><span class="bp">NSString</span> <span class="nl">stringWithFormat</span><span class="p">:</span><span class="s">@&quot;</span><span class="se">\r\n</span><span class="s">--%@</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">boundary</span><span class="p">]</span> <span class="nl">dataUsingEncoding</span><span class="p">:</span><span class="n">NSUTF8StringEncoding</span><span class="p">]];</span>
 </span><span class='line'>
-</span><span class='line'>        <span class="kt">id</span> <span class="n">currentValue</span> <span class="o">=</span> <span class="p">[</span><span class="n">values</span> <span class="nl">objectForKey:</span><span class="n">key</span><span class="p">];</span>
+</span><span class='line'>        <span class="kt">id</span> <span class="n">currentValue</span> <span class="o">=</span> <span class="p">[</span><span class="n">values</span> <span class="nl">objectForKey</span><span class="p">:</span><span class="n">key</span><span class="p">];</span>
 </span><span class='line'>
-</span><span class='line'>        <span class="k">if</span><span class="p">(</span> <span class="p">[</span><span class="n">currentValue</span> <span class="nl">isKindOfClass:</span><span class="p">[</span><span class="n">NSData</span> <span class="n">class</span><span class="p">]]</span> <span class="o">&amp;&amp;</span> <span class="p">[</span><span class="n">NSImageRep</span> <span class="nl">imageRepClassForData:</span><span class="n">currentValue</span><span class="p">]</span> <span class="o">!=</span> <span class="nb">nil</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">if</span><span class="p">(</span> <span class="p">[</span><span class="n">currentValue</span> <span class="nl">isKindOfClass</span><span class="p">:[</span><span class="bp">NSData</span> <span class="k">class</span><span class="p">]]</span> <span class="o">&amp;&amp;</span> <span class="p">[</span><span class="n">NSImageRep</span> <span class="nl">imageRepClassForData</span><span class="p">:</span><span class="n">currentValue</span><span class="p">]</span> <span class="o">!=</span> <span class="nb">nil</span> <span class="p">)</span> <span class="p">{</span>
 </span><span class='line'>            <span class="c1">// 如果是图片对象的处理方法。</span>
 </span><span class='line'>            <span class="c1">// 设置Content-Disposition，这里设置图片对应的key的名字</span>
-</span><span class='line'>            <span class="p">[</span><span class="n">d</span> <span class="nl">appendData:</span><span class="p">[[</span><span class="n">NSString</span> <span class="nl">stringWithFormat:</span><span class="s">@&quot;Content-Disposition: form-data; name=</span><span class="se">\&quot;</span><span class="s">%@</span><span class="se">\&quot;</span><span class="s">; filename=</span><span class="se">\&quot;</span><span class="s">image.png</span><span class="se">\&quot;\r\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">key</span><span class="p">]</span>
-</span><span class='line'>                           <span class="nl">dataUsingEncoding:</span><span class="n">NSUTF8StringEncoding</span><span class="p">]];</span>
+</span><span class='line'>            <span class="p">[</span><span class="n">d</span> <span class="nl">appendData</span><span class="p">:[[</span><span class="bp">NSString</span> <span class="nl">stringWithFormat</span><span class="p">:</span><span class="s">@&quot;Content-Disposition: form-data; name=</span><span class="se">\&quot;</span><span class="s">%@</span><span class="se">\&quot;</span><span class="s">; filename=</span><span class="se">\&quot;</span><span class="s">image.png</span><span class="se">\&quot;\r\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">key</span><span class="p">]</span>
+</span><span class='line'>                           <span class="nl">dataUsingEncoding</span><span class="p">:</span><span class="n">NSUTF8StringEncoding</span><span class="p">]];</span>
 </span><span class='line'>            <span class="c1">// 设置图片的Content-Type</span>
-</span><span class='line'>            <span class="p">[</span><span class="n">d</span> <span class="nl">appendData:</span><span class="p">[</span><span class="s">@&quot;Content-Type: image/png</span><span class="se">\r\n</span><span class="s">&quot;</span> <span class="nl">dataUsingEncoding:</span><span class="n">NSASCIIStringEncoding</span><span class="p">]];</span>
+</span><span class='line'>            <span class="p">[</span><span class="n">d</span> <span class="nl">appendData</span><span class="p">:[</span><span class="s">@&quot;Content-Type: image/png</span><span class="se">\r\n</span><span class="s">&quot;</span> <span class="nl">dataUsingEncoding</span><span class="p">:</span><span class="n">NSASCIIStringEncoding</span><span class="p">]];</span>
 </span><span class='line'>            <span class="c1">// 设置传输编码为二进制</span>
-</span><span class='line'>            <span class="p">[</span><span class="n">d</span> <span class="nl">appendData:</span><span class="p">[</span><span class="s">@&quot;Content-Transfer-Encoding: binary</span><span class="se">\r\n\r\n</span><span class="s">&quot;</span> <span class="nl">dataUsingEncoding:</span><span class="n">NSASCIIStringEncoding</span><span class="p">]];</span>
+</span><span class='line'>            <span class="p">[</span><span class="n">d</span> <span class="nl">appendData</span><span class="p">:[</span><span class="s">@&quot;Content-Transfer-Encoding: binary</span><span class="se">\r\n\r\n</span><span class="s">&quot;</span> <span class="nl">dataUsingEncoding</span><span class="p">:</span><span class="n">NSASCIIStringEncoding</span><span class="p">]];</span>
 </span><span class='line'>            <span class="c1">// Append图片</span>
-</span><span class='line'>            <span class="p">[</span><span class="n">d</span> <span class="nl">appendData:</span><span class="n">currentValue</span><span class="p">];</span>
+</span><span class='line'>            <span class="p">[</span><span class="n">d</span> <span class="nl">appendData</span><span class="p">:</span><span class="n">currentValue</span><span class="p">];</span>
 </span><span class='line'>        <span class="p">}</span>
 </span><span class='line'>        <span class="k">else</span> <span class="p">{</span>
 </span><span class='line'>            <span class="c1">// 字符串值的处理方法</span>
 </span><span class='line'>            <span class="c1">// Append一个Boundary</span>
-</span><span class='line'>            <span class="p">[</span><span class="n">d</span> <span class="nl">appendData:</span><span class="p">[[</span><span class="n">NSString</span> <span class="nl">stringWithFormat:</span><span class="s">@&quot;</span><span class="se">\r\n</span><span class="s">--%@</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">boundary</span><span class="p">]</span> <span class="nl">dataUsingEncoding:</span><span class="n">NSUTF8StringEncoding</span><span class="p">]];</span>
+</span><span class='line'>            <span class="p">[</span><span class="n">d</span> <span class="nl">appendData</span><span class="p">:[[</span><span class="bp">NSString</span> <span class="nl">stringWithFormat</span><span class="p">:</span><span class="s">@&quot;</span><span class="se">\r\n</span><span class="s">--%@</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">boundary</span><span class="p">]</span> <span class="nl">dataUsingEncoding</span><span class="p">:</span><span class="n">NSUTF8StringEncoding</span><span class="p">]];</span>
 </span><span class='line'>            <span class="c1">// 设置字符串键</span>
-</span><span class='line'>            <span class="p">[</span><span class="n">d</span> <span class="nl">appendData:</span><span class="p">[</span><span class="s">@&quot;Content-Disposition: form-data; name=</span><span class="se">\&quot;</span><span class="s">status</span><span class="se">\&quot;\r\n\r\n</span><span class="s">&quot;</span> <span class="nl">dataUsingEncoding:</span><span class="n">NSUTF8StringEncoding</span><span class="p">]];</span>
+</span><span class='line'>            <span class="p">[</span><span class="n">d</span> <span class="nl">appendData</span><span class="p">:[</span><span class="s">@&quot;Content-Disposition: form-data; name=</span><span class="se">\&quot;</span><span class="s">status</span><span class="se">\&quot;\r\n\r\n</span><span class="s">&quot;</span> <span class="nl">dataUsingEncoding</span><span class="p">:</span><span class="n">NSUTF8StringEncoding</span><span class="p">]];</span>
 </span><span class='line'>            <span class="c1">// 设置字符串值</span>
-</span><span class='line'>            <span class="p">[</span><span class="n">d</span> <span class="nl">appendData:</span><span class="p">[[</span><span class="n">NSString</span> <span class="nl">stringWithFormat:</span><span class="s">@&quot;%@&quot;</span><span class="p">,</span> <span class="n">currentValue</span><span class="p">]</span> <span class="nl">dataUsingEncoding:</span><span class="n">NSUTF8StringEncoding</span><span class="p">]];</span>
+</span><span class='line'>            <span class="p">[</span><span class="n">d</span> <span class="nl">appendData</span><span class="p">:[[</span><span class="bp">NSString</span> <span class="nl">stringWithFormat</span><span class="p">:</span><span class="s">@&quot;%@&quot;</span><span class="p">,</span> <span class="n">currentValue</span><span class="p">]</span> <span class="nl">dataUsingEncoding</span><span class="p">:</span><span class="n">NSUTF8StringEncoding</span><span class="p">]];</span>
 </span><span class='line'>        <span class="p">}</span>
 </span><span class='line'>    <span class="p">}</span>
 </span><span class='line'>    <span class="c1">// 最后Append一个Boundary</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">d</span> <span class="nl">appendData:</span><span class="p">[[</span><span class="n">NSString</span> <span class="nl">stringWithFormat:</span><span class="s">@&quot;</span><span class="se">\r\n</span><span class="s">--%@--</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">boundary</span><span class="p">]</span> <span class="nl">dataUsingEncoding:</span><span class="n">NSUTF8StringEncoding</span><span class="p">]];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">d</span> <span class="nl">appendData</span><span class="p">:[[</span><span class="bp">NSString</span> <span class="nl">stringWithFormat</span><span class="p">:</span><span class="s">@&quot;</span><span class="se">\r\n</span><span class="s">--%@--</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">boundary</span><span class="p">]</span> <span class="nl">dataUsingEncoding</span><span class="p">:</span><span class="n">NSUTF8StringEncoding</span><span class="p">]];</span>
 </span><span class='line'>    <span class="c1">// 设置数据为请求的Body</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">req</span> <span class="nl">setHTTPBody:</span><span class="n">d</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">req</span> <span class="nl">setHTTPBody</span><span class="p">:</span><span class="n">d</span><span class="p">];</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="c1">// 建立一个连接，用来发送请求，并且设置delegate为self，这里主要用来处理BasicAuth</span>
-</span><span class='line'>    <span class="n">NSURLConnection</span> <span class="o">*</span><span class="n">theConnection</span><span class="o">=</span><span class="p">[[</span><span class="n">NSURLConnection</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithRequest:</span><span class="n">req</span> <span class="nl">delegate:</span><span class="n">self</span><span class="p">];</span>
+</span><span class='line'>    <span class="bp">NSURLConnection</span> <span class="o">*</span><span class="n">theConnection</span><span class="o">=</span><span class="p">[[</span><span class="bp">NSURLConnection</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithRequest</span><span class="p">:</span><span class="n">req</span> <span class="nl">delegate</span><span class="p">:</span><span class="nb">self</span><span class="p">];</span>
 </span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">theConnection</span><span class="p">)</span> <span class="p">{</span>
 </span><span class='line'>        <span class="c1">// 处理连接成功</span>
 </span><span class='line'>    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
 </span><span class='line'>        <span class="c1">// 处理链接失败</span>
 </span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">req</span> <span class="n">release</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">req</span> <span class="k">release</span><span class="p">];</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
 </span><span class='line'><span class="c1">// NSURLConnection的Delegate方法，用来处理Basic Auth。</span>
-</span><span class='line'> <span class="o">-</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nl">connection:</span><span class="p">(</span><span class="n">NSURLConnection</span> <span class="o">*</span><span class="p">)</span><span class="n">connection</span> <span class="nl">didReceiveAuthenticationChallenge:</span><span class="p">(</span><span class="n">NSURLAuthenticationChallenge</span> <span class="o">*</span><span class="p">)</span><span class="n">challenge</span>
+</span><span class='line'> <span class="o">-</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nl">connection</span><span class="p">:(</span><span class="bp">NSURLConnection</span> <span class="o">*</span><span class="p">)</span><span class="n">connection</span> <span class="nl">didReceiveAuthenticationChallenge</span><span class="p">:(</span><span class="bp">NSURLAuthenticationChallenge</span> <span class="o">*</span><span class="p">)</span><span class="n">challenge</span>
 </span><span class='line'><span class="p">{</span>
 </span><span class='line'>    <span class="k">if</span> <span class="p">([</span><span class="n">challenge</span> <span class="n">previousFailureCount</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="n">NSURLCredential</span> <span class="o">*</span><span class="n">newCredential</span><span class="p">;</span>
-</span><span class='line'>        <span class="n">newCredential</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSURLCredential</span> <span class="nl">credentialWithUser:</span><span class="s">@&quot;YOUR_USER_NAME&quot;</span>
-</span><span class='line'>                                                   <span class="nl">password:</span><span class="s">@&quot;YOUR_PASSWORD&quot;</span>
-</span><span class='line'>                                                <span class="nl">persistence:</span><span class="n">NSURLCredentialPersistenceNone</span><span class="p">];</span>
-</span><span class='line'>        <span class="p">[[</span><span class="n">challenge</span> <span class="n">sender</span><span class="p">]</span> <span class="nl">useCredential:</span><span class="n">newCredential</span>
-</span><span class='line'>               <span class="nl">forAuthenticationChallenge:</span><span class="n">challenge</span><span class="p">];</span>
+</span><span class='line'>        <span class="bp">NSURLCredential</span> <span class="o">*</span><span class="n">newCredential</span><span class="p">;</span>
+</span><span class='line'>        <span class="n">newCredential</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSURLCredential</span> <span class="nl">credentialWithUser</span><span class="p">:</span><span class="s">@&quot;YOUR_USER_NAME&quot;</span>
+</span><span class='line'>                                                   <span class="nl">password</span><span class="p">:</span><span class="s">@&quot;YOUR_PASSWORD&quot;</span>
+</span><span class='line'>                                                <span class="nl">persistence</span><span class="p">:</span><span class="n">NSURLCredentialPersistenceNone</span><span class="p">];</span>
+</span><span class='line'>        <span class="p">[[</span><span class="n">challenge</span> <span class="n">sender</span><span class="p">]</span> <span class="nl">useCredential</span><span class="p">:</span><span class="n">newCredential</span>
+</span><span class='line'>               <span class="nl">forAuthenticationChallenge</span><span class="p">:</span><span class="n">challenge</span><span class="p">];</span>
 </span><span class='line'>    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-</span><span class='line'>        <span class="p">[[</span><span class="n">challenge</span> <span class="n">sender</span><span class="p">]</span> <span class="nl">cancelAuthenticationChallenge:</span><span class="n">challenge</span><span class="p">];</span>
+</span><span class='line'>        <span class="p">[[</span><span class="n">challenge</span> <span class="n">sender</span><span class="p">]</span> <span class="nl">cancelAuthenticationChallenge</span><span class="p">:</span><span class="n">challenge</span><span class="p">];</span>
 </span><span class='line'>        <span class="c1">// 处理认证失败</span>
 </span><span class='line'>    <span class="p">}</span>
 </span><span class='line'><span class="p">}</span>
@@ -303,12 +303,12 @@
   
 
 
-<time datetime="2011-04-16T16:12:00+08:00" pubdate data-updated="true">Apr 16<span>th</span>, 2011</time>
+<time datetime="2011-04-16T16:12:00+08:00" pubdate data-updated="true"></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/asihttprequest/'>ASIHTTPRequest,</a>, <a class='category' href='/blog/categories/nsmutablerequest/'>NSMutableRequest</a>
+    <a class='category' href='/blog/categories/asihttprequest/'>asihttprequest,</a>, <a class='category' href='/blog/categories/nsmutablerequest/'>nsmutablerequest</a>
   
 </span>
 
@@ -356,23 +356,23 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/openurl-on-ios9/">iOS 9下使用openURL:</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/app-transportation-security/">iOS 9中的App Transport Security</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/alamofire-ssl/">让Alamofire使用自签名证书</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/disable-corestorage-on-os-x-yosemite/">禁用OS X Yosemite上的Core Storage</a>
       </li>
     
       <li class="post">
         <a href="/blog/xcode-6-color-theme-path/">Xcode 6 Color Themes (颜色主题) 的路径</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/scripty-swift/">［更新］把Swift用作脚本语言</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/view-controller-based-status-bar-style-and-uinavigationcontroller/">UINavigationController和View Controller-based状态栏风格</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
       </li>
     
   </ul>

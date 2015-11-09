@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: iTunes | Cocoa学习]]></title>
+  <title><![CDATA[Category: Itunes | Cocoa学习]]></title>
   <link href="http://venj.github.io/blog/categories/itunes/atom.xml" rel="self"/>
   <link href="http://venj.github.io/"/>
-  <updated>2015-02-01T14:40:20+08:00</updated>
+  <updated>2015-11-09T20:47:16+08:00</updated>
   <id>http://venj.github.io/</id>
   <author>
     <name><![CDATA[venj]]></name>
@@ -36,23 +36,16 @@
 
 <p>然后在程序中测试文件有没有成功被程序识别：</p>
 
-<p>``` objc
-NSFileManager <em>manager = [NSFileManager defaultManager];
-NSString </em>dbPath = [[NSHomeDirectory() stringByAppendingPathComponent:@&ldquo;Documents&rdquo;] stringByAppendingPathComponent:@&ldquo;db.sqlite&rdquo;];</p>
+<pre><code class="objc">NSFileManager *manager = [NSFileManager defaultManager];
+NSString *dbPath = [[NSHomeDirectory() stringByAppendingPathComponent:@"Documents"] stringByAppendingPathComponent:@"db.sqlite"];
 
-<p>if ([manager fileExistsAtPath:dbPath]) {</p>
-
-<pre><code>self.navigationItem.title = @"Ready To Go";
+if ([manager fileExistsAtPath:dbPath]) {
+    self.navigationItem.title = @"Ready To Go";
+}
+else {
+    self.navigationItem.title = @"No DB File";
+}
 </code></pre>
-
-<p>}
-else {</p>
-
-<pre><code>self.navigationItem.title = @"No DB File";
-</code></pre>
-
-<p>}
-```</p>
 
 <p>下面是程序在添加文件前后的运行情况：</p>
 

@@ -85,7 +85,7 @@
   
 
 
-<time datetime="2012-02-29T15:08:00+08:00" pubdate data-updated="true">Feb 29<span>th</span>, 2012</time>
+<time datetime="2012-02-29T15:08:00+08:00" pubdate data-updated="true"></time>
         
       </p>
     
@@ -111,13 +111,13 @@
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
 <span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">if</span> <span class="p">([</span><span class="n">image</span> <span class="nl">respondsToSelector:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">resizableImageWithCapInsets:</span><span class="p">)])</span> <span class="p">{</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">if</span> <span class="p">([</span><span class="n">image</span> <span class="nl">respondsToSelector</span><span class="p">:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">resizableImageWithCapInsets</span><span class="p">:)])</span> <span class="p">{</span>
 </span><span class='line'>    <span class="c1">// iOS 5中的方法。</span>
-</span><span class='line'>    <span class="n">buttonImage</span> <span class="o">=</span> <span class="p">[</span><span class="n">image</span> <span class="nl">resizableImageWithCapInsets:</span><span class="n">UIEdgeInsetsMake</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">leftcap</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">rightcap</span><span class="p">)];</span>
+</span><span class='line'>    <span class="n">buttonImage</span> <span class="o">=</span> <span class="p">[</span><span class="n">image</span> <span class="nl">resizableImageWithCapInsets</span><span class="p">:</span><span class="n">UIEdgeInsetsMake</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">leftcap</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">rightcap</span><span class="p">)];</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'><span class="k">else</span> <span class="p">{</span>
 </span><span class='line'>    <span class="c1">// iOS 4-中的方法。该方法在iOS 5中已经标注为“Depreciated”。</span>
-</span><span class='line'>    <span class="n">buttonImage</span> <span class="o">=</span> <span class="p">[</span><span class="n">image</span> <span class="nl">stretchableImageWithLeftCapWidth:</span><span class="n">leftcap</span> <span class="nl">topCapHeight:</span><span class="mi">0</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">buttonImage</span> <span class="o">=</span> <span class="p">[</span><span class="n">image</span> <span class="nl">stretchableImageWithLeftCapWidth</span><span class="p">:</span><span class="n">leftcap</span> <span class="nl">topCapHeight</span><span class="p">:</span><span class="mi">0</span><span class="p">];</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
@@ -156,34 +156,34 @@
 <span class='line-number'>28</span>
 <span class='line-number'>29</span>
 </pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// 用来被拉伸的图片</span>
-</span><span class='line'><span class="n">UIImage</span> <span class="o">*</span><span class="n">originalImage</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIImage</span> <span class="nl">imageNamed:</span><span class="s">@&quot;backButton&quot;</span><span class="p">];</span>
-</span><span class='line'><span class="n">UIImage</span> <span class="o">*</span><span class="n">buttonImage</span><span class="p">;</span>
+</span><span class='line'><span class="bp">UIImage</span> <span class="o">*</span><span class="n">originalImage</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIImage</span> <span class="nl">imageNamed</span><span class="p">:</span><span class="s">@&quot;backButton&quot;</span><span class="p">];</span>
+</span><span class='line'><span class="bp">UIImage</span> <span class="o">*</span><span class="n">buttonImage</span><span class="p">;</span>
 </span><span class='line'><span class="c1">// 拉伸图片</span>
-</span><span class='line'><span class="k">if</span> <span class="p">([[</span><span class="n">UIImage</span> <span class="n">class</span><span class="p">]</span> <span class="nl">respondsToSelector:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">resizableImageWithCapInsets:</span><span class="p">)])</span> <span class="p">{</span>
-</span><span class='line'>    <span class="n">buttonImage</span> <span class="o">=</span> <span class="p">[</span><span class="n">originalImage</span> <span class="nl">resizableImageWithCapInsets:</span><span class="n">UIEdgeInsetsMake</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">8</span><span class="p">)];</span>
+</span><span class='line'><span class="k">if</span> <span class="p">([[</span><span class="bp">UIImage</span> <span class="k">class</span><span class="p">]</span> <span class="nl">respondsToSelector</span><span class="p">:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">resizableImageWithCapInsets</span><span class="p">:)])</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">buttonImage</span> <span class="o">=</span> <span class="p">[</span><span class="n">originalImage</span> <span class="nl">resizableImageWithCapInsets</span><span class="p">:</span><span class="n">UIEdgeInsetsMake</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">8</span><span class="p">)];</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'><span class="k">else</span> <span class="p">{</span>
-</span><span class='line'>    <span class="n">buttonImage</span> <span class="o">=</span> <span class="p">[</span><span class="n">originalImage</span> <span class="nl">stretchableImageWithLeftCapWidth:</span><span class="mi">13</span> <span class="nl">topCapHeight:</span><span class="mi">0</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">buttonImage</span> <span class="o">=</span> <span class="p">[</span><span class="n">originalImage</span> <span class="nl">stretchableImageWithLeftCapWidth</span><span class="p">:</span><span class="mi">13</span> <span class="nl">topCapHeight</span><span class="p">:</span><span class="mi">0</span><span class="p">];</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'><span class="c1">// 创建自定义按钮</span>
-</span><span class='line'><span class="n">UIButton</span> <span class="o">*</span><span class="n">backButton</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIButton</span> <span class="nl">buttonWithType:</span><span class="n">UIButtonTypeCustom</span><span class="p">];</span>
-</span><span class='line'><span class="p">[</span><span class="n">backButton</span> <span class="nl">setBackgroundImage:</span><span class="n">buttonImage</span> <span class="nl">forState:</span><span class="n">UIControlStateNormal</span><span class="p">];</span>
-</span><span class='line'><span class="n">NSString</span> <span class="o">*</span><span class="n">title</span> <span class="o">=</span> <span class="s">@&quot;Back&quot;</span><span class="p">;</span>
-</span><span class='line'><span class="p">[</span><span class="n">backButton</span> <span class="nl">setTitle:</span><span class="n">title</span> <span class="nl">forState:</span><span class="n">UIControlStateNormal</span><span class="p">];</span>
-</span><span class='line'><span class="n">UIFont</span> <span class="o">*</span><span class="n">font</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIFont</span> <span class="nl">boldSystemFontOfSize:</span><span class="mi">12</span><span class="p">];</span>
+</span><span class='line'><span class="bp">UIButton</span> <span class="o">*</span><span class="n">backButton</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIButton</span> <span class="nl">buttonWithType</span><span class="p">:</span><span class="n">UIButtonTypeCustom</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="n">backButton</span> <span class="nl">setBackgroundImage</span><span class="p">:</span><span class="n">buttonImage</span> <span class="nl">forState</span><span class="p">:</span><span class="n">UIControlStateNormal</span><span class="p">];</span>
+</span><span class='line'><span class="bp">NSString</span> <span class="o">*</span><span class="n">title</span> <span class="o">=</span> <span class="s">@&quot;Back&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="p">[</span><span class="n">backButton</span> <span class="nl">setTitle</span><span class="p">:</span><span class="n">title</span> <span class="nl">forState</span><span class="p">:</span><span class="n">UIControlStateNormal</span><span class="p">];</span>
+</span><span class='line'><span class="bp">UIFont</span> <span class="o">*</span><span class="n">font</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIFont</span> <span class="nl">boldSystemFontOfSize</span><span class="p">:</span><span class="mi">12</span><span class="p">];</span>
 </span><span class='line'><span class="n">backButton</span><span class="p">.</span><span class="n">titleLabel</span><span class="p">.</span><span class="n">font</span> <span class="o">=</span> <span class="n">font</span><span class="p">;</span>
-</span><span class='line'><span class="n">CGSize</span> <span class="n">labelSize</span> <span class="o">=</span> <span class="p">[</span><span class="n">title</span> <span class="nl">sizeWithFont:</span><span class="n">font</span><span class="p">];</span>
+</span><span class='line'><span class="bp">CGSize</span> <span class="n">labelSize</span> <span class="o">=</span> <span class="p">[</span><span class="n">title</span> <span class="nl">sizeWithFont</span><span class="p">:</span><span class="n">font</span><span class="p">];</span>
 </span><span class='line'><span class="c1">// 模拟系统按钮，设置文字阴影</span>
-</span><span class='line'><span class="n">backButton</span><span class="p">.</span><span class="n">titleLabel</span><span class="p">.</span><span class="n">shadowColor</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIColor</span> <span class="n">grayColor</span><span class="p">];</span>
+</span><span class='line'><span class="n">backButton</span><span class="p">.</span><span class="n">titleLabel</span><span class="p">.</span><span class="n">shadowColor</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIColor</span> <span class="n">grayColor</span><span class="p">];</span>
 </span><span class='line'><span class="n">backButton</span><span class="p">.</span><span class="n">titleLabel</span><span class="p">.</span><span class="n">shadowOffset</span> <span class="o">=</span> <span class="n">CGSizeMake</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">);</span>
 </span><span class='line'><span class="c1">// 设置按钮的Frame，宽度为文字的宽度加上拉伸图宽度的和</span>
 </span><span class='line'><span class="n">backButton</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">CGRectMake</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">labelSize</span><span class="p">.</span><span class="n">width</span> <span class="o">+</span> <span class="n">buttonImage</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="n">buttonImage</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">);</span>
 </span><span class='line'><span class="c1">// 设置按钮的target和action</span>
-</span><span class='line'><span class="p">[</span><span class="n">backButton</span> <span class="nl">addTarget:</span><span class="n">self</span> <span class="nl">action:</span><span class="k">@selector</span><span class="p">(</span><span class="n">back</span><span class="p">)</span>
-</span><span class='line'>     <span class="nl">forControlEvents:</span><span class="n">UIControlEventTouchUpInside</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="n">backButton</span> <span class="nl">addTarget</span><span class="p">:</span><span class="nb">self</span> <span class="nl">action</span><span class="p">:</span><span class="k">@selector</span><span class="p">(</span><span class="n">back</span><span class="p">)</span>
+</span><span class='line'>     <span class="nl">forControlEvents</span><span class="p">:</span><span class="n">UIControlEventTouchUpInside</span><span class="p">];</span>
 </span><span class='line'><span class="c1">//创建UIBarButtonItem</span>
-</span><span class='line'><span class="n">self</span><span class="p">.</span><span class="n">navigationItem</span><span class="p">.</span><span class="n">leftBarButtonItem</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIBarButtonItem</span> <span class="n">alloc</span><span class="p">]</span>
-</span><span class='line'>                                         <span class="nl">initWithCustomView:</span><span class="n">backButton</span><span class="p">];</span>
+</span><span class='line'><span class="nb">self</span><span class="p">.</span><span class="n">navigationItem</span><span class="p">.</span><span class="n">leftBarButtonItem</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UIBarButtonItem</span> <span class="n">alloc</span><span class="p">]</span>
+</span><span class='line'>                                         <span class="nl">initWithCustomView</span><span class="p">:</span><span class="n">backButton</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -191,8 +191,8 @@
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">VCTranslucentBarButtonItem</span> <span class="o">*</span><span class="n">item</span> <span class="o">=</span> <span class="p">[[</span><span class="n">VCTranslucentBarButtonItem</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithType:</span><span class="n">VCTranslucentBarButtonItemTypeBackward</span> <span class="nl">title:</span><span class="s">@&quot;Test Button&quot;</span> <span class="nl">target:</span><span class="n">self</span> <span class="nl">action:</span><span class="k">@selector</span><span class="p">(</span><span class="n">buttonClicked</span><span class="p">)];</span>
-</span><span class='line'><span class="n">self</span><span class="p">.</span><span class="n">navigationItem</span><span class="p">.</span><span class="n">leftBarButtonItem</span> <span class="o">=</span> <span class="n">item</span><span class="p">;</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">VCTranslucentBarButtonItem</span> <span class="o">*</span><span class="n">item</span> <span class="o">=</span> <span class="p">[[</span><span class="n">VCTranslucentBarButtonItem</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithType</span><span class="p">:</span><span class="n">VCTranslucentBarButtonItemTypeBackward</span> <span class="nl">title</span><span class="p">:</span><span class="s">@&quot;Test Button&quot;</span> <span class="nl">target</span><span class="p">:</span><span class="nb">self</span> <span class="nl">action</span><span class="p">:</span><span class="k">@selector</span><span class="p">(</span><span class="n">buttonClicked</span><span class="p">)];</span>
+</span><span class='line'><span class="nb">self</span><span class="p">.</span><span class="n">navigationItem</span><span class="p">.</span><span class="n">leftBarButtonItem</span> <span class="o">=</span> <span class="n">item</span><span class="p">;</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -231,12 +231,12 @@
   
 
 
-<time datetime="2012-02-29T15:08:00+08:00" pubdate data-updated="true">Feb 29<span>th</span>, 2012</time>
+<time datetime="2012-02-29T15:08:00+08:00" pubdate data-updated="true"></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/uibarbuttonitem/'>UIBarButtonItem</a>, <a class='category' href='/blog/categories/uinavigationcontroller/'>UINavigationController</a>
+    <a class='category' href='/blog/categories/uibarbuttonitem/'>uibarbuttonitem</a>, <a class='category' href='/blog/categories/uinavigationcontroller/'>uinavigationcontroller</a>
   
 </span>
 
@@ -284,23 +284,23 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/openurl-on-ios9/">iOS 9下使用openURL:</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/app-transportation-security/">iOS 9中的App Transport Security</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/alamofire-ssl/">让Alamofire使用自签名证书</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/disable-corestorage-on-os-x-yosemite/">禁用OS X Yosemite上的Core Storage</a>
       </li>
     
       <li class="post">
         <a href="/blog/xcode-6-color-theme-path/">Xcode 6 Color Themes (颜色主题) 的路径</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/scripty-swift/">［更新］把Swift用作脚本语言</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/view-controller-based-status-bar-style-and-uinavigationcontroller/">UINavigationController和View Controller-based状态栏风格</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
       </li>
     
   </ul>

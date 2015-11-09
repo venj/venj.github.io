@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: NSPopover | Cocoa学习]]></title>
+  <title><![CDATA[Category: Nspopover | Cocoa学习]]></title>
   <link href="http://venj.github.io/blog/categories/nspopover/atom.xml" rel="self"/>
   <link href="http://venj.github.io/"/>
-  <updated>2015-02-01T14:40:20+08:00</updated>
+  <updated>2015-11-09T20:47:16+08:00</updated>
   <id>http://venj.github.io/</id>
   <author>
     <name><![CDATA[venj]]></name>
@@ -36,57 +36,48 @@
 
 <p>用Xcode新建一个Cocoa项目。然后，创建一个<code>NSViewController</code>的子类，记得包含上<code>xib</code>（这样能省一些步骤）。我这里用的名字是<code>MyPopoverViewController</code>。代码如下：</p>
 
-<p>``` objc
-/<em> MyPopoverViewController.h </em>/</p>
+<pre><code class="objc">/* MyPopoverViewController.h */
+#import &lt;Cocoa/Cocoa.h&gt;
 
-<h1>import &lt;Cocoa/Cocoa.h></h1>
+@interface MyPopoverViewController : NSViewController {
+    NSPopover *popOver;
+}
 
-<p>@interface MyPopoverViewController : NSViewController {</p>
+@property (retain) NSPopover *popOver;
 
-<pre><code>NSPopover *popOver;
-</code></pre>
+- (IBAction)dismissPopover:(id)sender;
+@end
 
-<p>}</p>
+/* MyPopoverViewController.m */
 
-<p>@property (retain) NSPopover *popOver;</p>
+#import "MyPopoverViewController.h"
 
-<ul>
-<li>(IBAction)dismissPopover:(id)sender;
-@end</li>
-</ul>
+@implementation MyPopoverViewController
+@synthesize popOver;
 
-
-<p>/<em> MyPopoverViewController.m </em>/</p>
-
-<h1>import &ldquo;MyPopoverViewController.h&rdquo;</h1>
-
-<p>@implementation MyPopoverViewController
-@synthesize popOver;</p>
-
-<ul>
-<li><p>(id)initWithNibName:(NSString <em>)nibNameOrNil bundle:(NSBundle </em>)nibBundleOrNil
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
-  self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-  if (self) {
-      // Initialization code here.
-      self.popOver = [[NSPopover alloc] init];
-      self.popOver.contentViewController = self;
-  }</p>
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        // Initialization code here.
+        self.popOver = [[NSPopover alloc] init];
+        self.popOver.contentViewController = self;
+    }
 
-<p>  return self;
-}</p></li>
-<li><p>(void)dealloc {
-  [self.popOver release];</p>
+    return self;
+}
 
-<p>  [super dealloc];
-}</p></li>
-<li><p>(IBAction)dismissPopover:(id)sender {
-  [self.popOver performClose:sender];
+- (void)dealloc {
+    [self.popOver release];
+
+    [super dealloc];
+}
+
+- (IBAction)dismissPopover:(id)sender {
+    [self.popOver performClose:sender];
 }
 @end
-```</p></li>
-</ul>
-
+</code></pre>
 
 <p>我为<code>MyPopoverViewController.xib</code>这样设计布局。当然，你可以随意，记得添加一个按钮，并设置<code>action</code>为<code>-(void)dismissPopover:(id)sender</code>。</p>
 
@@ -94,62 +85,51 @@
 
 <p>然后，在<code>AppDelegate</code>中这样调用：</p>
 
-<p>``` objc
-/<em> TestAppAppDelegate.h </em>/</p>
+<pre><code class="objc">/* TestAppAppDelegate.h */
+#import &lt;Cocoa/Cocoa.h&gt;
 
-<h1>import &lt;Cocoa/Cocoa.h></h1>
+@class MyPopoverViewController;
+@interface TestAppAppDelegate : NSObject &lt;NSApplicationDelegate&gt; {
+    NSWindow *window;
+    NSButton *myButton;
+    MyPopoverViewController *popControl;
+}
 
-<p>@class MyPopoverViewController;
-@interface TestAppAppDelegate : NSObject <NSApplicationDelegate> {</p>
+@property (assign) IBOutlet NSWindow *window;
+@property (assign) IBOutlet NSButton *myButton;
+@property (retain) MyPopoverViewController *popControl;
 
-<pre><code>NSWindow *window;
-NSButton *myButton;
-MyPopoverViewController *popControl;
-</code></pre>
+- (IBAction)showPopover:(id)sender;
+@end
 
-<p>}</p>
+/* TestAppAppDelegate.m */
+#import "TestAppAppDelegate.h"
+#import "MyPopoverViewController.h"
 
-<p>@property (assign) IBOutlet NSWindow <em>window;
-@property (assign) IBOutlet NSButton </em>myButton;
-@property (retain) MyPopoverViewController *popControl;</p>
+@implementation TestAppAppDelegate
 
-<ul>
-<li>(IBAction)showPopover:(id)sender;
-@end</li>
-</ul>
-
-
-<p>/<em> TestAppAppDelegate.m </em>/</p>
-
-<h1>import &ldquo;TestAppAppDelegate.h&rdquo;</h1>
-
-<h1>import &ldquo;MyPopoverViewController.h&rdquo;</h1>
-
-<p>@implementation TestAppAppDelegate</p>
-
-<p>@synthesize window;
+@synthesize window;
 @synthesize myButton;
-@synthesize popControl;</p>
+@synthesize popControl;
 
-<ul>
-<li><p>(void)applicationDidFinishLaunching:(NSNotification *)aNotification
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-  // Insert code here to initialize your application
-  self.popControl = [[MyPopoverViewController alloc] init];
-}</p></li>
-<li><p>(IBAction)showPopover:(id)sender {
-  [self.popControl.popOver showRelativeToRect:[self.myButton bounds] ofView:self.myButton preferredEdge:NSMaxXEdge];
-}</p></li>
-<li><p>(void)dealloc {
-  [self.popControl release];</p>
+    // Insert code here to initialize your application
+    self.popControl = [[MyPopoverViewController alloc] init];
+}
 
-<p>  [super dealloc];
-}</p></li>
-</ul>
+- (IBAction)showPopover:(id)sender {
+    [self.popControl.popOver showRelativeToRect:[self.myButton bounds] ofView:self.myButton preferredEdge:NSMaxXEdge];
+}
 
+- (void)dealloc {
+    [self.popControl release];
 
-<p>@end
-```</p>
+    [super dealloc];
+}
+
+@end
+</code></pre>
 
 <p><code>MainMenu.xib</code>也是随便设计。记得添加一个按钮，做一个Outlet，指向<code>myButton</code>，一个<code>action</code>指向<code>- (IBAction)showPopover:(id)sender</code>。</p>
 

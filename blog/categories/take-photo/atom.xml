@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Take Photo | Cocoa学习]]></title>
   <link href="http://venj.github.io/blog/categories/take-photo/atom.xml" rel="self"/>
   <link href="http://venj.github.io/"/>
-  <updated>2015-02-01T14:40:20+08:00</updated>
+  <updated>2015-11-09T20:47:16+08:00</updated>
   <id>http://venj.github.io/</id>
   <author>
     <name><![CDATA[venj]]></name>
@@ -34,41 +34,28 @@
 
 <p>言归正传，我们开始开始拍照。。。。不对，是开始写拍照的代码。。。Orz</p>
 
-<p>``` objc
-&ndash; (void)applicationDidFinishLaunching:(NSNotification *)aNotification
-{</p>
-
-<pre><code>// 初始化一个pictureTaker对象
-pictureTaker = [IKPictureTaker pictureTaker];
-/* 下面两行代码对pictureTaker进行一些设置，比如增加拍照效果的支持，以及设置拍摄的照片的最大尺寸 */
-//[pictureTaker setValue:[NSNumber numberWithBool:YES] forKey:IKPictureTakerShowEffectsKey];
-//[pictureTaker setValue:[NSValue valueWithSize:NSMakeSize(800.0, 600.0)] forKey:IKPictureTakerOutputImageMaxSizeKey];
-</code></pre>
-
-<p>}
+<pre><code class="objc">- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
+{
+    // 初始化一个pictureTaker对象
+    pictureTaker = [IKPictureTaker pictureTaker];
+    /* 下面两行代码对pictureTaker进行一些设置，比如增加拍照效果的支持，以及设置拍摄的照片的最大尺寸 */
+    //[pictureTaker setValue:[NSNumber numberWithBool:YES] forKey:IKPictureTakerShowEffectsKey];
+    //[pictureTaker setValue:[NSValue valueWithSize:NSMakeSize(800.0, 600.0)] forKey:IKPictureTakerOutputImageMaxSizeKey];
+}
 // Picture taker的回调方法。
-&ndash; (void) pictureTakerDidEnd:(IKPictureTaker *)picker</p>
-
-<pre><code>             returnCode:(NSInteger)code
-            contextInfo:(void*)contextInfo
-</code></pre>
-
-<p>{</p>
-
-<pre><code>// 获取图片，传递给Image Well。
-NSImage *image = [picker outputImage];
-[imageView setImage:image];
-</code></pre>
-
-<p>}
+- (void) pictureTakerDidEnd:(IKPictureTaker *)picker
+                 returnCode:(NSInteger)code
+                contextInfo:(void*)contextInfo
+{
+    // 获取图片，传递给Image Well。
+    NSImage *image = [picker outputImage];
+    [imageView setImage:image];
+}
 // 这里，用主窗口sheet的方式打开拍照窗口。
-&ndash; (IBAction)takePicture:(id)sender {</p>
-
-<pre><code>[pictureTaker beginPictureTakerSheetForWindow:[self window] withDelegate:self didEndSelector:@selector(pictureTakerDidEnd:returnCode:contextInfo:) contextInfo:nil];
+- (IBAction)takePicture:(id)sender {
+    [pictureTaker beginPictureTakerSheetForWindow:[self window] withDelegate:self didEndSelector:@selector(pictureTakerDidEnd:returnCode:contextInfo:) contextInfo:nil];
+}
 </code></pre>
-
-<p>}
-```</p>
 
 <p>就是这么简单！不错吧！</p>
 

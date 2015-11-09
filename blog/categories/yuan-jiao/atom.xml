@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 圆角 | Cocoa学习]]></title>
   <link href="http://venj.github.io/blog/categories/yuan-jiao/atom.xml" rel="self"/>
   <link href="http://venj.github.io/"/>
-  <updated>2015-02-01T14:40:20+08:00</updated>
+  <updated>2015-11-09T20:47:16+08:00</updated>
   <id>http://venj.github.io/</id>
   <author>
     <name><![CDATA[venj]]></name>
@@ -23,47 +23,42 @@
 <!-- more -->
 
 
-<p>```objc
-/<em> UIImage+RoundedRect.h</em>/</p>
+<pre><code class="objc">/* UIImage+RoundedRect.h*/
+#import &lt;UIKit/UIKit.h&gt;
 
-<h1>import &lt;UIKit/UIKit.h></h1>
+@interface UIImage (RoundedCorner)
+- (UIImage *)roundedCornerImageWithCornerRadius:(CGFloat)cornerRadius;
+@end
 
-<p>@interface UIImage (RoundedCorner)
-&ndash; (UIImage *)roundedCornerImageWithCornerRadius:(CGFloat)cornerRadius;
-@end</p>
+/* UIImage+RoundedRect.m*/
 
-<p>/<em> UIImage+RoundedRect.m</em>/</p>
+#import "UIImage+RoundedCorner.h"
 
-<h1>import &ldquo;UIImage+RoundedCorner.h&rdquo;</h1>
+@implementation UIImage (RoundedCorner)
 
-<p>@implementation UIImage (RoundedCorner)</p>
+- (UIImage *)roundedCornerImageWithCornerRadius:(CGFloat)cornerRadius {
+    CGFloat w = self.size.width;
+    CGFloat h = self.size.height;
+    CGFloat scale = [UIScreen mainScreen].scale;
+    // 防止圆角半径小于0，或者大于宽/高中较小值的一半。
+    if (cornerRadius &lt; 0)
+        cornerRadius = 0;
+    else if (cornerRadius &gt; MIN(w, h))
+        cornerRadius = MIN(w, h) / 2.;
 
-<ul>
-<li><p>(UIImage *)roundedCornerImageWithCornerRadius:(CGFloat)cornerRadius {
-  CGFloat w = self.size.width;
-  CGFloat h = self.size.height;
-  CGFloat scale = [UIScreen mainScreen].scale;
-  // 防止圆角半径小于0，或者大于宽/高中较小值的一半。
-  if (cornerRadius &lt; 0)
-      cornerRadius = 0;
-  else if (cornerRadius > MIN(w, h))
-      cornerRadius = MIN(w, h) / 2.;</p>
+    UIImage *image = nil;
+    CGRect imageFrame = CGRectMake(0., 0., w, h);
+    UIGraphicsBeginImageContextWithOptions(self.size, NO, scale);
+    [[UIBezierPath bezierPathWithRoundedRect:imageFrame cornerRadius:cornerRadius] addClip];
+    [self drawInRect:imageFrame];
+    image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
 
-<p>  UIImage *image = nil;
-  CGRect imageFrame = CGRectMake(0., 0., w, h);
-  UIGraphicsBeginImageContextWithOptions(self.size, NO, scale);
-  [[UIBezierPath bezierPathWithRoundedRect:imageFrame cornerRadius:cornerRadius] addClip];
-  [self drawInRect:imageFrame];
-  image = UIGraphicsGetImageFromCurrentImageContext();
-  UIGraphicsEndImageContext();</p>
+    return image;
+}
 
-<p>  return image;
-}</p></li>
-</ul>
-
-
-<p>@end
-```</p>
+@end
+</code></pre>
 
 <p>把这个Category添加到项目中之后，直接对<code>UIImage</code>对象调用<code>- roundedCornerImageWithCornerRadius:</code>方法即可。以上实现并非最高效，最佳的实现，但是有时候Quick and Dirty的方法已经足够好了，是吧。（天音：你就自我安慰吧。）</p>
 

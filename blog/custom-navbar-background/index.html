@@ -86,7 +86,7 @@ self. &hellip;">
   
 
 
-<time datetime="2012-01-11T15:20:00+08:00" pubdate data-updated="true">Jan 11<span>th</span>, 2012</time>
+<time datetime="2012-01-11T15:20:00+08:00" pubdate data-updated="true"></time>
         
       </p>
     
@@ -101,15 +101,15 @@ self. &hellip;">
 
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">self</span><span class="p">.</span><span class="n">navigationController</span><span class="p">.</span><span class="n">navigationBar</span><span class="p">.</span><span class="n">tintColor</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIColor</span> <span class="n">redColor</span><span class="p">];</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="nb">self</span><span class="p">.</span><span class="n">navigationController</span><span class="p">.</span><span class="n">navigationBar</span><span class="p">.</span><span class="n">tintColor</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIColor</span> <span class="n">redColor</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>这样就轻松地为<code>UINavigationBar</code>加上了红色的背景色&mdash;当然你可以使用任何颜色。下面是模拟器中的测试效果：</p>
+<p>这样就轻松地为<code>UINavigationBar</code>加上了红色的背景色&ndash;当然你可以使用任何颜色。下面是模拟器中的测试效果：</p>
 
 <p><img class="center" src="/images/posts/custom-navbar-bg-color.png"></p>
 
-<p>另外，就是为<code>UINavigationBar</code>加背景图片。这个稍稍复杂一些&mdash;特别是对于iOS 5之前的iOS来说。先说说简单的，iOS 5已经为<code>UINavigationBar</code>增加了一个新的方法<code>-setBackgroundImage:forBarMetrics:</code>，专门用于设置<code>UINavigationBar</code>的背景图片。</p>
+<p>另外，就是为<code>UINavigationBar</code>加背景图片。这个稍稍复杂一些&ndash;特别是对于iOS 5之前的iOS来说。先说说简单的，iOS 5已经为<code>UINavigationBar</code>增加了一个新的方法<code>-setBackgroundImage:forBarMetrics:</code>，专门用于设置<code>UINavigationBar</code>的背景图片。</p>
 
 <p><strong>Updated</strong></p>
 
@@ -133,10 +133,10 @@ self. &hellip;">
 <span class='line-number'>12</span>
 <span class='line-number'>13</span>
 <span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">@implementation</span> <span class="nc">UINavigationBar</span> <span class="nl">(CustomImage)</span>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">drawRect:</span><span class="p">(</span><span class="n">CGRect</span><span class="p">)</span><span class="nv">rect</span> <span class="p">{</span>
-</span><span class='line'>    <span class="n">UIImage</span> <span class="o">*</span><span class="n">img</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIImage</span> <span class="nl">imageNamed:</span><span class="s">@&quot;navbar&quot;</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">img</span> <span class="nl">drawInRect:</span><span class="n">rect</span><span class="p">];</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">@implementation</span> <span class="bp">UINavigationBar</span> <span class="nl">(CustomImage)</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">drawRect:</span><span class="p">(</span><span class="bp">CGRect</span><span class="p">)</span><span class="nv">rect</span> <span class="p">{</span>
+</span><span class='line'>    <span class="bp">UIImage</span> <span class="o">*</span><span class="n">img</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIImage</span> <span class="nl">imageNamed</span><span class="p">:</span><span class="s">@&quot;navbar&quot;</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">img</span> <span class="nl">drawInRect</span><span class="p">:</span><span class="n">rect</span><span class="p">];</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'><span class="k">@end</span>
 </span><span class='line'>
@@ -144,8 +144,8 @@ self. &hellip;">
 </span><span class='line'>
 </span><span class='line'><span class="c1">//在后面加入判断是否支持iOS 5的代码，来提供对iOS 5的支持：</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">if</span> <span class="p">([</span><span class="n">bar</span> <span class="nl">respondsToSelector:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">setBackgroundImage:forBarMetrics:</span><span class="p">)])</span> <span class="p">{</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">bar</span> <span class="nl">setBackgroundImage:</span><span class="n">bg</span> <span class="nl">forBarMetrics:</span><span class="n">UIBarMetricsDefault</span><span class="p">];</span>
+</span><span class='line'><span class="k">if</span> <span class="p">([</span><span class="n">bar</span> <span class="nl">respondsToSelector</span><span class="p">:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">setBackgroundImage</span><span class="p">:</span><span class="nl">forBarMetrics</span><span class="p">:)])</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">bar</span> <span class="nl">setBackgroundImage</span><span class="p">:</span><span class="n">bg</span> <span class="nl">forBarMetrics</span><span class="p">:</span><span class="n">UIBarMetricsDefault</span><span class="p">];</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
@@ -177,12 +177,12 @@ self. &hellip;">
   
 
 
-<time datetime="2012-01-11T15:20:00+08:00" pubdate data-updated="true">Jan 11<span>th</span>, 2012</time>
+<time datetime="2012-01-11T15:20:00+08:00" pubdate data-updated="true"></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/uinavigationbar/'>UINavigationBar</a>, <a class='category' href='/blog/categories/uinavigationcontroller/'>UINavigationController</a>
+    <a class='category' href='/blog/categories/uinavigationbar/'>uinavigationbar</a>, <a class='category' href='/blog/categories/uinavigationcontroller/'>uinavigationcontroller</a>
   
 </span>
 
@@ -230,23 +230,23 @@ self. &hellip;">
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/openurl-on-ios9/">iOS 9下使用openURL:</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/app-transportation-security/">iOS 9中的App Transport Security</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/alamofire-ssl/">让Alamofire使用自签名证书</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/disable-corestorage-on-os-x-yosemite/">禁用OS X Yosemite上的Core Storage</a>
       </li>
     
       <li class="post">
         <a href="/blog/xcode-6-color-theme-path/">Xcode 6 Color Themes (颜色主题) 的路径</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/scripty-swift/">［更新］把Swift用作脚本语言</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/view-controller-based-status-bar-style-and-uinavigationcontroller/">UINavigationController和View Controller-based状态栏风格</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
       </li>
     
   </ul>

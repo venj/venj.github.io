@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: NSMutableRequest | Cocoa学习]]></title>
+  <title><![CDATA[Category: Nsmutablerequest | Cocoa学习]]></title>
   <link href="http://venj.github.io/blog/categories/nsmutablerequest/atom.xml" rel="self"/>
   <link href="http://venj.github.io/"/>
-  <updated>2015-02-01T14:40:20+08:00</updated>
+  <updated>2015-11-09T20:47:16+08:00</updated>
   <id>http://venj.github.io/</id>
   <author>
     <name><![CDATA[venj]]></name>
@@ -27,103 +27,94 @@
 <!-- more -->
 
 
-<p>
-``` objc</p>
+<p></p>
 
-<h1>define FANFOU_SEND_PHOTO_API @&ldquo;<a href="http://api.fanfou.com/photos/upload.json">http://api.fanfou.com/photos/upload.json</a>&rdquo;</h1>
+<pre><code class="objc">#define FANFOU_SEND_PHOTO_API @"http://api.fanfou.com/photos/upload.json"
 
-<ul>
-<li><p>(IBAction)sendMessage:(id)sender {
-  // 创建Request对象
-  NSMutableURLRequest <em>req = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:FANFOU_SEND_PHOTO_API]
-                                                          cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                                      timeoutInterval:60.0];
-  // 定义boundary
-  NSString </em>boundary = @&ldquo;&mdash;&mdash;Boundary+WhateverYouLikeToPutInHere&mdash;&mdash;datatata&mdash;done&rdquo;;
-  // 使用POST方法
-  [req setHTTPMethod:@&ldquo;POST&rdquo;];
-  // 设置Content-Type
-  [req setValue:[NSString stringWithFormat:@&ldquo;multipart/form-data; boundary=%@&rdquo;, boundary, nil] forHTTPHeaderField:@&ldquo;Content-Type&rdquo;];</p>
+- (IBAction)sendMessage:(id)sender {
+    // 创建Request对象
+    NSMutableURLRequest *req = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:FANFOU_SEND_PHOTO_API]
+                                                            cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                        timeoutInterval:60.0];
+    // 定义boundary
+    NSString *boundary = @"----Boundary+WhateverYouLikeToPutInHere----datatata--done";
+    // 使用POST方法
+    [req setHTTPMethod:@"POST"];
+    // 设置Content-Type
+    [req setValue:[NSString stringWithFormat:@"multipart/form-data; boundary=%@", boundary, nil] forHTTPHeaderField:@"Content-Type"];
 
-<p>  // 把图片变成data。
-  NSImage <em>theImage = [self.imageView image];
-  NSBitmapImageRep </em>bitmap = [[theImage representations] objectAtIndex:0];
-  NSData *imageData = [bitmap representationUsingType:NSJPEGFileType properties: nil];</p>
+    // 把图片变成data。
+    NSImage *theImage = [self.imageView image];
+    NSBitmapImageRep *bitmap = [[theImage representations] objectAtIndex:0];
+    NSData *imageData = [bitmap representationUsingType:NSJPEGFileType properties: nil];
 
-<p>  // 需要POST的键值对
-  NSDictionary *values = [NSDictionary dictionaryWithObjectsAndKeys:[messageField string], @&ldquo;status&rdquo;, imageData, @&ldquo;photo&rdquo;, nil];</p>
+    // 需要POST的键值对
+    NSDictionary *values = [NSDictionary dictionaryWithObjectsAndKeys:[messageField string], @"status", imageData, @"photo", nil];
 
-<p>  // 初始化POST Data
-  NSMutableData *d = [NSMutableData data];</p>
+    // 初始化POST Data
+    NSMutableData *d = [NSMutableData data];
 
-<p>  // 遍历键值对，将其转换成NSData
-  for (NSString *key in [values allKeys]) {</p>
+    // 遍历键值对，将其转换成NSData
+    for (NSString *key in [values allKeys]) {
 
-<pre><code>  // Append一个Boundary
-  [d appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+        // Append一个Boundary
+        [d appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
 
-  id currentValue = [values objectForKey:key];
+        id currentValue = [values objectForKey:key];
 
-  if( [currentValue isKindOfClass:[NSData class]] &amp;&amp; [NSImageRep imageRepClassForData:currentValue] != nil ) {
-      // 如果是图片对象的处理方法。
-      // 设置Content-Disposition，这里设置图片对应的key的名字
-      [d appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"; filename=\"image.png\"\r\n", key]
-                     dataUsingEncoding:NSUTF8StringEncoding]];
-      // 设置图片的Content-Type
-      [d appendData:[@"Content-Type: image/png\r\n" dataUsingEncoding:NSASCIIStringEncoding]];
-      // 设置传输编码为二进制
-      [d appendData:[@"Content-Transfer-Encoding: binary\r\n\r\n" dataUsingEncoding:NSASCIIStringEncoding]];
-      // Append图片
-      [d appendData:currentValue];
-  }
-  else {
-      // 字符串值的处理方法
-      // Append一个Boundary
-      [d appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-      // 设置字符串键
-      [d appendData:[@"Content-Disposition: form-data; name=\"status\"\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-      // 设置字符串值
-      [d appendData:[[NSString stringWithFormat:@"%@", currentValue] dataUsingEncoding:NSUTF8StringEncoding]];
-  }
-</code></pre>
+        if( [currentValue isKindOfClass:[NSData class]] &amp;&amp; [NSImageRep imageRepClassForData:currentValue] != nil ) {
+            // 如果是图片对象的处理方法。
+            // 设置Content-Disposition，这里设置图片对应的key的名字
+            [d appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"; filename=\"image.png\"\r\n", key]
+                           dataUsingEncoding:NSUTF8StringEncoding]];
+            // 设置图片的Content-Type
+            [d appendData:[@"Content-Type: image/png\r\n" dataUsingEncoding:NSASCIIStringEncoding]];
+            // 设置传输编码为二进制
+            [d appendData:[@"Content-Transfer-Encoding: binary\r\n\r\n" dataUsingEncoding:NSASCIIStringEncoding]];
+            // Append图片
+            [d appendData:currentValue];
+        }
+        else {
+            // 字符串值的处理方法
+            // Append一个Boundary
+            [d appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+            // 设置字符串键
+            [d appendData:[@"Content-Disposition: form-data; name=\"status\"\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+            // 设置字符串值
+            [d appendData:[[NSString stringWithFormat:@"%@", currentValue] dataUsingEncoding:NSUTF8StringEncoding]];
+        }
+    }
+    // 最后Append一个Boundary
+    [d appendData:[[NSString stringWithFormat:@"\r\n--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+    // 设置数据为请求的Body
+    [req setHTTPBody:d];
 
-<p>  }
-  // 最后Append一个Boundary
-  [d appendData:[[NSString stringWithFormat:@&ldquo;\r\n&mdash;%@&mdash;\r\n&rdquo;, boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-  // 设置数据为请求的Body
-  [req setHTTPBody:d];</p>
+    // 建立一个连接，用来发送请求，并且设置delegate为self，这里主要用来处理BasicAuth
+    NSURLConnection *theConnection=[[NSURLConnection alloc] initWithRequest:req delegate:self];
+    if (theConnection) {
+        // 处理连接成功
+    } else {
+        // 处理链接失败
+    }
+    [req release];
+}
 
-<p>  // 建立一个连接，用来发送请求，并且设置delegate为self，这里主要用来处理BasicAuth
-  NSURLConnection *theConnection=[[NSURLConnection alloc] initWithRequest:req delegate:self];
-  if (theConnection) {
-      // 处理连接成功
-  } else {
-      // 处理链接失败
-  }
-  [req release];
-}</p></li>
-</ul>
-
-
-<p>// NSURLConnection的Delegate方法，用来处理Basic Auth。
- &ndash;(void)connection:(NSURLConnection <em>)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge </em>)challenge
-{</p>
-
-<pre><code>if ([challenge previousFailureCount] == 0) {
-    NSURLCredential *newCredential;
-    newCredential = [NSURLCredential credentialWithUser:@"YOUR_USER_NAME"
-                                               password:@"YOUR_PASSWORD"
-                                            persistence:NSURLCredentialPersistenceNone];
-    [[challenge sender] useCredential:newCredential
-           forAuthenticationChallenge:challenge];
-} else {
-    [[challenge sender] cancelAuthenticationChallenge:challenge];
-    // 处理认证失败
+// NSURLConnection的Delegate方法，用来处理Basic Auth。
+ -(void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
+{
+    if ([challenge previousFailureCount] == 0) {
+        NSURLCredential *newCredential;
+        newCredential = [NSURLCredential credentialWithUser:@"YOUR_USER_NAME"
+                                                   password:@"YOUR_PASSWORD"
+                                                persistence:NSURLCredentialPersistenceNone];
+        [[challenge sender] useCredential:newCredential
+               forAuthenticationChallenge:challenge];
+    } else {
+        [[challenge sender] cancelAuthenticationChallenge:challenge];
+        // 处理认证失败
+    }
 }
 </code></pre>
-
-<p>}
-```</p>
 
 <p>利用<code>NSMutableURLRequest</code>应该也能够轻松的实现饭否Basic Auth API的Cocoa封装，配合其他的一些库，要实现OAuth的封装应该也没有什么问题的。我目前对<code>NSMutableURLRequest</code>的理解还只是一知半解，所以继续研究文档去。。。下一版DragFan中，我会用<code>NSMutableURLRequest</code>替代<code>ASIHTTPRequest</code>，实现DragFan的图片发送功能。</p>
 

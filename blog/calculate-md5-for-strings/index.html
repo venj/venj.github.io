@@ -107,7 +107,7 @@
   
 
 
-<time datetime="2011-04-09T13:07:00+08:00" pubdate data-updated="true">Apr 9<span>th</span>, 2011</time>
+<time datetime="2011-04-09T13:07:00+08:00" pubdate data-updated="true"></time>
         
       </p>
     
@@ -146,20 +146,20 @@
 </pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// NSString+MD5.h</span>
 </span><span class='line'>
 </span><span class='line'><span class="cp">#import &lt;foundation/foundation.h&gt;</span>
-</span><span class='line'><span class="k">@interface</span> <span class="nc">NSString</span> <span class="nl">(NSString_MD5)</span>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nf">md5</span><span class="p">;</span>
+</span><span class='line'><span class="k">@interface</span> <span class="bp">NSString</span> <span class="nl">(NSString_MD5)</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nf">md5</span><span class="p">;</span>
 </span><span class='line'><span class="k">@end</span>
 </span><span class='line'>
 </span><span class='line'><span class="c1">// NSString+MD5.m</span>
 </span><span class='line'>
 </span><span class='line'><span class="cp">#import &quot;NSString+MD5.h&quot;</span>
 </span><span class='line'><span class="cp">#import &lt;commoncrypto/commondigest.h&gt;</span>
-</span><span class='line'><span class="k">@implementation</span> <span class="nc">NSString</span> <span class="nl">(NSString_MD5)</span>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nf">md5</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">cStr</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span> <span class="n">UTF8String</span><span class="p">];</span>
+</span><span class='line'><span class="k">@implementation</span> <span class="bp">NSString</span> <span class="nl">(NSString_MD5)</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nf">md5</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">cStr</span> <span class="o">=</span> <span class="p">[</span><span class="nb">self</span> <span class="n">UTF8String</span><span class="p">];</span>
 </span><span class='line'>    <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">result</span><span class="p">[</span><span class="mi">16</span><span class="p">];</span>
 </span><span class='line'>    <span class="n">CC_MD5</span><span class="p">(</span><span class="n">cStr</span><span class="p">,</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span><span class="p">)</span><span class="n">strlen</span><span class="p">(</span><span class="n">cStr</span><span class="p">),</span> <span class="n">result</span><span class="p">);</span>
-</span><span class='line'>    <span class="k">return</span> <span class="p">[</span><span class="n">NSString</span> <span class="nl">stringWithFormat:</span>
+</span><span class='line'>    <span class="k">return</span> <span class="p">[</span><span class="bp">NSString</span> <span class="nl">stringWithFormat</span><span class="p">:</span>
 </span><span class='line'>            <span class="s">@&quot;%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x&quot;</span><span class="p">,</span>
 </span><span class='line'>            <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span>
 </span><span class='line'>            <span class="n">result</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">7</span><span class="p">],</span>
@@ -205,20 +205,20 @@
 </pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// NSData+MD5.h</span>
 </span><span class='line'>
 </span><span class='line'><span class="cp">#import &lt;foundation/foundation.h&gt;</span>
-</span><span class='line'><span class="k">@interface</span> <span class="nc">NSData</span> <span class="nl">(MyExtensions)</span>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSString</span><span class="o">*</span><span class="p">)</span><span class="nf">md5</span><span class="p">;</span>
+</span><span class='line'><span class="k">@interface</span> <span class="bp">NSData</span> <span class="nl">(MyExtensions)</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="bp">NSString</span><span class="o">*</span><span class="p">)</span><span class="nf">md5</span><span class="p">;</span>
 </span><span class='line'><span class="k">@end</span>
 </span><span class='line'>
 </span><span class='line'><span class="c1">// NSData+MD5.m</span>
 </span><span class='line'>
 </span><span class='line'><span class="cp">#import &quot;NSData+MD5.h&quot;</span>
 </span><span class='line'><span class="cp">#import &lt;commoncrypto/commondigest.h&gt;</span>
-</span><span class='line'><span class="k">@implementation</span> <span class="nc">NSData</span> <span class="nl">(MyExtensions)</span>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSString</span><span class="o">*</span><span class="p">)</span><span class="nf">md5</span>
+</span><span class='line'><span class="k">@implementation</span> <span class="bp">NSData</span> <span class="nl">(MyExtensions)</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="bp">NSString</span><span class="o">*</span><span class="p">)</span><span class="nf">md5</span>
 </span><span class='line'><span class="p">{</span>
 </span><span class='line'>    <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">result</span><span class="p">[</span><span class="mi">16</span><span class="p">];</span>
-</span><span class='line'>    <span class="n">CC_MD5</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">bytes</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">length</span><span class="p">,</span> <span class="n">result</span><span class="p">);</span>
-</span><span class='line'>    <span class="k">return</span> <span class="p">[</span><span class="n">NSString</span> <span class="nl">stringWithFormat:</span>
+</span><span class='line'>    <span class="n">CC_MD5</span><span class="p">(</span><span class="nb">self</span><span class="p">.</span><span class="n">bytes</span><span class="p">,</span> <span class="nb">self</span><span class="p">.</span><span class="n">length</span><span class="p">,</span> <span class="n">result</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">return</span> <span class="p">[</span><span class="bp">NSString</span> <span class="nl">stringWithFormat</span><span class="p">:</span>
 </span><span class='line'>        <span class="s">@&quot;%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x&quot;</span><span class="p">,</span>
 </span><span class='line'>        <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span>
 </span><span class='line'>        <span class="n">result</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">7</span><span class="p">],</span>
@@ -256,12 +256,12 @@
   
 
 
-<time datetime="2011-04-09T13:07:00+08:00" pubdate data-updated="true">Apr 9<span>th</span>, 2011</time>
+<time datetime="2011-04-09T13:07:00+08:00" pubdate data-updated="true"></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/md5/'>MD5</a>
+    <a class='category' href='/blog/categories/md5/'>md5</a>
   
 </span>
 
@@ -309,23 +309,23 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/openurl-on-ios9/">iOS 9下使用openURL:</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/app-transportation-security/">iOS 9中的App Transport Security</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/alamofire-ssl/">让Alamofire使用自签名证书</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/disable-corestorage-on-os-x-yosemite/">禁用OS X Yosemite上的Core Storage</a>
       </li>
     
       <li class="post">
         <a href="/blog/xcode-6-color-theme-path/">Xcode 6 Color Themes (颜色主题) 的路径</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/scripty-swift/">［更新］把Swift用作脚本语言</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/view-controller-based-status-bar-style-and-uinavigationcontroller/">UINavigationController和View Controller-based状态栏风格</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
       </li>
     
   </ul>

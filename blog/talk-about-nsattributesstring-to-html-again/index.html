@@ -85,7 +85,7 @@
   
 
 
-<time datetime="2011-06-28T22:59:00+08:00" pubdate data-updated="true">Jun 28<span>th</span>, 2011</time>
+<time datetime="2011-06-28T22:59:00+08:00" pubdate data-updated="true"></time>
         
       </p>
     
@@ -130,16 +130,16 @@
 <span class='line-number'>26</span>
 <span class='line-number'>27</span>
 <span class='line-number'>28</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">convert:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">convert:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
 </span><span class='line'>    <span class="n">attrString</span> <span class="o">=</span> <span class="p">[</span><span class="n">richView</span> <span class="n">attributedString</span><span class="p">];</span>
-</span><span class='line'>    <span class="n">NSMutableArray</span> <span class="o">*</span><span class="n">exclude</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSMutableArray</span> <span class="n">array</span><span class="p">];</span>
+</span><span class='line'>    <span class="bp">NSMutableArray</span> <span class="o">*</span><span class="n">exclude</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSMutableArray</span> <span class="n">array</span><span class="p">];</span>
 </span><span class='line'>    <span class="c1">// 如果要使用XHTML文档，可以注释掉下面这行，否则会使用HTML 4.01。</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">exclude</span> <span class="nl">addObject:</span><span class="s">@&quot;XML&quot;</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">exclude</span> <span class="nl">addObject</span><span class="p">:</span><span class="s">@&quot;XML&quot;</span><span class="p">];</span>
 </span><span class='line'>    <span class="c1">// 如果要使用HTML Transitional，注释掉下面这行。否则就用HTML Strict。</span>
 </span><span class='line'>    <span class="c1">// 不过HTML Transitional支持font标签，而这显然不是我们想要的。</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">exclude</span> <span class="nl">addObjectsFromArray:</span><span class="p">[</span><span class="n">NSArray</span> <span class="nl">arrayWithObjects:</span><span class="s">@&quot;APPLET&quot;</span><span class="p">,</span> <span class="s">@&quot;BASEFONT&quot;</span><span class="p">,</span> <span class="s">@&quot;CENTER&quot;</span><span class="p">,</span> <span class="s">@&quot;DIR&quot;</span><span class="p">,</span> <span class="s">@&quot;FONT&quot;</span><span class="p">,</span> <span class="s">@&quot;ISINDEX&quot;</span><span class="p">,</span> <span class="s">@&quot;MENU&quot;</span><span class="p">,</span> <span class="s">@&quot;S&quot;</span><span class="p">,</span> <span class="s">@&quot;STRIKE&quot;</span><span class="p">,</span> <span class="s">@&quot;U&quot;</span><span class="p">,</span> <span class="nb">nil</span><span class="p">]];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">exclude</span> <span class="nl">addObjectsFromArray</span><span class="p">:[</span><span class="bp">NSArray</span> <span class="nl">arrayWithObjects</span><span class="p">:</span><span class="s">@&quot;APPLET&quot;</span><span class="p">,</span> <span class="s">@&quot;BASEFONT&quot;</span><span class="p">,</span> <span class="s">@&quot;CENTER&quot;</span><span class="p">,</span> <span class="s">@&quot;DIR&quot;</span><span class="p">,</span> <span class="s">@&quot;FONT&quot;</span><span class="p">,</span> <span class="s">@&quot;ISINDEX&quot;</span><span class="p">,</span> <span class="s">@&quot;MENU&quot;</span><span class="p">,</span> <span class="s">@&quot;S&quot;</span><span class="p">,</span> <span class="s">@&quot;STRIKE&quot;</span><span class="p">,</span> <span class="s">@&quot;U&quot;</span><span class="p">,</span> <span class="nb">nil</span><span class="p">]];</span>
 </span><span class='line'>    <span class="c1">// 如果要将CSS放入HTML的head标签中，可以注释掉下面这样：</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">exclude</span> <span class="nl">addObject:</span><span class="s">@&quot;STYLE&quot;</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">exclude</span> <span class="nl">addObject</span><span class="p">:</span><span class="s">@&quot;STYLE&quot;</span><span class="p">];</span>
 </span><span class='line'>    <span class="c1">// 如果要完全不用CSS，同时注释掉上面这样和下面这行。</span>
 </span><span class='line'>    <span class="c1">//[exclude addObject:@&quot;SPAN&quot;];</span>
 </span><span class='line'>    <span class="c1">// 如果要保留空格字符，注释掉下面几行——因为HTML会把任意长的空格合成一个空格的。</span>
@@ -149,13 +149,13 @@
 </span><span class='line'>    <span class="c1">// 如果不要完整的HTML结构，则取消注释下面一行。</span>
 </span><span class='line'>    <span class="c1">//[exclude addObjectsFromArray:[NSArray arrayWithObjects:@&quot;doctype&quot;, @&quot;html&quot;, @&quot;head&quot;, @&quot;body&quot;, nil]];</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="n">NSDictionary</span> <span class="o">*</span><span class="n">htmlAtt</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSDictionary</span> <span class="nl">dictionaryWithObjectsAndKeys:</span>
+</span><span class='line'>    <span class="bp">NSDictionary</span> <span class="o">*</span><span class="n">htmlAtt</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSDictionary</span> <span class="nl">dictionaryWithObjectsAndKeys</span><span class="p">:</span>
 </span><span class='line'>                             <span class="n">NSHTMLTextDocumentType</span><span class="p">,</span> <span class="n">NSDocumentTypeDocumentAttribute</span><span class="p">,</span>
 </span><span class='line'>                             <span class="n">exclude</span><span class="p">,</span> <span class="n">NSExcludedElementsDocumentAttribute</span><span class="p">,</span> <span class="nb">nil</span><span class="p">];</span>
-</span><span class='line'>    <span class="n">NSError</span> <span class="o">*</span><span class="n">error</span><span class="p">;</span>
-</span><span class='line'>    <span class="n">NSData</span> <span class="o">*</span><span class="n">htmlData</span> <span class="o">=</span> <span class="p">[</span><span class="n">attrString</span> <span class="nl">dataFromRange:</span><span class="n">NSMakeRange</span><span class="p">(</span><span class="mi">0</span><span class="p">,[</span><span class="n">attrString</span> <span class="n">length</span><span class="p">])</span> <span class="nl">documentAttributes:</span><span class="n">htmlAtt</span> <span class="nl">error:</span><span class="o">&amp;</span><span class="n">error</span> <span class="p">];</span>
-</span><span class='line'>    <span class="n">NSString</span> <span class="o">*</span><span class="n">htmlString</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSString</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithData:</span><span class="n">htmlData</span> <span class="nl">encoding:</span><span class="n">NSUTF8StringEncoding</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">htmlView</span> <span class="nl">setStringValue:</span><span class="n">htmlString</span><span class="p">];</span>
+</span><span class='line'>    <span class="bp">NSError</span> <span class="o">*</span><span class="n">error</span><span class="p">;</span>
+</span><span class='line'>    <span class="bp">NSData</span> <span class="o">*</span><span class="n">htmlData</span> <span class="o">=</span> <span class="p">[</span><span class="n">attrString</span> <span class="nl">dataFromRange</span><span class="p">:</span><span class="n">NSMakeRange</span><span class="p">(</span><span class="mi">0</span><span class="p">,[</span><span class="n">attrString</span> <span class="n">length</span><span class="p">])</span> <span class="nl">documentAttributes</span><span class="p">:</span><span class="n">htmlAtt</span> <span class="nl">error</span><span class="p">:</span><span class="o">&amp;</span><span class="n">error</span> <span class="p">];</span>
+</span><span class='line'>    <span class="bp">NSString</span> <span class="o">*</span><span class="n">htmlString</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NSString</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithData</span><span class="p">:</span><span class="n">htmlData</span> <span class="nl">encoding</span><span class="p">:</span><span class="n">NSUTF8StringEncoding</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">htmlView</span> <span class="nl">setStringValue</span><span class="p">:</span><span class="n">htmlString</span><span class="p">];</span>
 </span><span class='line'>    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%@&quot;</span><span class="p">,</span><span class="n">htmlString</span><span class="p">);</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
@@ -201,12 +201,12 @@
   
 
 
-<time datetime="2011-06-28T22:59:00+08:00" pubdate data-updated="true">Jun 28<span>th</span>, 2011</time>
+<time datetime="2011-06-28T22:59:00+08:00" pubdate data-updated="true"></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/nsattributesstring/'>NSAttributesString</a>, <a class='category' href='/blog/categories/rtf/'>RTF</a>
+    <a class='category' href='/blog/categories/nsattributesstring/'>nsattributesstring</a>, <a class='category' href='/blog/categories/rtf/'>rtf</a>
   
 </span>
 
@@ -254,23 +254,23 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/openurl-on-ios9/">iOS 9下使用openURL:</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/app-transportation-security/">iOS 9中的App Transport Security</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/alamofire-ssl/">让Alamofire使用自签名证书</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/disable-corestorage-on-os-x-yosemite/">禁用OS X Yosemite上的Core Storage</a>
       </li>
     
       <li class="post">
         <a href="/blog/xcode-6-color-theme-path/">Xcode 6 Color Themes (颜色主题) 的路径</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/scripty-swift/">［更新］把Swift用作脚本语言</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/view-controller-based-status-bar-style-and-uinavigationcontroller/">UINavigationController和View Controller-based状态栏风格</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
       </li>
     
   </ul>

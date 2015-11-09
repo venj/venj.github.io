@@ -90,7 +90,7 @@
   
 
 
-<time datetime="2011-04-23T23:10:00+08:00" pubdate data-updated="true">Apr 23<span>rd</span>, 2011</time>
+<time datetime="2011-04-23T23:10:00+08:00" pubdate data-updated="true"></time>
         
       </p>
     
@@ -134,7 +134,7 @@
 <span class='line-number'>19</span>
 <span class='line-number'>20</span>
 <span class='line-number'>21</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">applicationDidFinishLaunching:</span><span class="p">(</span><span class="n">NSNotification</span> <span class="o">*</span><span class="p">)</span><span class="nv">aNotification</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">applicationDidFinishLaunching:</span><span class="p">(</span><span class="bp">NSNotification</span> <span class="o">*</span><span class="p">)</span><span class="nv">aNotification</span>
 </span><span class='line'><span class="p">{</span>
 </span><span class='line'>    <span class="c1">// 初始化一个pictureTaker对象</span>
 </span><span class='line'>    <span class="n">pictureTaker</span> <span class="o">=</span> <span class="p">[</span><span class="n">IKPictureTaker</span> <span class="n">pictureTaker</span><span class="p">];</span>
@@ -143,17 +143,17 @@
 </span><span class='line'>    <span class="c1">//[pictureTaker setValue:[NSValue valueWithSize:NSMakeSize(800.0, 600.0)] forKey:IKPictureTakerOutputImageMaxSizeKey];</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'><span class="c1">// Picture taker的回调方法。</span>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">pictureTakerDidEnd:</span><span class="p">(</span><span class="n">IKPictureTaker</span> <span class="o">*</span><span class="p">)</span><span class="nv">picker</span>
-</span><span class='line'>                 <span class="nf">returnCode:</span><span class="p">(</span><span class="n">NSInteger</span><span class="p">)</span><span class="nv">code</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">pictureTakerDidEnd:</span><span class="p">(</span><span class="n">IKPictureTaker</span> <span class="o">*</span><span class="p">)</span><span class="nv">picker</span>
+</span><span class='line'>                 <span class="nf">returnCode:</span><span class="p">(</span><span class="bp">NSInteger</span><span class="p">)</span><span class="nv">code</span>
 </span><span class='line'>                <span class="nf">contextInfo:</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="nv">contextInfo</span>
 </span><span class='line'><span class="p">{</span>
 </span><span class='line'>    <span class="c1">// 获取图片，传递给Image Well。</span>
 </span><span class='line'>    <span class="n">NSImage</span> <span class="o">*</span><span class="n">image</span> <span class="o">=</span> <span class="p">[</span><span class="n">picker</span> <span class="n">outputImage</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">imageView</span> <span class="nl">setImage:</span><span class="n">image</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">imageView</span> <span class="nl">setImage</span><span class="p">:</span><span class="n">image</span><span class="p">];</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'><span class="c1">// 这里，用主窗口sheet的方式打开拍照窗口。</span>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">takePicture:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">pictureTaker</span> <span class="nl">beginPictureTakerSheetForWindow:</span><span class="p">[</span><span class="n">self</span> <span class="n">window</span><span class="p">]</span> <span class="nl">withDelegate:</span><span class="n">self</span> <span class="nl">didEndSelector:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">pictureTakerDidEnd:returnCode:contextInfo:</span><span class="p">)</span> <span class="nl">contextInfo:</span><span class="nb">nil</span><span class="p">];</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">takePicture:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">pictureTaker</span> <span class="nl">beginPictureTakerSheetForWindow</span><span class="p">:[</span><span class="nb">self</span> <span class="n">window</span><span class="p">]</span> <span class="nl">withDelegate</span><span class="p">:</span><span class="nb">self</span> <span class="nl">didEndSelector</span><span class="p">:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">pictureTakerDidEnd</span><span class="p">:</span><span class="nl">returnCode</span><span class="p">:</span><span class="nl">contextInfo</span><span class="p">:)</span> <span class="nl">contextInfo</span><span class="p">:</span><span class="nb">nil</span><span class="p">];</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
@@ -187,12 +187,12 @@
   
 
 
-<time datetime="2011-04-23T23:10:00+08:00" pubdate data-updated="true">Apr 23<span>rd</span>, 2011</time>
+<time datetime="2011-04-23T23:10:00+08:00" pubdate data-updated="true"></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/imagekit/'>ImageKit</a>, <a class='category' href='/blog/categories/take-photo/'>Take Photo</a>, <a class='category' href='/blog/categories/isight/'>iSight</a>
+    <a class='category' href='/blog/categories/imagekit/'>imagekit</a>, <a class='category' href='/blog/categories/isight/'>isight</a>, <a class='category' href='/blog/categories/take-photo/'>take photo</a>
   
 </span>
 
@@ -240,23 +240,23 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/openurl-on-ios9/">iOS 9下使用openURL:</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/app-transportation-security/">iOS 9中的App Transport Security</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/alamofire-ssl/">让Alamofire使用自签名证书</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/disable-corestorage-on-os-x-yosemite/">禁用OS X Yosemite上的Core Storage</a>
       </li>
     
       <li class="post">
         <a href="/blog/xcode-6-color-theme-path/">Xcode 6 Color Themes (颜色主题) 的路径</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/scripty-swift/">［更新］把Swift用作脚本语言</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/view-controller-based-status-bar-style-and-uinavigationcontroller/">UINavigationController和View Controller-based状态栏风格</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
       </li>
     
   </ul>

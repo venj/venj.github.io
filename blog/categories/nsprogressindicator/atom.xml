@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: NSProgressIndicator | Cocoa学习]]></title>
+  <title><![CDATA[Category: Nsprogressindicator | Cocoa学习]]></title>
   <link href="http://venj.github.io/blog/categories/nsprogressindicator/atom.xml" rel="self"/>
   <link href="http://venj.github.io/"/>
-  <updated>2015-02-01T14:40:20+08:00</updated>
+  <updated>2015-11-09T20:47:16+08:00</updated>
   <id>http://venj.github.io/</id>
   <author>
     <name><![CDATA[venj]]></name>
@@ -22,10 +22,9 @@
 
 <p>首先，要说明，下面这样的方法是不能让Label(<code>NSTextField</code>)立刻重绘的：</p>
 
-<p><code>objc
-[someLabel setStringValue:@"Some new text"];
+<pre><code class="objc">[someLabel setStringValue:@"Some new text"];
 [someLabel setNeedsDisplay:YES];
-</code></p>
+</code></pre>
 
 <!-- more -->
 
@@ -33,10 +32,9 @@
 <p>
 正确的做法是：</p>
 
-<p><code>objc
-[someLabel setStringValue:@"Some new text"];
+<pre><code class="objc">[someLabel setStringValue:@"Some new text"];
 [someLabel displayIfNeeded];
-</code></p>
+</code></pre>
 
 <p>这两个方法看起来似乎差不多，不过仔细读读，还是能体会到差别的。<code>-setNeedDisplay:</code>是告诉<code>NSTextField</code>实例，我需要重绘了（但是什么时候重绘，则不一定是现在）。而<code>-displayIfNeeded</code>的意思是，如果需要（这里肯定是需要的，因为我们修改了标签的文字），马上重绘。</p>
 

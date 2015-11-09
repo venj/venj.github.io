@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: APUE | Cocoa学习]]></title>
+  <title><![CDATA[Category: Apue | Cocoa学习]]></title>
   <link href="http://venj.github.io/blog/categories/apue/atom.xml" rel="self"/>
   <link href="http://venj.github.io/"/>
-  <updated>2015-02-01T14:40:20+08:00</updated>
+  <updated>2015-11-09T20:47:16+08:00</updated>
   <id>http://venj.github.io/</id>
   <author>
     <name><![CDATA[venj]]></name>
@@ -28,35 +28,27 @@
 
 <p>2 打开<code>path_to_apue_src/Make.defines.macos</code>，修改<code>WKDIR</code>的路径为<code>apue.2e</code>的绝对路径，如：</p>
 
-<p><code>
-WKDIR=/Users/venj/Developer/Sources/C/APUE/apue #也就是path_to_apue_src
-</code></p>
+<pre><code>WKDIR=/Users/venj/Developer/Sources/C/APUE/apue #也就是path_to_apue_src
+</code></pre>
 
 <p>3 打开<code>path_to_apue_src/include/apue.h</code>，在第11行之后加入如下几行：</p>
 
-<p>``` c</p>
-
-<h1>ifdef MACOS</h1>
-
-<h1>define _DARWIN_C_SOURCE</h1>
-
-<h1>endif</h1>
-
-<p>```</p>
+<pre><code class="c">#ifdef MACOS
+#define _DARWIN_C_SOURCE
+#endif
+</code></pre>
 
 <p>4 打开终端，<code>cd</code>到<code>path_to_apue_src</code>目录，运行：</p>
 
-<p><code>bash
-make all
-</code></p>
+<pre><code class="bash">make all
+</code></pre>
 
 <p>至此准备工作到此结束。</p>
 
 <p>5 编译源码的方法如下：</p>
 
-<p><code>bash
-gcc -Ipath_to_apue_src/include path_to_apue_src/lib/libapue.a example.c -o exec_file
-</code></p>
+<pre><code class="bash">gcc -Ipath_to_apue_src/include path_to_apue_src/lib/libapue.a example.c -o exec_file 
+</code></pre>
 
 <p>方法也不算很难吧。 :D 理论上这个方法能在OSX 10.5以上的系统都可使用。</p>
 

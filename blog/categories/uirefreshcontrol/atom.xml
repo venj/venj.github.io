@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: UIRefreshControl | Cocoa学习]]></title>
+  <title><![CDATA[Category: Uirefreshcontrol | Cocoa学习]]></title>
   <link href="http://venj.github.io/blog/categories/uirefreshcontrol/atom.xml" rel="self"/>
   <link href="http://venj.github.io/"/>
-  <updated>2015-02-01T14:40:20+08:00</updated>
+  <updated>2015-11-09T20:47:16+08:00</updated>
   <id>http://venj.github.io/</id>
   <author>
     <name><![CDATA[venj]]></name>
@@ -32,63 +32,46 @@
 <!-- more -->
 
 
-<p>```objc
-&ndash; (void)viewDidLoad
-{</p>
-
-<pre><code>[super viewDidLoad];
-// Do any additional setup after loading the view, typically from a nib.
-self.navigationItem.leftBarButtonItem = self.editButtonItem;
-// self.refreshControl = [[UIRefreshControl alloc] init]; // 如果你没有做步骤2，取消注释本行。
-[self.refreshControl addTarget:self action:@selector(insertNewObject:) forControlEvents:UIControlEventValueChanged]; // 设置下拉刷新时执行的动作
-
-UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addButtonAction:)]; // 通过代码触发下拉刷新动作
-self.navigationItem.rightBarButtonItem = addButton;
-</code></pre>
-
-<p>}</p>
-
-<ul>
-<li>(void)didReceiveMemoryWarning
+<pre><code class="objc">- (void)viewDidLoad
 {
-  [super didReceiveMemoryWarning];
-  // Dispose of any resources that can be recreated.
-}</li>
-</ul>
+    [super viewDidLoad];
+    // Do any additional setup after loading the view, typically from a nib.
+    self.navigationItem.leftBarButtonItem = self.editButtonItem;
+    // self.refreshControl = [[UIRefreshControl alloc] init]; // 如果你没有做步骤2，取消注释本行。
+    [self.refreshControl addTarget:self action:@selector(insertNewObject:) forControlEvents:UIControlEventValueChanged]; // 设置下拉刷新时执行的动作
 
-
-<p>// 下拉刷新动作
-&ndash; (void)addButtonAction:(id)sender {</p>
-
-<pre><code>[self.refreshControl beginRefreshing]; // 触发刷新动作
-</code></pre>
-
-<p>}</p>
-
-<ul>
-<li>(void)insertNewObject:(id)sender
-{
-  // 使用Timer来模拟一个耗时的操作
-  [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(doSomething) userInfo:nil repeats:NO];
-}</li>
-</ul>
-
-
-<p>// 这是模板自动生成的插入新项目的代码，我们把它移入了一个新方法，并增加结束刷新的代码。
-&ndash; (void)doSomething {</p>
-
-<pre><code>if (!_objects) {
-    _objects = [[NSMutableArray alloc] init];
+    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addButtonAction:)]; // 通过代码触发下拉刷新动作
+    self.navigationItem.rightBarButtonItem = addButton;
 }
-[_objects insertObject:[NSDate date] atIndex:0];
-NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-[self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-[self.refreshControl endRefreshing]; // 结束刷新
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+// 下拉刷新动作
+- (void)addButtonAction:(id)sender {
+    [self.refreshControl beginRefreshing]; // 触发刷新动作
+}
+
+- (void)insertNewObject:(id)sender
+{
+    // 使用Timer来模拟一个耗时的操作
+    [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(doSomething) userInfo:nil repeats:NO];
+}
+
+// 这是模板自动生成的插入新项目的代码，我们把它移入了一个新方法，并增加结束刷新的代码。
+- (void)doSomething {
+    if (!_objects) {
+        _objects = [[NSMutableArray alloc] init];
+    }
+    [_objects insertObject:[NSDate date] atIndex:0];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+    [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    [self.refreshControl endRefreshing]; // 结束刷新
+}
 </code></pre>
-
-<p>}</p>
-
-<p>```</p>
 
 <p>编译执行。</p>
 
@@ -98,17 +81,15 @@ NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
 
 <p>为了解决这个问题，我们在<code>- addButtonAction:</code>方法中在调用<code>－ beginRefreshing</code>之后加入一行代码：</p>
 
-<p><code>objc
-[self insertNewObject:nil]; //手工执行插入新行的动作
+<pre><code class="objc">[self insertNewObject:nil]; //手工执行插入新行的动作
 // 或者
 [self.refreshControl sendActionsForControlEvents:UIControlEventValueChanged]; //发送ValueChanged事件（推荐）
-</code></p>
+</code></pre>
 
 <p>再次编译执行后，我们发现<code>- doSomething</code>可以正确执行了，但是，进度圈还是藏在TableView可见范围的上方。为了解决这个问题，我们需要在<code>- addButtonAction:</code>方法中，在调用<code>－ beginRefreshing</code>之前再加入一行代码：</p>
 
-<p><code>objc
-[self.tableView setContentOffset:CGPointMake(0, -44) animated:YES];
-</code></p>
+<pre><code class="objc">[self.tableView setContentOffset:CGPointMake(0, -44) animated:YES];
+</code></pre>
 
 <p>编译执行，点击“＋”按钮，进度圈出现，2秒后，新条目加入，进度圈消失，我们的问题也解决了。</p>
 

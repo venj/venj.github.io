@@ -85,7 +85,7 @@
   
 
 
-<time datetime="2012-01-10T15:44:00+08:00" pubdate data-updated="true">Jan 10<span>th</span>, 2012</time>
+<time datetime="2012-01-10T15:44:00+08:00" pubdate data-updated="true"></time>
         
       </p>
     
@@ -156,21 +156,21 @@
 <span class='line-number'>16</span>
 <span class='line-number'>17</span>
 </pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cm">/* For iOS 4.1 and earlier */</span>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">application:</span><span class="p">(</span><span class="n">UIApplication</span> <span class="o">*</span><span class="p">)</span><span class="nv">application</span> <span class="nf">handleOpenURL:</span><span class="p">(</span><span class="n">NSURL</span> <span class="o">*</span><span class="p">)</span><span class="nv">url</span> <span class="p">{</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">application:</span><span class="p">(</span><span class="bp">UIApplication</span> <span class="o">*</span><span class="p">)</span><span class="nv">application</span> <span class="nf">handleOpenURL:</span><span class="p">(</span><span class="bp">NSURL</span> <span class="o">*</span><span class="p">)</span><span class="nv">url</span> <span class="p">{</span>
 </span><span class='line'>    <span class="c1">// Handle url request.</span>
-</span><span class='line'>    <span class="n">UIAlertView</span> <span class="o">*</span><span class="n">alert</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIAlertView</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithTitle:</span><span class="s">@&quot;URL Request&quot;</span> <span class="nl">message:</span><span class="p">[</span><span class="n">url</span> <span class="n">absoluteString</span><span class="p">]</span> <span class="nl">delegate:</span><span class="nb">nil</span> <span class="nl">cancelButtonTitle:</span><span class="s">@&quot;OK&quot;</span> <span class="nl">otherButtonTitles:</span><span class="nb">nil</span><span class="p">];</span>
+</span><span class='line'>    <span class="bp">UIAlertView</span> <span class="o">*</span><span class="n">alert</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UIAlertView</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithTitle</span><span class="p">:</span><span class="s">@&quot;URL Request&quot;</span> <span class="nl">message</span><span class="p">:[</span><span class="n">url</span> <span class="n">absoluteString</span><span class="p">]</span> <span class="nl">delegate</span><span class="p">:</span><span class="nb">nil</span> <span class="nl">cancelButtonTitle</span><span class="p">:</span><span class="s">@&quot;OK&quot;</span> <span class="nl">otherButtonTitles</span><span class="p">:</span><span class="nb">nil</span><span class="p">];</span>
 </span><span class='line'>    <span class="p">[</span><span class="n">alert</span> <span class="n">show</span><span class="p">];</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="k">return</span> <span class="n">YES</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nb">YES</span><span class="p">;</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
 </span><span class='line'><span class="cm">/* For iOS 4.2 and later */</span>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">application:</span><span class="p">(</span><span class="n">UIApplication</span> <span class="o">*</span><span class="p">)</span><span class="nv">application</span> <span class="nf">openURL:</span><span class="p">(</span><span class="n">NSURL</span> <span class="o">*</span><span class="p">)</span><span class="nv">url</span> <span class="nf">sourceApplication:</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">sourceApplication</span> <span class="nf">annotation:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">annotation</span> <span class="p">{</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">application:</span><span class="p">(</span><span class="bp">UIApplication</span> <span class="o">*</span><span class="p">)</span><span class="nv">application</span> <span class="nf">openURL:</span><span class="p">(</span><span class="bp">NSURL</span> <span class="o">*</span><span class="p">)</span><span class="nv">url</span> <span class="nf">sourceApplication:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">sourceApplication</span> <span class="nf">annotation:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">annotation</span> <span class="p">{</span>
 </span><span class='line'>    <span class="c1">// Handle url request.</span>
-</span><span class='line'>    <span class="n">UIAlertView</span> <span class="o">*</span><span class="n">alert</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIAlertView</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithTitle:</span><span class="s">@&quot;URL Request&quot;</span> <span class="nl">message:</span><span class="p">[</span><span class="n">url</span> <span class="n">absoluteString</span><span class="p">]</span> <span class="nl">delegate:</span><span class="nb">nil</span> <span class="nl">cancelButtonTitle:</span><span class="s">@&quot;OK&quot;</span> <span class="nl">otherButtonTitles:</span><span class="nb">nil</span><span class="p">];</span>
+</span><span class='line'>    <span class="bp">UIAlertView</span> <span class="o">*</span><span class="n">alert</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UIAlertView</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithTitle</span><span class="p">:</span><span class="s">@&quot;URL Request&quot;</span> <span class="nl">message</span><span class="p">:[</span><span class="n">url</span> <span class="n">absoluteString</span><span class="p">]</span> <span class="nl">delegate</span><span class="p">:</span><span class="nb">nil</span> <span class="nl">cancelButtonTitle</span><span class="p">:</span><span class="s">@&quot;OK&quot;</span> <span class="nl">otherButtonTitles</span><span class="p">:</span><span class="nb">nil</span><span class="p">];</span>
 </span><span class='line'>    <span class="p">[</span><span class="n">alert</span> <span class="n">show</span><span class="p">];</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="k">return</span> <span class="n">YES</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nb">YES</span><span class="p">;</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
@@ -197,17 +197,17 @@
 <span class='line-number'>10</span>
 <span class='line-number'>11</span>
 <span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">applicationDidFinishLaunching:</span><span class="p">(</span><span class="n">NSNotification</span> <span class="o">*</span><span class="p">)</span><span class="nv">aNotification</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">applicationDidFinishLaunching:</span><span class="p">(</span><span class="bp">NSNotification</span> <span class="o">*</span><span class="p">)</span><span class="nv">aNotification</span>
 </span><span class='line'><span class="p">{</span>
 </span><span class='line'>    <span class="c1">// Insert code here to initialize your application</span>
-</span><span class='line'>    <span class="p">[[</span><span class="n">NSAppleEventManager</span> <span class="n">sharedAppleEventManager</span><span class="p">]</span> <span class="nl">setEventHandler:</span><span class="n">self</span> <span class="nl">andSelector:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">handleURLEvent:withReplyEvent:</span><span class="p">)</span> <span class="nl">forEventClass:</span><span class="n">kInternetEventClass</span> <span class="nl">andEventID:</span><span class="n">kAEGetURL</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[[</span><span class="n">NSAppleEventManager</span> <span class="n">sharedAppleEventManager</span><span class="p">]</span> <span class="nl">setEventHandler</span><span class="p">:</span><span class="nb">self</span> <span class="nl">andSelector</span><span class="p">:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">handleURLEvent</span><span class="p">:</span><span class="nl">withReplyEvent</span><span class="p">:)</span> <span class="nl">forEventClass</span><span class="p">:</span><span class="n">kInternetEventClass</span> <span class="nl">andEventID</span><span class="p">:</span><span class="n">kAEGetURL</span><span class="p">];</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">handleURLEvent:</span><span class="p">(</span><span class="n">NSAppleEventDescriptor</span><span class="o">*</span><span class="p">)</span><span class="nv">theEvent</span> <span class="nf">withReplyEvent:</span><span class="p">(</span><span class="n">NSAppleEventDescriptor</span><span class="o">*</span><span class="p">)</span><span class="nv">replyEvent</span> <span class="p">{</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">handleURLEvent:</span><span class="p">(</span><span class="n">NSAppleEventDescriptor</span><span class="o">*</span><span class="p">)</span><span class="nv">theEvent</span> <span class="nf">withReplyEvent:</span><span class="p">(</span><span class="n">NSAppleEventDescriptor</span><span class="o">*</span><span class="p">)</span><span class="nv">replyEvent</span> <span class="p">{</span>
 </span><span class='line'>    <span class="c1">// Process URL Request</span>
-</span><span class='line'>    <span class="n">NSString</span><span class="o">*</span> <span class="n">path</span> <span class="o">=</span> <span class="p">[[</span><span class="n">theEvent</span> <span class="nl">paramDescriptorForKeyword:</span><span class="n">keyDirectObject</span><span class="p">]</span> <span class="n">stringValue</span><span class="p">];</span>
+</span><span class='line'>    <span class="bp">NSString</span><span class="o">*</span> <span class="n">path</span> <span class="o">=</span> <span class="p">[[</span><span class="n">theEvent</span> <span class="nl">paramDescriptorForKeyword</span><span class="p">:</span><span class="n">keyDirectObject</span><span class="p">]</span> <span class="n">stringValue</span><span class="p">];</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="p">[[</span><span class="n">NSAlert</span> <span class="nl">alertWithMessageText:</span><span class="s">@&quot;URL Request&quot;</span> <span class="nl">defaultButton:</span><span class="s">@&quot;OK&quot;</span> <span class="nl">alternateButton:</span><span class="nb">nil</span> <span class="nl">otherButton:</span><span class="nb">nil</span> <span class="nl">informativeTextWithFormat:</span><span class="s">@&quot;%@&quot;</span><span class="p">,</span> <span class="n">path</span><span class="p">]</span> <span class="n">runModal</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[[</span><span class="n">NSAlert</span> <span class="nl">alertWithMessageText</span><span class="p">:</span><span class="s">@&quot;URL Request&quot;</span> <span class="nl">defaultButton</span><span class="p">:</span><span class="s">@&quot;OK&quot;</span> <span class="nl">alternateButton</span><span class="p">:</span><span class="nb">nil</span> <span class="nl">otherButton</span><span class="p">:</span><span class="nb">nil</span> <span class="nl">informativeTextWithFormat</span><span class="p">:</span><span class="s">@&quot;%@&quot;</span><span class="p">,</span> <span class="n">path</span><span class="p">]</span> <span class="n">runModal</span><span class="p">];</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
@@ -221,8 +221,8 @@
 <p>好了，关于自定义URL Scheme就讲这么多，用起来很简单吧。</p>
 
 <p>说明：
-&ndash; 本文的示例代码已经推送到了<a href="https://github.com/venj/Cocoa-blog-code">Github</a>，你可以下载编译之后退出程序。然后打开Safari，在地址栏中输入： <code>cloud://test.com</code>，看看是不是自动转跳到示例程序，并看到了对话框。
-&ndash; 本文参考了<a href="http://stackoverflow.com/questions/1991072/how-to-handle-with-a-default-url-scheme">这里</a>和<a href="http://developer.apple.com/library/ios/#documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/AdvancedAppTricks/AdvancedAppTricks.html#//apple_ref/doc/uid/TP40007072-CH7-SW20">Apple的文档</a></p>
+- 本文的示例代码已经推送到了<a href="https://github.com/venj/Cocoa-blog-code">Github</a>，你可以下载编译之后退出程序。然后打开Safari，在地址栏中输入： <code>cloud://test.com</code>，看看是不是自动转跳到示例程序，并看到了对话框。
+- 本文参考了<a href="http://stackoverflow.com/questions/1991072/how-to-handle-with-a-default-url-scheme">这里</a>和<a href="http://developer.apple.com/library/ios/#documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/AdvancedAppTricks/AdvancedAppTricks.html#//apple_ref/doc/uid/TP40007072-CH7-SW20">Apple的文档</a></p>
 
 <p>(全文完)</p>
 </div>
@@ -247,12 +247,12 @@
   
 
 
-<time datetime="2012-01-10T15:44:00+08:00" pubdate data-updated="true">Jan 10<span>th</span>, 2012</time>
+<time datetime="2012-01-10T15:44:00+08:00" pubdate data-updated="true"></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/url-scheme/'>URL Scheme</a>
+    <a class='category' href='/blog/categories/url-scheme/'>url scheme</a>
   
 </span>
 
@@ -300,23 +300,23 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/openurl-on-ios9/">iOS 9下使用openURL:</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/app-transportation-security/">iOS 9中的App Transport Security</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/alamofire-ssl/">让Alamofire使用自签名证书</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/disable-corestorage-on-os-x-yosemite/">禁用OS X Yosemite上的Core Storage</a>
       </li>
     
       <li class="post">
         <a href="/blog/xcode-6-color-theme-path/">Xcode 6 Color Themes (颜色主题) 的路径</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/scripty-swift/">［更新］把Swift用作脚本语言</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/view-controller-based-status-bar-style-and-uinavigationcontroller/">UINavigationController和View Controller-based状态栏风格</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
       </li>
     
   </ul>

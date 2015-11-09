@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: URL Scheme | Cocoa学习]]></title>
+  <title><![CDATA[Category: Url Scheme | Cocoa学习]]></title>
   <link href="http://venj.github.io/blog/categories/url-scheme/atom.xml" rel="self"/>
   <link href="http://venj.github.io/"/>
-  <updated>2015-02-01T14:40:20+08:00</updated>
+  <updated>2015-11-09T20:47:16+08:00</updated>
   <id>http://venj.github.io/</id>
   <author>
     <name><![CDATA[venj]]></name>
@@ -25,37 +25,31 @@
 <!-- more -->
 
 
-<p>``` objc
-// 注意：这个方法仅对iOS 5.0.x有效
-+ (BOOL) isNetworkAvailable { //Via Stackoverflow</p>
-
-<pre><code>NSURL *url = [NSURL URLWithString:@"http://www.baidu.com"];
-NSURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-NSHTTPURLResponse *response = nil;
-[NSURLConnection sendSynchronousRequest:request
-                      returningResponse:&amp;response error:NULL];
-return (response != nil);
-</code></pre>
-
-<p>}</p>
-
-<ul>
-<li><p>(void)viewDidLoad
-{
-  [super viewDidLoad];
-  // Do any additional setup after loading the view, typically from a nib.
-  if (![[self class] isNetworkAvailable]) {
-      [[[UIAlertView alloc] initWithTitle:@&ldquo;No network&rdquo; message:@&ldquo;No networkNetwork unavailable!!!&rdquo; delegate:self cancelButtonTitle:@&ldquo;OK&rdquo; otherButtonTitles:@&ldquo;Settings&rdquo;, nil] show];
-  }
-}</p></li>
-<li><p>(void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
-  if (buttonIndex != 0) {
-      [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@&ldquo;prefs:root=General&amp;path=Network&rdquo;]];
-  }
+<pre><code class="objc">// 注意：这个方法仅对iOS 5.0.x有效
++ (BOOL) isNetworkAvailable { //Via Stackoverflow
+    NSURL *url = [NSURL URLWithString:@"http://www.baidu.com"];
+    NSURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    NSHTTPURLResponse *response = nil;
+    [NSURLConnection sendSynchronousRequest:request
+                          returningResponse:&amp;response error:NULL];
+    return (response != nil);
 }
-```</p></li>
-</ul>
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    // Do any additional setup after loading the view, typically from a nib.
+    if (![[self class] isNetworkAvailable]) {
+        [[[UIAlertView alloc] initWithTitle:@"No network" message:@"No networkNetwork unavailable!!!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Settings", nil] show];
+    }
+}
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if (buttonIndex != 0) {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"prefs:root=General&amp;path=Network"]];
+    }
+}
+</code></pre>
 
 <p>编译运行之后，网络不可用倒是顺利提示了，但是我很杯具的发现，点了提示框里的“Settings”按钮之后完全没有反应。于是STFW，然后悲催的发现“特殊URL”在iOS 5.1里已经失效。多方搜索基于<code>openURL</code>的方法无果。</p>
 
@@ -65,10 +59,9 @@ return (response != nil);
 
 <p>然后我就注释了自己的代码，在<code>Info.plist</code>里增加了一条：</p>
 
-<p><code>xml
-&lt;key&gt;SBUsesNetwork&lt;/key&gt;
+<pre><code class="xml">&lt;key&gt;SBUsesNetwork&lt;/key&gt;
 &lt;true/&gt;
-</code></p>
+</code></pre>
 
 <p>编译运行，终于出现了高德地图一样的提示对话框。按下“设置”按钮，顺利转跳到了“设置”程序里，问题解决。</p>
 
@@ -98,22 +91,18 @@ return (response != nil);
 
 <p>下面是一个示例的XML结构：</p>
 
-<p>``` xml
-<key>CFBundleURLTypes</key>
-<array></p>
-
-<pre><code>&lt;dict&gt;
-    &lt;key&gt;CFBundleURLName&lt;/key&gt;
-    &lt;string&gt;me.venj.myapp&lt;/string&gt;
-    &lt;key&gt;CFBundleURLSchemes&lt;/key&gt;
-    &lt;array&gt;
-        &lt;string&gt;cloud&lt;/string&gt;
-    &lt;/array&gt;
-&lt;/dict&gt;
+<pre><code class="xml">&lt;key&gt;CFBundleURLTypes&lt;/key&gt;
+&lt;array&gt;
+    &lt;dict&gt;
+        &lt;key&gt;CFBundleURLName&lt;/key&gt;
+        &lt;string&gt;me.venj.myapp&lt;/string&gt;
+        &lt;key&gt;CFBundleURLSchemes&lt;/key&gt;
+        &lt;array&gt;
+            &lt;string&gt;cloud&lt;/string&gt;
+        &lt;/array&gt;
+    &lt;/dict&gt;
+&lt;/array&gt;
 </code></pre>
-
-<p></array>
-```</p>
 
 <p>这样，我们就可以在程序中处理请求了。下面我们来分别看一下iOS和Mac下的处理方法：</p>
 
@@ -123,31 +112,24 @@ return (response != nil);
 
 <p>下面是示例代码：</p>
 
-<p>``` objc
-/<em> For iOS 4.1 and earlier </em>/
-&ndash; (BOOL)application:(UIApplication <em>)application handleOpenURL:(NSURL </em>)url {</p>
+<pre><code class="objc">/* For iOS 4.1 and earlier */
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+    // Handle url request.
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"URL Request" message:[url absoluteString] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [alert show];
 
-<pre><code>// Handle url request.
-UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"URL Request" message:[url absoluteString] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-[alert show];
+    return YES;
+}
 
-return YES;
+/* For iOS 4.2 and later */
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    // Handle url request.
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"URL Request" message:[url absoluteString] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [alert show];
+
+    return YES;
+}
 </code></pre>
-
-<p>}</p>
-
-<p>/<em> For iOS 4.2 and later </em>/
-&ndash; (BOOL)application:(UIApplication <em>)application openURL:(NSURL </em>)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {</p>
-
-<pre><code>// Handle url request.
-UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"URL Request" message:[url absoluteString] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-[alert show];
-
-return YES;
-</code></pre>
-
-<p>}
-```</p>
 
 <p>我们的演示程序只是简单的显示了一个<code>UIAlertView</code>来响应请求。实际应该如何处理那就看需要了。</p>
 
@@ -159,26 +141,19 @@ return YES;
 
 <p>Mac下处理自定义URL Scheme的请求稍有不同。我们首先要在<code>-applicationDidFinishLaunching:</code>方法中注册一下，并指定处理URL请求的方法。如下：</p>
 
-<p>``` objc
-&ndash; (void)applicationDidFinishLaunching:(NSNotification *)aNotification
-{</p>
-
-<pre><code>// Insert code here to initialize your application
-[[NSAppleEventManager sharedAppleEventManager] setEventHandler:self andSelector:@selector(handleURLEvent:withReplyEvent:) forEventClass:kInternetEventClass andEventID:kAEGetURL];
-</code></pre>
-
-<p>}</p>
-
-<ul>
-<li><p>(void)handleURLEvent:(NSAppleEventDescriptor<em>)theEvent withReplyEvent:(NSAppleEventDescriptor</em>)replyEvent {
-  // Process URL Request
-  NSString* path = [[theEvent paramDescriptorForKeyword:keyDirectObject] stringValue];</p>
-
-<p>  [[NSAlert alertWithMessageText:@&ldquo;URL Request&rdquo; defaultButton:@&ldquo;OK&rdquo; alternateButton:nil otherButton:nil informativeTextWithFormat:@&ldquo;%@&rdquo;, path] runModal];
+<pre><code class="objc">- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
+{
+    // Insert code here to initialize your application
+    [[NSAppleEventManager sharedAppleEventManager] setEventHandler:self andSelector:@selector(handleURLEvent:withReplyEvent:) forEventClass:kInternetEventClass andEventID:kAEGetURL];
 }
-```</p></li>
-</ul>
 
+- (void)handleURLEvent:(NSAppleEventDescriptor*)theEvent withReplyEvent:(NSAppleEventDescriptor*)replyEvent {
+    // Process URL Request
+    NSString* path = [[theEvent paramDescriptorForKeyword:keyDirectObject] stringValue];
+
+    [[NSAlert alertWithMessageText:@"URL Request" defaultButton:@"OK" alternateButton:nil otherButton:nil informativeTextWithFormat:@"%@", path] runModal];
+}
+</code></pre>
 
 <p>类似的，我们在示例程序中还是简单的用了一个<code>NSAlert</code>来展示我们成功捕获到了这个URL Scheme的请求。</p>
 
@@ -189,8 +164,8 @@ return YES;
 <p>好了，关于自定义URL Scheme就讲这么多，用起来很简单吧。</p>
 
 <p>说明：
-&ndash; 本文的示例代码已经推送到了<a href="https://github.com/venj/Cocoa-blog-code">Github</a>，你可以下载编译之后退出程序。然后打开Safari，在地址栏中输入： <code>cloud://test.com</code>，看看是不是自动转跳到示例程序，并看到了对话框。
-&ndash; 本文参考了<a href="http://stackoverflow.com/questions/1991072/how-to-handle-with-a-default-url-scheme">这里</a>和<a href="http://developer.apple.com/library/ios/#documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/AdvancedAppTricks/AdvancedAppTricks.html#//apple_ref/doc/uid/TP40007072-CH7-SW20">Apple的文档</a></p>
+- 本文的示例代码已经推送到了<a href="https://github.com/venj/Cocoa-blog-code">Github</a>，你可以下载编译之后退出程序。然后打开Safari，在地址栏中输入： <code>cloud://test.com</code>，看看是不是自动转跳到示例程序，并看到了对话框。
+- 本文参考了<a href="http://stackoverflow.com/questions/1991072/how-to-handle-with-a-default-url-scheme">这里</a>和<a href="http://developer.apple.com/library/ios/#documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/AdvancedAppTricks/AdvancedAppTricks.html#//apple_ref/doc/uid/TP40007072-CH7-SW20">Apple的文档</a></p>
 
 <p>(全文完)</p>
 ]]></content>

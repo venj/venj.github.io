@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: NSAttributesString | Cocoa学习]]></title>
+  <title><![CDATA[Category: Nsattributesstring | Cocoa学习]]></title>
   <link href="http://venj.github.io/blog/categories/nsattributesstring/atom.xml" rel="self"/>
   <link href="http://venj.github.io/"/>
-  <updated>2015-02-01T14:40:20+08:00</updated>
+  <updated>2015-11-09T20:47:16+08:00</updated>
   <id>http://venj.github.io/</id>
   <author>
     <name><![CDATA[venj]]></name>
@@ -27,39 +27,67 @@
 
 
 <p>
-``` objc
-&ndash; (IBAction)convert:(id)sender {</p>
-
-<pre><code>attrString = [richView attributedString];
-NSMutableArray *exclude = [NSMutableArray array];
-// 如果要使用XHTML文档，可以注释掉下面这行，否则会使用HTML 4.01。
-[exclude addObject:@"XML"];
-// 如果要使用HTML Transitional，注释掉下面这行。否则就用HTML Strict。
-// 不过HTML Transitional支持font标签，而这显然不是我们想要的。
-[exclude addObjectsFromArray:[NSArray arrayWithObjects:@"APPLET", @"BASEFONT", @"CENTER", @"DIR", @"FONT", @"ISINDEX", @"MENU", @"S", @"STRIKE", @"U", nil]];
-// 如果要将CSS放入HTML的head标签中，可以注释掉下面这样：
-[exclude addObject:@"STYLE"];
-// 如果要完全不用CSS，同时注释掉上面这样和下面这行。
-//[exclude addObject:@"SPAN"];
-// 如果要保留空格字符，注释掉下面几行——因为HTML会把任意长的空格合成一个空格的。
-//[exclude addObject:@"Apple-converted-space"];
-//[exclude addObject:@"Apple-converted-tab"];
-//[exclude addObject:@"Apple-interchange-newline"];
-// 如果不要完整的HTML结构，则取消注释下面一行。
-//[exclude addObjectsFromArray:[NSArray arrayWithObjects:@"doctype", @"html", @"head", @"body", nil]];
-
-NSDictionary *htmlAtt = [NSDictionary dictionaryWithObjectsAndKeys:
-                         NSHTMLTextDocumentType, NSDocumentTypeDocumentAttribute,
-                         exclude, NSExcludedElementsDocumentAttribute, nil];
-NSError *error;
-NSData *htmlData = [attrString dataFromRange:NSMakeRange(0,[attrString length]) documentAttributes:htmlAtt error:&amp;error ];
-NSString *htmlString = [[NSString alloc] initWithData:htmlData encoding:NSUTF8StringEncoding];
-[htmlView setStringValue:htmlString];
-NSLog(@"%@",htmlString);
-</code></pre>
-
-<p>}
-```</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">convert:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">attrString</span> <span class="o">=</span> <span class="p">[</span><span class="n">richView</span> <span class="n">attributedString</span><span class="p">];</span>
+</span><span class='line'>    <span class="bp">NSMutableArray</span> <span class="o">*</span><span class="n">exclude</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSMutableArray</span> <span class="n">array</span><span class="p">];</span>
+</span><span class='line'>    <span class="c1">// 如果要使用XHTML文档，可以注释掉下面这行，否则会使用HTML 4.01。</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">exclude</span> <span class="nl">addObject</span><span class="p">:@</span><span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">XML</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;];</span>
+</span><span class='line'>    <span class="c1">// 如果要使用HTML Transitional，注释掉下面这行。否则就用HTML Strict。</span>
+</span><span class='line'>    <span class="c1">// 不过HTML Transitional支持font标签，而这显然不是我们想要的。</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">exclude</span> <span class="nl">addObjectsFromArray</span><span class="p">:[</span><span class="bp">NSArray</span> <span class="nl">arrayWithObjects</span><span class="p">:@</span><span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">APPLET</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;,</span> <span class="p">@</span><span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">BASEFONT</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;,</span> <span class="p">@</span><span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">CENTER</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;,</span> <span class="p">@</span><span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="kt">DIR</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;,</span> <span class="p">@</span><span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">FONT</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;,</span> <span class="p">@</span><span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">ISINDEX</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;,</span> <span class="p">@</span><span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">MENU</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;,</span> <span class="p">@</span><span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">S</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;,</span> <span class="p">@</span><span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">STRIKE</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;,</span> <span class="p">@</span><span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">U</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;,</span> <span class="nb">nil</span><span class="p">]];</span>
+</span><span class='line'>    <span class="c1">// 如果要将CSS放入HTML的head标签中，可以注释掉下面这样：</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">exclude</span> <span class="nl">addObject</span><span class="p">:@</span><span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">STYLE</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;];</span>
+</span><span class='line'>    <span class="c1">// 如果要完全不用CSS，同时注释掉上面这样和下面这行。</span>
+</span><span class='line'>    <span class="c1">//[exclude addObject:@&amp;ldquo;SPAN&amp;rdquo;];</span>
+</span><span class='line'>    <span class="c1">// 如果要保留空格字符，注释掉下面几行——因为HTML会把任意长的空格合成一个空格的。</span>
+</span><span class='line'>    <span class="c1">//[exclude addObject:@&amp;ldquo;Apple-converted-space&amp;rdquo;];</span>
+</span><span class='line'>    <span class="c1">//[exclude addObject:@&amp;ldquo;Apple-converted-tab&amp;rdquo;];</span>
+</span><span class='line'>    <span class="c1">//[exclude addObject:@&amp;ldquo;Apple-interchange-newline&amp;rdquo;];</span>
+</span><span class='line'>    <span class="c1">// 如果不要完整的HTML结构，则取消注释下面一行。</span>
+</span><span class='line'>    <span class="c1">//[exclude addObjectsFromArray:[NSArray arrayWithObjects:@&amp;ldquo;doctype&amp;rdquo;, @&amp;ldquo;html&amp;rdquo;, @&amp;ldquo;head&amp;rdquo;, @&amp;ldquo;body&amp;rdquo;, nil]];&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="bp">NSDictionary</span> <span class="o">*</span><span class="n">htmlAtt</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSDictionary</span> <span class="nl">dictionaryWithObjectsAndKeys</span><span class="p">:</span>
+</span><span class='line'>                         <span class="n">NSHTMLTextDocumentType</span><span class="p">,</span> <span class="n">NSDocumentTypeDocumentAttribute</span><span class="p">,</span>
+</span><span class='line'>                         <span class="n">exclude</span><span class="p">,</span> <span class="n">NSExcludedElementsDocumentAttribute</span><span class="p">,</span> <span class="nb">nil</span><span class="p">];</span>
+</span><span class='line'><span class="bp">NSError</span> <span class="o">*</span><span class="n">error</span><span class="p">;</span>
+</span><span class='line'><span class="bp">NSData</span> <span class="o">*</span><span class="n">htmlData</span> <span class="o">=</span> <span class="p">[</span><span class="n">attrString</span> <span class="nl">dataFromRange</span><span class="p">:</span><span class="n">NSMakeRange</span><span class="p">(</span><span class="mi">0</span><span class="p">,[</span><span class="n">attrString</span> <span class="n">length</span><span class="p">])</span> <span class="nl">documentAttributes</span><span class="p">:</span><span class="n">htmlAtt</span> <span class="nl">error</span><span class="p">:</span><span class="o">&amp;</span><span class="n">amp</span><span class="p">;</span><span class="n">error</span> <span class="p">];</span>
+</span><span class='line'><span class="bp">NSString</span> <span class="o">*</span><span class="n">htmlString</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NSString</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithData</span><span class="p">:</span><span class="n">htmlData</span> <span class="nl">encoding</span><span class="p">:</span><span class="n">NSUTF8StringEncoding</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="n">htmlView</span> <span class="nl">setStringValue</span><span class="p">:</span><span class="n">htmlString</span><span class="p">];</span>
+</span><span class='line'><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%@&quot;</span><span class="p">,</span><span class="n">htmlString</span><span class="p">);</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></p>
 
 <p>下面是测试的结果（未包含完整的HTML结构）：</p>
 
@@ -103,22 +131,19 @@ NSLog(@"%@",htmlString);
 
 
 <p>
-``` objc
-&ndash; (IBAction)convert:(id)sender {</p>
-
-<pre><code>attrString = [richView attributedString];
-NSArray * exclude = [NSArray arrayWithObjects:@"doctype", @"html", @"head", @"body", @"xml", nil];
-NSDictionary *htmlAtt = [NSDictionary dictionaryWithObjectsAndKeys:
-                         NSHTMLTextDocumentType, NSDocumentTypeDocumentAttribute,
-                         exclude, NSExcludedElementsDocumentAttribute, nil];
-NSError *error;
-NSData *htmlData = [attrString dataFromRange:NSMakeRange(0,[attrString length]) documentAttributes:htmlAtt error:&amp;error ];
-NSString *htmlString = [[NSString alloc] initWithData:htmlData encoding:NSUTF8StringEncoding];
-[htmlView setStringValue:htmlString];
-</code></pre>
-
-<p>}
-```
+<code>objc
+- (IBAction)convert:(id)sender {
+    attrString = [richView attributedString];
+    NSArray * exclude = [NSArray arrayWithObjects:@"doctype", @"html", @"head", @"body", @"xml", nil];
+    NSDictionary *htmlAtt = [NSDictionary dictionaryWithObjectsAndKeys:
+                             NSHTMLTextDocumentType, NSDocumentTypeDocumentAttribute,
+                             exclude, NSExcludedElementsDocumentAttribute, nil];
+    NSError *error;
+    NSData *htmlData = [attrString dataFromRange:NSMakeRange(0,[attrString length]) documentAttributes:htmlAtt error:&amp;error ];
+    NSString *htmlString = [[NSString alloc] initWithData:htmlData encoding:NSUTF8StringEncoding];
+    [htmlView setStringValue:htmlString];
+}
+</code>
 另外，我做了个界面来试了一下这个方法的转换结果：</p>
 
 <p>我们可以看到，这个方法转换出来的HTML里包含了大量的<code>&lt;font&gt;</code>标签。查了一下文档，发现这个API早在10.0的时候就已经有了，因此得到这样的结果一点也不奇怪。</p>
@@ -168,12 +193,11 @@ NSString *htmlString = [[NSString alloc] initWithData:htmlData encoding:NSUTF8St
 <p style="margin: 0.0px 0.0px 0.0px 0.0px"><font face="Menlo" size="3" style="font: 12.0px Menlo">}</font></p>
 
 
-<p>```</p>
+<pre><code>
+TextEdit:
+</code></pre>
 
-<p>TextEdit:</p>
-
-<p>``` html
-&lt;!DOCTYPE html PUBLIC &ldquo;&ndash;//W3C//DTD HTML 4.01//EN&rdquo; &ldquo;<a href="http://www.w3.org/TR/html4/strict.dtd">http://www.w3.org/TR/html4/strict.dtd</a>&rdquo;>
+<p>&lt;!DOCTYPE html PUBLIC &ldquo;-//W3C//DTD HTML 4.01//EN&rdquo; &ldquo;<a href="http://www.w3.org/TR/html4/strict.dtd">http://www.w3.org/TR/html4/strict.dtd</a>&rdquo;>
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -181,22 +205,19 @@ NSString *htmlString = [[NSString alloc] initWithData:htmlData encoding:NSUTF8St
   <title></title>
   <meta name="Generator" content="Cocoa HTML Writer">
   <meta name="CocoaVersion" content="1038.35">
-  <style type="text/css"></p>
-
-<pre><code>p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Menlo}
-p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Menlo; color: #568187}
-p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Menlo; color: #c72c25}
-p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Menlo; color: #401082}
-p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Menlo; color: #7134aa}
-span.s1 {color: #b41ca4}
-span.s2 {color: #000000}
-span.s3 {color: #401082}
-span.s4 {color: #7134aa}
-span.s5 {color: #568187}
-span.s6 {color: #3d02d9}
-</code></pre>
-
-<p>  </style>
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Menlo}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Menlo; color: #568187}
+    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Menlo; color: #c72c25}
+    p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Menlo; color: #401082}
+    p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Menlo; color: #7134aa}
+    span.s1 {color: #b41ca4}
+    span.s2 {color: #000000}
+    span.s3 {color: #401082}
+    span.s4 {color: #7134aa}
+    span.s5 {color: #568187}
+    span.s6 {color: #3d02d9}
+  </style>
 </head>
 <body></p>
 

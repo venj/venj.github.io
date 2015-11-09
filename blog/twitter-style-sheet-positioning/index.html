@@ -85,7 +85,7 @@
   
 
 
-<time datetime="2012-02-15T17:29:00+08:00" pubdate data-updated="true">Feb 15<span>th</span>, 2012</time>
+<time datetime="2012-02-15T17:29:00+08:00" pubdate data-updated="true"></time>
         
       </p>
     
@@ -119,16 +119,16 @@
 <span class='line-number'>14</span>
 <span class='line-number'>15</span>
 </pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// 创建一个NSAlert，并以Sheet的形式呈现</span>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">removeRow:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
-</span><span class='line'>    <span class="n">NSAlert</span> <span class="o">*</span><span class="n">alert</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSAlert</span> <span class="nl">alertWithMessageText:</span><span class="s">@&quot;Are you sure?&quot;</span> <span class="nl">defaultButton:</span><span class="s">@&quot;Yes&quot;</span> <span class="nl">alternateButton:</span><span class="s">@&quot;No&quot;</span> <span class="nl">otherButton:</span><span class="nb">nil</span> <span class="nl">informativeTextWithFormat:</span><span class="s">@&quot;Deleting a table cell is not reversable.&quot;</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">alert</span> <span class="nl">beginSheetModalForWindow:</span><span class="n">self</span><span class="p">.</span><span class="n">window</span> <span class="nl">modalDelegate:</span><span class="n">self</span> <span class="nl">didEndSelector:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">alertDidEnd:returnCode:contextInfo:</span><span class="p">)</span> <span class="nl">contextInfo:</span><span class="nb">NULL</span><span class="p">];</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">removeRow:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">NSAlert</span> <span class="o">*</span><span class="n">alert</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSAlert</span> <span class="nl">alertWithMessageText</span><span class="p">:</span><span class="s">@&quot;Are you sure?&quot;</span> <span class="nl">defaultButton</span><span class="p">:</span><span class="s">@&quot;Yes&quot;</span> <span class="nl">alternateButton</span><span class="p">:</span><span class="s">@&quot;No&quot;</span> <span class="nl">otherButton</span><span class="p">:</span><span class="nb">nil</span> <span class="nl">informativeTextWithFormat</span><span class="p">:</span><span class="s">@&quot;Deleting a table cell is not reversable.&quot;</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">alert</span> <span class="nl">beginSheetModalForWindow</span><span class="p">:</span><span class="nb">self</span><span class="p">.</span><span class="n">window</span> <span class="nl">modalDelegate</span><span class="p">:</span><span class="nb">self</span> <span class="nl">didEndSelector</span><span class="p">:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">alertDidEnd</span><span class="p">:</span><span class="nl">returnCode</span><span class="p">:</span><span class="nl">contextInfo</span><span class="p">:)</span> <span class="nl">contextInfo</span><span class="p">:</span><span class="nb">NULL</span><span class="p">];</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
 </span><span class='line'><span class="c1">// NSWindowDelegate方法，用来指定Sheet的显示位置</span>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSRect</span><span class="p">)</span><span class="nf">window:</span><span class="p">(</span><span class="n">NSWindow</span> <span class="o">*</span><span class="p">)</span><span class="nv">window</span> <span class="nf">willPositionSheet:</span><span class="p">(</span><span class="n">NSWindow</span> <span class="o">*</span><span class="p">)</span><span class="nv">sheet</span> <span class="nf">usingRect:</span><span class="p">(</span><span class="n">NSRect</span><span class="p">)</span><span class="nv">rect</span> <span class="p">{</span>
-</span><span class='line'>    <span class="kt">id</span> <span class="n">cell</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">tableView</span> <span class="nl">rowViewAtRow:</span><span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">tableView</span> <span class="n">selectedRow</span><span class="p">]</span> <span class="nl">makeIfNecessary:</span><span class="n">YES</span><span class="p">];</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="n">NSRect</span><span class="p">)</span><span class="nf">window:</span><span class="p">(</span><span class="n">NSWindow</span> <span class="o">*</span><span class="p">)</span><span class="nv">window</span> <span class="nf">willPositionSheet:</span><span class="p">(</span><span class="n">NSWindow</span> <span class="o">*</span><span class="p">)</span><span class="nv">sheet</span> <span class="nf">usingRect:</span><span class="p">(</span><span class="n">NSRect</span><span class="p">)</span><span class="nv">rect</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kt">id</span> <span class="n">cell</span> <span class="o">=</span> <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">tableView</span> <span class="nl">rowViewAtRow</span><span class="p">:[</span><span class="nb">self</span><span class="p">.</span><span class="n">tableView</span> <span class="n">selectedRow</span><span class="p">]</span> <span class="nl">makeIfNecessary</span><span class="p">:</span><span class="nb">YES</span><span class="p">];</span>
 </span><span class='line'>    <span class="n">NSRect</span> <span class="n">cellRect</span> <span class="o">=</span> <span class="p">[</span><span class="n">cell</span> <span class="n">frame</span><span class="p">];</span>
-</span><span class='line'>    <span class="n">NSRect</span> <span class="n">scrollViewRect</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">tableView</span><span class="p">.</span><span class="n">superview</span> <span class="n">frame</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">NSRect</span> <span class="n">scrollViewRect</span> <span class="o">=</span> <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">tableView</span><span class="p">.</span><span class="n">superview</span> <span class="n">frame</span><span class="p">];</span>
 </span><span class='line'>    <span class="n">cellRect</span><span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">scrollViewRect</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">-</span> <span class="n">cellRect</span><span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">y</span><span class="p">;</span> <span class="c1">// View-based table view is flipped?</span>
 </span><span class='line'>    <span class="n">cellRect</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 </span><span class='line'>    <span class="k">return</span> <span class="n">cellRect</span><span class="p">;</span>
@@ -140,7 +140,7 @@
 
 <p><img class="center" src="/images/posts/twitter-style-sheet.png"></p>
 
-<p>我已经把示例程序的源码推送到<a href="https://github.com/venj/Cocoa-blog-code/tree/master/TwiTable">github</a>上了，有兴趣的读者可以clone下来研究一下。示例程序运行的时候，选中一个表格，按下cmd &ndash; delete（或者Edit &ndash; Delete菜单操作），你就能看到运行效果了。</p>
+<p>我已经把示例程序的源码推送到<a href="https://github.com/venj/Cocoa-blog-code/tree/master/TwiTable">github</a>上了，有兴趣的读者可以clone下来研究一下。示例程序运行的时候，选中一个表格，按下cmd - delete（或者Edit - Delete菜单操作），你就能看到运行效果了。</p>
 
 <p>这次碰到问题的经历再次证明了RTFM的威力所在。Happy coding and RTFM.</p>
 
@@ -169,12 +169,12 @@
   
 
 
-<time datetime="2012-02-15T17:29:00+08:00" pubdate data-updated="true">Feb 15<span>th</span>, 2012</time>
+<time datetime="2012-02-15T17:29:00+08:00" pubdate data-updated="true"></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/nstableview/'>NSTableView</a>, <a class='category' href='/blog/categories/sheet/'>Sheet</a>, <a class='category' href='/blog/categories/twitter/'>Twitter</a>
+    <a class='category' href='/blog/categories/nstableview/'>nstableview</a>, <a class='category' href='/blog/categories/sheet/'>sheet</a>, <a class='category' href='/blog/categories/twitter/'>twitter</a>
   
 </span>
 
@@ -222,23 +222,23 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/openurl-on-ios9/">iOS 9下使用openURL:</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/app-transportation-security/">iOS 9中的App Transport Security</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/alamofire-ssl/">让Alamofire使用自签名证书</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/disable-corestorage-on-os-x-yosemite/">禁用OS X Yosemite上的Core Storage</a>
       </li>
     
       <li class="post">
         <a href="/blog/xcode-6-color-theme-path/">Xcode 6 Color Themes (颜色主题) 的路径</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/scripty-swift/">［更新］把Swift用作脚本语言</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/view-controller-based-status-bar-style-and-uinavigationcontroller/">UINavigationController和View Controller-based状态栏风格</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
       </li>
     
   </ul>

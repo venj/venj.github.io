@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Core Location | Cocoa学习]]></title>
   <link href="http://venj.github.io/blog/categories/core-location/atom.xml" rel="self"/>
   <link href="http://venj.github.io/"/>
-  <updated>2015-02-01T14:40:20+08:00</updated>
+  <updated>2015-11-09T20:47:16+08:00</updated>
   <id>http://venj.github.io/</id>
   <author>
     <name><![CDATA[venj]]></name>
@@ -28,32 +28,53 @@
 
 
 <p>
-``` objc
-&ndash; (void)findLocation {</p>
-
-<pre><code>CLGeocoder *geoCoder = [CLGeocoder new];
-[geoCoder geocodeAddressString:locationString completionHandler:^(NSArray *placemarks, NSError *error) {
-    if (error) {
-        NSLog(@"%@", [error description]);
-        return;
-    }
-    else {
-        CLPlacemark *m = [placemarks objectAtIndex:0];
-        MapPoint *mp = [[MapPoint alloc] initWithCoordinate:[[m location] coordinate] title:[locationTitleField text]];
-        [mapView addAnnotation:mp];
-        [mp release];
-        [mapView setCenterCoordinate:[[m location] coordinate] animated:YES];
-        [self foundLocation];
-    }
-}];
-
-[locationManager startUpdatingLocation];
-[activityIndicator startAnimating];
-[locationTitleField setHidden:YES];
-</code></pre>
-
-<p>}
-```</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">findLocation</span> <span class="p">{</span>
+</span><span class='line'>    <span class="bp">CLGeocoder</span> <span class="o">&lt;</span><span class="n">em</span><span class="o">&gt;</span><span class="n">geoCoder</span> <span class="o">=</span> <span class="p">[</span><span class="bp">CLGeocoder</span> <span class="n">new</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">geoCoder</span> <span class="nl">geocodeAddressString</span><span class="p">:</span><span class="n">locationString</span> <span class="nl">completionHandler</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="bp">NSArray</span> <span class="o">&lt;/</span><span class="n">em</span><span class="o">&gt;</span><span class="n">placemarks</span><span class="p">,</span> <span class="bp">NSError</span> <span class="o">&lt;</span><span class="n">em</span><span class="o">&gt;</span><span class="n">error</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="n">error</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="n">NSLog</span><span class="p">(@</span><span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="o">%</span><span class="p">@</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;,</span> <span class="p">[</span><span class="n">error</span> <span class="n">description</span><span class="p">]);</span>
+</span><span class='line'>            <span class="k">return</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>        <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>            <span class="bp">CLPlacemark</span> <span class="o">&lt;/</span><span class="n">em</span><span class="o">&gt;</span><span class="n">m</span> <span class="o">=</span> <span class="p">[</span><span class="n">placemarks</span> <span class="nl">objectAtIndex</span><span class="p">:</span><span class="mi">0</span><span class="p">];</span>
+</span><span class='line'>            <span class="n">MapPoint</span> <span class="o">*</span><span class="n">mp</span> <span class="o">=</span> <span class="p">[[</span><span class="n">MapPoint</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithCoordinate</span><span class="p">:[[</span><span class="n">m</span> <span class="n">location</span><span class="p">]</span> <span class="n">coordinate</span><span class="p">]</span> <span class="nl">title</span><span class="p">:[</span><span class="n">locationTitleField</span> <span class="n">text</span><span class="p">]];</span>
+</span><span class='line'>            <span class="p">[</span><span class="n">mapView</span> <span class="nl">addAnnotation</span><span class="p">:</span><span class="n">mp</span><span class="p">];</span>
+</span><span class='line'>            <span class="p">[</span><span class="n">mp</span> <span class="k">release</span><span class="p">];</span>
+</span><span class='line'>            <span class="p">[</span><span class="n">mapView</span> <span class="nl">setCenterCoordinate</span><span class="p">:[[</span><span class="n">m</span> <span class="n">location</span><span class="p">]</span> <span class="n">coordinate</span><span class="p">]</span> <span class="nl">animated</span><span class="p">:</span><span class="nb">YES</span><span class="p">];</span>
+</span><span class='line'>            <span class="p">[</span><span class="nb">self</span> <span class="n">foundLocation</span><span class="p">];</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}];</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="p">[</span><span class="n">locationManager</span> <span class="n">startUpdatingLocation</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="n">activityIndicator</span> <span class="n">startAnimating</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="n">locationTitleField</span> <span class="nl">setHidden</span><span class="p">:</span><span class="nb">YES</span><span class="p">];</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></p>
 
 <p>这里用到了iOS5里的一个全新的类：<code>CLGeocoder</code>。现在Reverse Geocoding也能够通过这个类实现了，之前的<code>MKReverseGeocoder</code>类在iOS5里已经变成Depreciated了。获取地址使用了<code>CLGeocoder</code>类中的<code>– geocodeAddressString:completionHandler:</code>的方法。这个方法接受一个地址字符串和一个处理Block，用来在找到结果的时候对结果进行处理。简单起见，上面的实现里直接取了获得的所有可能位置里的第一个结果。在实际的实现中应该将所有可能的结果都展示给用户，让用户决定选择正确的位置。</p>
 

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: LSUIElement | Cocoa学习]]></title>
+  <title><![CDATA[Category: Lsuielement | Cocoa学习]]></title>
   <link href="http://venj.github.io/blog/categories/lsuielement/atom.xml" rel="self"/>
   <link href="http://venj.github.io/"/>
-  <updated>2015-02-01T14:40:20+08:00</updated>
+  <updated>2015-11-09T20:47:16+08:00</updated>
   <id>http://venj.github.io/</id>
   <author>
     <name><![CDATA[venj]]></name>
@@ -22,10 +22,9 @@
 
 <p>其实动态设置Dock图标的方法很简单严格的说只有两行代码：</p>
 
-<p><code>objc
-ProcessSerialNumber psn = { 0, kCurrentProcess };
+<pre><code class="objc">ProcessSerialNumber psn = { 0, kCurrentProcess };
 TransformProcessType(&amp;psn, kProcessTransformToForegroundApplication);
-</code></p>
+</code></pre>
 
 <p>在设置隐藏Dock图标的时候需要重启应用程序，无法在运行时动态完成的，而在显示Dock图标的时候则不需要。我做了一个简单的Demo程序。放到了Github上，有兴趣的可以看看。（以后在这里出现的其他示例代码也会放到那里。）</p>
 
@@ -37,48 +36,85 @@ TransformProcessType(&amp;psn, kProcessTransformToForegroundApplication);
 
 
 <p>
-``` objc
-&ndash; (void)applicationDidFinishLaunching:(NSNotification *)aNotification
-{</p>
-
-<pre><code>// 读取用户设置，判断是否显示Dock图标，并且设置复选框的状态。
-defaults = [NSUserDefaults standardUserDefaults];
-BOOL iconInDock = [[NSUserDefaults standardUserDefaults] boolForKey:kShowDockIcon];
-
-if (iconInDock) {
-    ProcessSerialNumber psn = { 0, kCurrentProcess };
-    TransformProcessType(&amp;psn, kProcessTransformToForegroundApplication);
-    [self.dockIconSelector setState:NSOnState];
-}
-else {
-    [self.dockIconSelector setState:NSOffState];
-}
-</code></pre>
-
-<p>   // 省略其他用来处理Menulet的代码。
-}</p>
-
-<ul>
-<li><p>(IBAction)toggleDockIcon:(id)sender {
-  NSUInteger state = [sender state];
-  // 根据复选框是否选中，设置用户值，并且改变程序运行状态。
-  if (state == NSOnState) {
-      ProcessSerialNumber psn = { 0, kCurrentProcess };
-      TransformProcessType(&amp;psn, kProcessTransformToForegroundApplication);
-      self.infoText.hidden = YES;</p>
-
-<pre><code>  [defaults setBool:YES forKey:kShowDockIcon];
-  [defaults synchronize];
-</code></pre>
-
-<p>  }
-  else {
-      [defaults setBool:NO forKey:kShowDockIcon];
-      self.infoText.hidden = NO;
-      [defaults synchronize];
-  }
-}
-```</p></li>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">applicationDidFinishLaunching:</span><span class="p">(</span><span class="bp">NSNotification</span> <span class="o">*</span><span class="p">)</span><span class="nv">aNotification</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="c1">// 读取用户设置，判断是否显示Dock图标，并且设置复选框的状态。</span>
+</span><span class='line'>    <span class="n">defaults</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSUserDefaults</span> <span class="n">standardUserDefaults</span><span class="p">];</span>
+</span><span class='line'>    <span class="kt">BOOL</span> <span class="n">iconInDock</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NSUserDefaults</span> <span class="n">standardUserDefaults</span><span class="p">]</span> <span class="nl">boolForKey</span><span class="p">:</span><span class="n">kShowDockIcon</span><span class="p">];</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">if</span> <span class="p">(</span><span class="n">iconInDock</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">ProcessSerialNumber</span> <span class="n">psn</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">0</span><span class="p">,</span> <span class="n">kCurrentProcess</span> <span class="p">};</span>
+</span><span class='line'>    <span class="n">TransformProcessType</span><span class="p">(</span><span class="o">&amp;</span><span class="n">amp</span><span class="p">;</span><span class="n">psn</span><span class="p">,</span> <span class="n">kProcessTransformToForegroundApplication</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">dockIconSelector</span> <span class="nl">setState</span><span class="p">:</span><span class="n">NSOnState</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">dockIconSelector</span> <span class="nl">setState</span><span class="p">:</span><span class="n">NSOffState</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>   <span class="c1">// 省略其他用来处理Menulet的代码。</span>
+</span><span class='line'><span class="p">}</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">ul</span><span class="o">&gt;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="n">li</span><span class="o">&gt;&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nl">toggleDockIcon</span><span class="p">:(</span><span class="kt">id</span><span class="p">)</span><span class="n">sender</span> <span class="p">{</span>
+</span><span class='line'>  <span class="bp">NSUInteger</span> <span class="n">state</span> <span class="o">=</span> <span class="p">[</span><span class="n">sender</span> <span class="n">state</span><span class="p">];</span>
+</span><span class='line'>  <span class="c1">// 根据复选框是否选中，设置用户值，并且改变程序运行状态。</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">state</span> <span class="o">==</span> <span class="n">NSOnState</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">ProcessSerialNumber</span> <span class="n">psn</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">0</span><span class="p">,</span> <span class="n">kCurrentProcess</span> <span class="p">};</span>
+</span><span class='line'>      <span class="n">TransformProcessType</span><span class="p">(</span><span class="o">&amp;</span><span class="n">amp</span><span class="p">;</span><span class="n">psn</span><span class="p">,</span> <span class="n">kProcessTransformToForegroundApplication</span><span class="p">);</span>
+</span><span class='line'>      <span class="nb">self</span><span class="p">.</span><span class="n">infoText</span><span class="p">.</span><span class="n">hidden</span> <span class="o">=</span> <span class="nb">YES</span><span class="p">;</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span>  <span class="p">[</span><span class="n">defaults</span> <span class="nl">setBool</span><span class="p">:</span><span class="nb">YES</span> <span class="nl">forKey</span><span class="p">:</span><span class="n">kShowDockIcon</span><span class="p">];</span>
+</span><span class='line'>  <span class="p">[</span><span class="n">defaults</span> <span class="n">synchronize</span><span class="p">];</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>  <span class="p">}</span>
+</span><span class='line'>  <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>      <span class="p">[</span><span class="n">defaults</span> <span class="nl">setBool</span><span class="p">:</span><span class="nb">NO</span> <span class="nl">forKey</span><span class="p">:</span><span class="n">kShowDockIcon</span><span class="p">];</span>
+</span><span class='line'>      <span class="nb">self</span><span class="p">.</span><span class="n">infoText</span><span class="p">.</span><span class="n">hidden</span> <span class="o">=</span> <span class="nb">NO</span><span class="p">;</span>
+</span><span class='line'>      <span class="p">[</span><span class="n">defaults</span> <span class="n">synchronize</span><span class="p">];</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></p></li>
 </ul>
 
 

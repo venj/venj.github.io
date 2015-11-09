@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: NSCell | Cocoa学习]]></title>
+  <title><![CDATA[Category: Nscell | Cocoa学习]]></title>
   <link href="http://venj.github.io/blog/categories/nscell/atom.xml" rel="self"/>
   <link href="http://venj.github.io/"/>
-  <updated>2015-02-01T14:40:20+08:00</updated>
+  <updated>2015-11-09T20:47:16+08:00</updated>
   <id>http://venj.github.io/</id>
   <author>
     <name><![CDATA[venj]]></name>
@@ -23,7 +23,7 @@
 <p>问题的起源是“Cocoa Programming For Mac OS X”上一段关于<code>NSCell</code>的叙述：</p>
 
 <blockquote><p>NSControl inherits from NSView. With its graphics context, NSView is a relatively large and expensive object to create. When the NSButton class was created, the first thing someone did was to create a calculator with 10 rows and 10 columns of buttons. The performance was less than it could have been because of the 100 tiny views. Later, someone had the clever idea of moving the brains of the button into another object (not a view) and creating one big view (called an NSMatrix) that would act as the view for all 100 button brains. The class for the button brains was called NSButtonCell.<br/>
-<strong>&mdash; Chapter 17. Custom Views, “For the More Curious: Cells”</strong></p></blockquote>
+<strong>&ndash; Chapter 17. Custom Views, “For the More Curious: Cells”</strong></p></blockquote>
 
 <p>现在在此阅读这句话，我似乎已经能够基本理解，不过当时那叫一个困惑啊。为什么用Cell就比Button性能高呢？为什么Cell可以替代Button呢？</p>
 
@@ -34,8 +34,8 @@
 我的理解如下（可能并不是很精确）：</p>
 
 <blockquote><ul>
-<li><code>NSButton</code>的继承关系是：<code>NSButton</code> &ndash;> <code>NSControl</code> &ndash;> <code>NSView</code> &ndash;> <code>NSResponder</code> &ndash;> <code>NSObject</code>。应该说，是一个很长的继承链了。</li>
-<li><code>NSButtonCell</code>的继承关系是：<code>NSButtonCell</code> &ndash;> <code>NSCell</code> &ndash;> <code>NSObject</code>。</li>
+<li><code>NSButton</code>的继承关系是：<code>NSButton</code> -> <code>NSControl</code> -> <code>NSView</code> -> <code>NSResponder</code> -> <code>NSObject</code>。应该说，是一个很长的继承链了。</li>
+<li><code>NSButtonCell</code>的继承关系是：<code>NSButtonCell</code> -> <code>NSCell</code> -> <code>NSObject</code>。</li>
 </ul>
 </blockquote>
 

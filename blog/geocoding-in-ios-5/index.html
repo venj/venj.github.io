@@ -85,7 +85,7 @@
   
 
 
-<time datetime="2011-07-06T23:44:00+08:00" pubdate data-updated="true">Jul 6<span>th</span>, 2011</time>
+<time datetime="2011-07-06T23:44:00+08:00" pubdate data-updated="true"></time>
         
       </p>
     
@@ -124,26 +124,26 @@
 <span class='line-number'>19</span>
 <span class='line-number'>20</span>
 <span class='line-number'>21</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">findLocation</span> <span class="p">{</span>
-</span><span class='line'>    <span class="n">CLGeocoder</span> <span class="o">*</span><span class="n">geoCoder</span> <span class="o">=</span> <span class="p">[</span><span class="n">CLGeocoder</span> <span class="n">new</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">geoCoder</span> <span class="nl">geocodeAddressString:</span><span class="n">locationString</span> <span class="nl">completionHandler:</span><span class="o">^</span><span class="p">(</span><span class="n">NSArray</span> <span class="o">*</span><span class="n">placemarks</span><span class="p">,</span> <span class="n">NSError</span> <span class="o">*</span><span class="n">error</span><span class="p">)</span> <span class="p">{</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">findLocation</span> <span class="p">{</span>
+</span><span class='line'>    <span class="bp">CLGeocoder</span> <span class="o">*</span><span class="n">geoCoder</span> <span class="o">=</span> <span class="p">[</span><span class="bp">CLGeocoder</span> <span class="n">new</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">geoCoder</span> <span class="nl">geocodeAddressString</span><span class="p">:</span><span class="n">locationString</span> <span class="nl">completionHandler</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="bp">NSArray</span> <span class="o">*</span><span class="n">placemarks</span><span class="p">,</span> <span class="bp">NSError</span> <span class="o">*</span><span class="n">error</span><span class="p">)</span> <span class="p">{</span>
 </span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="n">error</span><span class="p">)</span> <span class="p">{</span>
 </span><span class='line'>            <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%@&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">error</span> <span class="n">description</span><span class="p">]);</span>
 </span><span class='line'>            <span class="k">return</span><span class="p">;</span>
 </span><span class='line'>        <span class="p">}</span>
 </span><span class='line'>        <span class="k">else</span> <span class="p">{</span>
-</span><span class='line'>            <span class="n">CLPlacemark</span> <span class="o">*</span><span class="n">m</span> <span class="o">=</span> <span class="p">[</span><span class="n">placemarks</span> <span class="nl">objectAtIndex:</span><span class="mi">0</span><span class="p">];</span>
-</span><span class='line'>            <span class="n">MapPoint</span> <span class="o">*</span><span class="n">mp</span> <span class="o">=</span> <span class="p">[[</span><span class="n">MapPoint</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithCoordinate:</span><span class="p">[[</span><span class="n">m</span> <span class="n">location</span><span class="p">]</span> <span class="n">coordinate</span><span class="p">]</span> <span class="nl">title:</span><span class="p">[</span><span class="n">locationTitleField</span> <span class="n">text</span><span class="p">]];</span>
-</span><span class='line'>            <span class="p">[</span><span class="n">mapView</span> <span class="nl">addAnnotation:</span><span class="n">mp</span><span class="p">];</span>
-</span><span class='line'>            <span class="p">[</span><span class="n">mp</span> <span class="n">release</span><span class="p">];</span>
-</span><span class='line'>            <span class="p">[</span><span class="n">mapView</span> <span class="nl">setCenterCoordinate:</span><span class="p">[[</span><span class="n">m</span> <span class="n">location</span><span class="p">]</span> <span class="n">coordinate</span><span class="p">]</span> <span class="nl">animated:</span><span class="n">YES</span><span class="p">];</span>
-</span><span class='line'>            <span class="p">[</span><span class="n">self</span> <span class="n">foundLocation</span><span class="p">];</span>
+</span><span class='line'>            <span class="bp">CLPlacemark</span> <span class="o">*</span><span class="n">m</span> <span class="o">=</span> <span class="p">[</span><span class="n">placemarks</span> <span class="nl">objectAtIndex</span><span class="p">:</span><span class="mi">0</span><span class="p">];</span>
+</span><span class='line'>            <span class="n">MapPoint</span> <span class="o">*</span><span class="n">mp</span> <span class="o">=</span> <span class="p">[[</span><span class="n">MapPoint</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithCoordinate</span><span class="p">:[[</span><span class="n">m</span> <span class="n">location</span><span class="p">]</span> <span class="n">coordinate</span><span class="p">]</span> <span class="nl">title</span><span class="p">:[</span><span class="n">locationTitleField</span> <span class="n">text</span><span class="p">]];</span>
+</span><span class='line'>            <span class="p">[</span><span class="n">mapView</span> <span class="nl">addAnnotation</span><span class="p">:</span><span class="n">mp</span><span class="p">];</span>
+</span><span class='line'>            <span class="p">[</span><span class="n">mp</span> <span class="k">release</span><span class="p">];</span>
+</span><span class='line'>            <span class="p">[</span><span class="n">mapView</span> <span class="nl">setCenterCoordinate</span><span class="p">:[[</span><span class="n">m</span> <span class="n">location</span><span class="p">]</span> <span class="n">coordinate</span><span class="p">]</span> <span class="nl">animated</span><span class="p">:</span><span class="nb">YES</span><span class="p">];</span>
+</span><span class='line'>            <span class="p">[</span><span class="nb">self</span> <span class="n">foundLocation</span><span class="p">];</span>
 </span><span class='line'>        <span class="p">}</span>
 </span><span class='line'>    <span class="p">}];</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="p">[</span><span class="n">locationManager</span> <span class="n">startUpdatingLocation</span><span class="p">];</span>
 </span><span class='line'>    <span class="p">[</span><span class="n">activityIndicator</span> <span class="n">startAnimating</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">locationTitleField</span> <span class="nl">setHidden:</span><span class="n">YES</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">locationTitleField</span> <span class="nl">setHidden</span><span class="p">:</span><span class="nb">YES</span><span class="p">];</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
@@ -175,12 +175,12 @@
   
 
 
-<time datetime="2011-07-06T23:44:00+08:00" pubdate data-updated="true">Jul 6<span>th</span>, 2011</time>
+<time datetime="2011-07-06T23:44:00+08:00" pubdate data-updated="true"></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/core-location/'>Core Location</a>, <a class='category' href='/blog/categories/mapkit/'>MapKit</a>, <a class='category' href='/blog/categories/ios-5/'>iOS 5</a>
+    <a class='category' href='/blog/categories/core-location/'>core location</a>, <a class='category' href='/blog/categories/ios-5/'>ios 5</a>, <a class='category' href='/blog/categories/mapkit/'>mapkit</a>
   
 </span>
 
@@ -228,23 +228,23 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/openurl-on-ios9/">iOS 9下使用openURL:</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/app-transportation-security/">iOS 9中的App Transport Security</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/alamofire-ssl/">让Alamofire使用自签名证书</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/disable-corestorage-on-os-x-yosemite/">禁用OS X Yosemite上的Core Storage</a>
       </li>
     
       <li class="post">
         <a href="/blog/xcode-6-color-theme-path/">Xcode 6 Color Themes (颜色主题) 的路径</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/scripty-swift/">［更新］把Swift用作脚本语言</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/view-controller-based-status-bar-style-and-uinavigationcontroller/">UINavigationController和View Controller-based状态栏风格</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
       </li>
     
   </ul>

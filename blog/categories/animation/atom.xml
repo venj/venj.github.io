@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Animation | Cocoa学习]]></title>
   <link href="http://venj.github.io/blog/categories/animation/atom.xml" rel="self"/>
   <link href="http://venj.github.io/"/>
-  <updated>2015-02-01T14:40:20+08:00</updated>
+  <updated>2015-11-09T20:47:16+08:00</updated>
   <id>http://venj.github.io/</id>
   <author>
     <name><![CDATA[venj]]></name>
@@ -37,14 +37,10 @@
 
 <p>然后，在<code>-applicationDidFinishLaunching:</code>方法中，加入如下代码：</p>
 
-<p>```objc
-dispatch_async(dispatch_get_main_queue(), ^{</p>
-
-<pre><code>[self.window makeKeyAndOrderFront:nil];
+<pre><code class="objc">dispatch_async(dispatch_get_main_queue(), ^{
+    [self.window makeKeyAndOrderFront:nil];
+});
 </code></pre>
-
-<p>});
-```</p>
 
 <p>编译，执行。Boom！窗口动画就出来了！注意了，这个动画只有OS X Lion及更新版本上可以使用。虽然我走了很多弯路，但是最终还是成功找到解决方法，一方面，显示了自己有多么无知，但是最终解决问题，也总算有一丝安慰。</p>
 

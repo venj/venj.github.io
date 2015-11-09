@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: NSWindow | Cocoa学习]]></title>
+  <title><![CDATA[Category: Nswindow | Cocoa学习]]></title>
   <link href="http://venj.github.io/blog/categories/nswindow/atom.xml" rel="self"/>
   <link href="http://venj.github.io/"/>
-  <updated>2015-02-01T14:40:20+08:00</updated>
+  <updated>2015-11-09T20:47:16+08:00</updated>
   <id>http://venj.github.io/</id>
   <author>
     <name><![CDATA[venj]]></name>
@@ -37,14 +37,10 @@
 
 <p>然后，在<code>-applicationDidFinishLaunching:</code>方法中，加入如下代码：</p>
 
-<p>```objc
-dispatch_async(dispatch_get_main_queue(), ^{</p>
-
-<pre><code>[self.window makeKeyAndOrderFront:nil];
+<pre><code class="objc">dispatch_async(dispatch_get_main_queue(), ^{
+    [self.window makeKeyAndOrderFront:nil];
+});
 </code></pre>
-
-<p>});
-```</p>
 
 <p>编译，执行。Boom！窗口动画就出来了！注意了，这个动画只有OS X Lion及更新版本上可以使用。虽然我走了很多弯路，但是最终还是成功找到解决方法，一方面，显示了自己有多么无知，但是最终解决问题，也总算有一丝安慰。</p>
 
@@ -71,31 +67,24 @@ dispatch_async(dispatch_get_main_queue(), ^{</p>
 
 <p>初看起来，在标题栏上加一个辅助视图似乎很有难度；不过事实上，早就已经有人<a href="http://iloveco.de/adding-a-titlebar-accessory-view-to-a-window/">把方法贴在Blog里</a>了（注意，原文里的<code>UIController</code>不是<code>UIKit</code>的类，该文发布的时候<code>UIKit</code>和iPhone还没有发布呢，因此这算是个NameSpace冲突吧，其实文中的<code>UIController</code>就是个普通的Cocoa Controller类而已）。本文算是半转载地复制代码过来，供大家参考：</p>
 
-<p>``` objc
-&ndash; (void)awakeFromNib {</p>
-
-<pre><code>[self composeInterface];
-</code></pre>
-
-<p>}</p>
-
-<ul>
-<li><p>(void)composeInterface {
-  NSView *themeFrame = [[self.window contentView] superview];</p>
-
-<p>  NSRect themeFrameRect = [themeFrame frame];
-  NSRect accessoryViewFrame = [self.accessoryView frame];
-  NSRect newFrame = NSMakeRect(themeFrameRect.size.width &ndash; accessoryViewFrame.size.width,
-                               themeFrameRect.size.height &ndash; accessoryViewFrame.size.height,
-                               accessoryViewFrame.size.width,
-                               accessoryViewFrame.size.height);
-  [self.accessoryView setFrame:newFrame];</p>
-
-<p>  [themeFrame addSubview:self.accessoryView];
+<pre><code class="objc">- (void)awakeFromNib {
+    [self composeInterface];
 }
-```</p></li>
-</ul>
 
+- (void)composeInterface {
+    NSView *themeFrame = [[self.window contentView] superview];
+
+    NSRect themeFrameRect = [themeFrame frame];
+    NSRect accessoryViewFrame = [self.accessoryView frame];
+    NSRect newFrame = NSMakeRect(themeFrameRect.size.width - accessoryViewFrame.size.width,
+                                 themeFrameRect.size.height - accessoryViewFrame.size.height,
+                                 accessoryViewFrame.size.width,
+                                 accessoryViewFrame.size.height);
+    [self.accessoryView setFrame:newFrame];
+
+    [themeFrame addSubview:self.accessoryView];
+}
+</code></pre>
 
 <p>我做了一个示例项目，放到了本blog的<a href="https://github.com/venj/Cocoa-blog-code/tree/master/TitleBar%20Addons">github</a>里。下面简述一下过程：在<code>WindowController</code>（为了示例的简便起见，我直接放在<code>AppDelegate</code>里了）里新建上述<code>-composeInterface:</code>方法，然后在<code>-awakeFromNib:</code>里调用这个方法。这个方法的原理非常简单，就是获取<code>window</code>的<code>contentView</code>的上一级View，然后把<code>accessoryView</code>定位到该View的右上角。这样我们就能够在<code>accessoryView</code>里绘制控件了。不过需要注意的是，窗口标题栏高度有限，因此<code>accessoryView</code>的高度不能超过22pt，并且，也不要太宽。不过放一个小按钮还是绰绰有余了。另外，如果有Lion的全屏按钮支持的话，需要在<code>accessoryView</code>的右侧留出全屏按钮的空间；或者在<code>composeInterface</code>方法中，设置<code>accessoryView</code>的<code>Frame</code>的时候，留出全屏按钮的空间。下面就是这个我做的示例项目的运行效果：</p>
 
@@ -114,43 +103,31 @@ dispatch_async(dispatch_get_main_queue(), ^{</p>
     <id>http://venj.github.io/blog/remember-window-position</id>
     <content type="html"><![CDATA[<p>在程序中记忆窗口的位置，以便在下次打开的时候恢复记忆的位置。这对很多程序来说还是比较有必要的。方法很简单：</p>
 
-<p>``` objc
-&ndash; (void)windowDidMove:(NSNotification *)notification {</p>
-
-<pre><code>// 自动记忆和恢复位置
-[self.window setFrameAutosaveName:@"Position"];
-/* 如果是基于文档的程序
-[[self.window windowController] setShouldCascadeWindows:NO];
-[self.window saveFrameUsingName:[window representedFilename]];
-*/
-// 手动记忆位置
-[self.window setFrameUsingName:@"Some name"];
+<pre><code class="objc">- (void)windowDidMove:(NSNotification *)notification {
+    // 自动记忆和恢复位置
+    [self.window setFrameAutosaveName:@"Position"];
+    /* 如果是基于文档的程序
+    [[self.window windowController] setShouldCascadeWindows:NO];
+    [self.window saveFrameUsingName:[window representedFilename]];
+    */
+    // 手动记忆位置
+    [self.window setFrameUsingName:@"Some name"];
+}
 </code></pre>
-
-<p>}
-```</p>
 
 <p>// 如果是手动保存，则需要手动恢复</p>
 
-<p>``` objc
-&ndash; (void)awakeFromNib {</p>
-
-<pre><code>[self.window setFrameAutosaveName:@"Some name"];
+<pre><code class="objc">- (void)awakeFromNib {
+    [self.window setFrameAutosaveName:@"Some name"];
+}
 </code></pre>
-
-<p>}
-```</p>
 
 <p>// 清除记忆的位置</p>
 
-<p>``` objc
-&ndash; (IBAction)clearWindowPosition:(id)sender {</p>
-
-<pre><code>[NSWindow removeFrameUsingName:@"Some name"];
+<pre><code class="objc">- (IBAction)clearWindowPosition:(id)sender {
+    [NSWindow removeFrameUsingName:@"Some name"];
+}
 </code></pre>
-
-<p>}
-```</p>
 
 <p>很简单吧。更多可以参考<a href="http://developer.apple.com/library/mac/#documentation/Cocoa/Reference/ApplicationKit/Classes/NSWindow_Class/Reference/Reference.html">NSWindows Class Reference</a>和<a href="http://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/WinPanel/WinPanel.html">Window Programming Guide</a>文档。</p>
 
@@ -165,32 +142,26 @@ dispatch_async(dispatch_get_main_queue(), ^{</p>
     <id>http://venj.github.io/blog/move-window-to-screen-center</id>
     <content type="html"><![CDATA[<p>在写程序的时候，我们往往需要把窗口放在屏幕中央。方法其实很简单，代码如下：</p>
 
-<p>``` objc
-&ndash; (void)awakeFromNib {</p>
-
-<pre><code>CGRect windowRect = [self.window frame];
-CGRect screenRect = [[NSScreen mainScreen] frame];
-CGPoint newOrigin;
-newOrigin.x = (screenRect.size.width / 2) - (windowRect.size.width / 2);
-newOrigin.y = (screenRect.size.height / 2) + (windowRect.size.height / 2);
-[self.window setFrameOrigin:newOrigin];
+<pre><code class="objc">- (void)awakeFromNib {
+    CGRect windowRect = [self.window frame];
+    CGRect screenRect = [[NSScreen mainScreen] frame];
+    CGPoint newOrigin;
+    newOrigin.x = (screenRect.size.width / 2) - (windowRect.size.width / 2);
+    newOrigin.y = (screenRect.size.height / 2) + (windowRect.size.height / 2);
+    [self.window setFrameOrigin:newOrigin];
+}
 </code></pre>
 
-<p>}
-<code>``
-如果程序只有一个窗口，那么这段代码也可以放在</code>AppDelegate<code>的</code>-applicationDidFinishLaunching:<code>方法里。如果放在</code>-applicationDidFinishLaunching:<code>里，很可能会引起窗口“闪”到屏幕中央（除非程序特别小，小到几乎无需初始化），因此，放在</code>-awakeFromNib`里才是正确的做法。</p>
+<p>如果程序只有一个窗口，那么这段代码也可以放在<code>AppDelegate</code>的<code>-applicationDidFinishLaunching:</code>方法里。如果放在<code>-applicationDidFinishLaunching:</code>里，很可能会引起窗口“闪”到屏幕中央（除非程序特别小，小到几乎无需初始化），因此，放在<code>-awakeFromNib</code>里才是正确的做法。</p>
 
 <p><strong>2011-08-15更新：</strong></p>
 
 <p>事实上<code>NSWindow</code>已经有了一个专门的方法来处理窗口居中的：<code>- (void)center</code>。<br/>
-``` objc
-&ndash; (void)awakeFromNib {</p>
-
-<pre><code>[self.window center];
-</code></pre>
-
-<p>}
-```
+<code>objc
+- (void)awakeFromNib {
+    [self.window center];
+}
+</code>
 <strong>不仔细看文档害死人啊！</strong></p>
 
 <p>（全文完）</p>

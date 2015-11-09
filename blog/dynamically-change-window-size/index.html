@@ -85,7 +85,7 @@
   
 
 
-<time datetime="2011-04-02T16:28:00+08:00" pubdate data-updated="true">Apr 2<span>nd</span>, 2011</time>
+<time datetime="2011-04-02T16:28:00+08:00" pubdate data-updated="true"></time>
         
       </p>
     
@@ -121,11 +121,11 @@
 <span class='line-number'>25</span>
 <span class='line-number'>26</span>
 </pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// 通过某个View获得需要改变大小的窗口</span>
-</span><span class='line'><span class="n">NSWindow</span> <span class="o">*</span><span class="n">window</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">box</span> <span class="n">window</span><span class="p">];</span>
+</span><span class='line'><span class="n">NSWindow</span> <span class="o">*</span><span class="n">window</span> <span class="o">=</span> <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">box</span> <span class="n">window</span><span class="p">];</span>
 </span><span class='line'><span class="c1">// 获取新View</span>
 </span><span class='line'><span class="n">NSView</span> <span class="o">*</span><span class="n">view</span> <span class="o">=</span> <span class="p">[</span><span class="n">viewController</span> <span class="n">view</span><span class="p">];</span>
 </span><span class='line'><span class="c1">// 当前View的大小</span>
-</span><span class='line'><span class="n">NSSize</span> <span class="n">currentSize</span> <span class="o">=</span> <span class="p">[[</span><span class="n">self</span><span class="p">.</span><span class="n">box</span> <span class="n">contentView</span><span class="p">]</span> <span class="n">frame</span><span class="p">].</span><span class="n">size</span><span class="p">;</span>
+</span><span class='line'><span class="n">NSSize</span> <span class="n">currentSize</span> <span class="o">=</span> <span class="p">[[</span><span class="nb">self</span><span class="p">.</span><span class="n">box</span> <span class="n">contentView</span><span class="p">]</span> <span class="n">frame</span><span class="p">].</span><span class="n">size</span><span class="p">;</span>
 </span><span class='line'><span class="c1">// 新View的大小</span>
 </span><span class='line'><span class="n">NSSize</span> <span class="n">newSize</span> <span class="o">=</span> <span class="p">[</span><span class="n">view</span> <span class="n">frame</span><span class="p">].</span><span class="n">size</span><span class="p">;</span>
 </span><span class='line'><span class="c1">// 新旧View的宽度和高度差</span>
@@ -141,11 +141,11 @@
 </span><span class='line'><span class="c1">// 起点的x值无需改变。</span>
 </span><span class='line'><span class="n">windowFrame</span><span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">y</span> <span class="o">-=</span> <span class="n">deltaHeight</span><span class="p">;</span>
 </span><span class='line'><span class="c1">// 移除旧View</span>
-</span><span class='line'><span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">box</span> <span class="nl">setContentView:</span><span class="nb">nil</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">box</span> <span class="nl">setContentView</span><span class="p">:</span><span class="nb">nil</span><span class="p">];</span>
 </span><span class='line'><span class="c1">// 改变窗口大小，使用动画</span>
-</span><span class='line'><span class="p">[</span><span class="n">window</span> <span class="nl">setFrame:</span><span class="n">windowFrame</span> <span class="nl">display:</span><span class="n">YES</span> <span class="nl">animate:</span><span class="n">YES</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="n">window</span> <span class="nl">setFrame</span><span class="p">:</span><span class="n">windowFrame</span> <span class="nl">display</span><span class="p">:</span><span class="nb">YES</span> <span class="nl">animate</span><span class="p">:</span><span class="nb">YES</span><span class="p">];</span>
 </span><span class='line'><span class="c1">// 加入新View</span>
-</span><span class='line'><span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">box</span> <span class="nl">setContentView:</span><span class="n">view</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">box</span> <span class="nl">setContentView</span><span class="p">:</span><span class="n">view</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -172,12 +172,12 @@
   
 
 
-<time datetime="2011-04-02T16:28:00+08:00" pubdate data-updated="true">Apr 2<span>nd</span>, 2011</time>
+<time datetime="2011-04-02T16:28:00+08:00" pubdate data-updated="true"></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/nsview/'>NSView</a>
+    <a class='category' href='/blog/categories/nsview/'>nsview</a>
   
 </span>
 
@@ -225,23 +225,23 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/openurl-on-ios9/">iOS 9下使用openURL:</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/app-transportation-security/">iOS 9中的App Transport Security</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/alamofire-ssl/">让Alamofire使用自签名证书</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/disable-corestorage-on-os-x-yosemite/">禁用OS X Yosemite上的Core Storage</a>
       </li>
     
       <li class="post">
         <a href="/blog/xcode-6-color-theme-path/">Xcode 6 Color Themes (颜色主题) 的路径</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/scripty-swift/">［更新］把Swift用作脚本语言</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/view-controller-based-status-bar-style-and-uinavigationcontroller/">UINavigationController和View Controller-based状态栏风格</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
       </li>
     
   </ul>

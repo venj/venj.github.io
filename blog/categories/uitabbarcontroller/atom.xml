@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: UITabbarController | Cocoa学习]]></title>
+  <title><![CDATA[Category: Uitabbarcontroller | Cocoa学习]]></title>
   <link href="http://venj.github.io/blog/categories/uitabbarcontroller/atom.xml" rel="self"/>
   <link href="http://venj.github.io/"/>
-  <updated>2015-02-01T14:40:20+08:00</updated>
+  <updated>2015-11-09T20:47:16+08:00</updated>
   <id>http://venj.github.io/</id>
   <author>
     <name><![CDATA[venj]]></name>
@@ -27,20 +27,19 @@
 <!-- more -->
 
 
-<p>```objc
-// 初始化ViewController的层级结构
-UIViewController <em>vc1 = [[UIViewController alloc] initWithNibName:@&ldquo;SomeViewControllerNibName&rdquo; bundle:nil];
-UINavigationController </em>nav = [[UINavigationController alloc] initWithRootViewController:vc1];
+<pre><code class="objc">// 初始化ViewController的层级结构
+UIViewController *vc1 = [[UIViewController alloc] initWithNibName:@"SomeViewControllerNibName" bundle:nil];
+UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc1];
 UITabBarController *tc = [[UITabBarController alloc] init];
-tc.viewControllers = @[nav];</p>
+tc.viewControllers = @[nav];
 
-<p>&hellip;</p>
+...
 
-<p>// 推入新的ViewController
-UIViewController *vc2 = [[UIViewController alloc] initWithNibName:@&ldquo;SomeOtherViewControllerNibName&rdquo; bundle:nil];
+// 推入新的ViewController
+UIViewController *vc2 = [[UIViewController alloc] initWithNibName:@"SomeOtherViewControllerNibName" bundle:nil];
 vc2.hidesBottomBarWhenPushed ＝ YES; //这是关键！
 [vc1.navigationController pushViewController:vc2 animated:YES];
-```</p>
+</code></pre>
 
 <p>就这么简单。</p>
 

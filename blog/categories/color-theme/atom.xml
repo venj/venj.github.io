@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Color Theme | Cocoa学习]]></title>
   <link href="http://venj.github.io/blog/categories/color-theme/atom.xml" rel="self"/>
   <link href="http://venj.github.io/"/>
-  <updated>2015-02-01T14:40:20+08:00</updated>
+  <updated>2015-11-09T20:47:16+08:00</updated>
   <id>http://venj.github.io/</id>
   <author>
     <name><![CDATA[venj]]></name>
@@ -22,9 +22,8 @@
 
 <p>Xcode 6的颜色主题路径位于：</p>
 
-<p><code>
-~/Library/Developer/Xcode/UserData/FontAndColorThemes
-</code></p>
+<pre><code>~/Library/Developer/Xcode/UserData/FontAndColorThemes
+</code></pre>
 
 <p>如果你下载了别人提供的漂亮的代码高亮颜色主题，比如<a href="https://github.com/tursunovic/xcode-themes">这个</a>，记得放到上面那个路径下。</p>
 

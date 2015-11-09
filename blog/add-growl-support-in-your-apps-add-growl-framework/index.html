@@ -85,7 +85,7 @@
   
 
 
-<time datetime="2011-05-26T10:12:00+08:00" pubdate data-updated="true">May 26<span>th</span>, 2011</time>
+<time datetime="2011-05-26T10:12:00+08:00" pubdate data-updated="true"></time>
         
       </p>
     
@@ -129,7 +129,7 @@
 
 <p><img class="center" src="/images/posts/growl-4.png"></p>
 
-<p>5 &ndash; 6. 在Copy Files Build Phase窗口中，将Destination设置为Framework，subpath保持默认的留空状态。</p>
+<p>5 - 6. 在Copy Files Build Phase窗口中，将Destination设置为Framework，subpath保持默认的留空状态。</p>
 
 <p><img class="center" src="/images/posts/growl-5.png"></p>
 
@@ -161,7 +161,7 @@
 </pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cm">/* TestAppDelegate.h */</span>
 </span><span class='line'><span class="cp">#import &quot;Growl/Growl.h&quot;  </span><span class="c1">// 增加这行！</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">@interface</span> <span class="nc">TestAppAppDelegate</span> : <span class="nc">NSObject</span> <span class="o">&lt;</span><span class="n">NSApplicationDele</span><span class="p">,</span> <span class="n">GrowlApplicationBridgeDelegate</span><span class="o">&gt;</span>
+</span><span class='line'><span class="k">@interface</span> <span class="nc">TestAppAppDelegate</span> : <span class="bp">NSObject</span> <span class="o">&lt;</span><span class="n">NSApplicationDele</span><span class="p">,</span> <span class="n">GrowlApplicationBridgeDelegate</span><span class="o">&gt;</span>
 </span><span class='line'><span class="c1">// 省去其它代码</span>
 </span><span class='line'><span class="k">@end</span>
 </span><span class='line'>
@@ -169,14 +169,14 @@
 </span><span class='line'><span class="c1">// 省去其它代码</span>
 </span><span class='line'><span class="k">@implementation</span> <span class="nc">TestAppAppDelegate</span>
 </span><span class='line'><span class="c1">// 省去其它代码</span>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">applicationDidFinishLaunching:</span><span class="p">(</span><span class="n">NSNotification</span> <span class="o">*</span><span class="p">)</span><span class="nv">note</span> <span class="p">{</span>
-</span><span class='line'>     <span class="p">[</span><span class="n">GrowlApplicationBridge</span> <span class="nl">setGrowlDelegate:</span><span class="n">self</span><span class="p">];</span> <span class="c1">// 增加这行！</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">applicationDidFinishLaunching:</span><span class="p">(</span><span class="bp">NSNotification</span> <span class="o">*</span><span class="p">)</span><span class="nv">note</span> <span class="p">{</span>
+</span><span class='line'>     <span class="p">[</span><span class="n">GrowlApplicationBridge</span> <span class="nl">setGrowlDelegate</span><span class="p">:</span><span class="nb">self</span><span class="p">];</span> <span class="c1">// 增加这行！</span>
 </span><span class='line'><span class="c1">// 省去其它代码</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>然后选择“Product &ndash; Build”，或者按下cmd-b。如果编译成功，表示你的应用程序的Growl支持已经设置成功。现在你就可以开始利用Growl了。</p>
+<p>然后选择“Product - Build”，或者按下cmd-b。如果编译成功，表示你的应用程序的Growl支持已经设置成功。现在你就可以开始利用Growl了。</p>
 
 <p>关于怎么在代码中利用Growl，我会在<a href="/blog/add-growl-support-in-your-apps-coding-growl/">后续文章</a>中讲述。</p>
 
@@ -203,12 +203,12 @@
   
 
 
-<time datetime="2011-05-26T10:12:00+08:00" pubdate data-updated="true">May 26<span>th</span>, 2011</time>
+<time datetime="2011-05-26T10:12:00+08:00" pubdate data-updated="true"></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/framework/'>Framework</a>, <a class='category' href='/blog/categories/growl/'>Growl</a>, <a class='category' href='/blog/categories/xcode-4/'>Xcode 4</a>
+    <a class='category' href='/blog/categories/framework/'>framework</a>, <a class='category' href='/blog/categories/growl/'>growl</a>, <a class='category' href='/blog/categories/xcode-4/'>xcode 4</a>
   
 </span>
 
@@ -256,23 +256,23 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/openurl-on-ios9/">iOS 9下使用openURL:</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/app-transportation-security/">iOS 9中的App Transport Security</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/alamofire-ssl/">让Alamofire使用自签名证书</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/disable-corestorage-on-os-x-yosemite/">禁用OS X Yosemite上的Core Storage</a>
       </li>
     
       <li class="post">
         <a href="/blog/xcode-6-color-theme-path/">Xcode 6 Color Themes (颜色主题) 的路径</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/scripty-swift/">［更新］把Swift用作脚本语言</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/view-controller-based-status-bar-style-and-uinavigationcontroller/">UINavigationController和View Controller-based状态栏风格</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
       </li>
     
   </ul>

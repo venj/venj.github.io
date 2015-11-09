@@ -85,7 +85,7 @@
   
 
 
-<time datetime="2011-08-20T00:42:00+08:00" pubdate data-updated="true">Aug 20<span>th</span>, 2011</time>
+<time datetime="2011-08-20T00:42:00+08:00" pubdate data-updated="true"></time>
         
       </p>
     
@@ -168,10 +168,10 @@
 </pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cm">/* NSImage+RoundCorner.h */</span>
 </span><span class='line'><span class="cp">#import &lt;Foundation/Foundation.h&gt;</span>
 </span><span class='line'><span class="cm">/* C Prototypes */</span>
-</span><span class='line'><span class="kt">void</span> <span class="nf">addRoundedRectToPath</span><span class="p">(</span><span class="n">CGContextRef</span> <span class="n">context</span><span class="p">,</span> <span class="n">CGRect</span> <span class="n">rect</span><span class="p">,</span> <span class="kt">float</span> <span class="n">ovalWidth</span><span class="p">,</span> <span class="kt">float</span> <span class="n">ovalHeight</span><span class="p">);</span>
+</span><span class='line'><span class="kt">void</span> <span class="nf">addRoundedRectToPath</span><span class="p">(</span><span class="n">CGContextRef</span> <span class="n">context</span><span class="p">,</span> <span class="bp">CGRect</span> <span class="n">rect</span><span class="p">,</span> <span class="kt">float</span> <span class="n">ovalWidth</span><span class="p">,</span> <span class="kt">float</span> <span class="n">ovalHeight</span><span class="p">);</span>
 </span><span class='line'>
 </span><span class='line'><span class="k">@interface</span> <span class="nc">NSImage</span><span class="nl">(RoundCorner)</span>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSImage</span> <span class="o">*</span><span class="p">)</span><span class="nf">roundCornersImageCornerRadius:</span><span class="p">(</span><span class="n">NSInteger</span><span class="p">)</span><span class="nv">radius</span><span class="p">;</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="n">NSImage</span> <span class="o">*</span><span class="p">)</span><span class="nf">roundCornersImageCornerRadius:</span><span class="p">(</span><span class="bp">NSInteger</span><span class="p">)</span><span class="nv">radius</span><span class="p">;</span>
 </span><span class='line'><span class="k">@end</span>
 </span><span class='line'>
 </span><span class='line'>
@@ -180,7 +180,7 @@
 </span><span class='line'>
 </span><span class='line'><span class="k">@implementation</span> <span class="nc">NSImage</span> <span class="nl">(RoundCorner)</span>
 </span><span class='line'>
-</span><span class='line'><span class="kt">void</span> <span class="nf">addRoundedRectToPath</span><span class="p">(</span><span class="n">CGContextRef</span> <span class="n">context</span><span class="p">,</span> <span class="n">CGRect</span> <span class="n">rect</span><span class="p">,</span> <span class="kt">float</span> <span class="n">ovalWidth</span><span class="p">,</span> <span class="kt">float</span> <span class="n">ovalHeight</span><span class="p">)</span>
+</span><span class='line'><span class="kt">void</span> <span class="nf">addRoundedRectToPath</span><span class="p">(</span><span class="n">CGContextRef</span> <span class="n">context</span><span class="p">,</span> <span class="bp">CGRect</span> <span class="n">rect</span><span class="p">,</span> <span class="kt">float</span> <span class="n">ovalWidth</span><span class="p">,</span> <span class="kt">float</span> <span class="n">ovalHeight</span><span class="p">)</span>
 </span><span class='line'><span class="p">{</span>
 </span><span class='line'>    <span class="kt">float</span> <span class="n">fw</span><span class="p">,</span> <span class="n">fh</span><span class="p">;</span>
 </span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">ovalWidth</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">ovalHeight</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
@@ -201,20 +201,20 @@
 </span><span class='line'>    <span class="n">CGContextRestoreGState</span><span class="p">(</span><span class="n">context</span><span class="p">);</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSImage</span> <span class="o">*</span><span class="p">)</span><span class="nf">roundCornersImageCornerRadius:</span><span class="p">(</span><span class="n">NSInteger</span><span class="p">)</span><span class="nv">radius</span> <span class="p">{</span>
-</span><span class='line'>    <span class="kt">int</span> <span class="n">w</span> <span class="o">=</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="n">self</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">;</span>
-</span><span class='line'>    <span class="kt">int</span> <span class="n">h</span> <span class="o">=</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="n">self</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">;</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="n">NSImage</span> <span class="o">*</span><span class="p">)</span><span class="nf">roundCornersImageCornerRadius:</span><span class="p">(</span><span class="bp">NSInteger</span><span class="p">)</span><span class="nv">radius</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">w</span> <span class="o">=</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="nb">self</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">;</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">h</span> <span class="o">=</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="nb">self</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">;</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="n">CGColorSpaceRef</span> <span class="n">colorSpace</span> <span class="o">=</span> <span class="n">CGColorSpaceCreateDeviceRGB</span><span class="p">();</span>
 </span><span class='line'>    <span class="n">CGContextRef</span> <span class="n">context</span> <span class="o">=</span> <span class="n">CGBitmapContextCreate</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">w</span><span class="p">,</span> <span class="n">colorSpace</span><span class="p">,</span> <span class="n">kCGImageAlphaPremultipliedFirst</span><span class="p">);</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="n">CGContextBeginPath</span><span class="p">(</span><span class="n">context</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">CGRect</span> <span class="n">rect</span> <span class="o">=</span> <span class="n">CGRectMake</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">);</span>
+</span><span class='line'>    <span class="bp">CGRect</span> <span class="n">rect</span> <span class="o">=</span> <span class="n">CGRectMake</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">);</span>
 </span><span class='line'>    <span class="n">addRoundedRectToPath</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">rect</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">radius</span><span class="p">);</span>
 </span><span class='line'>    <span class="n">CGContextClosePath</span><span class="p">(</span><span class="n">context</span><span class="p">);</span>
 </span><span class='line'>    <span class="n">CGContextClip</span><span class="p">(</span><span class="n">context</span><span class="p">);</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="n">CGImageRef</span> <span class="n">cgImage</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSBitmapImageRep</span> <span class="nl">imageRepWithData:</span><span class="p">[</span><span class="n">self</span> <span class="n">TIFFRepresentation</span><span class="p">]]</span> <span class="n">CGImage</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">CGImageRef</span> <span class="n">cgImage</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSBitmapImageRep</span> <span class="nl">imageRepWithData</span><span class="p">:[</span><span class="nb">self</span> <span class="n">TIFFRepresentation</span><span class="p">]]</span> <span class="bp">CGImage</span><span class="p">];</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="n">CGContextDrawImage</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">CGRectMake</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">),</span> <span class="n">cgImage</span><span class="p">);</span>
 </span><span class='line'>
@@ -222,10 +222,10 @@
 </span><span class='line'>    <span class="n">CGContextRelease</span><span class="p">(</span><span class="n">context</span><span class="p">);</span>
 </span><span class='line'>    <span class="n">CGColorSpaceRelease</span><span class="p">(</span><span class="n">colorSpace</span><span class="p">);</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="n">NSImage</span> <span class="o">*</span><span class="n">tmpImage</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSImage</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithCGImage:</span><span class="n">imageMasked</span> <span class="nl">size:</span><span class="n">self</span><span class="p">.</span><span class="n">size</span><span class="p">];</span>
-</span><span class='line'>    <span class="n">NSData</span> <span class="o">*</span><span class="n">imageData</span> <span class="o">=</span> <span class="p">[</span><span class="n">tmpImage</span> <span class="n">TIFFRepresentation</span><span class="p">];</span>
-</span><span class='line'>    <span class="n">NSImage</span> <span class="o">*</span><span class="n">image</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSImage</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithData:</span><span class="n">imageData</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">tmpImage</span> <span class="n">release</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">NSImage</span> <span class="o">*</span><span class="n">tmpImage</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSImage</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithCGImage</span><span class="p">:</span><span class="n">imageMasked</span> <span class="nl">size</span><span class="p">:</span><span class="nb">self</span><span class="p">.</span><span class="n">size</span><span class="p">];</span>
+</span><span class='line'>    <span class="bp">NSData</span> <span class="o">*</span><span class="n">imageData</span> <span class="o">=</span> <span class="p">[</span><span class="n">tmpImage</span> <span class="n">TIFFRepresentation</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">NSImage</span> <span class="o">*</span><span class="n">image</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSImage</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithData</span><span class="p">:</span><span class="n">imageData</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">tmpImage</span> <span class="k">release</span><span class="p">];</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="k">return</span> <span class="p">[</span><span class="n">image</span> <span class="n">autorelease</span><span class="p">];</span>
 </span><span class='line'><span class="p">}</span>
@@ -262,12 +262,12 @@
   
 
 
-<time datetime="2011-08-20T00:42:00+08:00" pubdate data-updated="true">Aug 20<span>th</span>, 2011</time>
+<time datetime="2011-08-20T00:42:00+08:00" pubdate data-updated="true"></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/cgimage/'>CGImage</a>, <a class='category' href='/blog/categories/nsimage/'>NSImage</a>, <a class='category' href='/blog/categories/round-corner/'>Round Corner</a>
+    <a class='category' href='/blog/categories/cgimage/'>cgimage</a>, <a class='category' href='/blog/categories/nsimage/'>nsimage</a>, <a class='category' href='/blog/categories/round-corner/'>round corner</a>
   
 </span>
 
@@ -315,23 +315,23 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/openurl-on-ios9/">iOS 9下使用openURL:</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/app-transportation-security/">iOS 9中的App Transport Security</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/alamofire-ssl/">让Alamofire使用自签名证书</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/disable-corestorage-on-os-x-yosemite/">禁用OS X Yosemite上的Core Storage</a>
       </li>
     
       <li class="post">
         <a href="/blog/xcode-6-color-theme-path/">Xcode 6 Color Themes (颜色主题) 的路径</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/scripty-swift/">［更新］把Swift用作脚本语言</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/view-controller-based-status-bar-style-and-uinavigationcontroller/">UINavigationController和View Controller-based状态栏风格</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
       </li>
     
   </ul>

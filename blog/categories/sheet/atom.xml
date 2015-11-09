@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Sheet | Cocoa学习]]></title>
   <link href="http://venj.github.io/blog/categories/sheet/atom.xml" rel="self"/>
   <link href="http://venj.github.io/"/>
-  <updated>2015-02-01T14:40:20+08:00</updated>
+  <updated>2015-11-09T20:47:16+08:00</updated>
   <id>http://venj.github.io/</id>
   <author>
     <name><![CDATA[venj]]></name>
@@ -29,35 +29,28 @@
 <!-- more -->
 
 
-<p>``` objc
-// 创建一个NSAlert，并以Sheet的形式呈现
-&ndash; (IBAction)removeRow:(id)sender {</p>
+<pre><code class="objc">// 创建一个NSAlert，并以Sheet的形式呈现
+- (IBAction)removeRow:(id)sender {
+    NSAlert *alert = [NSAlert alertWithMessageText:@"Are you sure?" defaultButton:@"Yes" alternateButton:@"No" otherButton:nil informativeTextWithFormat:@"Deleting a table cell is not reversable."];
+    [alert beginSheetModalForWindow:self.window modalDelegate:self didEndSelector:@selector(alertDidEnd:returnCode:contextInfo:) contextInfo:NULL];
+}
 
-<pre><code>NSAlert *alert = [NSAlert alertWithMessageText:@"Are you sure?" defaultButton:@"Yes" alternateButton:@"No" otherButton:nil informativeTextWithFormat:@"Deleting a table cell is not reversable."];
-[alert beginSheetModalForWindow:self.window modalDelegate:self didEndSelector:@selector(alertDidEnd:returnCode:contextInfo:) contextInfo:NULL];
+// NSWindowDelegate方法，用来指定Sheet的显示位置
+- (NSRect)window:(NSWindow *)window willPositionSheet:(NSWindow *)sheet usingRect:(NSRect)rect {
+    id cell = [self.tableView rowViewAtRow:[self.tableView selectedRow] makeIfNecessary:YES];
+    NSRect cellRect = [cell frame];
+    NSRect scrollViewRect = [self.tableView.superview frame];
+    cellRect.origin.y = scrollViewRect.size.height - cellRect.origin.y; // View-based table view is flipped?
+    cellRect.size.height = 0;
+    return cellRect;
+}
 </code></pre>
-
-<p>}</p>
-
-<p>// NSWindowDelegate方法，用来指定Sheet的显示位置
-&ndash; (NSRect)window:(NSWindow <em>)window willPositionSheet:(NSWindow </em>)sheet usingRect:(NSRect)rect {</p>
-
-<pre><code>id cell = [self.tableView rowViewAtRow:[self.tableView selectedRow] makeIfNecessary:YES];
-NSRect cellRect = [cell frame];
-NSRect scrollViewRect = [self.tableView.superview frame];
-cellRect.origin.y = scrollViewRect.size.height - cellRect.origin.y; // View-based table view is flipped?
-cellRect.size.height = 0;
-return cellRect;
-</code></pre>
-
-<p>}
-```</p>
 
 <p>这个实现中，有一行用了并不漂亮的方法设置了<code>cellRect.origin.y</code>的值。这可能是因为Table View的坐标系是Flipped的，因此需要倒置一下，Sheet才能正确定位(注)。我做的示例程序的运行效果如下：</p>
 
 <p><img class="center" src="/images/posts/twitter-style-sheet.png"></p>
 
-<p>我已经把示例程序的源码推送到<a href="https://github.com/venj/Cocoa-blog-code/tree/master/TwiTable">github</a>上了，有兴趣的读者可以clone下来研究一下。示例程序运行的时候，选中一个表格，按下cmd &ndash; delete（或者Edit &ndash; Delete菜单操作），你就能看到运行效果了。</p>
+<p>我已经把示例程序的源码推送到<a href="https://github.com/venj/Cocoa-blog-code/tree/master/TwiTable">github</a>上了，有兴趣的读者可以clone下来研究一下。示例程序运行的时候，选中一个表格，按下cmd - delete（或者Edit - Delete菜单操作），你就能看到运行效果了。</p>
 
 <p>这次碰到问题的经历再次证明了RTFM的威力所在。Happy coding and RTFM.</p>
 

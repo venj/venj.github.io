@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: NSMenu | Cocoa学习]]></title>
+  <title><![CDATA[Category: Nsmenu | Cocoa学习]]></title>
   <link href="http://venj.github.io/blog/categories/nsmenu/atom.xml" rel="self"/>
   <link href="http://venj.github.io/"/>
-  <updated>2015-02-01T14:40:20+08:00</updated>
+  <updated>2015-11-09T20:47:16+08:00</updated>
   <id>http://venj.github.io/</id>
   <author>
     <name><![CDATA[venj]]></name>
@@ -31,130 +31,111 @@
 
 <p>问题分析到这里，我们就可以开始实现了。首先，我们先来创建两个菜单项：</p>
 
-<p>``` objc</p>
+<pre><code class="objc">#define IMAGES_COUNT 8
 
-<h1>define IMAGES_COUNT 8</h1>
-
-<ul>
-<li><p>(void)applicationDidFinishLaunching:(NSNotification *)aNotification
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-  // 一些变量
-  NSInteger sideMargin = 25., headMargin=10., \
-  seperateMargin = 2., imageWidth = 44., \
-  imagesPerLine = 4., menuTitleHeight = 20.,\
-  menuTitleLeftMargin = 20., menuTitleWidth = 180.;</p>
+    // 一些变量
+    NSInteger sideMargin = 25., headMargin=10., \
+    seperateMargin = 2., imageWidth = 44., \
+    imagesPerLine = 4., menuTitleHeight = 20.,\
+    menuTitleLeftMargin = 20., menuTitleWidth = 180.;
 
-<p>  // 创建菜单
-  self.myMenuItem = [[NSMenuItem alloc] initWithTitle:@&ldquo;My Menu&rdquo; action:nil keyEquivalent:@&ldquo;&rdquo;];
-  self.myMenuItem.target = self;
-  NSMenuItem *otherMenu = [[NSMenuItem alloc] initWithTitle:@&ldquo;自定义头像&hellip;&rdquo; action:@selector(doSomething:) keyEquivalent:@&ldquo;&rdquo;];</p>
+    // 创建菜单
+    self.myMenuItem = [[NSMenuItem alloc] initWithTitle:@"My Menu" action:nil keyEquivalent:@""];
+    self.myMenuItem.target = self;
+    NSMenuItem *otherMenu = [[NSMenuItem alloc] initWithTitle:@"自定义头像..." action:@selector(doSomething:) keyEquivalent:@""];
 
-<p>  // 创建菜单项的自定义视图
-  self.menuView = [[NSView alloc] initWithFrame:NSMakeRect(0, 0, \
-                                                              sideMargin<em>2+seperateMargin</em>(imagesPerLine &ndash; 1)+imageWidth<em>imagesPerLine, \
-                                                              imageWidth</em>(IMAGES_COUNT/imagesPerLine)+seperateMargin<em>(IMAGES_COUNT/imagesPerLine &ndash; 1)+headMargin</em>2+menuTitleHeight)];</p></li>
-</ul>
+    // 创建菜单项的自定义视图
+    self.menuView = [[NSView alloc] initWithFrame:NSMakeRect(0, 0, \
+                                                                sideMargin*2+seperateMargin*(imagesPerLine - 1)+imageWidth*imagesPerLine, \
+                                                                imageWidth*(IMAGES_COUNT/imagesPerLine)+seperateMargin*(IMAGES_COUNT/imagesPerLine - 1)+headMargin*2+menuTitleHeight)];
 
-
-<p>}
-```</p>
+}
+</code></pre>
 
 <p>接着，在<code>-applicationDidFinishLaunching:</code>方法中继续加入Lebel：</p>
 
-<p>``` objc</p>
+<pre><code class="objc">    ...
 
-<pre><code>...
+    NSTextField *menuViewTitle = [[NSTextField alloc] initWithFrame:NSMakeRect(menuTitleLeftMargin, headMargin+(seperateMargin + imageWidth)*(IMAGES_COUNT/imagesPerLine), menuTitleWidth, menuTitleHeight)];
+    menuViewTitle.stringValue = @"系统头像";
+    menuViewTitle.textColor = [NSColor grayColor];
+    menuViewTitle.backgroundColor = [NSColor controlColor];
+    menuViewTitle.font = [NSFont systemFontOfSize:15];
+    [menuViewTitle setEditable:NO];
+    [menuViewTitle setBordered:NO];
 
-NSTextField *menuViewTitle = [[NSTextField alloc] initWithFrame:NSMakeRect(menuTitleLeftMargin, headMargin+(seperateMargin + imageWidth)*(IMAGES_COUNT/imagesPerLine), menuTitleWidth, menuTitleHeight)];
-menuViewTitle.stringValue = @"系统头像";
-menuViewTitle.textColor = [NSColor grayColor];
-menuViewTitle.backgroundColor = [NSColor controlColor];
-menuViewTitle.font = [NSFont systemFontOfSize:15];
-[menuViewTitle setEditable:NO];
-[menuViewTitle setBordered:NO];
-
-[self.menuView addSubview:menuViewTitle];
+    [self.menuView addSubview:menuViewTitle];
 </code></pre>
-
-<p>```</p>
 
 <p>然后是8个头像按钮，这里我尽量地模仿QQ的大小尺寸，使用了一些变量来指定尺寸，以方便修改。对于尺寸的大小，如果你有疑问，可以简单的在纸上画一下就清楚了：</p>
 
-<p>``` objc</p>
+<pre><code class="objc">    // 头像按钮
+    for (int i = 0; i &lt; IMAGES_COUNT; i++) {
+        NSRect buttonRect = NSMakeRect(sideMargin + (imageWidth + seperateMargin) * (i % imagesPerLine), \
+                                        headMargin + ((IMAGES_COUNT / imagesPerLine) - ((i / imagesPerLine) + 1)) * (imageWidth + seperateMargin), \
+                                        imageWidth, imageWidth);
+        NSButton *button = [[NSButton alloc] initWithFrame:buttonRect];
+        [button setButtonType:NSSwitchButton];
+        [button setImagePosition:NSImageOnly];
+        button.image = [[NSImage imageNamed:[[NSString alloc] initWithFormat:@"avatar_small_%d", i + 1]] roundCornersImageCornerRadius:4];
+        // 用于实现FocusRing（并不是很好的方法）
+        button.alternateImage = [[NSImage imageNamed:[[NSString alloc] initWithFormat:@"avatar_small_%d_h", i + 1]] roundCornersImageCornerRadius:5];
+        [button.cell setHighlightsBy:NSNoCellMask];
+        button.tag = i;
+        button.target = self;
+        button.action = @selector(buttonClicked:);
+        [button setBordered:NO];
 
-<pre><code>// 头像按钮
-for (int i = 0; i &lt; IMAGES_COUNT; i++) {
-    NSRect buttonRect = NSMakeRect(sideMargin + (imageWidth + seperateMargin) * (i % imagesPerLine), \
-                                    headMargin + ((IMAGES_COUNT / imagesPerLine) - ((i / imagesPerLine) + 1)) * (imageWidth + seperateMargin), \
-                                    imageWidth, imageWidth);
-    NSButton *button = [[NSButton alloc] initWithFrame:buttonRect];
-    [button setButtonType:NSSwitchButton];
-    [button setImagePosition:NSImageOnly];
-    button.image = [[NSImage imageNamed:[[NSString alloc] initWithFormat:@"avatar_small_%d", i + 1]] roundCornersImageCornerRadius:4];
-    // 用于实现FocusRing（并不是很好的方法）
-    button.alternateImage = [[NSImage imageNamed:[[NSString alloc] initWithFormat:@"avatar_small_%d_h", i + 1]] roundCornersImageCornerRadius:5];
-    [button.cell setHighlightsBy:NSNoCellMask];
-    button.tag = i;
-    button.target = self;
-    button.action = @selector(buttonClicked:);
-    [button setBordered:NO];
+        // 增加鼠标跟踪区域
+        int options = NSTrackingMouseEnteredAndExited | NSTrackingActiveAlways | NSTrackingAssumeInside;
+        NSTrackingArea *trackingArea;
+        NSDictionary *userInfo = [[NSDictionary alloc] initWithObjectsAndKeys:button,@"button", nil];
+        trackingArea = [[NSTrackingArea alloc] initWithRect:buttonRect
+                                          options:options
+                                            owner:self
+                                         userInfo:userInfo];
+        [self.menuView addTrackingArea:trackingArea];
 
-    // 增加鼠标跟踪区域
-    int options = NSTrackingMouseEnteredAndExited | NSTrackingActiveAlways | NSTrackingAssumeInside;
-    NSTrackingArea *trackingArea;
-    NSDictionary *userInfo = [[NSDictionary alloc] initWithObjectsAndKeys:button,@"button", nil];
-    trackingArea = [[NSTrackingArea alloc] initWithRect:buttonRect
-                                      options:options
-                                        owner:self
-                                     userInfo:userInfo];
-    [self.menuView addTrackingArea:trackingArea];
+        [self.menuView addSubview:button];
+    }
 
-    [self.menuView addSubview:button];
-}
+    self.myMenuItem.view = self.menuView;
 
-self.myMenuItem.view = self.menuView;
-
-// 然后把菜单项加入菜单
-[self.attachedMenu addItem:self.myMenuItem];
-[self.attachedMenu addItem:otherMenu];
+    // 然后把菜单项加入菜单
+    [self.attachedMenu addItem:self.myMenuItem];
+    [self.attachedMenu addItem:otherMenu];
 </code></pre>
-
-<p>```</p>
 
 <p>关于如何将菜单附着到按钮上，我过去曾写过<a href="http://cocoa.venj.me/blog/open-menu-with-a-button/">文章</a>讲述了，这里就不赘述了。另外，头像的图片有圆角显示，关于如何实现，我过去也曾写过<a href="http://cocoa.venj.me/blog/draw-rounded-rectangle-nsimage-with-quartz/">介绍文章</a>。</p>
 
 <p>问题差不多解决了，最后用两个鼠标事件回调函数来处理鼠标悬停时的Focus Ring效果：</p>
 
-<p>``` objc
-&ndash; (void)applicationDidFinishLaunching:(NSNotification *)aNotification
-{</p>
+<pre><code class="objc">- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
+{
+    // Insert code here to initialize your application
+    [[self window] setAcceptsMouseMovedEvents:YES]; // 注册接受鼠标事件
 
-<pre><code>// Insert code here to initialize your application
-[[self window] setAcceptsMouseMovedEvents:YES]; // 注册接受鼠标事件
-
-... (其他代码)
-</code></pre>
-
-<p>}</p>
-
-<ul>
-<li><p>(void)mouseEntered:(NSEvent <em>)theEvent {
-  NSButton </em>currentButton = [(NSDictionary *)[theEvent userData] objectForKey:@&ldquo;button&rdquo;];
-  [currentButton setState:NSOnState];
-}</p></li>
-<li><p>(void)mouseExited:(NSEvent <em>)theEvent {
-  NSButton </em>currentButton = [(NSDictionary *)[theEvent userData] objectForKey:@&ldquo;button&rdquo;];
-  [currentButton setState:NSOffState];
+    ... (其他代码)
 }
-```</p></li>
-</ul>
 
+- (void)mouseEntered:(NSEvent *)theEvent {
+    NSButton *currentButton = [(NSDictionary *)[theEvent userData] objectForKey:@"button"];
+    [currentButton setState:NSOnState];
+}
+
+- (void)mouseExited:(NSEvent *)theEvent {
+    NSButton *currentButton = [(NSDictionary *)[theEvent userData] objectForKey:@"button"];
+    [currentButton setState:NSOffState];
+}
+</code></pre>
 
 <p>山寨的效果效果如下：</p>
 
 <p><img class="center" src="/images/posts/qq-avatar-menu-clone.png"></p>
 
-<p>关于Focus Ring的实现我要说明一下，我这里用的方法比较粗糙，QQ应该是用Quartz绘制的Focus ring，而我是用了一张图片来“伪造”了一个Focus ring。我这里选择使用<code>NSSwitchButton</code>类型的按钮是为了利用<code>alternativeImage</code>来实现Focus ring效果。之所以这么做，是因为我一时间没有想到比较好的绘制Focus ring的方法 &mdash; 基础不过关啊 &mdash; 所以，如果谁知道怎么做，劳烦您能不吝赐教。</p>
+<p>关于Focus Ring的实现我要说明一下，我这里用的方法比较粗糙，QQ应该是用Quartz绘制的Focus ring，而我是用了一张图片来“伪造”了一个Focus ring。我这里选择使用<code>NSSwitchButton</code>类型的按钮是为了利用<code>alternativeImage</code>来实现Focus ring效果。之所以这么做，是因为我一时间没有想到比较好的绘制Focus ring的方法 &ndash; 基础不过关啊 &ndash; 所以，如果谁知道怎么做，劳烦您能不吝赐教。</p>
 
 <p>示例代码我已经推送到<a href="https://github.com/venj/Cocoa-blog-code/tree/master/Custom%20Menu">Github</a>上了，有兴趣的可以签出来看看，并提出宝贵意见。另外，我在示例代码中使用了QQ for Mac里面的头像图片，希望腾讯勿怪。</p>
 
@@ -171,10 +152,9 @@ self.myMenuItem.view = self.menuView;
 
 <p>其实动态设置Dock图标的方法很简单严格的说只有两行代码：</p>
 
-<p><code>objc
-ProcessSerialNumber psn = { 0, kCurrentProcess };
+<pre><code class="objc">ProcessSerialNumber psn = { 0, kCurrentProcess };
 TransformProcessType(&amp;psn, kProcessTransformToForegroundApplication);
-</code></p>
+</code></pre>
 
 <p>在设置隐藏Dock图标的时候需要重启应用程序，无法在运行时动态完成的，而在显示Dock图标的时候则不需要。我做了一个简单的Demo程序。放到了Github上，有兴趣的可以看看。（以后在这里出现的其他示例代码也会放到那里。）</p>
 
@@ -186,48 +166,85 @@ TransformProcessType(&amp;psn, kProcessTransformToForegroundApplication);
 
 
 <p>
-``` objc
-&ndash; (void)applicationDidFinishLaunching:(NSNotification *)aNotification
-{</p>
-
-<pre><code>// 读取用户设置，判断是否显示Dock图标，并且设置复选框的状态。
-defaults = [NSUserDefaults standardUserDefaults];
-BOOL iconInDock = [[NSUserDefaults standardUserDefaults] boolForKey:kShowDockIcon];
-
-if (iconInDock) {
-    ProcessSerialNumber psn = { 0, kCurrentProcess };
-    TransformProcessType(&amp;psn, kProcessTransformToForegroundApplication);
-    [self.dockIconSelector setState:NSOnState];
-}
-else {
-    [self.dockIconSelector setState:NSOffState];
-}
-</code></pre>
-
-<p>   // 省略其他用来处理Menulet的代码。
-}</p>
-
-<ul>
-<li><p>(IBAction)toggleDockIcon:(id)sender {
-  NSUInteger state = [sender state];
-  // 根据复选框是否选中，设置用户值，并且改变程序运行状态。
-  if (state == NSOnState) {
-      ProcessSerialNumber psn = { 0, kCurrentProcess };
-      TransformProcessType(&amp;psn, kProcessTransformToForegroundApplication);
-      self.infoText.hidden = YES;</p>
-
-<pre><code>  [defaults setBool:YES forKey:kShowDockIcon];
-  [defaults synchronize];
-</code></pre>
-
-<p>  }
-  else {
-      [defaults setBool:NO forKey:kShowDockIcon];
-      self.infoText.hidden = NO;
-      [defaults synchronize];
-  }
-}
-```</p></li>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">applicationDidFinishLaunching:</span><span class="p">(</span><span class="bp">NSNotification</span> <span class="o">*</span><span class="p">)</span><span class="nv">aNotification</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="c1">// 读取用户设置，判断是否显示Dock图标，并且设置复选框的状态。</span>
+</span><span class='line'>    <span class="n">defaults</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSUserDefaults</span> <span class="n">standardUserDefaults</span><span class="p">];</span>
+</span><span class='line'>    <span class="kt">BOOL</span> <span class="n">iconInDock</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NSUserDefaults</span> <span class="n">standardUserDefaults</span><span class="p">]</span> <span class="nl">boolForKey</span><span class="p">:</span><span class="n">kShowDockIcon</span><span class="p">];</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">if</span> <span class="p">(</span><span class="n">iconInDock</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">ProcessSerialNumber</span> <span class="n">psn</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">0</span><span class="p">,</span> <span class="n">kCurrentProcess</span> <span class="p">};</span>
+</span><span class='line'>    <span class="n">TransformProcessType</span><span class="p">(</span><span class="o">&amp;</span><span class="n">amp</span><span class="p">;</span><span class="n">psn</span><span class="p">,</span> <span class="n">kProcessTransformToForegroundApplication</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">dockIconSelector</span> <span class="nl">setState</span><span class="p">:</span><span class="n">NSOnState</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">dockIconSelector</span> <span class="nl">setState</span><span class="p">:</span><span class="n">NSOffState</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>   <span class="c1">// 省略其他用来处理Menulet的代码。</span>
+</span><span class='line'><span class="p">}</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">ul</span><span class="o">&gt;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="n">li</span><span class="o">&gt;&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nl">toggleDockIcon</span><span class="p">:(</span><span class="kt">id</span><span class="p">)</span><span class="n">sender</span> <span class="p">{</span>
+</span><span class='line'>  <span class="bp">NSUInteger</span> <span class="n">state</span> <span class="o">=</span> <span class="p">[</span><span class="n">sender</span> <span class="n">state</span><span class="p">];</span>
+</span><span class='line'>  <span class="c1">// 根据复选框是否选中，设置用户值，并且改变程序运行状态。</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">state</span> <span class="o">==</span> <span class="n">NSOnState</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">ProcessSerialNumber</span> <span class="n">psn</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">0</span><span class="p">,</span> <span class="n">kCurrentProcess</span> <span class="p">};</span>
+</span><span class='line'>      <span class="n">TransformProcessType</span><span class="p">(</span><span class="o">&amp;</span><span class="n">amp</span><span class="p">;</span><span class="n">psn</span><span class="p">,</span> <span class="n">kProcessTransformToForegroundApplication</span><span class="p">);</span>
+</span><span class='line'>      <span class="nb">self</span><span class="p">.</span><span class="n">infoText</span><span class="p">.</span><span class="n">hidden</span> <span class="o">=</span> <span class="nb">YES</span><span class="p">;</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span>  <span class="p">[</span><span class="n">defaults</span> <span class="nl">setBool</span><span class="p">:</span><span class="nb">YES</span> <span class="nl">forKey</span><span class="p">:</span><span class="n">kShowDockIcon</span><span class="p">];</span>
+</span><span class='line'>  <span class="p">[</span><span class="n">defaults</span> <span class="n">synchronize</span><span class="p">];</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>  <span class="p">}</span>
+</span><span class='line'>  <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>      <span class="p">[</span><span class="n">defaults</span> <span class="nl">setBool</span><span class="p">:</span><span class="nb">NO</span> <span class="nl">forKey</span><span class="p">:</span><span class="n">kShowDockIcon</span><span class="p">];</span>
+</span><span class='line'>      <span class="nb">self</span><span class="p">.</span><span class="n">infoText</span><span class="p">.</span><span class="n">hidden</span> <span class="o">=</span> <span class="nb">NO</span><span class="p">;</span>
+</span><span class='line'>      <span class="p">[</span><span class="n">defaults</span> <span class="n">synchronize</span><span class="p">];</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></p></li>
 </ul>
 
 
@@ -254,28 +271,47 @@ else {
 
 
 <p>
-``` objc
-&ndash; (IBAction)showMenu:(id)sender {</p>
-
-<pre><code>NSRect frame = [(NSButton *)sender frame];
-NSPoint menuOrigin = [[(NSButton *)sender superview] convertPoint:NSMakePoint(frame.origin.x, frame.origin.y) toView:nil];
-
-NSEvent *event =  [NSEvent mouseEventWithType:NSLeftMouseDown
-                                     location:menuOrigin
-                                modifierFlags:NSLeftMouseDownMask
-                                    timestamp:0
-                                 windowNumber:[[(NSButton *)sender window] windowNumber]
-                                      context:[[(NSButton *)sender window] graphicsContext]
-                                  eventNumber:0
-                                   clickCount:1
-                                     pressure:1];
-
-// contextMenu可以直接在XIB里初始化一个菜单
-[NSMenu popUpContextMenu:contextMenu withEvent:event forView:(NSButton *)sender];
-</code></pre>
-
-<p>}
-```
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">showMenu:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">NSRect</span> <span class="n">frame</span> <span class="o">=</span> <span class="p">[(</span><span class="n">NSButton</span> <span class="o">*</span><span class="p">)</span><span class="n">sender</span> <span class="n">frame</span><span class="p">];</span>
+</span><span class='line'><span class="n">NSPoint</span> <span class="n">menuOrigin</span> <span class="o">=</span> <span class="p">[[(</span><span class="n">NSButton</span> <span class="o">*</span><span class="p">)</span><span class="n">sender</span> <span class="n">superview</span><span class="p">]</span> <span class="nl">convertPoint</span><span class="p">:</span><span class="n">NSMakePoint</span><span class="p">(</span><span class="n">frame</span><span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">frame</span><span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">y</span><span class="p">)</span> <span class="nl">toView</span><span class="p">:</span><span class="nb">nil</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="bp">NSEvent</span> <span class="o">*</span><span class="n">event</span> <span class="o">=</span>  <span class="p">[</span><span class="bp">NSEvent</span> <span class="nl">mouseEventWithType</span><span class="p">:</span><span class="n">NSLeftMouseDown</span>
+</span><span class='line'>                                     <span class="nl">location</span><span class="p">:</span><span class="n">menuOrigin</span>
+</span><span class='line'>                                <span class="nl">modifierFlags</span><span class="p">:</span><span class="n">NSLeftMouseDownMask</span>
+</span><span class='line'>                                    <span class="nl">timestamp</span><span class="p">:</span><span class="mi">0</span>
+</span><span class='line'>                                 <span class="nl">windowNumber</span><span class="p">:[[(</span><span class="n">NSButton</span> <span class="o">*</span><span class="p">)</span><span class="n">sender</span> <span class="n">window</span><span class="p">]</span> <span class="n">windowNumber</span><span class="p">]</span>
+</span><span class='line'>                                      <span class="nl">context</span><span class="p">:[[(</span><span class="n">NSButton</span> <span class="o">*</span><span class="p">)</span><span class="n">sender</span> <span class="n">window</span><span class="p">]</span> <span class="n">graphicsContext</span><span class="p">]</span>
+</span><span class='line'>                                  <span class="nl">eventNumber</span><span class="p">:</span><span class="mi">0</span>
+</span><span class='line'>                                   <span class="nl">clickCount</span><span class="p">:</span><span class="mi">1</span>
+</span><span class='line'>                                     <span class="nl">pressure</span><span class="p">:</span><span class="mi">1</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// contextMenu可以直接在XIB里初始化一个菜单</span>
+</span><span class='line'><span class="p">[</span><span class="n">NSMenu</span> <span class="nl">popUpContextMenu</span><span class="p">:</span><span class="n">contextMenu</span> <span class="nl">withEvent</span><span class="p">:</span><span class="n">event</span> <span class="nl">forView</span><span class="p">:(</span><span class="n">NSButton</span> <span class="o">*</span><span class="p">)</span><span class="n">sender</span><span class="p">];</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 啰嗦一句，关于自定义按钮的设定问题。截图中的自定义按钮就是一个普通的push button，在IB里作如下设置：</p>
 
 <p><img class="center" src="/images/posts/button-menu-xcode.png"></p>

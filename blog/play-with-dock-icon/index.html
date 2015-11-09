@@ -88,7 +88,7 @@
   
 
 
-<time datetime="2011-09-03T00:35:00+08:00" pubdate data-updated="true">Sep 3<span>rd</span>, 2011</time>
+<time datetime="2011-09-03T00:35:00+08:00" pubdate data-updated="true"></time>
         
       </p>
     
@@ -127,13 +127,13 @@
 <span class='line-number'>8</span>
 <span class='line-number'>9</span>
 </pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// Add badge</span>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">addBadge:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
-</span><span class='line'>    <span class="p">[[</span><span class="n">NSApp</span> <span class="n">dockTile</span><span class="p">]</span> <span class="nl">setBadgeLabel:</span><span class="p">[</span><span class="n">NSString</span> <span class="nl">stringWithFormat:</span><span class="s">@&quot;%d&quot;</span><span class="p">,</span> <span class="n">random</span><span class="p">()</span> <span class="o">%</span> <span class="mi">11</span><span class="p">]];</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">addBadge:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[[</span><span class="n">NSApp</span> <span class="n">dockTile</span><span class="p">]</span> <span class="nl">setBadgeLabel</span><span class="p">:[</span><span class="bp">NSString</span> <span class="nl">stringWithFormat</span><span class="p">:</span><span class="s">@&quot;%d&quot;</span><span class="p">,</span> <span class="n">random</span><span class="p">()</span> <span class="o">%</span> <span class="mi">11</span><span class="p">]];</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
 </span><span class='line'><span class="c1">// Remove badge</span>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">removeBadge:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span>  <span class="p">{</span>
-</span><span class='line'>    <span class="p">[[</span><span class="n">NSApp</span> <span class="n">dockTile</span><span class="p">]</span> <span class="nl">setBadgeLabel:</span><span class="nb">nil</span><span class="p">];</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">removeBadge:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span>  <span class="p">{</span>
+</span><span class='line'>    <span class="p">[[</span><span class="n">NSApp</span> <span class="n">dockTile</span><span class="p">]</span> <span class="nl">setBadgeLabel</span><span class="p">:</span><span class="nb">nil</span><span class="p">];</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
@@ -163,19 +163,19 @@
 <span class='line-number'>15</span>
 <span class='line-number'>16</span>
 </pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// Customize Dock Icon</span>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">changeDockIcon:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">NSApp</span> <span class="nl">setApplicationIconImage:</span><span class="p">[</span><span class="n">NSImage</span> <span class="nl">imageNamed:</span><span class="s">@&quot;Icon&quot;</span><span class="p">]];</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">changeDockIcon:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">NSApp</span> <span class="nl">setApplicationIconImage</span><span class="p">:[</span><span class="n">NSImage</span> <span class="nl">imageNamed</span><span class="p">:</span><span class="s">@&quot;Icon&quot;</span><span class="p">]];</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
 </span><span class='line'><span class="c1">// Restore Dock Icon</span>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">restoreDockIcon:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">NSApp</span> <span class="nl">setApplicationIconImage:</span><span class="nb">nil</span><span class="p">];</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">restoreDockIcon:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">NSApp</span> <span class="nl">setApplicationIconImage</span><span class="p">:</span><span class="nb">nil</span><span class="p">];</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
 </span><span class='line'><span class="c1">// Draw Dock Icon with Custom View</span>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">changeDockIconWithCustomView:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">changeDockIconWithCustomView:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
 </span><span class='line'>    <span class="n">DockIconView</span> <span class="o">*</span><span class="n">dockView</span> <span class="o">=</span> <span class="p">[[[</span><span class="n">DockIconView</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">]</span> <span class="n">autorelease</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">[[</span><span class="n">NSApp</span> <span class="n">dockTile</span><span class="p">]</span> <span class="nl">setContentView:</span> <span class="n">dockView</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[[</span><span class="n">NSApp</span> <span class="n">dockTile</span><span class="p">]</span> <span class="nl">setContentView</span><span class="p">:</span> <span class="n">dockView</span><span class="p">];</span>
 </span><span class='line'>    <span class="p">[[</span><span class="n">NSApp</span> <span class="n">dockTile</span><span class="p">]</span> <span class="n">display</span><span class="p">];</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
@@ -201,13 +201,13 @@
 <span class='line-number'>8</span>
 <span class='line-number'>9</span>
 </pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// Show minimize icon badge</span>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">showMinimizeBadge:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
-</span><span class='line'>    <span class="p">[[</span><span class="n">self</span><span class="p">.</span><span class="n">window</span> <span class="n">dockTile</span><span class="p">]</span> <span class="nl">setShowsApplicationBadge:</span><span class="n">YES</span><span class="p">];</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">showMinimizeBadge:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[[</span><span class="nb">self</span><span class="p">.</span><span class="n">window</span> <span class="n">dockTile</span><span class="p">]</span> <span class="nl">setShowsApplicationBadge</span><span class="p">:</span><span class="nb">YES</span><span class="p">];</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
 </span><span class='line'><span class="c1">// Remove minimize icon badge</span>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">removeMinimizeBadge:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
-</span><span class='line'>    <span class="p">[[</span><span class="n">self</span><span class="p">.</span><span class="n">window</span> <span class="n">dockTile</span><span class="p">]</span> <span class="nl">setShowsApplicationBadge:</span><span class="n">NO</span><span class="p">];</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">removeMinimizeBadge:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[[</span><span class="nb">self</span><span class="p">.</span><span class="n">window</span> <span class="n">dockTile</span><span class="p">]</span> <span class="nl">setShowsApplicationBadge</span><span class="p">:</span><span class="nb">NO</span><span class="p">];</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
@@ -227,8 +227,8 @@
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSMenu</span> <span class="o">*</span><span class="p">)</span><span class="nf">applicationDockMenu:</span><span class="p">(</span><span class="n">NSApplication</span> <span class="o">*</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">dynamicMenu</span><span class="p">;</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="n">NSMenu</span> <span class="o">*</span><span class="p">)</span><span class="nf">applicationDockMenu:</span><span class="p">(</span><span class="n">NSApplication</span> <span class="o">*</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nb">self</span><span class="p">.</span><span class="n">dynamicMenu</span><span class="p">;</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
@@ -275,35 +275,35 @@
 <span class='line-number'>28</span>
 <span class='line-number'>29</span>
 <span class='line-number'>30</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">drawRect:</span><span class="p">(</span><span class="n">NSRect</span><span class="p">)</span><span class="nv">dirtyRect</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">drawRect:</span><span class="p">(</span><span class="n">NSRect</span><span class="p">)</span><span class="nv">dirtyRect</span>
 </span><span class='line'><span class="p">{</span>
 </span><span class='line'>    <span class="c1">// Drawing code here.</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="c1">// Draw Dock Icon</span>
-</span><span class='line'>    <span class="n">NSImage</span> <span class="o">*</span><span class="n">image</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSImage</span> <span class="nl">imageNamed:</span><span class="s">@&quot;qqbadge&quot;</span><span class="p">];</span>
-</span><span class='line'>    <span class="n">NSImageView</span> <span class="o">*</span><span class="n">imageView</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSImageView</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFrame:</span><span class="n">self</span><span class="p">.</span><span class="n">frame</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">NSImage</span> <span class="o">*</span><span class="n">image</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSImage</span> <span class="nl">imageNamed</span><span class="p">:</span><span class="s">@&quot;qqbadge&quot;</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">NSImageView</span> <span class="o">*</span><span class="n">imageView</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSImageView</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFrame</span><span class="p">:</span><span class="nb">self</span><span class="p">.</span><span class="n">frame</span><span class="p">];</span>
 </span><span class='line'>    <span class="n">imageView</span><span class="p">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">self</span> <span class="nl">addSubview:</span><span class="n">imageView</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">imageView</span> <span class="n">release</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="nb">self</span> <span class="nl">addSubview</span><span class="p">:</span><span class="n">imageView</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">imageView</span> <span class="k">release</span><span class="p">];</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="c1">// Draw Badge Label</span>
 </span><span class='line'>    <span class="n">NSRect</span> <span class="n">labelFrame</span><span class="p">;</span>
-</span><span class='line'>    <span class="n">CGFloat</span> <span class="n">width</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">;</span>
-</span><span class='line'>    <span class="n">CGFloat</span> <span class="n">height</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">CGFloat</span> <span class="n">width</span> <span class="o">=</span> <span class="nb">self</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">CGFloat</span> <span class="n">height</span> <span class="o">=</span> <span class="nb">self</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">;</span>
 </span><span class='line'>    <span class="n">labelFrame</span><span class="p">.</span><span class="n">origin</span> <span class="o">=</span> <span class="n">CGPointMake</span><span class="p">(</span><span class="n">width</span> <span class="o">*</span> <span class="mf">0.62</span><span class="p">,</span> <span class="n">height</span> <span class="o">*</span> <span class="mf">0.60</span><span class="p">);</span>
 </span><span class='line'>    <span class="n">labelFrame</span><span class="p">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">CGSizeMake</span><span class="p">(</span><span class="n">width</span> <span class="o">*</span> <span class="mf">0.25</span><span class="p">,</span> <span class="n">height</span> <span class="o">*</span> <span class="mf">0.25</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">self</span><span class="p">.</span><span class="n">label</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSTextField</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFrame:</span><span class="n">labelFrame</span><span class="p">];</span>
-</span><span class='line'>    <span class="n">self</span><span class="p">.</span><span class="n">label</span><span class="p">.</span><span class="n">backgroundColor</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSColor</span> <span class="n">clearColor</span><span class="p">];</span>
-</span><span class='line'>    <span class="n">self</span><span class="p">.</span><span class="n">label</span><span class="p">.</span><span class="n">textColor</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSColor</span> <span class="n">whiteColor</span><span class="p">];</span>
-</span><span class='line'>    <span class="n">self</span><span class="p">.</span><span class="n">label</span><span class="p">.</span><span class="n">drawsBackground</span> <span class="o">=</span> <span class="n">NO</span><span class="p">;</span>
-</span><span class='line'>    <span class="n">self</span><span class="p">.</span><span class="n">label</span><span class="p">.</span><span class="n">stringValue</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">labelText</span><span class="p">;</span>
+</span><span class='line'>    <span class="nb">self</span><span class="p">.</span><span class="n">label</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NSTextField</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFrame</span><span class="p">:</span><span class="n">labelFrame</span><span class="p">];</span>
+</span><span class='line'>    <span class="nb">self</span><span class="p">.</span><span class="n">label</span><span class="p">.</span><span class="n">backgroundColor</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSColor</span> <span class="n">clearColor</span><span class="p">];</span>
+</span><span class='line'>    <span class="nb">self</span><span class="p">.</span><span class="n">label</span><span class="p">.</span><span class="n">textColor</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSColor</span> <span class="n">whiteColor</span><span class="p">];</span>
+</span><span class='line'>    <span class="nb">self</span><span class="p">.</span><span class="n">label</span><span class="p">.</span><span class="n">drawsBackground</span> <span class="o">=</span> <span class="nb">NO</span><span class="p">;</span>
+</span><span class='line'>    <span class="nb">self</span><span class="p">.</span><span class="n">label</span><span class="p">.</span><span class="n">stringValue</span> <span class="o">=</span> <span class="nb">self</span><span class="p">.</span><span class="n">labelText</span><span class="p">;</span>
 </span><span class='line'>    <span class="c1">//在使用的时候，需要修改徽章Label，只需设置这个view对象的labelText属性即可</span>
-</span><span class='line'>    <span class="n">NSFont</span> <span class="o">*</span><span class="n">font</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSFont</span> <span class="nl">fontWithName:</span><span class="s">@&quot;Arial&quot;</span> <span class="nl">size:</span><span class="mi">32</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">label</span> <span class="nl">setFont:</span><span class="n">font</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">label</span> <span class="n">sizeToFit</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">label</span> <span class="nl">setBordered:</span><span class="n">NO</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">self</span> <span class="nl">addSubview:</span><span class="n">self</span><span class="p">.</span><span class="n">label</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">label</span> <span class="n">release</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">NSFont</span> <span class="o">*</span><span class="n">font</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSFont</span> <span class="nl">fontWithName</span><span class="p">:</span><span class="s">@&quot;Arial&quot;</span> <span class="nl">size</span><span class="p">:</span><span class="mi">32</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">label</span> <span class="nl">setFont</span><span class="p">:</span><span class="n">font</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">label</span> <span class="n">sizeToFit</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">label</span> <span class="nl">setBordered</span><span class="p">:</span><span class="nb">NO</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="nb">self</span> <span class="nl">addSubview</span><span class="p">:</span><span class="nb">self</span><span class="p">.</span><span class="n">label</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">label</span> <span class="k">release</span><span class="p">];</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
@@ -339,12 +339,12 @@
   
 
 
-<time datetime="2011-09-03T00:35:00+08:00" pubdate data-updated="true">Sep 3<span>rd</span>, 2011</time>
+<time datetime="2011-09-03T00:35:00+08:00" pubdate data-updated="true"></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/dock/'>Dock</a>, <a class='category' href='/blog/categories/nsapplication/'>NSApplication</a>, <a class='category' href='/blog/categories/nsdocktile/'>NSDockTile</a>
+    <a class='category' href='/blog/categories/dock/'>dock</a>, <a class='category' href='/blog/categories/nsapplication/'>nsapplication</a>, <a class='category' href='/blog/categories/nsdocktile/'>nsdocktile</a>
   
 </span>
 
@@ -392,23 +392,23 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/openurl-on-ios9/">iOS 9下使用openURL:</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/app-transportation-security/">iOS 9中的App Transport Security</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/alamofire-ssl/">让Alamofire使用自签名证书</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/disable-corestorage-on-os-x-yosemite/">禁用OS X Yosemite上的Core Storage</a>
       </li>
     
       <li class="post">
         <a href="/blog/xcode-6-color-theme-path/">Xcode 6 Color Themes (颜色主题) 的路径</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/scripty-swift/">［更新］把Swift用作脚本语言</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/view-controller-based-status-bar-style-and-uinavigationcontroller/">UINavigationController和View Controller-based状态栏风格</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
       </li>
     
   </ul>

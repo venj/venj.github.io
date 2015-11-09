@@ -95,7 +95,7 @@ NSString *theString &hellip;">
   
 
 
-<time datetime="2011-05-28T09:42:00+08:00" pubdate data-updated="true">May 28<span>th</span>, 2011</time>
+<time datetime="2011-05-28T09:42:00+08:00" pubdate data-updated="true"></time>
         
       </p>
     
@@ -116,14 +116,14 @@ NSString *theString &hellip;">
 <span class='line-number'>8</span>
 <span class='line-number'>9</span>
 </pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cm">/* NSString to NSData */</span>
-</span><span class='line'><span class="n">NSString</span> <span class="o">*</span><span class="n">theString</span> <span class="o">=</span> <span class="s">@&quot;This is a string&quot;</span><span class="p">;</span>
-</span><span class='line'><span class="n">NSData</span> <span class="o">*</span><span class="n">theStringData</span> <span class="o">=</span> <span class="p">[</span><span class="n">theString</span> <span class="nl">dataUsingEncoding:</span><span class="n">NSUTF8StringEncoding</span><span class="p">];</span>
+</span><span class='line'><span class="bp">NSString</span> <span class="o">*</span><span class="n">theString</span> <span class="o">=</span> <span class="s">@&quot;This is a string&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="bp">NSData</span> <span class="o">*</span><span class="n">theStringData</span> <span class="o">=</span> <span class="p">[</span><span class="n">theString</span> <span class="nl">dataUsingEncoding</span><span class="p">:</span><span class="n">NSUTF8StringEncoding</span><span class="p">];</span>
 </span><span class='line'><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%@</span><span class="se">\n</span><span class="s">%@&quot;</span><span class="p">,</span> <span class="n">theString</span><span class="p">,</span> <span class="n">theStringData</span><span class="p">);</span>
 </span><span class='line'>
 </span><span class='line'><span class="cm">/* NSData to NSString */</span>
-</span><span class='line'><span class="n">NSString</span> <span class="o">*</span><span class="n">theStringFromData</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSString</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithData:</span><span class="n">theStringData</span> <span class="nl">encoding:</span><span class="n">NSUTF8StringEncoding</span><span class="p">];</span>
+</span><span class='line'><span class="bp">NSString</span> <span class="o">*</span><span class="n">theStringFromData</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NSString</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithData</span><span class="p">:</span><span class="n">theStringData</span> <span class="nl">encoding</span><span class="p">:</span><span class="n">NSUTF8StringEncoding</span><span class="p">];</span>
 </span><span class='line'><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%@&quot;</span><span class="p">,</span> <span class="n">theStringFromData</span><span class="p">);</span>
-</span><span class='line'><span class="p">[</span><span class="n">theStringFromData</span> <span class="n">release</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="n">theStringFromData</span> <span class="k">release</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -139,10 +139,10 @@ NSString *theString &hellip;">
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSString</span> <span class="o">*</span><span class="n">imagePath</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSBundle</span> <span class="n">mainBundle</span><span class="p">]</span> <span class="nl">pathForImageResource:</span><span class="s">@&quot;some_image&quot;</span><span class="p">];</span>
-</span><span class='line'><span class="n">NSImage</span> <span class="o">*</span><span class="n">theImage</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSImage</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithContentsOfFile:</span><span class="n">imagePath</span><span class="p">];</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">NSString</span> <span class="o">*</span><span class="n">imagePath</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NSBundle</span> <span class="n">mainBundle</span><span class="p">]</span> <span class="nl">pathForImageResource</span><span class="p">:</span><span class="s">@&quot;some_image&quot;</span><span class="p">];</span>
+</span><span class='line'><span class="n">NSImage</span> <span class="o">*</span><span class="n">theImage</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSImage</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithContentsOfFile</span><span class="p">:</span><span class="n">imagePath</span><span class="p">];</span>
 </span><span class='line'><span class="c1">//[self.imageWell setImage:theImage];</span>
-</span><span class='line'><span class="p">[</span><span class="n">theImage</span> <span class="n">release</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="n">theImage</span> <span class="k">release</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -166,20 +166,20 @@ NSString *theString &hellip;">
 <span class='line-number'>14</span>
 <span class='line-number'>15</span>
 </pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cm">/* NSImage to NSData (TIFF) */</span>
-</span><span class='line'><span class="n">NSData</span> <span class="o">*</span><span class="n">someData</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSData</span> <span class="nl">dataWithContentsOfFile:</span><span class="n">imagePath</span><span class="p">];</span>
-</span><span class='line'><span class="n">NSImage</span> <span class="o">*</span><span class="n">someImage</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSImage</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithData:</span><span class="n">someData</span><span class="p">];</span>
-</span><span class='line'><span class="n">NSData</span> <span class="o">*</span><span class="n">dataFromImage</span> <span class="o">=</span> <span class="p">[</span><span class="n">someImage</span> <span class="n">TIFFRepresentation</span><span class="p">];</span>
-</span><span class='line'><span class="n">NSMutableString</span> <span class="o">*</span><span class="n">homeDir</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSMutableString</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithString:</span><span class="n">NSHomeDirectory</span><span class="p">()];</span>
-</span><span class='line'><span class="p">[</span><span class="n">dataFromImage</span> <span class="nl">writeToFile:</span><span class="p">[</span><span class="n">homeDir</span> <span class="nl">stringByAppendingPathComponent:</span><span class="s">@&quot;Desktop/image.tiff&quot;</span><span class="p">]</span> <span class="nl">atomically:</span><span class="n">NO</span><span class="p">];</span>
+</span><span class='line'><span class="bp">NSData</span> <span class="o">*</span><span class="n">someData</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSData</span> <span class="nl">dataWithContentsOfFile</span><span class="p">:</span><span class="n">imagePath</span><span class="p">];</span>
+</span><span class='line'><span class="n">NSImage</span> <span class="o">*</span><span class="n">someImage</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSImage</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithData</span><span class="p">:</span><span class="n">someData</span><span class="p">];</span>
+</span><span class='line'><span class="bp">NSData</span> <span class="o">*</span><span class="n">dataFromImage</span> <span class="o">=</span> <span class="p">[</span><span class="n">someImage</span> <span class="n">TIFFRepresentation</span><span class="p">];</span>
+</span><span class='line'><span class="bp">NSMutableString</span> <span class="o">*</span><span class="n">homeDir</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NSMutableString</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithString</span><span class="p">:</span><span class="n">NSHomeDirectory</span><span class="p">()];</span>
+</span><span class='line'><span class="p">[</span><span class="n">dataFromImage</span> <span class="nl">writeToFile</span><span class="p">:[</span><span class="n">homeDir</span> <span class="nl">stringByAppendingPathComponent</span><span class="p">:</span><span class="s">@&quot;Desktop/image.tiff&quot;</span><span class="p">]</span> <span class="nl">atomically</span><span class="p">:</span><span class="nb">NO</span><span class="p">];</span>
 </span><span class='line'>
 </span><span class='line'><span class="cm">/* NSImage to NSData (Any Format, use png as example) */</span>
 </span><span class='line'><span class="c1">//NSBitmapImageRep *bmprep = [NSBitmapImageRep imageRepWithData:dataFromImage]; // TIFF representation data</span>
-</span><span class='line'><span class="n">NSBitmapImageRep</span> <span class="o">*</span><span class="n">bmprep</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSBitmapImageRep</span> <span class="nl">imageRepWithData:</span><span class="n">someData</span><span class="p">];</span> <span class="c1">// PNG data from file</span>
-</span><span class='line'><span class="n">NSDictionary</span> <span class="o">*</span><span class="n">imageProperty</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSDictionary</span> <span class="nl">dictionaryWithObjectsAndKeys:</span><span class="p">[</span><span class="n">NSNumber</span> <span class="nl">numberWithFloat:</span><span class="mf">0.0</span><span class="p">],</span> <span class="n">NSImageCompressionFactor</span><span class="p">,</span> <span class="nb">nil</span><span class="p">];</span>
-</span><span class='line'><span class="n">NSData</span> <span class="o">*</span><span class="n">otherTypeImageData</span> <span class="o">=</span> <span class="p">[</span><span class="n">bmprep</span> <span class="nl">representationUsingType:</span><span class="n">NSPNGFileType</span> <span class="nl">properties:</span><span class="n">imageProperty</span><span class="p">];</span>
-</span><span class='line'><span class="p">[</span><span class="n">otherTypeImageData</span> <span class="nl">writeToFile:</span><span class="p">[</span><span class="n">homeDir</span> <span class="nl">stringByAppendingPathComponent:</span><span class="s">@&quot;Desktop/image.png&quot;</span><span class="p">]</span> <span class="nl">atomically:</span><span class="n">NO</span><span class="p">];</span>
-</span><span class='line'><span class="p">[</span><span class="n">homeDir</span> <span class="n">release</span><span class="p">];</span>
-</span><span class='line'><span class="p">[</span><span class="n">someImage</span> <span class="n">release</span><span class="p">];</span>
+</span><span class='line'><span class="n">NSBitmapImageRep</span> <span class="o">*</span><span class="n">bmprep</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSBitmapImageRep</span> <span class="nl">imageRepWithData</span><span class="p">:</span><span class="n">someData</span><span class="p">];</span> <span class="c1">// PNG data from file</span>
+</span><span class='line'><span class="bp">NSDictionary</span> <span class="o">*</span><span class="n">imageProperty</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSDictionary</span> <span class="nl">dictionaryWithObjectsAndKeys</span><span class="p">:[</span><span class="bp">NSNumber</span> <span class="nl">numberWithFloat</span><span class="p">:</span><span class="mf">0.0</span><span class="p">],</span> <span class="n">NSImageCompressionFactor</span><span class="p">,</span> <span class="nb">nil</span><span class="p">];</span>
+</span><span class='line'><span class="bp">NSData</span> <span class="o">*</span><span class="n">otherTypeImageData</span> <span class="o">=</span> <span class="p">[</span><span class="n">bmprep</span> <span class="nl">representationUsingType</span><span class="p">:</span><span class="n">NSPNGFileType</span> <span class="nl">properties</span><span class="p">:</span><span class="n">imageProperty</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="n">otherTypeImageData</span> <span class="nl">writeToFile</span><span class="p">:[</span><span class="n">homeDir</span> <span class="nl">stringByAppendingPathComponent</span><span class="p">:</span><span class="s">@&quot;Desktop/image.png&quot;</span><span class="p">]</span> <span class="nl">atomically</span><span class="p">:</span><span class="nb">NO</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="n">homeDir</span> <span class="k">release</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="n">someImage</span> <span class="k">release</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -196,13 +196,13 @@ NSString *theString &hellip;">
 <span class='line-number'>7</span>
 <span class='line-number'>8</span>
 </pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cm">/* NSString to NSURL */</span>
-</span><span class='line'><span class="n">NSString</span> <span class="o">*</span><span class="n">google</span> <span class="o">=</span> <span class="s">@&quot;http://google.com&quot;</span><span class="p">;</span>
-</span><span class='line'><span class="n">NSURL</span> <span class="o">*</span><span class="n">googleURL</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSURL</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithString:</span><span class="n">google</span><span class="p">];</span>
+</span><span class='line'><span class="bp">NSString</span> <span class="o">*</span><span class="n">google</span> <span class="o">=</span> <span class="s">@&quot;http://google.com&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="bp">NSURL</span> <span class="o">*</span><span class="n">googleURL</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NSURL</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithString</span><span class="p">:</span><span class="n">google</span><span class="p">];</span>
 </span><span class='line'><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%@&quot;</span><span class="p">,</span> <span class="n">googleURL</span><span class="p">);</span>
 </span><span class='line'>
 </span><span class='line'><span class="cm">/* NSURL to NSString */</span>
 </span><span class='line'><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%@, %@&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">googleURL</span> <span class="n">relativeString</span><span class="p">],</span> <span class="p">[</span><span class="n">googleURL</span> <span class="n">absoluteString</span><span class="p">]);</span>
-</span><span class='line'><span class="p">[</span><span class="n">googleURL</span> <span class="n">release</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="n">googleURL</span> <span class="k">release</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -218,12 +218,12 @@ NSString *theString &hellip;">
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
 </pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cm">/* CGImage to NSImage */</span>
-</span><span class='line'><span class="n">NSBitmapImageRep</span> <span class="o">*</span><span class="n">bitmapRep</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSBitmapImageRep</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithCGImage:</span><span class="n">cgImage</span><span class="p">];</span>
+</span><span class='line'><span class="n">NSBitmapImageRep</span> <span class="o">*</span><span class="n">bitmapRep</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSBitmapImageRep</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithCGImage</span><span class="p">:</span><span class="n">cgImage</span><span class="p">];</span>
 </span><span class='line'><span class="n">NSImage</span> <span class="o">*</span><span class="n">image</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSImage</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
-</span><span class='line'><span class="p">[</span><span class="n">image</span> <span class="nl">addRepresentation:</span><span class="n">bitmapRep</span><span class="p">];</span>
-</span><span class='line'><span class="p">[</span><span class="n">bitmapRep</span> <span class="n">release</span><span class="p">];</span>
-</span><span class='line'><span class="p">[</span><span class="n">imageView</span> <span class="nl">setImage:</span><span class="n">image</span><span class="p">];</span>
-</span><span class='line'><span class="p">[</span><span class="n">image</span> <span class="n">release</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="n">image</span> <span class="nl">addRepresentation</span><span class="p">:</span><span class="n">bitmapRep</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="n">bitmapRep</span> <span class="k">release</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="n">imageView</span> <span class="nl">setImage</span><span class="p">:</span><span class="n">image</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="n">image</span> <span class="k">release</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -252,12 +252,12 @@ NSString *theString &hellip;">
   
 
 
-<time datetime="2011-05-28T09:42:00+08:00" pubdate data-updated="true">May 28<span>th</span>, 2011</time>
+<time datetime="2011-05-28T09:42:00+08:00" pubdate data-updated="true"></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/foundation/'>Foundation</a>
+    <a class='category' href='/blog/categories/foundation/'>foundation</a>
   
 </span>
 
@@ -305,23 +305,23 @@ NSString *theString &hellip;">
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/openurl-on-ios9/">iOS 9下使用openURL:</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/app-transportation-security/">iOS 9中的App Transport Security</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/alamofire-ssl/">让Alamofire使用自签名证书</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/disable-corestorage-on-os-x-yosemite/">禁用OS X Yosemite上的Core Storage</a>
       </li>
     
       <li class="post">
         <a href="/blog/xcode-6-color-theme-path/">Xcode 6 Color Themes (颜色主题) 的路径</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/scripty-swift/">［更新］把Swift用作脚本语言</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/view-controller-based-status-bar-style-and-uinavigationcontroller/">UINavigationController和View Controller-based状态栏风格</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
       </li>
     
   </ul>

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: MD5 | Cocoa学习]]></title>
+  <title><![CDATA[Category: Md5 | Cocoa学习]]></title>
   <link href="http://venj.github.io/blog/categories/md5/atom.xml" rel="self"/>
   <link href="http://venj.github.io/"/>
-  <updated>2015-02-01T14:40:20+08:00</updated>
+  <updated>2015-11-09T20:47:16+08:00</updated>
   <id>http://venj.github.io/</id>
   <author>
     <name><![CDATA[venj]]></name>
@@ -22,39 +22,32 @@
 
 <p><strong>NSString:</strong></p>
 
-<p>``` objc
-// NSString+MD5.h</p>
+<pre><code class="objc">// NSString+MD5.h
 
-<h1>import &lt;foundation/foundation.h></h1>
-
-<p>@interface NSString (NSString_MD5)
-&ndash; (NSString *)md5;
-@end</p>
-
-<p>// NSString+MD5.m</p>
-
-<h1>import &ldquo;NSString+MD5.h&rdquo;</h1>
-
-<h1>import &lt;commoncrypto/commondigest.h></h1>
-
-<p>@implementation NSString (NSString_MD5)
-&ndash; (NSString *)md5 {</p>
-
-<pre><code>const char *cStr = [self UTF8String];
-unsigned char result[16];
-CC_MD5(cStr, (unsigned int)strlen(cStr), result);
-return [NSString stringWithFormat:
-        @"%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
-        result[0], result[1], result[2], result[3],
-        result[4], result[5], result[6], result[7],
-        result[8], result[9], result[10], result[11],
-        result[12], result[13], result[14], result[15]
-        ];
-</code></pre>
-
-<p>}
+#import &lt;foundation/foundation.h&gt;
+@interface NSString (NSString_MD5)
+- (NSString *)md5;
 @end
-```</p>
+
+// NSString+MD5.m
+
+#import "NSString+MD5.h"
+#import &lt;commoncrypto/commondigest.h&gt;
+@implementation NSString (NSString_MD5)
+- (NSString *)md5 {
+    const char *cStr = [self UTF8String];
+    unsigned char result[16];
+    CC_MD5(cStr, (unsigned int)strlen(cStr), result);
+    return [NSString stringWithFormat:
+            @"%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
+            result[0], result[1], result[2], result[3],
+            result[4], result[5], result[6], result[7],
+            result[8], result[9], result[10], result[11],
+            result[12], result[13], result[14], result[15]
+            ];
+}
+@end
+</code></pre>
 
 <!-- more -->
 
@@ -62,40 +55,34 @@ return [NSString stringWithFormat:
 <p>
 <strong>NSData:</strong></p>
 
-<p>``` objc
-// NSData+MD5.h</p>
+<pre><code class="objc">// NSData+MD5.h
 
-<h1>import &lt;foundation/foundation.h></h1>
+#import &lt;foundation/foundation.h&gt;
+@interface NSData (MyExtensions)
+- (NSString*)md5;
+@end
 
-<p>@interface NSData (MyExtensions)
-&ndash; (NSString*)md5;
-@end</p>
+// NSData+MD5.m
 
-<p>// NSData+MD5.m</p>
-
-<h1>import &ldquo;NSData+MD5.h&rdquo;</h1>
-
-<h1>import &lt;commoncrypto/commondigest.h></h1>
-
-<p>@implementation NSData (MyExtensions)
-&ndash; (NSString*)md5
-{</p>
-
-<pre><code>unsigned char result[16];
-CC_MD5(self.bytes, self.length, result);
-return [NSString stringWithFormat:
-    @"%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
-    result[0], result[1], result[2], result[3],
-    result[4], result[5], result[6], result[7],
-    result[8], result[9], result[10], result[11],
-    result[12], result[13], result[14], result[15]
-    ];
+#import "NSData+MD5.h"
+#import &lt;commoncrypto/commondigest.h&gt;
+@implementation NSData (MyExtensions)
+- (NSString*)md5
+{
+    unsigned char result[16];
+    CC_MD5(self.bytes, self.length, result);
+    return [NSString stringWithFormat:
+        @"%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
+        result[0], result[1], result[2], result[3],
+        result[4], result[5], result[6], result[7],
+        result[8], result[9], result[10], result[11],
+        result[12], result[13], result[14], result[15]
+        ];
+}
+@end
 </code></pre>
 
-<p>}
-@end
-```
-MD5只是众多哈希算法中的一种。所以有空要仔细学习一下commoncrypto库里的其他函数。<br/>
+<p>MD5只是众多哈希算法中的一种。所以有空要仔细学习一下commoncrypto库里的其他函数。<br/>
 (<a href="http://stackoverflow.com/questions/1524604/md5-algorithm-in-objective-c">via</a>)</p>
 
 <p>（全文完）</p>

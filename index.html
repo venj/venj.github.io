@@ -9,7 +9,7 @@
   <meta name="author" content="venj">
 
   
-  <meta name="description" content="不管你发现没有，OS X Yosemite已经悄悄的把你的磁盘转成Core Storage了。做过Fusion Drive的同学一定知道Core Storage是实现Fusion Drive的核心技术。不过对于只有一个磁盘的MacBook来说，我有点不太理解苹果强制启用CoreStorage的理由 &hellip;">
+  <meta name="description" content="iOS 9在各方面增强了安全性，最明显的变化，除了ATS之外，那就是openURL的变化了。在iOS 9之前，应用可以使用UIApplication的openURL:方法，打开任意自定义Scheme的链接时（比如twitter://， fb://等）－－只要iOS支持。从iOS 9开始， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -72,6 +72,133 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/openurl-on-ios9/">iOS 9下使用openURL:</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-11-09T16:12:18+08:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>iOS 9在各方面增强了安全性，最明显的变化，除了<a href="/blog/app-transportation-security/">ATS</a>之外，那就是openURL的变化了。在iOS 9之前，应用可以使用<code>UIApplication</code>的<code>openURL:</code>方法，打开任意自定义Scheme的链接时（比如twitter://， fb://等）－－只要iOS支持。从iOS 9开始，相信很多人都见过这样的对话框：</p>
+
+<p><img class="center" src="/images/posts/open-url-ios-9.png"></p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/openurl-on-ios9/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/app-transportation-security/">iOS 9中的App Transport Security</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-11-09T15:49:38+08:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>从iOS 9开始，系统默认已经不允许iOS应用访问不安全的链接（包括HTTP，以及被认为不安全的HTTPS请求）。很多开发者在把iOS应用迁移到iOS 9时，碰到的第一个问题，大致就是这个问题了。</p>
+
+<p>虽然跳过iOS 9的这个默认安全设定并不是一个好的实践，但有时候免不了需要访问一些不安全的地址。要一劳永逸的全局跳过ATS，可以直接在Info.plist中加入以下值：</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/app-transportation-security/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/alamofire-ssl/">让Alamofire使用自签名证书</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-11-09T15:35:05+08:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Alamofire每次大版本号更新，都会引入大量API更新。3.x版更新用Swift 2.0的新特征更新了很多接口。网上很多关于Alamofire如何使用自定义SSL证书的文章都已经过时。经过一番搜索，最后找到了一个靠谱的解决方案。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/alamofire-ssl/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/disable-corestorage-on-os-x-yosemite/">禁用OS X Yosemite上的Core Storage</a></h1>
     
     
@@ -88,7 +215,7 @@
   
 
 
-<time datetime="2015-02-01T14:04:30+08:00" pubdate data-updated="true">Feb 1<span>st</span>, 2015</time>
+<time datetime="2015-02-01T14:04:30+08:00" pubdate data-updated="true"></time>
         
       </p>
     
@@ -144,7 +271,7 @@
   
 
 
-<time datetime="2015-01-27T16:27:37+08:00" pubdate data-updated="true">Jan 27<span>th</span>, 2015</time>
+<time datetime="2015-01-27T16:27:37+08:00" pubdate data-updated="true"></time>
         
       </p>
     
@@ -190,7 +317,7 @@
   
 
 
-<time datetime="2014-08-01T15:23:18+08:00" pubdate data-updated="true">Aug 1<span>st</span>, 2014</time>
+<time datetime="2014-08-01T15:23:18+08:00" pubdate data-updated="true"></time>
         
       </p>
     
@@ -237,138 +364,9 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/view-controller-based-status-bar-style-and-uinavigationcontroller/">UINavigationController和View Controller-based状态栏风格</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-07-24T10:30:22+08:00" pubdate data-updated="true">Jul 24<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>从iOS 7开始， <code>UIViewController</code>有了一个新的方法：<code>- preferredStatusBarStyle</code>，可以让用户指定状态栏风格。但问题是这个方法只有在<code>ViewController</code>不包含在<code>UINavigationController</code>中时才起作用。大部分情况下，<code>ViewController</code>不会单独使用，一般都会嵌套在<code>UINavigationController</code>中的。因为不知道这一点，所以在很长一段时间内，我都很困惑，明明我已经在我的<code>ViewController</code>里写了<code>- preferredStatusBarStyle</code>, 却一点都不起作用。</p>
-
-<p>知道了原因，接下来就简单了。我们可以写一个<code>UINavigationController</code>的扩展，覆盖其默认实现，返回最上面的<code>ViewController</code>的<code>preferredStatusBarStyle</code>。</p>
-
-<p>代码如下：</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/view-controller-based-status-bar-style-and-uinavigationcontroller/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-01-21T09:13:01+08:00" pubdate data-updated="true">Jan 21<span>st</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>昨天写过一个<a href="/blog/simple-uiimage-extension-to-create-rounded-corner-image/">博文</a>，介绍了创建圆角矩形图像的方法。现在，我再介绍一个<strong>“显示”</strong>圆角图像的方法。</p>
-
-<p>这种方法利用的是<code>UIImageView</code>的<code>layer</code>的属性，实现把图像显示成圆角，而无需对图像本身进行处理。在开发中，大部分情况下，我们只需要“显示”圆角，而不是“得到”圆角图像。不是么。好了，先看代码：</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/rounded-corner-image-with-layer-and-image-view/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/simple-uiimage-extension-to-create-rounded-corner-image/">一个简单的创建圆角图像的UIImage扩展实现</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-01-20T13:58:15+08:00" pubdate data-updated="true">Jan 20<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>在iOS开发中经常需要用到圆角图像。简单搜索一下就能找到很多创建圆角图像的实现代码。我在<a href="http://stackoverflow.com/questions/10563986/uiimage-with-rounded-corners">Stack Overflow</a>上找到了一段代码，略微修改了一下，写了个简单的Category方法，可以用来创建圆角图像。代码如下：</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/simple-uiimage-extension-to-create-rounded-corner-image/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
-      <a class="prev" href="/blog/page/2/">&larr; Older</a>
+      <a class="prev" href="2">&larr; Older</a>
     
     <a href="/blog/archives">Blog Archives</a>
     
@@ -387,23 +385,23 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/openurl-on-ios9/">iOS 9下使用openURL:</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/app-transportation-security/">iOS 9中的App Transport Security</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/alamofire-ssl/">让Alamofire使用自签名证书</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/disable-corestorage-on-os-x-yosemite/">禁用OS X Yosemite上的Core Storage</a>
       </li>
     
       <li class="post">
         <a href="/blog/xcode-6-color-theme-path/">Xcode 6 Color Themes (颜色主题) 的路径</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/scripty-swift/">［更新］把Swift用作脚本语言</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/view-controller-based-status-bar-style-and-uinavigationcontroller/">UINavigationController和View Controller-based状态栏风格</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
       </li>
     
   </ul>
@@ -412,7 +410,7 @@
 <section>
   <h1>GitHub Repos</h1>
   <ul id="gh_repos">
-    <li class="loading">Status updating&#8230;</li>
+    <li class="loading">Status updating...</li>
   </ul>
   
   <a href="https://github.com/venj">@venj</a> on GitHub
@@ -441,7 +439,7 @@
 <section>
   <h1>Blog Roll</h1>
   <ul>
-    <li><a href="http://blog.ilvelh.com">ilvelh&#8217;s blog</a></li>
+    <li><a href="http://blog.ilvelh.com">ilvelh's blog</a></li>
     <li><a href="http://rajna.github.io">GUWU DESIGNER</a></li>
   </ul>
 </section>

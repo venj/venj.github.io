@@ -85,7 +85,7 @@
   
 
 
-<time datetime="2011-08-06T21:50:00+08:00" pubdate data-updated="true">Aug 6<span>th</span>, 2011</time>
+<time datetime="2011-08-06T21:50:00+08:00" pubdate data-updated="true"></time>
         
       </p>
     
@@ -149,38 +149,38 @@
 <span class='line-number'>33</span>
 <span class='line-number'>34</span>
 <span class='line-number'>35</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">applicationDidFinishLaunching:</span><span class="p">(</span><span class="n">NSNotification</span> <span class="o">*</span><span class="p">)</span><span class="nv">aNotification</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">applicationDidFinishLaunching:</span><span class="p">(</span><span class="bp">NSNotification</span> <span class="o">*</span><span class="p">)</span><span class="nv">aNotification</span>
 </span><span class='line'><span class="p">{</span>
 </span><span class='line'>    <span class="c1">// 读取用户设置，判断是否显示Dock图标，并且设置复选框的状态。</span>
-</span><span class='line'>    <span class="n">defaults</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSUserDefaults</span> <span class="n">standardUserDefaults</span><span class="p">];</span>
-</span><span class='line'>    <span class="kt">BOOL</span> <span class="n">iconInDock</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSUserDefaults</span> <span class="n">standardUserDefaults</span><span class="p">]</span> <span class="nl">boolForKey:</span><span class="n">kShowDockIcon</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">defaults</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSUserDefaults</span> <span class="n">standardUserDefaults</span><span class="p">];</span>
+</span><span class='line'>    <span class="kt">BOOL</span> <span class="n">iconInDock</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NSUserDefaults</span> <span class="n">standardUserDefaults</span><span class="p">]</span> <span class="nl">boolForKey</span><span class="p">:</span><span class="n">kShowDockIcon</span><span class="p">];</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">iconInDock</span><span class="p">)</span> <span class="p">{</span>
 </span><span class='line'>        <span class="n">ProcessSerialNumber</span> <span class="n">psn</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">0</span><span class="p">,</span> <span class="n">kCurrentProcess</span> <span class="p">};</span>
 </span><span class='line'>        <span class="n">TransformProcessType</span><span class="p">(</span><span class="o">&amp;</span><span class="n">psn</span><span class="p">,</span> <span class="n">kProcessTransformToForegroundApplication</span><span class="p">);</span>
-</span><span class='line'>        <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">dockIconSelector</span> <span class="nl">setState:</span><span class="n">NSOnState</span><span class="p">];</span>
+</span><span class='line'>        <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">dockIconSelector</span> <span class="nl">setState</span><span class="p">:</span><span class="n">NSOnState</span><span class="p">];</span>
 </span><span class='line'>    <span class="p">}</span>
 </span><span class='line'>    <span class="k">else</span> <span class="p">{</span>
-</span><span class='line'>        <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">dockIconSelector</span> <span class="nl">setState:</span><span class="n">NSOffState</span><span class="p">];</span>
+</span><span class='line'>        <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">dockIconSelector</span> <span class="nl">setState</span><span class="p">:</span><span class="n">NSOffState</span><span class="p">];</span>
 </span><span class='line'>    <span class="p">}</span>
 </span><span class='line'>
 </span><span class='line'>   <span class="c1">// 省略其他用来处理Menulet的代码。</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">toggleDockIcon:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
-</span><span class='line'>    <span class="n">NSUInteger</span> <span class="n">state</span> <span class="o">=</span> <span class="p">[</span><span class="n">sender</span> <span class="n">state</span><span class="p">];</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">toggleDockIcon:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
+</span><span class='line'>    <span class="bp">NSUInteger</span> <span class="n">state</span> <span class="o">=</span> <span class="p">[</span><span class="n">sender</span> <span class="n">state</span><span class="p">];</span>
 </span><span class='line'>    <span class="c1">// 根据复选框是否选中，设置用户值，并且改变程序运行状态。</span>
 </span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">state</span> <span class="o">==</span> <span class="n">NSOnState</span><span class="p">)</span> <span class="p">{</span>
 </span><span class='line'>        <span class="n">ProcessSerialNumber</span> <span class="n">psn</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">0</span><span class="p">,</span> <span class="n">kCurrentProcess</span> <span class="p">};</span>
 </span><span class='line'>        <span class="n">TransformProcessType</span><span class="p">(</span><span class="o">&amp;</span><span class="n">psn</span><span class="p">,</span> <span class="n">kProcessTransformToForegroundApplication</span><span class="p">);</span>
-</span><span class='line'>        <span class="n">self</span><span class="p">.</span><span class="n">infoText</span><span class="p">.</span><span class="n">hidden</span> <span class="o">=</span> <span class="n">YES</span><span class="p">;</span>
+</span><span class='line'>        <span class="nb">self</span><span class="p">.</span><span class="n">infoText</span><span class="p">.</span><span class="n">hidden</span> <span class="o">=</span> <span class="nb">YES</span><span class="p">;</span>
 </span><span class='line'>
-</span><span class='line'>        <span class="p">[</span><span class="n">defaults</span> <span class="nl">setBool:</span><span class="n">YES</span> <span class="nl">forKey:</span><span class="n">kShowDockIcon</span><span class="p">];</span>
+</span><span class='line'>        <span class="p">[</span><span class="n">defaults</span> <span class="nl">setBool</span><span class="p">:</span><span class="nb">YES</span> <span class="nl">forKey</span><span class="p">:</span><span class="n">kShowDockIcon</span><span class="p">];</span>
 </span><span class='line'>        <span class="p">[</span><span class="n">defaults</span> <span class="n">synchronize</span><span class="p">];</span>
 </span><span class='line'>    <span class="p">}</span>
 </span><span class='line'>    <span class="k">else</span> <span class="p">{</span>
-</span><span class='line'>        <span class="p">[</span><span class="n">defaults</span> <span class="nl">setBool:</span><span class="n">NO</span> <span class="nl">forKey:</span><span class="n">kShowDockIcon</span><span class="p">];</span>
-</span><span class='line'>        <span class="n">self</span><span class="p">.</span><span class="n">infoText</span><span class="p">.</span><span class="n">hidden</span> <span class="o">=</span> <span class="n">NO</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">[</span><span class="n">defaults</span> <span class="nl">setBool</span><span class="p">:</span><span class="nb">NO</span> <span class="nl">forKey</span><span class="p">:</span><span class="n">kShowDockIcon</span><span class="p">];</span>
+</span><span class='line'>        <span class="nb">self</span><span class="p">.</span><span class="n">infoText</span><span class="p">.</span><span class="n">hidden</span> <span class="o">=</span> <span class="nb">NO</span><span class="p">;</span>
 </span><span class='line'>        <span class="p">[</span><span class="n">defaults</span> <span class="n">synchronize</span><span class="p">];</span>
 </span><span class='line'>    <span class="p">}</span>
 </span><span class='line'><span class="p">}</span>
@@ -212,12 +212,12 @@
   
 
 
-<time datetime="2011-08-06T21:50:00+08:00" pubdate data-updated="true">Aug 6<span>th</span>, 2011</time>
+<time datetime="2011-08-06T21:50:00+08:00" pubdate data-updated="true"></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/lsuielement/'>LSUIElement</a>, <a class='category' href='/blog/categories/nsmenu/'>NSMenu</a>
+    <a class='category' href='/blog/categories/lsuielement/'>lsuielement</a>, <a class='category' href='/blog/categories/nsmenu/'>nsmenu</a>
   
 </span>
 
@@ -265,23 +265,23 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/openurl-on-ios9/">iOS 9下使用openURL:</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/app-transportation-security/">iOS 9中的App Transport Security</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/alamofire-ssl/">让Alamofire使用自签名证书</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/disable-corestorage-on-os-x-yosemite/">禁用OS X Yosemite上的Core Storage</a>
       </li>
     
       <li class="post">
         <a href="/blog/xcode-6-color-theme-path/">Xcode 6 Color Themes (颜色主题) 的路径</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/scripty-swift/">［更新］把Swift用作脚本语言</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/view-controller-based-status-bar-style-and-uinavigationcontroller/">UINavigationController和View Controller-based状态栏风格</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
       </li>
     
   </ul>

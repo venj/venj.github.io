@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Mobile Safari | Cocoa学习]]></title>
   <link href="http://venj.github.io/blog/categories/mobile-safari/atom.xml" rel="self"/>
   <link href="http://venj.github.io/"/>
-  <updated>2015-02-01T14:40:20+08:00</updated>
+  <updated>2015-11-09T20:47:16+08:00</updated>
   <id>http://venj.github.io/</id>
   <author>
     <name><![CDATA[venj]]></name>
@@ -22,19 +22,15 @@
 
 <p>方法很简单，如下：</p>
 
-<p>``` objc
-&ndash; (BOOL)webView:(UIWebView <em>)inWeb shouldStartLoadWithRequest:(NSURLRequest </em>)inRequest navigationType:(UIWebViewNavigationType)inType {</p>
+<pre><code class="objc">- (BOOL)webView:(UIWebView *)inWeb shouldStartLoadWithRequest:(NSURLRequest *)inRequest navigationType:(UIWebViewNavigationType)inType {
+    if (inType == UIWebViewNavigationTypeLinkClicked) {
+        [[UIApplication sharedApplication] openURL:[inRequest URL]];
+        return NO;
+    }
 
-<pre><code>if (inType == UIWebViewNavigationTypeLinkClicked) {
-    [[UIApplication sharedApplication] openURL:[inRequest URL]];
-    return NO;
+    return YES;
 }
-
-return YES;
 </code></pre>
-
-<p>}
-```</p>
 
 <p>这里用到的是<code>UIWebViewDelegate</code>的<code>-webView:shouldStartLoadWithRequest:navigationType:</code>方法。在示例代码中，我只是简单的在用户点击链接的时候调用Mobile Safari打开链接。在实际应用中，完全可以加入一些判断条件来针对不同的URL选择是否直接在<code>UIWebView</code>里打开或在Mobile Safari里打开。</p>
 

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Unit Test | Cocoa学习]]></title>
   <link href="http://venj.github.io/blog/categories/unit-test/atom.xml" rel="self"/>
   <link href="http://venj.github.io/"/>
-  <updated>2015-02-01T14:40:20+08:00</updated>
+  <updated>2015-11-09T20:47:16+08:00</updated>
   <id>http://venj.github.io/</id>
   <author>
     <name><![CDATA[venj]]></name>
@@ -28,7 +28,7 @@
 
 
 <p>
-首先，打开“File” &ndash; “New” &ndash; “New Target&hellip;”。这时，选择iOS大标签下面的“Others”小标签，里面有一个“Cocoa Touch Unit Testing Bundle”。选中它，点击“Next”。（如下图所示）</p>
+首先，打开“File” - “New” - “New Target&hellip;”。这时，选择iOS大标签下面的“Others”小标签，里面有一个“Cocoa Touch Unit Testing Bundle”。选中它，点击“Next”。（如下图所示）</p>
 
 <p><img class="center" src="/images/posts/unittest-1.png"></p>
 
@@ -66,7 +66,7 @@
 
 <p><img class="center" src="/images/posts/unittest-5.png"></p>
 
-<p>设置完成之后，我们就可以开始试着编译一下，看看配置有没有成功。在Xcode 4的工具条的Scheme部分，选择其中一个测试，以及运行测试的设备，如“iPhone 4.3 Simulator”。然后点击菜单“Project” &ndash; “Test”，或按下cmd &ndash; u。</p>
+<p>设置完成之后，我们就可以开始试着编译一下，看看配置有没有成功。在Xcode 4的工具条的Scheme部分，选择其中一个测试，以及运行测试的设备，如“iPhone 4.3 Simulator”。然后点击菜单“Project” - “Test”，或按下cmd - u。</p>
 
 <p>因为测试bundle的代码模版里包含一个不能通过的测试例。如果你看到一个不是编译错误的问题，基本上就是配置成功了。分别试一下逻辑测试的配置和程序测试的配置，看看是否都成功。</p>
 
@@ -74,192 +74,147 @@
 
 <p>首先还是先开看看逻辑测试代码的写法。在MyTestAppLogicTests的类中，加入下面这些简单的测试代码。我们这里要测试的是一个名为<code>MySillyAdd</code>的类。这个类只有一个方法，<code>-addNumberA: ToNumberB:</code>，返回两个整数的和：</p>
 
-<p>``` objc
-//
+<pre><code class="objc">//
 //  MyTestAppLogicTests.h
-//</p>
+//
 
-<h1>import &lt;SenTestingKit/SenTestingKit.h></h1>
+#import &lt;SenTestingKit/SenTestingKit.h&gt;
+#import "MySillyAdd.h"
 
-<h1>import &ldquo;MySillyAdd.h&rdquo;</h1>
+@interface MyTestAppLogicTests : SenTestCase {
+    MySillyAdd *mySillyAdd;
+}
 
-<p>@interface MyTestAppLogicTests : SenTestCase {</p>
+@end
 
-<pre><code>MySillyAdd *mySillyAdd;
-</code></pre>
-
-<p>}</p>
-
-<p>@end</p>
-
-<p>//
+//
 //  MyTestAppLogicTests.m
-//</p>
+//
 
-<h1>import &ldquo;MyTestAppLogicTests.h&rdquo;</h1>
+#import "MyTestAppLogicTests.h"
 
-<p>@implementation MyTestAppLogicTests</p>
+@implementation MyTestAppLogicTests
 
-<h1>运行测试例之前的设置</h1>
-
-<ul>
-<li><p>(void)setUp
+# 运行测试例之前的设置
+- (void)setUp
 {
-  [super setUp];</p>
+    [super setUp];
 
-<p>  // Set-up code here.
-  mySillyAdd = [[MySillyAdd alloc] init];
-  STAssertNotNil(mySillyAdd, @&ldquo;Can not create MySillyAdd object.&rdquo;);
-}</p></li>
-</ul>
+    // Set-up code here.
+    mySillyAdd = [[MySillyAdd alloc] init];
+    STAssertNotNil(mySillyAdd, @"Can not create MySillyAdd object.");
+}
 
-
-<h1>运行测试例之后的清理现场</h1>
-
-<ul>
-<li><p>(void)tearDown
+# 运行测试例之后的清理现场
+- (void)tearDown
 {
-  // Tear-down code here.
-  [mySillyAdd release];</p>
+    // Tear-down code here.
+    [mySillyAdd release];
 
-<p>  [super tearDown];
-}</p></li>
-</ul>
+    [super tearDown];
+}
 
-
-<h1>测试例，都是方法名为：testXXXX，用ST&hellip;的Macro来验证测试结果。</h1>
-
-<ul>
-<li>(void)testAddOneToOne {
-  NSInteger result = [mySillyAdd addNumberA:1 ToNumberB:1];
-  STAssertEquals(2, 2, @&ldquo;Expect 2 for result, but got %d&rdquo;, result);
+# 测试例，都是方法名为：testXXXX，用ST...的Macro来验证测试结果。
+- (void)testAddOneToOne {
+    NSInteger result = [mySillyAdd addNumberA:1 ToNumberB:1];
+    STAssertEquals(2, 2, @"Expect 2 for result, but got %d", result);
 }
 @end
-```</li>
-</ul>
-
+</code></pre>
 
 <p>程序测试的与逻辑测试的区别在于需要在<code>-setUp:</code>方法中获取应用程序的环境。示例代码如下：</p>
 
-<p>``` objc
-//
+<pre><code class="objc">//
 //  MyTestAppApplicationTests.h
-//</p>
+//
 
-<h1>import &lt;SenTestingKit/SenTestingKit.h></h1>
+#import &lt;SenTestingKit/SenTestingKit.h&gt;
+#import &lt;UIKit/UIKit.h&gt;
+#import "MyTestAppViewController.h"
+#import "MyTestAppAppDelegate.h"
 
-<h1>import &lt;UIKit/UIKit.h></h1>
+@interface MyTestAppApplicationTests : SenTestCase {
+    MyTestAppViewController *vc;
+    MyTestAppAppDelegate *appDelegate;
+    UIView *view;
+}
 
-<h1>import &ldquo;MyTestAppViewController.h&rdquo;</h1>
+- (void)testAddOneToOne;
 
-<h1>import &ldquo;MyTestAppAppDelegate.h&rdquo;</h1>
+@end
 
-<p>@interface MyTestAppApplicationTests : SenTestCase {</p>
-
-<pre><code>MyTestAppViewController *vc;
-MyTestAppAppDelegate *appDelegate;
-UIView *view;
-</code></pre>
-
-<p>}</p>
-
-<ul>
-<li>(void)testAddOneToOne;</li>
-</ul>
-
-
-<p>@end</p>
-
-<p>//
+//
 //  MyTestAppApplicationTests.m
-//</p>
+//
 
-<h1>import &ldquo;MyTestAppApplicationTests.h&rdquo;</h1>
+#import "MyTestAppApplicationTests.h"
 
-<p>@implementation MyTestAppApplicationTests</p>
+@implementation MyTestAppApplicationTests
 
-<h1>设置测试环境，获取应用程序实例。</h1>
-
-<ul>
-<li><p>(void)setUp
+# 设置测试环境，获取应用程序实例。
+- (void)setUp
 {
-  [super setUp];</p>
+    [super setUp];
 
-<p>  // Set-up code here.
-  appDelegate = [[UIApplication sharedApplication] delegate];
-  vc = (MyTestAppViewController *)appDelegate.window.rootViewController;
-  view = vc.view;
-}</p></li>
-<li><p>(void)tearDown
+    // Set-up code here.
+    appDelegate = [[UIApplication sharedApplication] delegate];
+    vc = (MyTestAppViewController *)appDelegate.window.rootViewController;
+    view = vc.view;
+}
+
+- (void)tearDown
 {
-  // Tear-down code here.</p>
+    // Tear-down code here.
 
-<p>  [super tearDown];
-}</p></li>
-<li><p>(void) testAppDelegate {
-  STAssertNotNil(appDelegate, @&ldquo;Cannot find the application delegate&rdquo;);
-}</p></li>
-</ul>
+    [super tearDown];
+}
 
+- (void) testAppDelegate {
+    STAssertNotNil(appDelegate, @"Cannot find the application delegate");
+}
 
-<h1>测试1+1的结果是不是等于2</h1>
+# 测试1+1的结果是不是等于2
+- (void)testAddOneToOne {
+    vc.numberA.text = @"1";
+    vc.numberB.text = @"1";
 
-<ul>
-<li><p>(void)testAddOneToOne {
-  vc.numberA.text = @&ldquo;1&rdquo;;
-  vc.numberB.text = @&ldquo;1&rdquo;;</p>
+    [vc calc:[view viewWithTag:3]]; // The Tag Button;
 
-<p>  [vc calc:[view viewWithTag:3]]; // The Tag Button;</p>
+    NSString *resultString = vc.resultLabel.text;
 
-<p>  NSString *resultString = vc.resultLabel.text;</p>
-
-<p>  STAssertEqualObjects(@&ldquo;2&rdquo;, resultString, @&ldquo;Expect 2 for result, but got %@&rdquo;, resultString);
+    STAssertEqualObjects(@"2", resultString, @"Expect 2 for result, but got %@", resultString);
 }
 @end
-```</p></li>
-</ul>
-
+</code></pre>
 
 <p>上例测试的是<code>MyTestAppViewController</code>中的<code>-calc:</code>方法。我们先来测试一个<code>-calc:</code>的实现：</p>
 
-<p>``` objc
-&ndash; (IBAction)calc:(id)sender {</p>
+<pre><code class="objc">- (IBAction)calc:(id)sender {
+    NSInteger a = [self.numberA.text integerValue];
+    NSInteger b = [self.numberB.text integerValue];
 
-<pre><code>NSInteger a = [self.numberA.text integerValue];
-NSInteger b = [self.numberB.text integerValue];
-
-self.resultLabel.text = [NSString stringWithFormat:@"%d", a + b];
+    self.resultLabel.text = [NSString stringWithFormat:@"%d", a + b];
+}
 </code></pre>
-
-<p>}
-```</p>
 
 <p>运行测试，我们就可以看到这个测试例顺利通过。</p>
 
 <p>然后，我们对上述方法进行重构，用我们的<code>MySillyAdd</code>类来实现1+1。再次运行测试例。</p>
 
-<p>``` objc
-&ndash; (IBAction)calc:(id)sender {</p>
+<pre><code class="objc">- (IBAction)calc:(id)sender {
+    NSInteger a = [self.numberA.text integerValue];
+    NSInteger b = [self.numberB.text integerValue];
 
-<pre><code>NSInteger a = [self.numberA.text integerValue];
-NSInteger b = [self.numberB.text integerValue];
-
-self.resultLabel.text = [NSString stringWithFormat:@"%d", [mySillyAdd addNumberA:a ToNumberB:b]];
+    self.resultLabel.text = [NSString stringWithFormat:@"%d", [mySillyAdd addNumberA:a ToNumberB:b]];
+}
 </code></pre>
-
-<p>}
-```</p>
 
 <p>在<code>MySillyAdd</code>中，<code>-addNumberA:ToNumberB:</code>的实现如下：</p>
 
-<p>``` objc
-&ndash; (NSInteger)addNumberA:(NSInteger)theNumberA ToNumberB:(NSInteger)theNumberB {</p>
-
-<pre><code>return theNumberA + theNumberB;
+<pre><code class="objc">- (NSInteger)addNumberA:(NSInteger)theNumberA ToNumberB:(NSInteger)theNumberB {
+    return theNumberA + theNumberB;
+}
 </code></pre>
-
-<p>}
-```</p>
 
 <p>测试运行结果是顺利通过。虽然这个例子非常傻，不过基本上描述了写测试的大致过程。本文的示例代码在这里，有兴趣的可以看看。</p>
 
@@ -269,45 +224,43 @@ self.resultLabel.text = [NSString stringWithFormat:@"%d", [mySillyAdd addNumberA
 
 <p><strong>逻辑测试</strong></p>
 
-<p>```
-Test Suite &lsquo;/Users/venj/Library/Developer/Xcode/DerivedData/MyTestApp-cyecpqfpcbcdlcgizexbrsjxlngw/Build/Products/Debug-iphonesimulator/MyTestAppLogicTests.octest(Tests)&rsquo; started at 2011-08-17 07:41:15 +0000
-Test Suite &lsquo;MyTestAppLogicTests&rsquo; started at 2011-08-17 07:41:15 +0000
-Test Case &lsquo;&ndash;[MyTestAppLogicTests testAddOneToOne]&rsquo; started.
-Test Case &lsquo;&ndash;[MyTestAppLogicTests testAddOneToOne]&rsquo; passed (0.000 seconds).
-Test Suite &lsquo;MyTestAppLogicTests&rsquo; finished at 2011-08-17 07:41:15 +0000.
-Executed 1 test, with 0 failures (0 unexpected) in 0.000 (0.001) seconds</p>
+<pre><code>Test Suite '/Users/venj/Library/Developer/Xcode/DerivedData/MyTestApp-cyecpqfpcbcdlcgizexbrsjxlngw/Build/Products/Debug-iphonesimulator/MyTestAppLogicTests.octest(Tests)' started at 2011-08-17 07:41:15 +0000
+Test Suite 'MyTestAppLogicTests' started at 2011-08-17 07:41:15 +0000
+Test Case '-[MyTestAppLogicTests testAddOneToOne]' started.
+Test Case '-[MyTestAppLogicTests testAddOneToOne]' passed (0.000 seconds).
+Test Suite 'MyTestAppLogicTests' finished at 2011-08-17 07:41:15 +0000.
+Executed 1 test, with 0 failures (0 unexpected) in 0.000 (0.001) seconds
 
-<p>Test Suite &lsquo;/Users/venj/Library/Developer/Xcode/DerivedData/MyTestApp-cyecpqfpcbcdlcgizexbrsjxlngw/Build/Products/Debug-iphonesimulator/MyTestAppLogicTests.octest(Tests)&rsquo; finished at 2011-08-17 07:41:15 +0000.
+Test Suite '/Users/venj/Library/Developer/Xcode/DerivedData/MyTestApp-cyecpqfpcbcdlcgizexbrsjxlngw/Build/Products/Debug-iphonesimulator/MyTestAppLogicTests.octest(Tests)' finished at 2011-08-17 07:41:15 +0000.
 Executed 1 test, with 0 failures (0 unexpected) in 0.000 (0.002) seconds
-```</p>
+</code></pre>
 
 <p><strong>程序测试</strong></p>
 
-<p>```
-Test Suite &lsquo;All tests&rsquo; started at 2011-08-17 07:43:20 +0000
-Test Suite &lsquo;/Users/venj/Library/Developer/Xcode/DerivedData/MyTestApp-cyecpqfpcbcdlcgizexbrsjxlngw/Build/Products/Debug-iphonesimulator/MyTestAppApplicationTests.octest(Tests)&rsquo; started at 2011-08-17 07:43:20 +0000
-Test Suite &lsquo;MyTestAppApplicationTests&rsquo; started at 2011-08-17 07:43:20 +0000
-Test Case &lsquo;&ndash;[MyTestAppApplicationTests testAddOneToOne]&rsquo; started.
-Test Case &lsquo;&ndash;[MyTestAppApplicationTests testAddOneToOne]&rsquo; passed (0.001 seconds).
-Test Case &lsquo;&ndash;[MyTestAppApplicationTests testAppDelegate]&rsquo; started.
-Test Case &lsquo;&ndash;[MyTestAppApplicationTests testAppDelegate]&rsquo; passed (0.001 seconds).
-Test Suite &lsquo;MyTestAppApplicationTests&rsquo; finished at 2011-08-17 07:43:20 +0000.
-Executed 2 tests, with 0 failures (0 unexpected) in 0.002 (0.004) seconds</p>
+<pre><code>Test Suite 'All tests' started at 2011-08-17 07:43:20 +0000
+Test Suite '/Users/venj/Library/Developer/Xcode/DerivedData/MyTestApp-cyecpqfpcbcdlcgizexbrsjxlngw/Build/Products/Debug-iphonesimulator/MyTestAppApplicationTests.octest(Tests)' started at 2011-08-17 07:43:20 +0000
+Test Suite 'MyTestAppApplicationTests' started at 2011-08-17 07:43:20 +0000
+Test Case '-[MyTestAppApplicationTests testAddOneToOne]' started.
+Test Case '-[MyTestAppApplicationTests testAddOneToOne]' passed (0.001 seconds).
+Test Case '-[MyTestAppApplicationTests testAppDelegate]' started.
+Test Case '-[MyTestAppApplicationTests testAppDelegate]' passed (0.001 seconds).
+Test Suite 'MyTestAppApplicationTests' finished at 2011-08-17 07:43:20 +0000.
+Executed 2 tests, with 0 failures (0 unexpected) in 0.002 (0.004) seconds
 
-<p>Test Suite &lsquo;/Users/venj/Library/Developer/Xcode/DerivedData/MyTestApp-cyecpqfpcbcdlcgizexbrsjxlngw/Build/Products/Debug-iphonesimulator/MyTestAppApplicationTests.octest(Tests)&rsquo; finished at 2011-08-17 07:43:20 +0000.
-Executed 2 tests, with 0 failures (0 unexpected) in 0.002 (0.007) seconds</p>
+Test Suite '/Users/venj/Library/Developer/Xcode/DerivedData/MyTestApp-cyecpqfpcbcdlcgizexbrsjxlngw/Build/Products/Debug-iphonesimulator/MyTestAppApplicationTests.octest(Tests)' finished at 2011-08-17 07:43:20 +0000.
+Executed 2 tests, with 0 failures (0 unexpected) in 0.002 (0.007) seconds
 
-<p>Test Suite &lsquo;/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.3.sdk/Developer/Library/Frameworks/SenTestingKit.framework(Tests)&rsquo; started at 2011-08-17 07:43:20 +0000
-Test Suite &lsquo;SenInterfaceTestCase&rsquo; started at 2011-08-17 07:43:20 +0000
-Test Suite &lsquo;SenInterfaceTestCase&rsquo; finished at 2011-08-17 07:43:20 +0000.
-Executed 0 tests, with 0 failures (0 unexpected) in 0.000 (0.001) seconds</p>
+Test Suite '/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.3.sdk/Developer/Library/Frameworks/SenTestingKit.framework(Tests)' started at 2011-08-17 07:43:20 +0000
+Test Suite 'SenInterfaceTestCase' started at 2011-08-17 07:43:20 +0000
+Test Suite 'SenInterfaceTestCase' finished at 2011-08-17 07:43:20 +0000.
+Executed 0 tests, with 0 failures (0 unexpected) in 0.000 (0.001) seconds
 
-<p>Test Suite &lsquo;/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.3.sdk/Developer/Library/Frameworks/SenTestingKit.framework(Tests)&rsquo; finished at 2011-08-17 07:43:20 +0000.
-Executed 0 tests, with 0 failures (0 unexpected) in 0.000 (0.003) seconds</p>
+Test Suite '/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.3.sdk/Developer/Library/Frameworks/SenTestingKit.framework(Tests)' finished at 2011-08-17 07:43:20 +0000.
+Executed 0 tests, with 0 failures (0 unexpected) in 0.000 (0.003) seconds
 
-<p>Test Suite &lsquo;All tests&rsquo; finished at 2011-08-17 07:43:20 +0000.
+Test Suite 'All tests' finished at 2011-08-17 07:43:20 +0000.
 Executed 2 tests, with 0 failures (0 unexpected) in 0.002 (0.086) seconds
-```</p>
+</code></pre>
 
 <p>(全文完)</p>
 ]]></content>

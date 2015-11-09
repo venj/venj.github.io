@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Gravatar | Cocoa学习]]></title>
   <link href="http://venj.github.io/blog/categories/gravatar/atom.xml" rel="self"/>
   <link href="http://venj.github.io/"/>
-  <updated>2015-02-01T14:40:20+08:00</updated>
+  <updated>2015-11-09T20:47:16+08:00</updated>
   <id>http://venj.github.io/</id>
   <author>
     <name><![CDATA[venj]]></name>
@@ -27,23 +27,20 @@
 
 <p>
 代码如下：<br/>
-``` objc
-&ndash; (IBAction)showGravatar:(id)sender {</p>
-
-<pre><code>NSString *email_hash = [[self.emailField stringValue] md5];
-NSString *imageLink = [[NSString alloc] initWithFormat:@"http://www.gravatar.com/avatar/%@", email_hash];
-NSURL *imageURL = [[NSURL alloc] initWithString:imageLink];
-NSData *imageData = [[NSData alloc] initWithContentsOfURL:imageURL];
-NSImage *image = [[NSImage alloc] initWithData:imageData];
-[self.imageWell setImage:image];
-[image release];
-[imageData release];
-[imageURL release];
-[imageLink release];
-</code></pre>
-
-<p>}
-```
+<code>objc
+- (IBAction)showGravatar:(id)sender {
+    NSString *email_hash = [[self.emailField stringValue] md5];
+    NSString *imageLink = [[NSString alloc] initWithFormat:@"http://www.gravatar.com/avatar/%@", email_hash];
+    NSURL *imageURL = [[NSURL alloc] initWithString:imageLink];
+    NSData *imageData = [[NSData alloc] initWithContentsOfURL:imageURL];
+    NSImage *image = [[NSImage alloc] initWithData:imageData];
+    [self.imageWell setImage:image];
+    [image release];
+    [imageData release];
+    [imageURL release];
+    [imageLink release];
+}
+</code>
 实际的使用中，当然要使用异步请求和多线程，这里只是做一个简单的展示。另外，这里还用到了之前写的<a href="/blog/calculate-md5-for-strings/">文章</a>里提到的MD5算法。</p>
 
 <p>p.s. Gravatar的大部分子域都被墙了，唯独www尚存。</p>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Mapkit | Cocoa学习]]></title>
   <link href="http://venj.github.io/blog/categories/mapkit/atom.xml" rel="self"/>
   <link href="http://venj.github.io/"/>
-  <updated>2015-02-01T14:40:20+08:00</updated>
+  <updated>2015-11-09T20:47:16+08:00</updated>
   <id>http://venj.github.io/</id>
   <author>
     <name><![CDATA[venj]]></name>
@@ -20,62 +20,52 @@
     <id>http://venj.github.io/blog/drive-navigation-in-ios6</id>
     <content type="html"><![CDATA[<p>好久没有写Blog了，今天正好碰上了一个问题，于是决定写一写博客简单描述下。情况是这样的：之前，在iOS 5下，要显示一个从当前为止到目标位置的驾车导航可以使用如下的代码来搞定（<a href="http://developer.apple.com/library/ios/#featuredarticles/iPhoneURLScheme_Reference/Articles/MapLinks.html">参考这里</a>）：</p>
 
-<p><code>objc
-//基于地名调用iOS自带的Google Maps导航
+<pre><code class="objc">//基于地名调用iOS自带的Google Maps导航
 NSString *urlEncodedCurrentPlaceName = [@"当前位置" stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]; //简单起见，没有考虑多语言*（注）*。
 NSString *mapLink = [[NSString alloc] initWithFormat:@"http://maps.google.com/maps?daddr=%@&amp;saddr=%@", urlEncodedDestinationPlaceName, ];
 [[UIApplication sharedApplication] openURL:[[NSURL alloc] initWithString:mapLink]];
-</code></p>
+</code></pre>
 
 <!-- more -->
 
 
 <p>但是假如我们只有起始位置和终点位置的经纬度地址怎么办？Google Maps还是很智能的，只需直接传入逗号分隔的经纬度坐标即可。如下：</p>
 
-<p><code>objc
-//基于经纬度调用iOS自带的Google Maps导航
+<pre><code class="objc">//基于经纬度调用iOS自带的Google Maps导航
 NSString *urlEncodedCurrentPlaceName = [@"当前位置" stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 NSString *mapLink = [[NSString alloc] initWithFormat:@"http://maps.google.com/maps?daddr=%f,%f&amp;saddr=%@", destLat, destLng, urlEncodedCurrentPlaceName];
 [[UIApplication sharedApplication] openURL:[[NSURL alloc] initWithString:mapLink]];
-</code></p>
+</code></pre>
 
 <p>这招在iOS 6下有点问题的。因为大家都知道苹果把iOS 6的地图换成了自己的地图应用，所以使用上面的实现方法只能转跳到Mobile Safari中的Google Maps网站。虽然路线也是可以用的，但是总觉得有些不爽。</p>
 
 <p>后来查文档发现，要转跳Apple地图应用其实很简单，只需把上面代码里的google换成apple即可：</p>
 
-<p><code>objc
-//基于地名调用iOS自带的Google Maps导航
+<pre><code class="objc">//基于地名调用iOS自带的Google Maps导航
 NSString *mapLink = [[NSString alloc] initWithFormat:@"http://maps.apple.com/maps?daddr=%@&amp;saddr=%@", urlEncodedDestinationPlaceName, urlEncodedCurrentPlaceName];
 [[UIApplication sharedApplication] openURL:[[NSURL alloc] initWithString:mapLink]];
-</code></p>
+</code></pre>
 
 <p>但是遗憾的是，这个实现方法不支持传入经纬度。如果传入经纬度值，虽然能够转跳Apple地图应用，但是总是提示“地图服务器不可用”。但事实上，你在地图应用里使用导航功能是没问题的，所以并非地图服务器不可用，而是Apple地图不支持直接传经纬度作为地名。而且，iOS 6的地图程序也不支持“当前位置”这个特殊地名。我尝试了把经纬度进行<a href="http://cocoa.venj.me/blog/geocoding-in-ios-5/">反向地理位置解析</a>，再把解析到的地址用于地图导航。但是结果显示，反向地理位置解析实在是偏移太大了，因此这个方案显然是不可行的。</p>
 
 <p>经过Google搜索和查看Apple文档发现，MapKit在iOS 6里引入了一个新类：<a href="http://developer.apple.com/library/ios/#documentation/MapKit/Reference/MKMapItem_class/Reference/Reference.html">MKMapItem</a>，这个类是解决这个问题的关键。其中最重要的方法是<code>-openMapsWithItems:launchOptions:</code>和<code>+mapItemForCurrentLocation</code>下面是从当前位置到目标经纬度的驾车导航在iOS 6中的实现。</p>
 
-<p>```objc
-Class mapItemClass = [MKMapItem class];
-if (mapItemClass &amp;&amp; [mapItemClass respondsToSelector:@selector(openMapsWithItems:launchOptions:)]) { // For iOS 6</p>
+<pre><code class="objc">Class mapItemClass = [MKMapItem class];
+if (mapItemClass &amp;&amp; [mapItemClass respondsToSelector:@selector(openMapsWithItems:launchOptions:)]) { // For iOS 6
+    CLLocationCoordinate2D destCoord = CLLocationCoordinate2DMake(destLat, destLng); //目标经纬度坐标
+    MKPlacemark *destPlacemark = [[MKPlacemark alloc] initWithCoordinate:destCoord addressDictionary:nil];
+    MKMapItem *destMapItem = [[MKMapItem alloc] initWithPlacemark:destPlacemark];
+    MKMapItem *currentMapItem = [MKMapItem mapItemForCurrentLocation];
 
-<pre><code>CLLocationCoordinate2D destCoord = CLLocationCoordinate2DMake(destLat, destLng); //目标经纬度坐标
-MKPlacemark *destPlacemark = [[MKPlacemark alloc] initWithCoordinate:destCoord addressDictionary:nil];
-MKMapItem *destMapItem = [[MKMapItem alloc] initWithPlacemark:destPlacemark];
-MKMapItem *currentMapItem = [MKMapItem mapItemForCurrentLocation];
-
-[MKMapItem openMapsWithItems:@[currentMapItem, destMapItem] 
-               launchOptions:@{MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving}];
+    [MKMapItem openMapsWithItems:@[currentMapItem, destMapItem] 
+                   launchOptions:@{MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving}];
+}
+else { // For iOS 5 and before.
+    NSString *urlEncodedCurrentPlaceName = [@"当前位置" stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString *mapLink = [[NSString alloc] initWithFormat:@"http://maps.google.com/maps?daddr=%f,%f&amp;saddr=%@", destLat, destLng, urlEncodedCurrentPlaceName];
+    [[UIApplication sharedApplication] openURL:[[NSURL alloc] initWithString:mapLink]];
+}
 </code></pre>
-
-<p>}
-else { // For iOS 5 and before.</p>
-
-<pre><code>NSString *urlEncodedCurrentPlaceName = [@"当前位置" stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-NSString *mapLink = [[NSString alloc] initWithFormat:@"http://maps.google.com/maps?daddr=%f,%f&amp;saddr=%@", destLat, destLng, urlEncodedCurrentPlaceName];
-[[UIApplication sharedApplication] openURL:[[NSURL alloc] initWithString:mapLink]];
-</code></pre>
-
-<p>}
-```</p>
 
 <p>上面的实现能够同时兼容iOS 6以及iOS 5.x和更早版本。经测试，该方法能够很精确的显示定位和导航信息。至此，驾车导航的问题基本上完美解决。</p>
 
@@ -84,6 +74,77 @@ NSString *mapLink = [[NSString alloc] initWithFormat:@"http://maps.google.com/ma
 <p>（注）关于“当前位置”这个特殊地名的多语言支持参考<a href="http://www.martip.net/blog/localized-current-location-string-for-iphone-apps">这里</a>。</p>
 
 <p>(全文完)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[iOS 5的Geocoding]]></title>
+    <link href="http://venj.github.io/blog/geocoding-in-ios-5/"/>
+    <updated>2011-07-06T23:44:00+08:00</updated>
+    <id>http://venj.github.io/blog/geocoding-in-ios-5</id>
+    <content type="html"><![CDATA[<p>很明显，本文有标题党的嫌疑。其实本文要说的是“<a href="http://www.bignerdranch.com/book/ios_programming_the_big_nerd_ranch_guide_nd_edition_">iPhone Programming: The Big Nerd Ranch Guide</a>”一书中第5章里的Whereami的例子。我照着书本做下来，但是感觉例子似乎有点问题。可能是我看书不仔细，不过这个例子要实现的功能很诡异——定位自己，然后自己用文本框加上一个Annotation(？)这太诡异了吧。</p>
+
+<p>我现在对这个例子小做修改，那就是，在文本框中输入任何地址字符串，然后地图自动定位到该位置——类似Google Map的搜索。我基于书本上的代码，做一些小修改。</p>
+
+<p>首先，注释掉<code>-locationManager:didUpdateToLocation:fromLocation:</code>这个方法里的所有代码。主要对<code>-findLocation</code>方法作出修改，实现地图搜索功能。</p>
+
+<!-- more -->
+
+
+<p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">findLocation</span> <span class="p">{</span>
+</span><span class='line'>    <span class="bp">CLGeocoder</span> <span class="o">&lt;</span><span class="n">em</span><span class="o">&gt;</span><span class="n">geoCoder</span> <span class="o">=</span> <span class="p">[</span><span class="bp">CLGeocoder</span> <span class="n">new</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">geoCoder</span> <span class="nl">geocodeAddressString</span><span class="p">:</span><span class="n">locationString</span> <span class="nl">completionHandler</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="bp">NSArray</span> <span class="o">&lt;/</span><span class="n">em</span><span class="o">&gt;</span><span class="n">placemarks</span><span class="p">,</span> <span class="bp">NSError</span> <span class="o">&lt;</span><span class="n">em</span><span class="o">&gt;</span><span class="n">error</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="n">error</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="n">NSLog</span><span class="p">(@</span><span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="o">%</span><span class="p">@</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;,</span> <span class="p">[</span><span class="n">error</span> <span class="n">description</span><span class="p">]);</span>
+</span><span class='line'>            <span class="k">return</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>        <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>            <span class="bp">CLPlacemark</span> <span class="o">&lt;/</span><span class="n">em</span><span class="o">&gt;</span><span class="n">m</span> <span class="o">=</span> <span class="p">[</span><span class="n">placemarks</span> <span class="nl">objectAtIndex</span><span class="p">:</span><span class="mi">0</span><span class="p">];</span>
+</span><span class='line'>            <span class="n">MapPoint</span> <span class="o">*</span><span class="n">mp</span> <span class="o">=</span> <span class="p">[[</span><span class="n">MapPoint</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithCoordinate</span><span class="p">:[[</span><span class="n">m</span> <span class="n">location</span><span class="p">]</span> <span class="n">coordinate</span><span class="p">]</span> <span class="nl">title</span><span class="p">:[</span><span class="n">locationTitleField</span> <span class="n">text</span><span class="p">]];</span>
+</span><span class='line'>            <span class="p">[</span><span class="n">mapView</span> <span class="nl">addAnnotation</span><span class="p">:</span><span class="n">mp</span><span class="p">];</span>
+</span><span class='line'>            <span class="p">[</span><span class="n">mp</span> <span class="k">release</span><span class="p">];</span>
+</span><span class='line'>            <span class="p">[</span><span class="n">mapView</span> <span class="nl">setCenterCoordinate</span><span class="p">:[[</span><span class="n">m</span> <span class="n">location</span><span class="p">]</span> <span class="n">coordinate</span><span class="p">]</span> <span class="nl">animated</span><span class="p">:</span><span class="nb">YES</span><span class="p">];</span>
+</span><span class='line'>            <span class="p">[</span><span class="nb">self</span> <span class="n">foundLocation</span><span class="p">];</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}];</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="p">[</span><span class="n">locationManager</span> <span class="n">startUpdatingLocation</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="n">activityIndicator</span> <span class="n">startAnimating</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="n">locationTitleField</span> <span class="nl">setHidden</span><span class="p">:</span><span class="nb">YES</span><span class="p">];</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>这里用到了iOS5里的一个全新的类：<code>CLGeocoder</code>。现在Reverse Geocoding也能够通过这个类实现了，之前的<code>MKReverseGeocoder</code>类在iOS5里已经变成Depreciated了。获取地址使用了<code>CLGeocoder</code>类中的<code>– geocodeAddressString:completionHandler:</code>的方法。这个方法接受一个地址字符串和一个处理Block，用来在找到结果的时候对结果进行处理。简单起见，上面的实现里直接取了获得的所有可能位置里的第一个结果。在实际的实现中应该将所有可能的结果都展示给用户，让用户决定选择正确的位置。</p>
+
+<p>iOS 5的<code>MapKit</code>和<code>CoreLocation</code>框架都有比较大的变化，所以有可能的话可以了解一下API变化是非常有好处的——因为API变得越来越好用了。</p>
+
+<p>（全文完）</p>
 ]]></content>
   </entry>
   

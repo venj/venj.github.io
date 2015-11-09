@@ -90,7 +90,7 @@ NSLog(@&quot;%f, %f& &hellip;">
   
 
 
-<time datetime="2011-08-19T23:58:00+08:00" pubdate data-updated="true">Aug 19<span>th</span>, 2011</time>
+<time datetime="2011-08-19T23:58:00+08:00" pubdate data-updated="true"></time>
         
       </p>
     
@@ -105,7 +105,7 @@ NSLog(@&quot;%f, %f& &hellip;">
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSImage</span> <span class="o">*</span><span class="n">image</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSImage</span> <span class="nl">imageNamed:</span><span class="s">@&quot;image&quot;</span><span class="p">];</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSImage</span> <span class="o">*</span><span class="n">image</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSImage</span> <span class="nl">imageNamed</span><span class="p">:</span><span class="s">@&quot;image&quot;</span><span class="p">];</span>
 </span><span class='line'><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%f, %f&quot;</span><span class="p">,</span> <span class="n">image</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="n">image</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">);</span>
 </span><span class='line'><span class="c1">//终端Log到的图片的尺寸是：185.250000, 106.500000，而实际的大小是274.0, 142.0。</span>
 </span><span class='line'><span class="c1">//image.size = NSMakeSize(247.0, 142.0); //强制指定尺寸能够解决问题</span>
@@ -127,9 +127,9 @@ NSLog(@&quot;%f, %f& &hellip;">
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 </pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// 不要用这个方法，这个方法并不一定总能成功。</span>
-</span><span class='line'><span class="n">NSBitmapImageRep</span> <span class="o">*</span><span class="n">rep</span> <span class="o">=</span> <span class="p">[[</span><span class="n">image</span> <span class="n">representations</span><span class="p">]</span> <span class="nl">objectAtIndex:</span> <span class="mi">0</span><span class="p">];</span>
+</span><span class='line'><span class="n">NSBitmapImageRep</span> <span class="o">*</span><span class="n">rep</span> <span class="o">=</span> <span class="p">[[</span><span class="n">image</span> <span class="n">representations</span><span class="p">]</span> <span class="nl">objectAtIndex</span><span class="p">:</span> <span class="mi">0</span><span class="p">];</span>
 </span><span class='line'><span class="n">NSSize</span> <span class="n">size</span> <span class="o">=</span> <span class="n">NSMakeSize</span><span class="p">([</span><span class="n">rep</span> <span class="n">pixelsWide</span><span class="p">],</span> <span class="p">[</span><span class="n">rep</span> <span class="n">pixelsHigh</span><span class="p">]);</span>
-</span><span class='line'><span class="p">[</span><span class="n">image</span> <span class="nl">setSize:</span> <span class="n">size</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="n">image</span> <span class="nl">setSize</span><span class="p">:</span> <span class="n">size</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -139,10 +139,10 @@ NSLog(@&quot;%f, %f& &hellip;">
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSImage</span> <span class="o">*</span><span class="n">image</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSImage</span> <span class="nl">imageNamed:</span><span class="s">@&quot;image&quot;</span><span class="p">];</span>
-</span><span class='line'><span class="n">NSBitmapImageRep</span> <span class="o">*</span><span class="n">rep</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSBitmapImageRep</span> <span class="nl">imageRepWithData:</span><span class="p">[</span><span class="n">image</span> <span class="n">TIFFRepresentation</span><span class="p">]];</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSImage</span> <span class="o">*</span><span class="n">image</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSImage</span> <span class="nl">imageNamed</span><span class="p">:</span><span class="s">@&quot;image&quot;</span><span class="p">];</span>
+</span><span class='line'><span class="n">NSBitmapImageRep</span> <span class="o">*</span><span class="n">rep</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSBitmapImageRep</span> <span class="nl">imageRepWithData</span><span class="p">:[</span><span class="n">image</span> <span class="n">TIFFRepresentation</span><span class="p">]];</span>
 </span><span class='line'><span class="n">NSSize</span> <span class="n">size</span> <span class="o">=</span> <span class="n">NSMakeSize</span><span class="p">([</span><span class="n">rep</span> <span class="n">pixelsWide</span><span class="p">],</span> <span class="p">[</span><span class="n">rep</span> <span class="n">pixelsHigh</span><span class="p">]);</span>
-</span><span class='line'><span class="p">[</span><span class="n">image</span> <span class="nl">setSize:</span> <span class="n">size</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="n">image</span> <span class="nl">setSize</span><span class="p">:</span> <span class="n">size</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -173,12 +173,12 @@ NSLog(@&quot;%f, %f& &hellip;">
   
 
 
-<time datetime="2011-08-19T23:58:00+08:00" pubdate data-updated="true">Aug 19<span>th</span>, 2011</time>
+<time datetime="2011-08-19T23:58:00+08:00" pubdate data-updated="true"></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/nsimage/'>NSImage</a>, <a class='category' href='/blog/categories/uiimage/'>UIImage</a>
+    <a class='category' href='/blog/categories/nsimage/'>nsimage</a>, <a class='category' href='/blog/categories/uiimage/'>uiimage</a>
   
 </span>
 
@@ -226,23 +226,23 @@ NSLog(@&quot;%f, %f& &hellip;">
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/openurl-on-ios9/">iOS 9下使用openURL:</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/app-transportation-security/">iOS 9中的App Transport Security</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/alamofire-ssl/">让Alamofire使用自签名证书</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/disable-corestorage-on-os-x-yosemite/">禁用OS X Yosemite上的Core Storage</a>
       </li>
     
       <li class="post">
         <a href="/blog/xcode-6-color-theme-path/">Xcode 6 Color Themes (颜色主题) 的路径</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/scripty-swift/">［更新］把Swift用作脚本语言</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/view-controller-based-status-bar-style-and-uinavigationcontroller/">UINavigationController和View Controller-based状态栏风格</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
       </li>
     
   </ul>

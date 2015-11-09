@@ -85,7 +85,7 @@
   
 
 
-<time datetime="2011-08-17T15:06:00+08:00" pubdate data-updated="true">Aug 17<span>th</span>, 2011</time>
+<time datetime="2011-08-17T15:06:00+08:00" pubdate data-updated="true"></time>
         
       </p>
     
@@ -102,7 +102,7 @@
 
 
 <p>
-首先，打开“File” &ndash; “New” &ndash; “New Target&hellip;”。这时，选择iOS大标签下面的“Others”小标签，里面有一个“Cocoa Touch Unit Testing Bundle”。选中它，点击“Next”。（如下图所示）</p>
+首先，打开“File” - “New” - “New Target&hellip;”。这时，选择iOS大标签下面的“Others”小标签，里面有一个“Cocoa Touch Unit Testing Bundle”。选中它，点击“Next”。（如下图所示）</p>
 
 <p><img class="center" src="/images/posts/unittest-1.png"></p>
 
@@ -140,7 +140,7 @@
 
 <p><img class="center" src="/images/posts/unittest-5.png"></p>
 
-<p>设置完成之后，我们就可以开始试着编译一下，看看配置有没有成功。在Xcode 4的工具条的Scheme部分，选择其中一个测试，以及运行测试的设备，如“iPhone 4.3 Simulator”。然后点击菜单“Project” &ndash; “Test”，或按下cmd &ndash; u。</p>
+<p>设置完成之后，我们就可以开始试着编译一下，看看配置有没有成功。在Xcode 4的工具条的Scheme部分，选择其中一个测试，以及运行测试的设备，如“iPhone 4.3 Simulator”。然后点击菜单“Project” - “Test”，或按下cmd - u。</p>
 
 <p>因为测试bundle的代码模版里包含一个不能通过的测试例。如果你看到一个不是编译错误的问题，基本上就是配置成功了。分别试一下逻辑测试的配置和程序测试的配置，看看是否都成功。</p>
 
@@ -216,9 +216,9 @@
 </span><span class='line'><span class="k">@implementation</span> <span class="nc">MyTestAppLogicTests</span>
 </span><span class='line'>
 </span><span class='line'><span class="cp"># 运行测试例之前的设置</span>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">setUp</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">setUp</span>
 </span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">super</span> <span class="n">setUp</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="nb">super</span> <span class="n">setUp</span><span class="p">];</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="c1">// Set-up code here.</span>
 </span><span class='line'>    <span class="n">mySillyAdd</span> <span class="o">=</span> <span class="p">[[</span><span class="n">MySillyAdd</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
@@ -226,17 +226,17 @@
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
 </span><span class='line'><span class="cp"># 运行测试例之后的清理现场</span>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">tearDown</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">tearDown</span>
 </span><span class='line'><span class="p">{</span>
 </span><span class='line'>    <span class="c1">// Tear-down code here.</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">mySillyAdd</span> <span class="n">release</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">mySillyAdd</span> <span class="k">release</span><span class="p">];</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="p">[</span><span class="n">super</span> <span class="n">tearDown</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="nb">super</span> <span class="n">tearDown</span><span class="p">];</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
 </span><span class='line'><span class="cp"># 测试例，都是方法名为：testXXXX，用ST...的Macro来验证测试结果。</span>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">testAddOneToOne</span> <span class="p">{</span>
-</span><span class='line'>    <span class="n">NSInteger</span> <span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">mySillyAdd</span> <span class="nl">addNumberA:</span><span class="mi">1</span> <span class="nl">ToNumberB:</span><span class="mi">1</span><span class="p">];</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">testAddOneToOne</span> <span class="p">{</span>
+</span><span class='line'>    <span class="bp">NSInteger</span> <span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">mySillyAdd</span> <span class="nl">addNumberA</span><span class="p">:</span><span class="mi">1</span> <span class="nl">ToNumberB</span><span class="p">:</span><span class="mi">1</span><span class="p">];</span>
 </span><span class='line'>    <span class="n">STAssertEquals</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s">@&quot;Expect 2 for result, but got %d&quot;</span><span class="p">,</span> <span class="n">result</span><span class="p">);</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'><span class="k">@end</span>
@@ -318,10 +318,10 @@
 </span><span class='line'><span class="k">@interface</span> <span class="nc">MyTestAppApplicationTests</span> : <span class="nc">SenTestCase</span> <span class="p">{</span>
 </span><span class='line'>    <span class="n">MyTestAppViewController</span> <span class="o">*</span><span class="n">vc</span><span class="p">;</span>
 </span><span class='line'>    <span class="n">MyTestAppAppDelegate</span> <span class="o">*</span><span class="n">appDelegate</span><span class="p">;</span>
-</span><span class='line'>    <span class="n">UIView</span> <span class="o">*</span><span class="n">view</span><span class="p">;</span>
+</span><span class='line'>    <span class="bp">UIView</span> <span class="o">*</span><span class="n">view</span><span class="p">;</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'><span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">testAddOneToOne</span><span class="p">;</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">testAddOneToOne</span><span class="p">;</span>
 </span><span class='line'>
 </span><span class='line'><span class="k">@end</span>
 </span><span class='line'>
@@ -334,35 +334,35 @@
 </span><span class='line'><span class="k">@implementation</span> <span class="nc">MyTestAppApplicationTests</span>
 </span><span class='line'>
 </span><span class='line'><span class="cp"># 设置测试环境，获取应用程序实例。</span>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">setUp</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">setUp</span>
 </span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">super</span> <span class="n">setUp</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="nb">super</span> <span class="n">setUp</span><span class="p">];</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="c1">// Set-up code here.</span>
-</span><span class='line'>    <span class="n">appDelegate</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIApplication</span> <span class="n">sharedApplication</span><span class="p">]</span> <span class="n">delegate</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">appDelegate</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UIApplication</span> <span class="n">sharedApplication</span><span class="p">]</span> <span class="n">delegate</span><span class="p">];</span>
 </span><span class='line'>    <span class="n">vc</span> <span class="o">=</span> <span class="p">(</span><span class="n">MyTestAppViewController</span> <span class="o">*</span><span class="p">)</span><span class="n">appDelegate</span><span class="p">.</span><span class="n">window</span><span class="p">.</span><span class="n">rootViewController</span><span class="p">;</span>
 </span><span class='line'>    <span class="n">view</span> <span class="o">=</span> <span class="n">vc</span><span class="p">.</span><span class="n">view</span><span class="p">;</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">tearDown</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">tearDown</span>
 </span><span class='line'><span class="p">{</span>
 </span><span class='line'>    <span class="c1">// Tear-down code here.</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="p">[</span><span class="n">super</span> <span class="n">tearDown</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="nb">super</span> <span class="n">tearDown</span><span class="p">];</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">testAppDelegate</span> <span class="p">{</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">testAppDelegate</span> <span class="p">{</span>
 </span><span class='line'>    <span class="n">STAssertNotNil</span><span class="p">(</span><span class="n">appDelegate</span><span class="p">,</span> <span class="s">@&quot;Cannot find the application delegate&quot;</span><span class="p">);</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
 </span><span class='line'><span class="cp"># 测试1+1的结果是不是等于2</span>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">testAddOneToOne</span> <span class="p">{</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">testAddOneToOne</span> <span class="p">{</span>
 </span><span class='line'>    <span class="n">vc</span><span class="p">.</span><span class="n">numberA</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="s">@&quot;1&quot;</span><span class="p">;</span>
 </span><span class='line'>    <span class="n">vc</span><span class="p">.</span><span class="n">numberB</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="s">@&quot;1&quot;</span><span class="p">;</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="p">[</span><span class="n">vc</span> <span class="nl">calc:</span><span class="p">[</span><span class="n">view</span> <span class="nl">viewWithTag:</span><span class="mi">3</span><span class="p">]];</span> <span class="c1">// The Tag Button;</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">vc</span> <span class="nl">calc</span><span class="p">:[</span><span class="n">view</span> <span class="nl">viewWithTag</span><span class="p">:</span><span class="mi">3</span><span class="p">]];</span> <span class="c1">// The Tag Button;</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="n">NSString</span> <span class="o">*</span><span class="n">resultString</span> <span class="o">=</span> <span class="n">vc</span><span class="p">.</span><span class="n">resultLabel</span><span class="p">.</span><span class="n">text</span><span class="p">;</span>
+</span><span class='line'>    <span class="bp">NSString</span> <span class="o">*</span><span class="n">resultString</span> <span class="o">=</span> <span class="n">vc</span><span class="p">.</span><span class="n">resultLabel</span><span class="p">.</span><span class="n">text</span><span class="p">;</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="n">STAssertEqualObjects</span><span class="p">(</span><span class="s">@&quot;2&quot;</span><span class="p">,</span> <span class="n">resultString</span><span class="p">,</span> <span class="s">@&quot;Expect 2 for result, but got %@&quot;</span><span class="p">,</span> <span class="n">resultString</span><span class="p">);</span>
 </span><span class='line'><span class="p">}</span>
@@ -378,11 +378,11 @@
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">calc:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
-</span><span class='line'>    <span class="n">NSInteger</span> <span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">numberA</span><span class="p">.</span><span class="n">text</span> <span class="n">integerValue</span><span class="p">];</span>
-</span><span class='line'>    <span class="n">NSInteger</span> <span class="n">b</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">numberB</span><span class="p">.</span><span class="n">text</span> <span class="n">integerValue</span><span class="p">];</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">calc:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
+</span><span class='line'>    <span class="bp">NSInteger</span> <span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">numberA</span><span class="p">.</span><span class="n">text</span> <span class="n">integerValue</span><span class="p">];</span>
+</span><span class='line'>    <span class="bp">NSInteger</span> <span class="n">b</span> <span class="o">=</span> <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">numberB</span><span class="p">.</span><span class="n">text</span> <span class="n">integerValue</span><span class="p">];</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="n">self</span><span class="p">.</span><span class="n">resultLabel</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSString</span> <span class="nl">stringWithFormat:</span><span class="s">@&quot;%d&quot;</span><span class="p">,</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">];</span>
+</span><span class='line'>    <span class="nb">self</span><span class="p">.</span><span class="n">resultLabel</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSString</span> <span class="nl">stringWithFormat</span><span class="p">:</span><span class="s">@&quot;%d&quot;</span><span class="p">,</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">];</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
@@ -397,11 +397,11 @@
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">calc:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
-</span><span class='line'>    <span class="n">NSInteger</span> <span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">numberA</span><span class="p">.</span><span class="n">text</span> <span class="n">integerValue</span><span class="p">];</span>
-</span><span class='line'>    <span class="n">NSInteger</span> <span class="n">b</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">numberB</span><span class="p">.</span><span class="n">text</span> <span class="n">integerValue</span><span class="p">];</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">calc:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
+</span><span class='line'>    <span class="bp">NSInteger</span> <span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">numberA</span><span class="p">.</span><span class="n">text</span> <span class="n">integerValue</span><span class="p">];</span>
+</span><span class='line'>    <span class="bp">NSInteger</span> <span class="n">b</span> <span class="o">=</span> <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">numberB</span><span class="p">.</span><span class="n">text</span> <span class="n">integerValue</span><span class="p">];</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="n">self</span><span class="p">.</span><span class="n">resultLabel</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSString</span> <span class="nl">stringWithFormat:</span><span class="s">@&quot;%d&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">mySillyAdd</span> <span class="nl">addNumberA:</span><span class="n">a</span> <span class="nl">ToNumberB:</span><span class="n">b</span><span class="p">]];</span>
+</span><span class='line'>    <span class="nb">self</span><span class="p">.</span><span class="n">resultLabel</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSString</span> <span class="nl">stringWithFormat</span><span class="p">:</span><span class="s">@&quot;%d&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">mySillyAdd</span> <span class="nl">addNumberA</span><span class="p">:</span><span class="n">a</span> <span class="nl">ToNumberB</span><span class="p">:</span><span class="n">b</span><span class="p">]];</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
@@ -411,7 +411,7 @@
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSInteger</span><span class="p">)</span><span class="nf">addNumberA:</span><span class="p">(</span><span class="n">NSInteger</span><span class="p">)</span><span class="nv">theNumberA</span> <span class="nf">ToNumberB:</span><span class="p">(</span><span class="n">NSInteger</span><span class="p">)</span><span class="nv">theNumberB</span> <span class="p">{</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="bp">NSInteger</span><span class="p">)</span><span class="nf">addNumberA:</span><span class="p">(</span><span class="bp">NSInteger</span><span class="p">)</span><span class="nv">theNumberA</span> <span class="nf">ToNumberB:</span><span class="p">(</span><span class="bp">NSInteger</span><span class="p">)</span><span class="nv">theNumberB</span> <span class="p">{</span>
 </span><span class='line'>    <span class="k">return</span> <span class="n">theNumberA</span> <span class="o">+</span> <span class="n">theNumberB</span><span class="p">;</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
@@ -520,12 +520,12 @@
   
 
 
-<time datetime="2011-08-17T15:06:00+08:00" pubdate data-updated="true">Aug 17<span>th</span>, 2011</time>
+<time datetime="2011-08-17T15:06:00+08:00" pubdate data-updated="true"></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/tdd/'>TDD</a>, <a class='category' href='/blog/categories/unit-test/'>Unit Test</a>, <a class='category' href='/blog/categories/xcode-4/'>Xcode 4</a>, <a class='category' href='/blog/categories/ios-5/'>iOS 5</a>
+    <a class='category' href='/blog/categories/ios-5/'>ios 5</a>, <a class='category' href='/blog/categories/tdd/'>tdd</a>, <a class='category' href='/blog/categories/unit-test/'>unit test</a>, <a class='category' href='/blog/categories/xcode-4/'>xcode 4</a>
   
 </span>
 
@@ -573,23 +573,23 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/openurl-on-ios9/">iOS 9下使用openURL:</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/app-transportation-security/">iOS 9中的App Transport Security</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/alamofire-ssl/">让Alamofire使用自签名证书</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/disable-corestorage-on-os-x-yosemite/">禁用OS X Yosemite上的Core Storage</a>
       </li>
     
       <li class="post">
         <a href="/blog/xcode-6-color-theme-path/">Xcode 6 Color Themes (颜色主题) 的路径</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/scripty-swift/">［更新］把Swift用作脚本语言</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/view-controller-based-status-bar-style-and-uinavigationcontroller/">UINavigationController和View Controller-based状态栏风格</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
       </li>
     
   </ul>

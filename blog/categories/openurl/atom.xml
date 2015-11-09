@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Openurl | Cocoa学习]]></title>
+  <link href="http://venj.github.io/blog/categories/openurl/atom.xml" rel="self"/>
+  <link href="http://venj.github.io/"/>
+  <updated>2015-11-09T20:47:16+08:00</updated>
+  <id>http://venj.github.io/</id>
+  <author>
+    <name><![CDATA[venj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[iOS 9下使用openURL:]]></title>
+    <link href="http://venj.github.io/blog/openurl-on-ios9/"/>
+    <updated>2015-11-09T16:12:18+08:00</updated>
+    <id>http://venj.github.io/blog/openurl-on-ios9</id>
+    <content type="html"><![CDATA[<p>iOS 9在各方面增强了安全性，最明显的变化，除了<a href="/blog/app-transportation-security/">ATS</a>之外，那就是openURL的变化了。在iOS 9之前，应用可以使用<code>UIApplication</code>的<code>openURL:</code>方法，打开任意自定义Scheme的链接时（比如twitter://， fb://等）－－只要iOS支持。从iOS 9开始，相信很多人都见过这样的对话框：</p>
+
+<p><img class="center" src="/images/posts/open-url-ios-9.png"></p>
+
+<!-- more -->
+
+
+<p>所有使用iOS 9以前的SDK作为Base SDK编译的应用，在使用<code>openURL:</code>打开其他应用时默认就会弹出这样的确认对话框，以防止未经用户授权的随意的应用转跳。而用iOS 9 SDK作为Base SDK编译的应用，调用<code>openURL:</code>就会出错。在Xcode的Console会出现类似如下的错误消息：</p>
+
+<pre><code>This app is not allowed to query for scheme xxx
+</code></pre>
+
+<p>要让你的App能打开某个自定义Scheme的链接，你需要在Info.plist中声明你的应用需要让<code>openURL:</code>支持的Scheme类型，如下：</p>
+
+<pre><code class="xml">&lt;key&gt;LSApplicationQueriesSchemes&lt;/key&gt;
+&lt;array&gt;
+    &lt;string&gt;twitter&lt;/string&gt;
+    &lt;string&gt;fb&lt;/string&gt;
+&lt;/array&gt;
+</code></pre>
+
+<p>这样，你就可以调用<code>openURL:</code>来打开自定义Scheme的链接了。</p>
+
+<p>参考：</p>
+
+<ol>
+<li><a href="https://forums.developer.apple.com/thread/3781">Apple Dev Forum</a></li>
+<li><a href="http://useyourloaf.com/blog/querying-url-schemes-with-canopenurl.html">Use Your Loaf</a></li>
+<li><a href="http://awkwardhare.com/post/121196006730/quick-take-on-ios-9-url-scheme-changes">Awkward Hare</a></li>
+</ol>
+
+
+<p>（全文完）</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 字体 | Cocoa学习]]></title>
   <link href="http://venj.github.io/blog/categories/zi-ti/atom.xml" rel="self"/>
   <link href="http://venj.github.io/"/>
-  <updated>2015-02-01T14:40:20+08:00</updated>
+  <updated>2015-11-09T20:47:16+08:00</updated>
   <id>http://venj.github.io/</id>
   <author>
     <name><![CDATA[venj]]></name>
@@ -31,17 +31,13 @@
 <!-- more -->
 
 
-<p>``` objc
-&ndash; (void)viewDidLoad
-{</p>
-
-<pre><code>[super viewDidLoad];
-// 在viewDidLoad方法中设置字体。
-self.tv.font = [UIFont fontWithName:@"PT Sans" size:20];
+<pre><code class="objc">- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    // 在viewDidLoad方法中设置字体。
+    self.tv.font = [UIFont fontWithName:@"PT Sans" size:20];
+}
 </code></pre>
-
-<p>}
-```</p>
 
 <p>下面是在iOS模拟器中的显示效果：</p>
 

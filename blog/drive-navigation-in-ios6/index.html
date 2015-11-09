@@ -90,7 +90,7 @@ NSString * &hellip;">
   
 
 
-<time datetime="2012-11-26T11:18:00+08:00" pubdate data-updated="true">Nov 26<span>th</span>, 2012</time>
+<time datetime="2012-11-26T11:18:00+08:00" pubdate data-updated="true"></time>
         
       </p>
     
@@ -104,9 +104,9 @@ NSString * &hellip;">
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 </pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">//基于地名调用iOS自带的Google Maps导航</span>
-</span><span class='line'><span class="n">NSString</span> <span class="o">*</span><span class="n">urlEncodedCurrentPlaceName</span> <span class="o">=</span> <span class="p">[</span><span class="s">@&quot;当前位置&quot;</span> <span class="nl">stringByAddingPercentEscapesUsingEncoding:</span><span class="n">NSUTF8StringEncoding</span><span class="p">];</span> <span class="c1">//简单起见，没有考虑多语言*（注）*。</span>
-</span><span class='line'><span class="n">NSString</span> <span class="o">*</span><span class="n">mapLink</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSString</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFormat:</span><span class="s">@&quot;http://maps.google.com/maps?daddr=%@&amp;saddr=%@&quot;</span><span class="p">,</span> <span class="n">urlEncodedDestinationPlaceName</span><span class="p">,</span> <span class="p">];</span>
-</span><span class='line'><span class="p">[[</span><span class="n">UIApplication</span> <span class="n">sharedApplication</span><span class="p">]</span> <span class="nl">openURL:</span><span class="p">[[</span><span class="n">NSURL</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithString:</span><span class="n">mapLink</span><span class="p">]];</span>
+</span><span class='line'><span class="bp">NSString</span> <span class="o">*</span><span class="n">urlEncodedCurrentPlaceName</span> <span class="o">=</span> <span class="p">[</span><span class="s">@&quot;当前位置&quot;</span> <span class="nl">stringByAddingPercentEscapesUsingEncoding</span><span class="p">:</span><span class="n">NSUTF8StringEncoding</span><span class="p">];</span> <span class="c1">//简单起见，没有考虑多语言*（注）*。</span>
+</span><span class='line'><span class="bp">NSString</span> <span class="o">*</span><span class="n">mapLink</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NSString</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFormat</span><span class="p">:</span><span class="s">@&quot;http://maps.google.com/maps?daddr=%@&amp;saddr=%@&quot;</span><span class="p">,</span> <span class="n">urlEncodedDestinationPlaceName</span><span class="p">,</span> <span class="p">];</span>
+</span><span class='line'><span class="p">[[</span><span class="bp">UIApplication</span> <span class="n">sharedApplication</span><span class="p">]</span> <span class="nl">openURL</span><span class="p">:[[</span><span class="bp">NSURL</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithString</span><span class="p">:</span><span class="n">mapLink</span><span class="p">]];</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -120,9 +120,9 @@ NSString * &hellip;">
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 </pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">//基于经纬度调用iOS自带的Google Maps导航</span>
-</span><span class='line'><span class="n">NSString</span> <span class="o">*</span><span class="n">urlEncodedCurrentPlaceName</span> <span class="o">=</span> <span class="p">[</span><span class="s">@&quot;当前位置&quot;</span> <span class="nl">stringByAddingPercentEscapesUsingEncoding:</span><span class="n">NSUTF8StringEncoding</span><span class="p">];</span>
-</span><span class='line'><span class="n">NSString</span> <span class="o">*</span><span class="n">mapLink</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSString</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFormat:</span><span class="s">@&quot;http://maps.google.com/maps?daddr=%f,%f&amp;saddr=%@&quot;</span><span class="p">,</span> <span class="n">destLat</span><span class="p">,</span> <span class="n">destLng</span><span class="p">,</span> <span class="n">urlEncodedCurrentPlaceName</span><span class="p">];</span>
-</span><span class='line'><span class="p">[[</span><span class="n">UIApplication</span> <span class="n">sharedApplication</span><span class="p">]</span> <span class="nl">openURL:</span><span class="p">[[</span><span class="n">NSURL</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithString:</span><span class="n">mapLink</span><span class="p">]];</span>
+</span><span class='line'><span class="bp">NSString</span> <span class="o">*</span><span class="n">urlEncodedCurrentPlaceName</span> <span class="o">=</span> <span class="p">[</span><span class="s">@&quot;当前位置&quot;</span> <span class="nl">stringByAddingPercentEscapesUsingEncoding</span><span class="p">:</span><span class="n">NSUTF8StringEncoding</span><span class="p">];</span>
+</span><span class='line'><span class="bp">NSString</span> <span class="o">*</span><span class="n">mapLink</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NSString</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFormat</span><span class="p">:</span><span class="s">@&quot;http://maps.google.com/maps?daddr=%f,%f&amp;saddr=%@&quot;</span><span class="p">,</span> <span class="n">destLat</span><span class="p">,</span> <span class="n">destLng</span><span class="p">,</span> <span class="n">urlEncodedCurrentPlaceName</span><span class="p">];</span>
+</span><span class='line'><span class="p">[[</span><span class="bp">UIApplication</span> <span class="n">sharedApplication</span><span class="p">]</span> <span class="nl">openURL</span><span class="p">:[[</span><span class="bp">NSURL</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithString</span><span class="p">:</span><span class="n">mapLink</span><span class="p">]];</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -134,8 +134,8 @@ NSString * &hellip;">
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 </pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">//基于地名调用iOS自带的Google Maps导航</span>
-</span><span class='line'><span class="n">NSString</span> <span class="o">*</span><span class="n">mapLink</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSString</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFormat:</span><span class="s">@&quot;http://maps.apple.com/maps?daddr=%@&amp;saddr=%@&quot;</span><span class="p">,</span> <span class="n">urlEncodedDestinationPlaceName</span><span class="p">,</span> <span class="n">urlEncodedCurrentPlaceName</span><span class="p">];</span>
-</span><span class='line'><span class="p">[[</span><span class="n">UIApplication</span> <span class="n">sharedApplication</span><span class="p">]</span> <span class="nl">openURL:</span><span class="p">[[</span><span class="n">NSURL</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithString:</span><span class="n">mapLink</span><span class="p">]];</span>
+</span><span class='line'><span class="bp">NSString</span> <span class="o">*</span><span class="n">mapLink</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NSString</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFormat</span><span class="p">:</span><span class="s">@&quot;http://maps.apple.com/maps?daddr=%@&amp;saddr=%@&quot;</span><span class="p">,</span> <span class="n">urlEncodedDestinationPlaceName</span><span class="p">,</span> <span class="n">urlEncodedCurrentPlaceName</span><span class="p">];</span>
+</span><span class='line'><span class="p">[[</span><span class="bp">UIApplication</span> <span class="n">sharedApplication</span><span class="p">]</span> <span class="nl">openURL</span><span class="p">:[[</span><span class="bp">NSURL</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithString</span><span class="p">:</span><span class="n">mapLink</span><span class="p">]];</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -158,20 +158,20 @@ NSString * &hellip;">
 <span class='line-number'>13</span>
 <span class='line-number'>14</span>
 <span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">Class</span> <span class="n">mapItemClass</span> <span class="o">=</span> <span class="p">[</span><span class="n">MKMapItem</span> <span class="n">class</span><span class="p">];</span>
-</span><span class='line'><span class="k">if</span> <span class="p">(</span><span class="n">mapItemClass</span> <span class="o">&amp;&amp;</span> <span class="p">[</span><span class="n">mapItemClass</span> <span class="nl">respondsToSelector:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">openMapsWithItems:launchOptions:</span><span class="p">)])</span> <span class="p">{</span> <span class="c1">// For iOS 6</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="kt">Class</span> <span class="n">mapItemClass</span> <span class="o">=</span> <span class="p">[</span><span class="bp">MKMapItem</span> <span class="k">class</span><span class="p">];</span>
+</span><span class='line'><span class="k">if</span> <span class="p">(</span><span class="n">mapItemClass</span> <span class="o">&amp;&amp;</span> <span class="p">[</span><span class="n">mapItemClass</span> <span class="nl">respondsToSelector</span><span class="p">:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">openMapsWithItems</span><span class="p">:</span><span class="nl">launchOptions</span><span class="p">:)])</span> <span class="p">{</span> <span class="c1">// For iOS 6</span>
 </span><span class='line'>    <span class="n">CLLocationCoordinate2D</span> <span class="n">destCoord</span> <span class="o">=</span> <span class="n">CLLocationCoordinate2DMake</span><span class="p">(</span><span class="n">destLat</span><span class="p">,</span> <span class="n">destLng</span><span class="p">);</span> <span class="c1">//目标经纬度坐标</span>
-</span><span class='line'>    <span class="n">MKPlacemark</span> <span class="o">*</span><span class="n">destPlacemark</span> <span class="o">=</span> <span class="p">[[</span><span class="n">MKPlacemark</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithCoordinate:</span><span class="n">destCoord</span> <span class="nl">addressDictionary:</span><span class="nb">nil</span><span class="p">];</span>
-</span><span class='line'>    <span class="n">MKMapItem</span> <span class="o">*</span><span class="n">destMapItem</span> <span class="o">=</span> <span class="p">[[</span><span class="n">MKMapItem</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithPlacemark:</span><span class="n">destPlacemark</span><span class="p">];</span>
-</span><span class='line'>    <span class="n">MKMapItem</span> <span class="o">*</span><span class="n">currentMapItem</span> <span class="o">=</span> <span class="p">[</span><span class="n">MKMapItem</span> <span class="n">mapItemForCurrentLocation</span><span class="p">];</span>
+</span><span class='line'>    <span class="bp">MKPlacemark</span> <span class="o">*</span><span class="n">destPlacemark</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">MKPlacemark</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithCoordinate</span><span class="p">:</span><span class="n">destCoord</span> <span class="nl">addressDictionary</span><span class="p">:</span><span class="nb">nil</span><span class="p">];</span>
+</span><span class='line'>    <span class="bp">MKMapItem</span> <span class="o">*</span><span class="n">destMapItem</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">MKMapItem</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithPlacemark</span><span class="p">:</span><span class="n">destPlacemark</span><span class="p">];</span>
+</span><span class='line'>    <span class="bp">MKMapItem</span> <span class="o">*</span><span class="n">currentMapItem</span> <span class="o">=</span> <span class="p">[</span><span class="bp">MKMapItem</span> <span class="n">mapItemForCurrentLocation</span><span class="p">];</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="p">[</span><span class="n">MKMapItem</span> <span class="nl">openMapsWithItems:</span><span class="err">@</span><span class="p">[</span><span class="n">currentMapItem</span><span class="p">,</span> <span class="n">destMapItem</span><span class="p">]</span>
-</span><span class='line'>                 <span class="nl">launchOptions:</span><span class="err">@</span><span class="p">{</span><span class="nl">MKLaunchOptionsDirectionsModeKey:</span> <span class="n">MKLaunchOptionsDirectionsModeDriving</span><span class="p">}];</span>
+</span><span class='line'>    <span class="p">[</span><span class="bp">MKMapItem</span> <span class="nl">openMapsWithItems</span><span class="p">:</span><span class="l">@[</span><span class="n">currentMapItem</span><span class="p">,</span> <span class="n">destMapItem</span><span class="l">]</span>
+</span><span class='line'>                 <span class="nl">launchOptions</span><span class="p">:</span><span class="l">@{</span><span class="nl">MKLaunchOptionsDirectionsModeKey</span><span class="p">:</span> <span class="n">MKLaunchOptionsDirectionsModeDriving</span><span class="l">}</span><span class="p">];</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'><span class="k">else</span> <span class="p">{</span> <span class="c1">// For iOS 5 and before.</span>
-</span><span class='line'>    <span class="n">NSString</span> <span class="o">*</span><span class="n">urlEncodedCurrentPlaceName</span> <span class="o">=</span> <span class="p">[</span><span class="s">@&quot;当前位置&quot;</span> <span class="nl">stringByAddingPercentEscapesUsingEncoding:</span><span class="n">NSUTF8StringEncoding</span><span class="p">];</span>
-</span><span class='line'>    <span class="n">NSString</span> <span class="o">*</span><span class="n">mapLink</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSString</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFormat:</span><span class="s">@&quot;http://maps.google.com/maps?daddr=%f,%f&amp;saddr=%@&quot;</span><span class="p">,</span> <span class="n">destLat</span><span class="p">,</span> <span class="n">destLng</span><span class="p">,</span> <span class="n">urlEncodedCurrentPlaceName</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">[[</span><span class="n">UIApplication</span> <span class="n">sharedApplication</span><span class="p">]</span> <span class="nl">openURL:</span><span class="p">[[</span><span class="n">NSURL</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithString:</span><span class="n">mapLink</span><span class="p">]];</span>
+</span><span class='line'>    <span class="bp">NSString</span> <span class="o">*</span><span class="n">urlEncodedCurrentPlaceName</span> <span class="o">=</span> <span class="p">[</span><span class="s">@&quot;当前位置&quot;</span> <span class="nl">stringByAddingPercentEscapesUsingEncoding</span><span class="p">:</span><span class="n">NSUTF8StringEncoding</span><span class="p">];</span>
+</span><span class='line'>    <span class="bp">NSString</span> <span class="o">*</span><span class="n">mapLink</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NSString</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFormat</span><span class="p">:</span><span class="s">@&quot;http://maps.google.com/maps?daddr=%f,%f&amp;saddr=%@&quot;</span><span class="p">,</span> <span class="n">destLat</span><span class="p">,</span> <span class="n">destLng</span><span class="p">,</span> <span class="n">urlEncodedCurrentPlaceName</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[[</span><span class="bp">UIApplication</span> <span class="n">sharedApplication</span><span class="p">]</span> <span class="nl">openURL</span><span class="p">:[[</span><span class="bp">NSURL</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithString</span><span class="p">:</span><span class="n">mapLink</span><span class="p">]];</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
@@ -205,12 +205,12 @@ NSString * &hellip;">
   
 
 
-<time datetime="2012-11-26T11:18:00+08:00" pubdate data-updated="true">Nov 26<span>th</span>, 2012</time>
+<time datetime="2012-11-26T11:18:00+08:00" pubdate data-updated="true"></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/mapkit/'>Mapkit</a>, <a class='category' href='/blog/categories/ios-6/'>iOS 6</a>
+    <a class='category' href='/blog/categories/ios-6/'>ios 6</a>, <a class='category' href='/blog/categories/mapkit/'>mapkit</a>
   
 </span>
 
@@ -258,23 +258,23 @@ NSString * &hellip;">
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/openurl-on-ios9/">iOS 9下使用openURL:</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/app-transportation-security/">iOS 9中的App Transport Security</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/alamofire-ssl/">让Alamofire使用自签名证书</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/disable-corestorage-on-os-x-yosemite/">禁用OS X Yosemite上的Core Storage</a>
       </li>
     
       <li class="post">
         <a href="/blog/xcode-6-color-theme-path/">Xcode 6 Color Themes (颜色主题) 的路径</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/scripty-swift/">［更新］把Swift用作脚本语言</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/view-controller-based-status-bar-style-and-uinavigationcontroller/">UINavigationController和View Controller-based状态栏风格</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
       </li>
     
   </ul>

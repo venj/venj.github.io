@@ -85,7 +85,7 @@
   
 
 
-<time datetime="2014-01-07T10:53:17+08:00" pubdate data-updated="true">Jan 7<span>th</span>, 2014</time>
+<time datetime="2014-01-07T10:53:17+08:00" pubdate data-updated="true"></time>
         
       </p>
     
@@ -116,17 +116,17 @@
 <span class='line-number'>11</span>
 <span class='line-number'>12</span>
 </pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// 初始化ViewController的层级结构</span>
-</span><span class='line'><span class="n">UIViewController</span> <span class="o">*</span><span class="n">vc1</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIViewController</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithNibName:</span><span class="s">@&quot;SomeViewControllerNibName&quot;</span> <span class="nl">bundle:</span><span class="nb">nil</span><span class="p">];</span>
-</span><span class='line'><span class="n">UINavigationController</span> <span class="o">*</span><span class="n">nav</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UINavigationController</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithRootViewController:</span><span class="n">vc1</span><span class="p">];</span>
-</span><span class='line'><span class="n">UITabBarController</span> <span class="o">*</span><span class="n">tc</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UITabBarController</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
-</span><span class='line'><span class="n">tc</span><span class="p">.</span><span class="n">viewControllers</span> <span class="o">=</span> <span class="err">@</span><span class="p">[</span><span class="n">nav</span><span class="p">];</span>
+</span><span class='line'><span class="bp">UIViewController</span> <span class="o">*</span><span class="n">vc1</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UIViewController</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithNibName</span><span class="p">:</span><span class="s">@&quot;SomeViewControllerNibName&quot;</span> <span class="nl">bundle</span><span class="p">:</span><span class="nb">nil</span><span class="p">];</span>
+</span><span class='line'><span class="bp">UINavigationController</span> <span class="o">*</span><span class="n">nav</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UINavigationController</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithRootViewController</span><span class="p">:</span><span class="n">vc1</span><span class="p">];</span>
+</span><span class='line'><span class="bp">UITabBarController</span> <span class="o">*</span><span class="n">tc</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UITabBarController</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+</span><span class='line'><span class="n">tc</span><span class="p">.</span><span class="n">viewControllers</span> <span class="o">=</span> <span class="l">@[</span><span class="n">nav</span><span class="l">]</span><span class="p">;</span>
 </span><span class='line'>
 </span><span class='line'><span class="p">...</span>
 </span><span class='line'>
 </span><span class='line'><span class="c1">// 推入新的ViewController</span>
-</span><span class='line'><span class="n">UIViewController</span> <span class="o">*</span><span class="n">vc2</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIViewController</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithNibName:</span><span class="s">@&quot;SomeOtherViewControllerNibName&quot;</span> <span class="nl">bundle:</span><span class="nb">nil</span><span class="p">];</span>
-</span><span class='line'><span class="n">vc2</span><span class="p">.</span><span class="n">hidesBottomBarWhenPushed</span> <span class="err">＝</span> <span class="n">YES</span><span class="p">;</span> <span class="c1">//这是关键！</span>
-</span><span class='line'><span class="p">[</span><span class="n">vc1</span><span class="p">.</span><span class="n">navigationController</span> <span class="nl">pushViewController:</span><span class="n">vc2</span> <span class="nl">animated:</span><span class="n">YES</span><span class="p">];</span>
+</span><span class='line'><span class="bp">UIViewController</span> <span class="o">*</span><span class="n">vc2</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UIViewController</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithNibName</span><span class="p">:</span><span class="s">@&quot;SomeOtherViewControllerNibName&quot;</span> <span class="nl">bundle</span><span class="p">:</span><span class="nb">nil</span><span class="p">];</span>
+</span><span class='line'><span class="n">vc2</span><span class="p">.</span><span class="n">hidesBottomBarWhenPushed</span> <span class="err">＝</span> <span class="nb">YES</span><span class="p">;</span> <span class="c1">//这是关键！</span>
+</span><span class='line'><span class="p">[</span><span class="n">vc1</span><span class="p">.</span><span class="n">navigationController</span> <span class="nl">pushViewController</span><span class="p">:</span><span class="n">vc2</span> <span class="nl">animated</span><span class="p">:</span><span class="nb">YES</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -157,12 +157,12 @@
   
 
 
-<time datetime="2014-01-07T10:53:17+08:00" pubdate data-updated="true">Jan 7<span>th</span>, 2014</time>
+<time datetime="2014-01-07T10:53:17+08:00" pubdate data-updated="true"></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/uinavigationcontroller/'>UINavigationController</a>, <a class='category' href='/blog/categories/uitabbarcontroller/'>UITabbarController</a>
+    <a class='category' href='/blog/categories/uinavigationcontroller/'>uinavigationcontroller</a>, <a class='category' href='/blog/categories/uitabbarcontroller/'>uitabbarcontroller</a>
   
 </span>
 
@@ -210,23 +210,23 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/openurl-on-ios9/">iOS 9下使用openURL:</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/app-transportation-security/">iOS 9中的App Transport Security</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/alamofire-ssl/">让Alamofire使用自签名证书</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/disable-corestorage-on-os-x-yosemite/">禁用OS X Yosemite上的Core Storage</a>
       </li>
     
       <li class="post">
         <a href="/blog/xcode-6-color-theme-path/">Xcode 6 Color Themes (颜色主题) 的路径</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/scripty-swift/">［更新］把Swift用作脚本语言</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/view-controller-based-status-bar-style-and-uinavigationcontroller/">UINavigationController和View Controller-based状态栏风格</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
       </li>
     
   </ul>

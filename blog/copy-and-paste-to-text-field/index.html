@@ -9,7 +9,7 @@
   <meta name="author" content="venj">
 
   
-  <meta name="description" content="相信很多读者看到标题肯定会疑惑，文本框本来就支持复制粘贴，为什么要专门写一篇日志来介绍文本框的复制粘贴呢？其实，本文要讲述的是，如何通过按下按钮，来复制粘贴文本到文本框 &mdash; 不是通过菜单操作，也不是通过快捷键cmd-c和cmd-v来完成。 提到复制粘贴的菜单操作和快捷键操作，看过“ &hellip;">
+  <meta name="description" content="相信很多读者看到标题肯定会疑惑，文本框本来就支持复制粘贴，为什么要专门写一篇日志来介绍文本框的复制粘贴呢？其实，本文要讲述的是，如何通过按下按钮，来复制粘贴文本到文本框 &ndash; 不是通过菜单操作，也不是通过快捷键cmd-c和cmd-v来完成。 提到复制粘贴的菜单操作和快捷键操作，看过“ &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -85,14 +85,14 @@
   
 
 
-<time datetime="2012-02-13T14:47:00+08:00" pubdate data-updated="true">Feb 13<span>th</span>, 2012</time>
+<time datetime="2012-02-13T14:47:00+08:00" pubdate data-updated="true"></time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>相信很多读者看到标题肯定会疑惑，文本框本来就支持复制粘贴，为什么要专门写一篇日志来介绍文本框的复制粘贴呢？其实，本文要讲述的是，如何通过按下按钮，来复制粘贴文本到文本框 &mdash; 不是通过菜单操作，也不是通过快捷键cmd-c和cmd-v来完成。</p>
+<div class="entry-content"><p>相信很多读者看到标题肯定会疑惑，文本框本来就支持复制粘贴，为什么要专门写一篇日志来介绍文本框的复制粘贴呢？其实，本文要讲述的是，如何通过按下按钮，来复制粘贴文本到文本框 &ndash; 不是通过菜单操作，也不是通过快捷键cmd-c和cmd-v来完成。</p>
 
 <p>提到复制粘贴的菜单操作和快捷键操作，看过“Cocoa Programming for Mac OS X”的读者肯定知道，他们属于“nil-targeted action”，也就是说，他们的receive是在运行时被指定的。在Interface Builder中，<code>-copy:</code>，<code>-paste:</code>方法都是连接到一个占位对象“First Responder”上的。而First Responder到底是谁是在程序运行过程中动态变化着的。</p>
 
@@ -118,18 +118,18 @@
 <span class='line-number'>11</span>
 <span class='line-number'>12</span>
 <span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">copyText:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">sourceField</span> <span class="n">becomeFirstResponder</span><span class="p">];</span>  <span class="c1">//让Source文本框变成First Responder</span>
-</span><span class='line'>    <span class="n">NSText</span> <span class="o">*</span><span class="n">sourceText</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">window</span> <span class="nl">fieldEditor:</span><span class="n">YES</span> <span class="nl">forObject:</span><span class="n">self</span><span class="p">.</span><span class="n">sourceField</span><span class="p">];</span>  <span class="c1">//返回sourceField的NSText对象</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">sourceText</span> <span class="nl">selectAll:</span><span class="nb">nil</span><span class="p">];</span>  <span class="c1">// 全选</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">sourceText</span> <span class="nl">copy:</span><span class="nb">nil</span><span class="p">];</span>  <span class="c1">// 复制</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">copyText:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">sourceField</span> <span class="n">becomeFirstResponder</span><span class="p">];</span>  <span class="c1">//让Source文本框变成First Responder</span>
+</span><span class='line'>    <span class="n">NSText</span> <span class="o">*</span><span class="n">sourceText</span> <span class="o">=</span> <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">window</span> <span class="nl">fieldEditor</span><span class="p">:</span><span class="nb">YES</span> <span class="nl">forObject</span><span class="p">:</span><span class="nb">self</span><span class="p">.</span><span class="n">sourceField</span><span class="p">];</span>  <span class="c1">//返回sourceField的NSText对象</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">sourceText</span> <span class="nl">selectAll</span><span class="p">:</span><span class="nb">nil</span><span class="p">];</span>  <span class="c1">// 全选</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">sourceText</span> <span class="k">copy</span><span class="o">:</span><span class="nb">nil</span><span class="p">];</span>  <span class="c1">// 复制</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">pasteText:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">targetField</span> <span class="n">becomeFirstResponder</span><span class="p">];</span>  <span class="c1">//让Target文本框变成First Responder</span>
-</span><span class='line'>    <span class="n">NSText</span> <span class="o">*</span><span class="n">targetText</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">window</span> <span class="nl">fieldEditor:</span><span class="n">YES</span> <span class="nl">forObject:</span><span class="n">self</span><span class="p">.</span><span class="n">targetField</span><span class="p">];</span>  <span class="c1">//返回targetField的NSText对象</span>
-</span><span class='line'>    <span class="n">self</span><span class="p">.</span><span class="n">targetField</span><span class="p">.</span><span class="n">stringValue</span> <span class="o">=</span> <span class="s">@&quot;&quot;</span><span class="p">;</span>  <span class="c1">//清空原来文本框中的值</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">targetText</span> <span class="nl">paste:</span><span class="nb">nil</span><span class="p">];</span>  <span class="c1">//粘贴</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">pasteText:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">targetField</span> <span class="n">becomeFirstResponder</span><span class="p">];</span>  <span class="c1">//让Target文本框变成First Responder</span>
+</span><span class='line'>    <span class="n">NSText</span> <span class="o">*</span><span class="n">targetText</span> <span class="o">=</span> <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">window</span> <span class="nl">fieldEditor</span><span class="p">:</span><span class="nb">YES</span> <span class="nl">forObject</span><span class="p">:</span><span class="nb">self</span><span class="p">.</span><span class="n">targetField</span><span class="p">];</span>  <span class="c1">//返回targetField的NSText对象</span>
+</span><span class='line'>    <span class="nb">self</span><span class="p">.</span><span class="n">targetField</span><span class="p">.</span><span class="n">stringValue</span> <span class="o">=</span> <span class="s">@&quot;&quot;</span><span class="p">;</span>  <span class="c1">//清空原来文本框中的值</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">targetText</span> <span class="nl">paste</span><span class="p">:</span><span class="nb">nil</span><span class="p">];</span>  <span class="c1">//粘贴</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
@@ -165,12 +165,12 @@
   
 
 
-<time datetime="2012-02-13T14:47:00+08:00" pubdate data-updated="true">Feb 13<span>th</span>, 2012</time>
+<time datetime="2012-02-13T14:47:00+08:00" pubdate data-updated="true"></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/first-responder/'>First Responder</a>, <a class='category' href='/blog/categories/nstext/'>NSText</a>, <a class='category' href='/blog/categories/nstextfield/'>NSTextField</a>
+    <a class='category' href='/blog/categories/first-responder/'>first responder</a>, <a class='category' href='/blog/categories/nstext/'>nstext</a>, <a class='category' href='/blog/categories/nstextfield/'>nstextfield</a>
   
 </span>
 
@@ -218,23 +218,23 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/openurl-on-ios9/">iOS 9下使用openURL:</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/app-transportation-security/">iOS 9中的App Transport Security</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/alamofire-ssl/">让Alamofire使用自签名证书</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/disable-corestorage-on-os-x-yosemite/">禁用OS X Yosemite上的Core Storage</a>
       </li>
     
       <li class="post">
         <a href="/blog/xcode-6-color-theme-path/">Xcode 6 Color Themes (颜色主题) 的路径</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/scripty-swift/">［更新］把Swift用作脚本语言</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/view-controller-based-status-bar-style-and-uinavigationcontroller/">UINavigationController和View Controller-based状态栏风格</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
       </li>
     
   </ul>
