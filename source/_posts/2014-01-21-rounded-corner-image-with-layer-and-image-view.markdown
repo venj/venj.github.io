@@ -12,7 +12,7 @@ categories: [UIImageView, CALayer]
 
 <!-- more -->
 
-```objc
+``` objc
 UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"sample"]];
 //设置圆角半径，只要是imageView的宽/高中较小的一个值的一半或更小的值就可以
 imageView.layer.cornerRadius = 10.0;

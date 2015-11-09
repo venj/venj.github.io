@@ -16,7 +16,7 @@ categories: [Growl, Framework]
 
 要让Cocoa程序支持Growl，首先要为Growl设置一个`Delegate`。简单起见，我们在`AppDelegate`的`-(void)applicationDidFinishLaunching:(NSNotification *)aNotification`中，设置`Delegate`方法：
 
-```objc
+``` objc
 [GrowlApplicationBridge setGrowlDelegate:self];
 ```
 

@@ -8,7 +8,7 @@ categories: [Mapkit, iOS 6]
 
 好久没有写Blog了，今天正好碰上了一个问题，于是决定写一写博客简单描述下。情况是这样的：之前，在iOS 5下，要显示一个从当前为止到目标位置的驾车导航可以使用如下的代码来搞定（[参考这里](http://developer.apple.com/library/ios/#featuredarticles/iPhoneURLScheme_Reference/Articles/MapLinks.html)）：
 
-```objc
+``` objc
 //基于地名调用iOS自带的Google Maps导航
 NSString *urlEncodedCurrentPlaceName = [@"当前位置" stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]; //简单起见，没有考虑多语言*（注）*。
 NSString *mapLink = [[NSString alloc] initWithFormat:@"http://maps.google.com/maps?daddr=%@&saddr=%@", urlEncodedDestinationPlaceName, ];
@@ -17,7 +17,7 @@ NSString *mapLink = [[NSString alloc] initWithFormat:@"http://maps.google.com/ma
 <!-- more -->
 但是假如我们只有起始位置和终点位置的经纬度地址怎么办？Google Maps还是很智能的，只需直接传入逗号分隔的经纬度坐标即可。如下：
 
-```objc
+``` objc
 //基于经纬度调用iOS自带的Google Maps导航
 NSString *urlEncodedCurrentPlaceName = [@"当前位置" stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 NSString *mapLink = [[NSString alloc] initWithFormat:@"http://maps.google.com/maps?daddr=%f,%f&saddr=%@", destLat, destLng, urlEncodedCurrentPlaceName];
@@ -28,7 +28,7 @@ NSString *mapLink = [[NSString alloc] initWithFormat:@"http://maps.google.com/ma
 
 后来查文档发现，要转跳Apple地图应用其实很简单，只需把上面代码里的google换成apple即可：
 
-```objc
+``` objc
 //基于地名调用iOS自带的Google Maps导航
 NSString *mapLink = [[NSString alloc] initWithFormat:@"http://maps.apple.com/maps?daddr=%@&saddr=%@", urlEncodedDestinationPlaceName, urlEncodedCurrentPlaceName];
 [[UIApplication sharedApplication] openURL:[[NSURL alloc] initWithString:mapLink]];
@@ -38,7 +38,7 @@ NSString *mapLink = [[NSString alloc] initWithFormat:@"http://maps.apple.com/map
 
 经过Google搜索和查看Apple文档发现，MapKit在iOS 6里引入了一个新类：[MKMapItem](http://developer.apple.com/library/ios/#documentation/MapKit/Reference/MKMapItem_class/Reference/Reference.html)，这个类是解决这个问题的关键。其中最重要的方法是`-openMapsWithItems:launchOptions:`和`+mapItemForCurrentLocation`下面是从当前位置到目标经纬度的驾车导航在iOS 6中的实现。
 
-```objc
+``` objc
 Class mapItemClass = [MKMapItem class];
 if (mapItemClass && [mapItemClass respondsToSelector:@selector(openMapsWithItems:launchOptions:)]) { // For iOS 6
     CLLocationCoordinate2D destCoord = CLLocationCoordinate2DMake(destLat, destLng); //目标经纬度坐标

@@ -10,7 +10,7 @@ categories: [UIImage, 圆角]
 
 <!-- more -->
 
-```objc
+``` objc
 /* UIImage+RoundedRect.h*/
 #import <UIKit/UIKit.h>
 

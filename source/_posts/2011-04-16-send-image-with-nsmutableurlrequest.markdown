@@ -11,7 +11,9 @@ DragFan目前的网络连接使用了ASIHTTPRequest这个第三方库。[`ASIHTT
 尽管印象中看到过文章说用Cocoa的网络API的性能没有用CoreFoundation的性能好，但是目前我在写的程序并没有特别的需要高性能，而且用Cocoa的API，程序的可读性和内存管理也更加直观，应该说，是一个比较好的方案。  
 
 废话了一通，下面来看看究竟是如何实现的：  
+
 <!-- more --> 
+
 ``` objc
 #define FANFOU_SEND_PHOTO_API @"http://api.fanfou.com/photos/upload.json"
 

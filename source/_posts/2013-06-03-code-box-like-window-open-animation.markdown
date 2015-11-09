@@ -24,7 +24,7 @@ categories: [NSWindow, Animation]
 
 然后，在`-applicationDidFinishLaunching:`方法中，加入如下代码：
 
-```objc
+``` objc
 dispatch_async(dispatch_get_main_queue(), ^{
     [self.window makeKeyAndOrderFront:nil];
 });

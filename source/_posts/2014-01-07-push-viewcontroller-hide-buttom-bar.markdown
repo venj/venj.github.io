@@ -14,7 +14,7 @@ categories: [UINavigationController, UITabbarController]
 
 <!-- more -->
 
-```objc
+``` objc
 // 初始化ViewController的层级结构
 UIViewController *vc1 = [[UIViewController alloc] initWithNibName:@"SomeViewControllerNibName" bundle:nil];
 UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc1];

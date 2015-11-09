@@ -13,7 +13,7 @@ categories: [iOS7, UINavigationController, "Status Bar Style"]
 代码如下：
 <!-- more -->
 
-```objc
+``` objc
 //UINavigationController+StatusBar.h
 #import <UIKit/UIKit.h>
 

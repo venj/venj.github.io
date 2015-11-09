@@ -18,7 +18,7 @@ categories: [UIRefreshControl, UITableView, iOS 6]
 
 <!-- more -->
 
-```objc
+``` objc
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -69,7 +69,7 @@ categories: [UIRefreshControl, UITableView, iOS 6]
 
 为了解决这个问题，我们在`- addButtonAction:`方法中在调用`－ beginRefreshing`之后加入一行代码：
 
-```objc
+``` objc
 [self insertNewObject:nil]; //手工执行插入新行的动作
 // 或者
 [self.refreshControl sendActionsForControlEvents:UIControlEventValueChanged]; //发送ValueChanged事件（推荐）
@@ -77,7 +77,7 @@ categories: [UIRefreshControl, UITableView, iOS 6]
 
 再次编译执行后，我们发现`- doSomething`可以正确执行了，但是，进度圈还是藏在TableView可见范围的上方。为了解决这个问题，我们需要在`- addButtonAction:`方法中，在调用`－ beginRefreshing`之前再加入一行代码：
 
-```objc
+``` objc
 [self.tableView setContentOffset:CGPointMake(0, -44) animated:YES];
 ```
 

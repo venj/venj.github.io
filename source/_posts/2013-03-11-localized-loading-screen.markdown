@@ -32,7 +32,7 @@ categories: [iOS, L10N, I18N]
 
 好了，到此，加载屏幕的本地化工作已经基本完成。为了保证看到我们的实验效果，我们在AppDelegate.m的`-application:didFinishLaunchingWithOptions:`的最前面加入下面一行：
 
-```objc
+``` objc
 	sleep(2);
 ```
 

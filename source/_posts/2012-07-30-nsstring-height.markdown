@@ -12,7 +12,7 @@ categories: [NSString, AppKit, UIKit]
 
 `NSString`的`UIStringDrawing`这个Catagory中，有一个非常方便调用的方法：`- sizeWithFont:forWidth:lineBreakMode:`。看下面的示例代码：
 
-```objc
+``` objc
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     ...
     cell.textLabel.lineBreakMode = UILineBreakModeWordWrap; //设置换行模式
@@ -32,7 +32,7 @@ categories: [NSString, AppKit, UIKit]
 
 遗憾的是，AppKit里没有对应于上述调用的简便方法。这时候，苹果的文档就发挥作用了。在[Text Layout Programming Guide](http://developer.apple.com/documentation/Cocoa/Conceptual/TextLayout/TextLayout.html)中有一段示例代码，展示了如何使用`NSString`以及一些其他的类，来实现类似的功能。下面是我自己用在NSTableView中的的一段代码，照抄了文档中的示例代码，如下：
 
-```objc
+``` objc
 - (CGFloat)tableView:(NSTableView *)tableView heightOfRow:(NSInteger)row {
     NSString *statusText = [[_statusMessages objectAtIndex:row] text];
     return [self heightForStringDrawing:statusText font:[NSFont systemFontOfSize:12] width:tableView.frame.size.width] + 8;
