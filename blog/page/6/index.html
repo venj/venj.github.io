@@ -9,7 +9,7 @@
   <meta name="author" content="venj">
 
   
-  <meta name="description" content="OSX有一个非常好的文件系统结构，默认的文件系统职能明确。一个很典型的例子是Applications文件夹，专门用来存放Mac应用程序。不过有时用户在下载了你的应用程序之后并没有养成把程序放到/Applications的习惯，你可以选择不去干预，也可以通过一个友好的提示来帮助用户把程序移动到/ &hellip;">
+  <meta name="description" content="好久没有更新这里了，今天开始慢慢恢复更新。好了，废话不多说，开始讲正题。今天的话题其实也很简单，那就是在iOS中使用自定义字体。 虽然iOS自带的字体通常已经足够我们使用了，但是，对于某些特殊程序来说，比如，电子书程序，可能需要用到一些特殊的字体，或者需要用更好看的字体来达到我们想要的显示效果。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -66,6 +66,48 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/custom-fonts-in-ios-apps/">在iOS程序中使用自定义字体</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2012-01-10T10:58:00+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>10</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>10:58 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>好久没有更新这里了，今天开始慢慢恢复更新。好了，废话不多说，开始讲正题。今天的话题其实也很简单，那就是在iOS中使用自定义字体。</p>
+
+<p>虽然iOS自带的字体通常已经足够我们使用了，但是，对于某些特殊程序来说，比如，电子书程序，可能需要用到一些特殊的字体，或者需要用更好看的字体来达到我们想要的显示效果。不过，iOS是不支持系统级安装新字体的。不过在iOS 3.x中，我们已经可以用一个很简单的方法来使用自定义字体了。</p>
+
+<p>我们来创建一个简单的iOS项目来做演示。在界面上拖入一个<code>UITextView</code>，在代码中创建一个<code>IBOutlet</code>指向这个<code>UITextView</code>。我们从OSX中找一个iOS下没有的字体，比如：PTSans.ttc（这个也是Octopress模版的默认字体，我很喜欢这个字体），拖放到项目中。</p>
+
+<p>打开info.plist，增加一个新的Array类型的键，键名设置为UIAppFonts（Fonts provided by application），增加字体的<strong>文件名</strong>：“PTSans.ttc“。</p>
+
+<p>然后我们就可以在程序中调用这个字体了：</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/custom-fonts-in-ios-apps/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -253,42 +295,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/ios5-story-board-a-brief-discussion/">浅谈iOS 5的StoryBoard</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2011-08-24T00:34:00+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>24</span><span class='date-suffix'>th</span>, <span class='date-year'>2011</span></span> <span class='time'>12:34 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>StoryBoard是iOS 5的新特征，旨在代替历史悠久的NIB/XIB（其实<strong>StoryBoard还是基于NIB/XIB的</strong>，不过开发人员已经无需直接跟NIB打交道了）。目前关于StoryBoard的文档并不多，苹果的iOS 5的开发者文档里也仅有不多的介绍。所以，本文只是简单的谈谈本人对StoryBoard的一些粗浅的理解。（StoryBoard有时也叫做StoryBoarding，我不太注意这种细节，所以两个词经常会混用，如果你英语可以的话，能体会到两者的细微差别）</p>
-
-<p><img class="center" src="/images/posts/storyboard-1.png"></p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/ios5-story-board-a-brief-discussion/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/7/">&larr; Older</a>
@@ -312,6 +318,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/more-on-status-bar-style/">再说说iOS的Status Bar Style</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/ios9-readable-content-guide/">iOS 9的TableView和Readable Content Guide</a>
       </li>
     
@@ -325,10 +335,6 @@
     
       <li class="post">
         <a href="/blog/alamofire-ssl/">让Alamofire使用自签名证书</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/disable-corestorage-on-os-x-yosemite/">禁用OS X Yosemite上的Core Storage</a>
       </li>
     
   </ul>

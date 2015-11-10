@@ -9,7 +9,7 @@
   <meta name="author" content="venj">
 
   
-  <meta name="description" content="相信很多开发者在把应用迁移到iOS 9的时候发现了如下现象。那就是TableView在iOS 9的iPad或iPhone 6 Plus的横屏模式时，表格两边有巨大的空白边缘。 ">
+  <meta name="description" content="在去年的博文中，我们曾经探讨过关于UINavigationController的状态栏样式（Status Bar Style）行为。当时也给出了一个较为理想的解决UINavigationController的Status Bar Style不与子UIViewController同步的问题。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -66,6 +66,40 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/more-on-status-bar-style/">再说说iOS的Status Bar Style</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-11-10T23:53:38+08:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>10</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>11:53 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>在<a href="/blog/view-controller-based-status-bar-style-and-uinavigationcontroller/">去年的博文</a>中，我们曾经探讨过关于<code>UINavigationController</code>的状态栏样式（Status Bar Style）行为。当时也给出了一个较为理想的解决<code>UINavigationController</code>的Status Bar Style不与子<code>UIViewController</code>同步的问题。但是这个问题并没有结束，事实上，除了<code>UINavigationController</code>之外，还有很多场景下你需要使用文章中提及的Hack。比如，<code>UITabBarController</code>就是一个典型的例子。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/more-on-status-bar-style/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -258,45 +292,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/xcode-6-color-theme-path/">Xcode 6 Color Themes (颜色主题) 的路径</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-01-27T16:27:37+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>27</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>4:27 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>搜索引擎有时候并不能给你最好的结果，于是便有了这篇文章。今天为了找Xcode 6的配色主题路径，我搜了好久，结果找到的都是过时的信息。经过摸索终于找到正确答案，现贴在这里，希望能冲刷一下搜索引擎的旧信息。</p>
-
-<p>Xcode 6的颜色主题路径位于：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>~/Library/Developer/Xcode/UserData/FontAndColorThemes</span></code></pre></td></tr></table></div></figure>
-
-
-<p>如果你下载了别人提供的漂亮的代码高亮颜色主题，比如<a href="https://github.com/tursunovic/xcode-themes">这个</a>，记得放到上面那个路径下。</p>
-
-<p>(全文完)</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -318,6 +313,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/more-on-status-bar-style/">再说说iOS的Status Bar Style</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/ios9-readable-content-guide/">iOS 9的TableView和Readable Content Guide</a>
       </li>
     
@@ -331,10 +330,6 @@
     
       <li class="post">
         <a href="/blog/alamofire-ssl/">让Alamofire使用自签名证书</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/disable-corestorage-on-os-x-yosemite/">禁用OS X Yosemite上的Core Storage</a>
       </li>
     
   </ul>

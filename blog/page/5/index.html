@@ -9,7 +9,7 @@
   <meta name="author" content="venj">
 
   
-  <meta name="description" content="昨天在用Twitter的时候，突然意识到，在删除Twitter消息的时候弹出的Sheet是定位在要删除的那条消息的顶部，而不是窗口标题栏的下方。 我很好奇这是如何做到的。今天抽了点时间，在简单的查阅文档之后，我找到了答案。其核心就是NSWindowDelegate的一个方法：-window: &hellip;">
+  <meta name="description" content="iOS 5已经有了很方便的自定义UINavigationBar的方法，但是iOS 4现在还远未完全被iOS 5取代，因此，在做程序开发的时候必须要考虑对iOS 4的兼容。因此，要自定义UINavigationBar还不能简单的直接用iOS 5中才有的自定义API。 关于这个话题，我曾经写过一篇日志 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -66,6 +66,48 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/more-on-navigationbar-customization/">再谈iOS 4下NavigationBar的自定义</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2012-02-29T10:30:00+08:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>29</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>10:30 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>iOS 5已经有了很方便的自定义<code>UINavigationBar</code>的方法，但是iOS 4现在还远未完全被iOS 5取代，因此，在做程序开发的时候必须要考虑对iOS 4的兼容。因此，要自定义<code>UINavigationBar</code>还不能简单的直接用iOS 5中才有的自定义API。</p>
+
+<p>关于这个话题，我曾经写过<a href="http://cocoa.venj.me/blog/custom-navbar-background/">一篇日志</a>，但是后来发现那篇日志里面的实现方法有诸多缺陷。因此我后来对那篇文章做过部分删改。这两天，我再次研究了一下NavigationBar的自定义，总算找到了一个近乎完美的解决方法，因此，我决定写出来和大家分享一下。</p>
+
+<p>本文中的实现方法很大程度上参考了<a href="http://idevrecipes.com/2011/01/12/how-do-iphone-apps-instagramreederdailybooth-implement-custom-navigationbar-with-variable-width-back-buttons/">这篇文章</a>，不过我这里介绍的实现方法在原方法的基础上加入了对设备旋转的支持。</p>
+
+<p>方法的核心思想是创建一个<code>UINavigationBar</code>的子类，让这个子类支持背景图，然后在项目中用自定义类替换<code>UINavigationController</code>的<code>navgationBar</code>。不过有一个问题是，<code>UINavigationController</code>的<code>navgationBar</code>属性是一个只读属性，因此我们只能在xib中将<code>navgationBar</code>的类改成我们的自定义类。</p>
+
+<p>我还没有找到适合StoryBoard的无xib的解决方法，因此我在上面说这个方法是“近乎完美”。不过既然是部署到iOS 4，那项目不采用StoryBoard也不算特别反人类。好了，下面开始代码说话（注：代码用了ARC）：</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/more-on-navigationbar-customization/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -255,48 +297,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/custom-fonts-in-ios-apps/">在iOS程序中使用自定义字体</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2012-01-10T10:58:00+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>10</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>10:58 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>好久没有更新这里了，今天开始慢慢恢复更新。好了，废话不多说，开始讲正题。今天的话题其实也很简单，那就是在iOS中使用自定义字体。</p>
-
-<p>虽然iOS自带的字体通常已经足够我们使用了，但是，对于某些特殊程序来说，比如，电子书程序，可能需要用到一些特殊的字体，或者需要用更好看的字体来达到我们想要的显示效果。不过，iOS是不支持系统级安装新字体的。不过在iOS 3.x中，我们已经可以用一个很简单的方法来使用自定义字体了。</p>
-
-<p>我们来创建一个简单的iOS项目来做演示。在界面上拖入一个<code>UITextView</code>，在代码中创建一个<code>IBOutlet</code>指向这个<code>UITextView</code>。我们从OSX中找一个iOS下没有的字体，比如：PTSans.ttc（这个也是Octopress模版的默认字体，我很喜欢这个字体），拖放到项目中。</p>
-
-<p>打开info.plist，增加一个新的Array类型的键，键名设置为UIAppFonts（Fonts provided by application），增加字体的<strong>文件名</strong>：“PTSans.ttc“。</p>
-
-<p>然后我们就可以在程序中调用这个字体了：</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/custom-fonts-in-ios-apps/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/6/">&larr; Older</a>
@@ -320,6 +320,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/more-on-status-bar-style/">再说说iOS的Status Bar Style</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/ios9-readable-content-guide/">iOS 9的TableView和Readable Content Guide</a>
       </li>
     
@@ -333,10 +337,6 @@
     
       <li class="post">
         <a href="/blog/alamofire-ssl/">让Alamofire使用自签名证书</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/disable-corestorage-on-os-x-yosemite/">禁用OS X Yosemite上的Core Storage</a>
       </li>
     
   </ul>

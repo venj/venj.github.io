@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://cocoa.venj.me/blog/more-on-status-bar-style/</loc>
+    <lastmod>2015-11-10T23:53:38+08:00</lastmod>
+  </url>
+  <url>
     <loc>http://cocoa.venj.me/blog/ios9-readable-content-guide/</loc>
     <lastmod>2015-11-10T14:00:02+08:00</lastmod>
   </url>
@@ -599,5 +603,11 @@
   </url>
   <url>
     <loc>http://cocoa.venj.me/blog/categories/auto-layout/</loc>
+  </url>
+  <url>
+    <loc>http://cocoa.venj.me/blog/categories/status-bar/</loc>
+  </url>
+  <url>
+    <loc>http://cocoa.venj.me/blog/categories/uiviewcontroller/</loc>
   </url>
 </urlset>

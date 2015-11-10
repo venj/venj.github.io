@@ -9,7 +9,7 @@
   <meta name="author" content="venj">
 
   
-  <meta name="description" content="我一直有注意到“大辞林”程序针对不同的系统语言，加载屏幕（Loading Screen，也称Splash Screen）是不一样的。因为无可治愈的拖延症，导致我从来没有想着去研究一下为什么。今天闲来无事，简单的弄了个程序做了一下，解决了加载屏幕本地化的问题。问题的答案只有一句话： 加载屏幕( &hellip;">
+  <meta name="description" content="一直觉得CodeBox的窗口呈现动画很帅气－－就是窗口Bounce了一下的那个效果。对了，就是NSAlert在OSX Lion下的显示的时候那个动画。我一直试图复刻那个动画，但是每次都灰头土脸的结束各种尝试。 今天搜索网络，在StackOverflow上找到了答案－－事实上， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -66,6 +66,42 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/code-box-like-window-open-animation/">CodeBox风格的窗口打开动画</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2013-06-03T16:51:00+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>3</span><span class='date-suffix'>rd</span>, <span class='date-year'>2013</span></span> <span class='time'>4:51 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>一直觉得<a href="http://www.shpakovski.com/codebox/">CodeBox</a>的窗口呈现动画很帅气－－就是窗口Bounce了一下的那个效果。对了，就是<code>NSAlert</code>在OSX Lion下的显示的时候那个动画。我一直试图复刻那个动画，但是每次都灰头土脸的结束各种尝试。</p>
+
+<p>今天搜索网络，在StackOverflow上找到了<a href="http://stackoverflow.com/questions/14591785/how-to-open-a-nswindow-with-a-popup-animation">答案</a>－－事实上，我曾经多次无限接近正确答案，但最终还是没有成功。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/code-box-like-window-open-animation/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -344,42 +380,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/warn-no-network-and-show-settings/">检测iOS的网络可用性并打开网络设置</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2012-05-08T10:39:00+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>8</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>10:39 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>今天接到个需求，要求程序能够检测网络可用性，并在没有网络可用的时候能够弹出对话框，并允许用户点击按钮打开网络设置。</p>
-
-<p>这个问题，我首先想到的就是用一个方法检测网络可用性，然后用<code>UIApplication</code>的<code>openURL</code>方法打开某个特殊URL，就可以进入设置了。于是，我迅速地建了个测试项目，写了个简单的实现，如下：</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/warn-no-network-and-show-settings/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/4/">&larr; Older</a>
@@ -403,6 +403,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/more-on-status-bar-style/">再说说iOS的Status Bar Style</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/ios9-readable-content-guide/">iOS 9的TableView和Readable Content Guide</a>
       </li>
     
@@ -416,10 +420,6 @@
     
       <li class="post">
         <a href="/blog/alamofire-ssl/">让Alamofire使用自签名证书</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/disable-corestorage-on-os-x-yosemite/">禁用OS X Yosemite上的Core Storage</a>
       </li>
     
   </ul>

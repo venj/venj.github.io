@@ -9,7 +9,17 @@
   <meta name="author" content="venj">
 
   
-  <meta name="description" content="Mac OS X上的绝大部分程序都使用Sparkle来作为程序的自动升级工具。利用Sparkle，用户无需对升级过程进行干涉，只需跟着升级指示做就可以了。而Sparkle对于程序开发人员来说，使用也是相当方便。其实Sparkle的文档已经写的相当好了，不过我还是来简单写一下Sparkle的使用， &hellip;">
+  <meta name="description" content="因为Cocoa的数据类型之间的互转在实际程序中应用很广泛，而我经常都会忘记，因此在此记录一下常用的几个互转。以后将会补充更多。 1 NSData和NSString之间互转： 1
+2
+3
+4
+5
+6
+7
+8
+9
+/* NSString to NSData */
+NSString *theString &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -66,6 +76,65 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/common-data-types-conversion/">Cocoa的几种内置数据类型之间的互转</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2011-05-28T09:42:00+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>28</span><span class='date-suffix'>th</span>, <span class='date-year'>2011</span></span> <span class='time'>9:42 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>因为Cocoa的数据类型之间的互转在实际程序中应用很广泛，而我经常都会忘记，因此在此记录一下常用的几个互转。以后将会补充更多。</p>
+
+<p>1 <code>NSData</code>和<code>NSString</code>之间互转：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cm">/* NSString to NSData */</span>
+</span><span class='line'><span class="bp">NSString</span> <span class="o">*</span><span class="n">theString</span> <span class="o">=</span> <span class="s">@&quot;This is a string&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="bp">NSData</span> <span class="o">*</span><span class="n">theStringData</span> <span class="o">=</span> <span class="p">[</span><span class="n">theString</span> <span class="nl">dataUsingEncoding</span><span class="p">:</span><span class="n">NSUTF8StringEncoding</span><span class="p">];</span>
+</span><span class='line'><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%@</span><span class="se">\n</span><span class="s">%@&quot;</span><span class="p">,</span> <span class="n">theString</span><span class="p">,</span> <span class="n">theStringData</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/* NSData to NSString */</span>
+</span><span class='line'><span class="bp">NSString</span> <span class="o">*</span><span class="n">theStringFromData</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NSString</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithData</span><span class="p">:</span><span class="n">theStringData</span> <span class="nl">encoding</span><span class="p">:</span><span class="n">NSUTF8StringEncoding</span><span class="p">];</span>
+</span><span class='line'><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%@&quot;</span><span class="p">,</span> <span class="n">theStringFromData</span><span class="p">);</span>
+</span><span class='line'><span class="p">[</span><span class="n">theStringFromData</span> <span class="k">release</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这里用<code>NSUTF8StringEncoding</code>作为例子，实际可以使用更多其它的编码类型，详情可以参考文档。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/common-data-types-conversion/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -290,44 +359,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/take-photo-with-isight-camera/">用Cocoa实现用Mac的摄像头拍照</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2011-04-23T23:10:00+08:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>23</span><span class='date-suffix'>rd</span>, <span class='date-year'>2011</span></span> <span class='time'>11:10 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>我一直有一种错觉，似乎在Mac上通过Cocoa API，用iSight拍照会有点困难。但是我彻底错了！用Cocoa拍照非常非常简单。甚至比Cocoa Touch拍照还简单！</p>
-
-<p>首先，我们来看看测试效果：</p>
-
-<p><img class="center" src="/images/posts/picture-taker.png"></p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/take-photo-with-isight-camera/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/10/">&larr; Older</a>
@@ -351,6 +382,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/more-on-status-bar-style/">再说说iOS的Status Bar Style</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/ios9-readable-content-guide/">iOS 9的TableView和Readable Content Guide</a>
       </li>
     
@@ -364,10 +399,6 @@
     
       <li class="post">
         <a href="/blog/alamofire-ssl/">让Alamofire使用自签名证书</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/disable-corestorage-on-os-x-yosemite/">禁用OS X Yosemite上的Core Storage</a>
       </li>
     
   </ul>

@@ -4,7 +4,7 @@
   <title><![CDATA[Cocoa学习]]></title>
   <link href="http://cocoa.venj.me/atom.xml" rel="self"/>
   <link href="http://cocoa.venj.me/"/>
-  <updated>2015-11-10T21:34:32+08:00</updated>
+  <updated>2015-11-11T01:02:58+08:00</updated>
   <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
@@ -12,6 +12,78 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[再说说iOS的Status Bar Style]]></title>
+    <link href="http://cocoa.venj.me/blog/more-on-status-bar-style/"/>
+    <updated>2015-11-10T23:53:38+08:00</updated>
+    <id>http://cocoa.venj.me/blog/more-on-status-bar-style</id>
+    <content type="html"><![CDATA[<p>在<a href="http://cocoa.venj.me/blog/view-controller-based-status-bar-style-and-uinavigationcontroller/">去年的博文</a>中，我们曾经探讨过关于<code>UINavigationController</code>的状态栏样式（Status Bar Style）行为。当时也给出了一个较为理想的解决<code>UINavigationController</code>的Status Bar Style不与子<code>UIViewController</code>同步的问题。但是这个问题并没有结束，事实上，除了<code>UINavigationController</code>之外，还有很多场景下你需要使用文章中提及的Hack。比如，<code>UITabBarController</code>就是一个典型的例子。</p>
+
+<!-- more -->
+
+
+<h4>一. <code>UITabBarController</code></h4>
+
+<p><code>UITabBarController</code>并不会像<code>UINavigationController</code>一样用<code>.Default</code>风格覆盖子ViewController的<code>preferedStatusBarStyle</code>。一般情况下<code>UITabBarController</code>是很正常的。然而在某些特殊的情况下，问题就来了。比如使用<a href="https://github.com/pkluz/PKHUD">PKHUD</a>的时候。</p>
+
+<p>PKHUD会在应用默认的<code>window</code>上蒙一层新的<code>UIWindow</code>，用来显示HUD提示。而这个新的window，似乎这个Window会使用默认Window的<code>rootViewController</code>的<code>preferedStatusBarStyle</code>。于是，当<code>UITabBarController</code>的自ViewController的<code>preferedStatusBarStyle</code>用<code>.LightContent</code>的时候，PKHUD出现时，系统的Status Bar会变成<code>.Default</code>样式，HUD消失后再变回去。</p>
+
+<p>这样的效果非常诡异。于是，只要如<code>UINavigationController</code>一样，也为<code>UITabBarController</code>设置<code>preferedStatusBarStyle</code>。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">extension</span> <span class="bp">UITabBarController</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kr">override</span> <span class="n">public</span> <span class="k">func</span> <span class="n">preferredStatusBarStyle</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">UIStatusBarStyle</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">guard</span> <span class="n">selectedViewController</span> <span class="o">!=</span> <span class="nb">nil</span> <span class="k">else</span> <span class="p">{</span> <span class="k">return</span> <span class="p">.</span><span class="n">Default</span> <span class="p">}</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">selectedViewController</span><span class="o">!</span><span class="p">.</span><span class="n">preferredStatusBarStyle</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这样，PKHUD的显示又正常了。虽然PKHUD是目前我发现的第一个例子，但是很可能其他使用<code>UIWindow</code>对象的控件在与<code>UITabBarController</code>一起使用的时候，也会有同样的问题。而上面这个代码片段就是解决方法。</p>
+
+<h4>二. <code>UINavigationController</code>在全屏Modal中显示时</h4>
+
+<p>如果你要在全屏Modal中显示一个<code>UINavigationController</code>，而它的<code>rootViewController</code>来自第三方框架，你无法直接修改该ViewController的<code>preferedStatusBarStyle</code>方法。为了UINavigationController也能使用<code>.LightContent</code>，你也可以像上面一部分中，扩展第三方类。</p>
+
+<p>但是这么做的缺点也很明显，如果你在同一个应用中的其它部分需要用到这个第三方ViewController，而使用时你并不需要<code>.LightContent</code>，这时候就又陷入了困境。</p>
+
+<p>考虑到作为Modal出现的<code>UINavigationController</code>的Status Bar Style通常与呈现它的ViewController一致，而非和其子ViewController一致，因此，我们把之前的<code>UINavigationController</code>的扩展，修改成如下：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">extension</span> <span class="bp">UINavigationController</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="nb">self</span><span class="p">.</span><span class="n">isBeingPresented</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>        <span class="c1">// 当它被显示时，presentingViewController通常不会为nil。</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nb">self</span><span class="p">.</span><span class="n">presentingViewController</span><span class="o">!</span><span class="p">.</span><span class="n">preferredStatusBarStyle</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">guard</span> <span class="nb">self</span><span class="p">.</span><span class="n">topViewController</span> <span class="o">!=</span> <span class="nb">nil</span> <span class="k">else</span> <span class="p">{</span> <span class="k">return</span> <span class="p">.</span><span class="n">Default</span> <span class="p">}</span>
+</span><span class='line'>        <span class="k">return</span> <span class="p">(</span><span class="nb">self</span><span class="p">.</span><span class="n">topViewController</span><span class="o">!</span><span class="p">.</span><span class="n">preferredStatusBarStyle</span><span class="p">());</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这样，就能避免为各种ViewController写一样的扩展了。至此，关于状态栏样式的新问题也已经解决。如您有更好的方案，或者对状态栏样式有深入的理解，希望您不吝留言赐教。谢谢。</p>
+
+<p>（全文完）</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[iOS 9的TableView和Readable Content Guide]]></title>
@@ -493,7 +565,7 @@
 <span class='line-number'>5</span>
 </pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">extension</span> <span class="bp">UINavigationController</span> <span class="p">{</span>
 </span><span class='line'>    <span class="n">override</span> <span class="n">public</span> <span class="n">func</span> <span class="n">preferredStatusBarStyle</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">UIStatusBarStyle</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nb">self</span><span class="p">.</span><span class="n">topViewController</span><span class="p">.</span><span class="n">preferredStatusBarStyle</span><span class="p">();</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nb">self</span><span class="p">.</span><span class="n">topViewController</span><span class="p">.</span><span class="n">preferredStatusBarStyle</span><span class="p">()</span>
 </span><span class='line'>    <span class="p">}</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
@@ -741,7 +813,7 @@
 <!-- more -->
 
 
-<p>首先，我们用图形编辑(PS, Pixelmator等)工具，做两套语言的加载屏幕。简单起见，我们就用白底加居中的黑字(“US”和“CN”)的两套图片好了（文件在示例代码中有），每套图片要三个尺寸：Default.png(320x480)，<a href="&#x6d;&#97;&#x69;&#x6c;&#116;&#x6f;&#58;&#x44;&#x65;&#102;&#97;&#117;&#108;&#116;&#64;&#50;&#x78;&#46;&#112;&#x6e;&#x67;">&#68;&#x65;&#x66;&#97;&#117;&#x6c;&#x74;&#64;&#50;&#120;&#x2e;&#112;&#110;&#103;</a>(640x960)以及<a href="&#109;&#x61;&#105;&#108;&#x74;&#111;&#58;&#x44;&#x65;&#102;&#x61;&#x75;&#108;&#x74;&#x2d;&#x35;&#x36;&#x38;&#x68;&#64;&#50;&#x78;&#46;&#x70;&#x6e;&#103;">&#68;&#101;&#x66;&#97;&#117;&#x6c;&#x74;&#x2d;&#x35;&#54;&#x38;&#104;&#64;&#50;&#120;&#x2e;&#112;&#110;&#x67;</a>(640x1136)。</p>
+<p>首先，我们用图形编辑(PS, Pixelmator等)工具，做两套语言的加载屏幕。简单起见，我们就用白底加居中的黑字(“US”和“CN”)的两套图片好了（文件在示例代码中有），每套图片要三个尺寸：Default.png(320x480)，<a href="&#x6d;&#x61;&#x69;&#x6c;&#116;&#111;&#58;&#x44;&#101;&#x66;&#97;&#x75;&#108;&#116;&#64;&#50;&#x78;&#x2e;&#x70;&#x6e;&#103;">&#x44;&#101;&#x66;&#x61;&#x75;&#108;&#116;&#x40;&#x32;&#120;&#46;&#112;&#x6e;&#x67;</a>(640x960)以及<a href="&#109;&#97;&#x69;&#x6c;&#116;&#111;&#x3a;&#x44;&#101;&#x66;&#97;&#x75;&#108;&#x74;&#45;&#x35;&#54;&#56;&#x68;&#x40;&#x32;&#120;&#x2e;&#x70;&#x6e;&#103;">&#68;&#101;&#102;&#x61;&#x75;&#108;&#x74;&#x2d;&#x35;&#x36;&#x38;&#x68;&#x40;&#50;&#120;&#x2e;&#x70;&#x6e;&#103;</a>(640x1136)。</p>
 
 <p>做好图片之后，我们在Xcode里创建一个新项目名字可以叫做“Local Splash”，程序模板任意，简单起见，支持的设备只选iPhone。创建后，我们用“US”那套图片替换项目默认的纯黑色加载屏幕，作为默认语言的加载屏幕。</p>
 
@@ -1496,48 +1568,6 @@
 <p>关于Focus Ring的实现我要说明一下，我这里用的方法比较粗糙，QQ应该是用Quartz绘制的Focus ring，而我是用了一张图片来“伪造”了一个Focus ring。我这里选择使用<code>NSSwitchButton</code>类型的按钮是为了利用<code>alternativeImage</code>来实现Focus ring效果。之所以这么做，是因为我一时间没有想到比较好的绘制Focus ring的方法 &ndash; 基础不过关啊 &ndash; 所以，如果谁知道怎么做，劳烦您能不吝赐教。</p>
 
 <p>示例代码我已经推送到<a href="https://github.com/venj/Cocoa-blog-code/tree/master/Custom%20Menu">Github</a>上了，有兴趣的可以签出来看看，并提出宝贵意见。另外，我在示例代码中使用了QQ for Mac里面的头像图片，希望腾讯勿怪。</p>
-
-<p>(全文完)</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[模拟低速网络，测试iOS程序的表现]]></title>
-    <link href="http://cocoa.venj.me/blog/simulate-low-speed-network-connection-for-ios-apps/"/>
-    <updated>2012-03-29T11:56:00+08:00</updated>
-    <id>http://cocoa.venj.me/blog/simulate-low-speed-network-connection-for-ios-apps</id>
-    <content type="html"><![CDATA[<p>因为没有考虑程序在低速网络下的表现，昨天在测试公司的一个程序的时候出了点丑，于是痛定思痛，要解决模拟低速网络连接的问题。遗憾的是iOS Simulator并没有提供模拟低速网络的功能。</p>
-
-<p>经过一番STFW之后，发现原来苹果从Xcode 4.1开始提供了一款叫做“Network Link Connector”的工具。但是如今我已经升级到Xcode 4.3.2，用SpotLight搜索了一番之后也没有发现系统里已经安装了这样的一个工具。</p>
-
-<p>又经过一番搜索，我发现原来“Network Link Connector”是一个prefPane程序，从Xcode 4.3开始已经不再默认包含在程序里了，而是需要从developer.apple.com/download上单独下载，它位于“Hardware IO Tools”的一个包中。</p>
-
-<!-- more -->
-
-
-<p>下载安装之后，就可以在系统预置中找到，并使用它了。</p>
-
-<p><img class="center" src="http://cocoa.venj.me/images/posts/nlcui.png"></p>
-
-<p>打开网速限制之后，会显示一个Menubar Adddon。</p>
-
-<p><img class="center" src="http://cocoa.venj.me/images/posts/nlcmenu.png"></p>
-
-<p>这个程序默认包含了多种预置的网络设置，包括3G，WiFi，Edge，DSL等。</p>
-
-<p><img class="center" src="http://cocoa.venj.me/images/posts/nlcprofile.png"></p>
-
-<p>你也可以自己创建网络Profile，对网速限制进行自定义。</p>
-
-<p><img class="center" src="http://cocoa.venj.me/images/posts/nlccustom.png"></p>
-
-<p>因为这个网速限制是针对整个系统的，因此在测试完程序之后记得关掉网速限制。</p>
-
-<p>至此，问题解决。我也顺利的利用这个程序测试了程序的修改，感觉良好。</p>
-
-<p>不过我在使用中发现一个问题，就是打开了网速限制之后，Xcode在attach到Simulator的时候速度异常的慢，我怀疑是这个工具的影响，不过我无法确定。</p>
-
-<p>虽然这个工具已经足够我使用了，但是如果您有更好的工具的话，可以留言推荐给我。 :)</p>
 
 <p>(全文完)</p>
 ]]></content>
