@@ -18,13 +18,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://venj.github.io/blog/add-growl-support-in-your-apps-coding-growl">
+  <link rel="canonical" href="http://cocoa.venj.me/blog/add-growl-support-in-your-apps-coding-growl/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Cocoa学习" type="application/atom+xml">
   <script src="/javascripts/modernizr-2.0.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
 <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
@@ -50,7 +50,7 @@
   
 <form action="http://google.com/search" method="get">
   <fieldset role="search">
-    <input type="hidden" name="q" value="site:venj.github.io" />
+    <input type="hidden" name="sitesearch" value="cocoa.venj.me">
     <input class="search" type="text" name="q" results="0" placeholder="Search"/>
   </fieldset>
 </form>
@@ -78,14 +78,7 @@
 
 
 
-
-
-
-
-  
-
-
-<time datetime="2011-05-26T21:07:00+08:00" pubdate data-updated="true">May 26<span>th</span>, 2011</time>
+<time class='entry-date' datetime='2011-05-26T21:07:00+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>26</span><span class='date-suffix'>th</span>, <span class='date-year'>2011</span></span> <span class='time'>9:07 pm</span></time>
         
       </p>
     
@@ -107,7 +100,7 @@
 <p>要让Cocoa程序支持Growl，首先要为Growl设置一个<code>Delegate</code>。简单起见，我们在<code>AppDelegate</code>的<code>-(void)applicationDidFinishLaunching:(NSNotification *)aNotification</code>中，设置<code>Delegate</code>方法：</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[</span><span class="n">GrowlApplicationBridge</span> <span class="nl">setGrowlDelegate:</span><span class="n">self</span><span class="p">];</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[</span><span class="n">GrowlApplicationBridge</span> <span class="nl">setGrowlDelegate</span><span class="p">:</span><span class="nb">self</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -125,11 +118,11 @@
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSDictionary</span> <span class="o">*</span><span class="p">)</span><span class="nf">registrationDictionaryForGrowl</span> <span class="p">{</span>
-</span><span class='line'>    <span class="n">NSArray</span> <span class="o">*</span><span class="n">allNotes</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSArray</span> <span class="nl">arrayWithObjects:</span><span class="s">@&quot;myNotification&quot;</span><span class="p">,</span> <span class="s">@&quot;myNote&quot;</span><span class="p">,</span> <span class="s">@&quot;notDefaultNote&quot;</span><span class="p">,</span> <span class="nb">nil</span><span class="p">];</span>
-</span><span class='line'>    <span class="n">NSArray</span> <span class="o">*</span><span class="n">defaultNotes</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSArray</span> <span class="nl">arrayWithObjects:</span><span class="s">@&quot;myNotification&quot;</span><span class="p">,</span> <span class="s">@&quot;myNote&quot;</span><span class="p">,</span> <span class="nb">nil</span><span class="p">];</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="bp">NSDictionary</span> <span class="o">*</span><span class="p">)</span><span class="nf">registrationDictionaryForGrowl</span> <span class="p">{</span>
+</span><span class='line'>    <span class="bp">NSArray</span> <span class="o">*</span><span class="n">allNotes</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSArray</span> <span class="nl">arrayWithObjects</span><span class="p">:</span><span class="s">@&quot;myNotification&quot;</span><span class="p">,</span> <span class="s">@&quot;myNote&quot;</span><span class="p">,</span> <span class="s">@&quot;notDefaultNote&quot;</span><span class="p">,</span> <span class="nb">nil</span><span class="p">];</span>
+</span><span class='line'>    <span class="bp">NSArray</span> <span class="o">*</span><span class="n">defaultNotes</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSArray</span> <span class="nl">arrayWithObjects</span><span class="p">:</span><span class="s">@&quot;myNotification&quot;</span><span class="p">,</span> <span class="s">@&quot;myNote&quot;</span><span class="p">,</span> <span class="nb">nil</span><span class="p">];</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="k">return</span> <span class="p">[</span><span class="n">NSDictionary</span> <span class="nl">dictionaryWithObjectsAndKeys:</span><span class="n">allNotes</span><span class="p">,</span> <span class="n">GROWL_NOTIFICATIONS_ALL</span><span class="p">,</span> <span class="n">defaultNotes</span><span class="p">,</span> <span class="n">GROWL_NOTIFICATIONS_DEFAULT</span><span class="p">,</span> <span class="nb">nil</span><span class="p">];</span>
+</span><span class='line'>    <span class="k">return</span> <span class="p">[</span><span class="bp">NSDictionary</span> <span class="nl">dictionaryWithObjectsAndKeys</span><span class="p">:</span><span class="n">allNotes</span><span class="p">,</span> <span class="n">GROWL_NOTIFICATIONS_ALL</span><span class="p">,</span> <span class="n">defaultNotes</span><span class="p">,</span> <span class="n">GROWL_NOTIFICATIONS_DEFAULT</span><span class="p">,</span> <span class="nb">nil</span><span class="p">];</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
@@ -137,7 +130,7 @@
 <p>如果没有利用任何一种方法注册提示信息，程序在编译时，在控制台上会出现下面这样错误信息：</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="mi">2011</span><span class="o">-</span><span class="mo">05</span><span class="o">-</span><span class="mi">26</span> <span class="mi">20</span><span class="o">:</span><span class="mi">08</span><span class="o">:</span><span class="mf">13.469</span> <span class="n">GrowlTest</span><span class="p">[</span><span class="mi">1644</span><span class="o">:</span><span class="mi">903</span><span class="p">]</span> <span class="nl">GrowlApplicationBridge:</span> <span class="n">The</span> <span class="n">Growl</span> <span class="n">delegate</span> <span class="n">did</span> <span class="n">not</span> <span class="n">supply</span> <span class="n">a</span> <span class="n">registration</span> <span class="n">dictionary</span><span class="p">,</span> <span class="n">and</span> <span class="n">the</span> <span class="n">app</span> <span class="n">bundle</span> <span class="n">at</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">venj</span><span class="o">/</span><span class="n">Library</span><span class="o">/</span><span class="n">Developer</span><span class="o">/</span><span class="n">Xcode</span><span class="o">/</span><span class="n">DerivedData</span><span class="o">/</span><span class="n">GrowlTest</span><span class="o">-</span><span class="n">hetkeinkpxbuynbhprgdyoywkrif</span><span class="o">/</span><span class="n">Build</span><span class="o">/</span><span class="n">Products</span><span class="o">/</span><span class="n">Debug</span><span class="o">/</span><span class="n">GrowlTest</span><span class="p">.</span><span class="n">app</span> <span class="n">does</span> <span class="n">not</span> <span class="n">have</span> <span class="n">one</span><span class="p">.</span> <span class="n">Please</span> <span class="n">tell</span> <span class="n">this</span> <span class="n">application</span><span class="err">&#39;</span><span class="n">s</span> <span class="n">developer</span><span class="mf">.2011</span><span class="o">-</span><span class="mo">05</span><span class="o">-</span><span class="mi">26</span> <span class="mi">20</span><span class="o">:</span><span class="mi">08</span><span class="o">:</span><span class="mf">13.668</span> <span class="n">GrowlTest</span><span class="p">[</span><span class="mi">1644</span><span class="o">:</span><span class="mi">903</span><span class="p">]</span> <span class="n">not</span> <span class="n">installed</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="mi">2011</span><span class="o">-</span><span class="mo">05</span><span class="o">-</span><span class="mi">26</span> <span class="mi">20</span><span class="o">:</span><span class="mi">08</span><span class="o">:</span><span class="mf">13.469</span> <span class="n">GrowlTest</span><span class="p">[</span><span class="mi">1644</span><span class="o">:</span><span class="mi">903</span><span class="p">]</span> <span class="nl">GrowlApplicationBridge</span><span class="p">:</span> <span class="n">The</span> <span class="n">Growl</span> <span class="n">delegate</span> <span class="n">did</span> <span class="n">not</span> <span class="n">supply</span> <span class="n">a</span> <span class="n">registration</span> <span class="n">dictionary</span><span class="p">,</span> <span class="n">and</span> <span class="n">the</span> <span class="n">app</span> <span class="n">bundle</span> <span class="n">at</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">venj</span><span class="o">/</span><span class="n">Library</span><span class="o">/</span><span class="n">Developer</span><span class="o">/</span><span class="n">Xcode</span><span class="o">/</span><span class="n">DerivedData</span><span class="o">/</span><span class="n">GrowlTest</span><span class="o">-</span><span class="n">hetkeinkpxbuynbhprgdyoywkrif</span><span class="o">/</span><span class="n">Build</span><span class="o">/</span><span class="n">Products</span><span class="o">/</span><span class="n">Debug</span><span class="o">/</span><span class="n">GrowlTest</span><span class="p">.</span><span class="n">app</span> <span class="n">does</span> <span class="n">not</span> <span class="n">have</span> <span class="n">one</span><span class="p">.</span> <span class="n">Please</span> <span class="n">tell</span> <span class="n">this</span> <span class="n">application</span><span class="err">&#39;</span><span class="n">s</span> <span class="n">developer</span><span class="mf">.2011</span><span class="o">-</span><span class="mo">05</span><span class="o">-</span><span class="mi">26</span> <span class="mi">20</span><span class="o">:</span><span class="mi">08</span><span class="o">:</span><span class="mf">13.668</span> <span class="n">GrowlTest</span><span class="p">[</span><span class="mi">1644</span><span class="o">:</span><span class="mi">903</span><span class="p">]</span> <span class="n">not</span> <span class="n">installed</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -148,8 +141,8 @@
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">showGrowl:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">GrowlApplicationBridge</span> <span class="nl">notifyWithTitle:</span><span class="s">@&quot;The Title&quot;</span> <span class="nl">description:</span><span class="s">@&quot;This is a notification description.&quot;</span> <span class="nl">notificationName:</span><span class="s">@&quot;myNote&quot;</span> <span class="nl">iconData:</span><span class="nb">nil</span> <span class="nl">priority:</span><span class="mi">0</span> <span class="nl">isSticky:</span><span class="n">NO</span> <span class="nl">clickContext:</span><span class="nb">nil</span><span class="p">];</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">showGrowl:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">GrowlApplicationBridge</span> <span class="nl">notifyWithTitle</span><span class="p">:</span><span class="s">@&quot;The Title&quot;</span> <span class="nl">description</span><span class="p">:</span><span class="s">@&quot;This is a notification description.&quot;</span> <span class="nl">notificationName</span><span class="p">:</span><span class="s">@&quot;myNote&quot;</span> <span class="nl">iconData</span><span class="p">:</span><span class="nb">nil</span> <span class="nl">priority</span><span class="p">:</span><span class="mi">0</span> <span class="nl">isSticky</span><span class="p">:</span><span class="nb">NO</span> <span class="nl">clickContext</span><span class="p">:</span><span class="nb">nil</span><span class="p">];</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
@@ -163,13 +156,13 @@
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="o">+</span><span class="p">[</span><span class="n">GrowlApplicationBridge</span> <span class="nl">notifyWithTitle:</span>
-</span><span class='line'>    <span class="nl">description:</span>
-</span><span class='line'>    <span class="nl">notificationName:</span>
-</span><span class='line'>    <span class="nl">iconData:</span>
-</span><span class='line'>    <span class="nl">priority:</span>
-</span><span class='line'>    <span class="nl">isSticky:</span>
-</span><span class='line'>    <span class="nl">clickContext:</span><span class="p">]</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="o">+</span><span class="p">[</span><span class="n">GrowlApplicationBridge</span> <span class="nl">notifyWithTitle</span><span class="p">:</span>
+</span><span class='line'>    <span class="nl">description</span><span class="p">:</span>
+</span><span class='line'>    <span class="nl">notificationName</span><span class="p">:</span>
+</span><span class='line'>    <span class="nl">iconData</span><span class="p">:</span>
+</span><span class='line'>    <span class="nl">priority</span><span class="p">:</span>
+</span><span class='line'>    <span class="nl">isSticky</span><span class="p">:</span>
+</span><span class='line'>    <span class="nl">clickContext</span><span class="p">:]</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -207,10 +200,10 @@
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nf">growlInstallationWindowTitle</span><span class="p">;</span>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nf">growlUpdateWindowTitle</span><span class="p">;</span>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSAttributedString</span> <span class="o">*</span><span class="p">)</span><span class="nf">growlInstallationInformation</span><span class="p">;</span>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSAttributedString</span> <span class="o">*</span><span class="p">)</span><span class="nf">growlUpdateInformation</span><span class="p">;</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nf">growlInstallationWindowTitle</span><span class="p">;</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nf">growlUpdateWindowTitle</span><span class="p">;</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="bp">NSAttributedString</span> <span class="o">*</span><span class="p">)</span><span class="nf">growlInstallationInformation</span><span class="p">;</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="bp">NSAttributedString</span> <span class="o">*</span><span class="p">)</span><span class="nf">growlUpdateInformation</span><span class="p">;</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -305,13 +298,13 @@
 </span><span class='line'><span class="cp">#import &lt;Cocoa/Cocoa.h&gt;</span>
 </span><span class='line'><span class="cp">#import &quot;Growl-WithInstaller/Growl.h&quot;</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">@interface</span> <span class="nc">GrowlTestAppDelegate</span> : <span class="nc">NSObject</span> <span class="o">&lt;</span><span class="n">NSApplicationDelegate</span><span class="p">,</span> <span class="n">GrowlApplicationBridgeDelegate</span><span class="o">&gt;</span> <span class="p">{</span>
+</span><span class='line'><span class="k">@interface</span> <span class="nc">GrowlTestAppDelegate</span> : <span class="bp">NSObject</span> <span class="o">&lt;</span><span class="n">NSApplicationDelegate</span><span class="p">,</span> <span class="n">GrowlApplicationBridgeDelegate</span><span class="o">&gt;</span> <span class="p">{</span>
 </span><span class='line'><span class="k">@private</span>
 </span><span class='line'>    <span class="n">NSWindow</span> <span class="o">*</span><span class="n">window</span><span class="p">;</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="n">assign</span><span class="p">)</span> <span class="kt">IBOutlet</span> <span class="n">NSWindow</span> <span class="o">*</span><span class="n">window</span><span class="p">;</span>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">showGrowl:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span><span class="p">;</span>
+</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="k">assign</span><span class="p">)</span> <span class="kt">IBOutlet</span> <span class="n">NSWindow</span> <span class="o">*</span><span class="n">window</span><span class="p">;</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">showGrowl:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span><span class="p">;</span>
 </span><span class='line'>
 </span><span class='line'><span class="k">@end</span>
 </span><span class='line'>
@@ -323,17 +316,17 @@
 </span><span class='line'>
 </span><span class='line'><span class="k">@synthesize</span> <span class="n">window</span><span class="p">;</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">applicationDidFinishLaunching:</span><span class="p">(</span><span class="n">NSNotification</span> <span class="o">*</span><span class="p">)</span><span class="nv">aNotification</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">applicationDidFinishLaunching:</span><span class="p">(</span><span class="bp">NSNotification</span> <span class="o">*</span><span class="p">)</span><span class="nv">aNotification</span>
 </span><span class='line'><span class="p">{</span>
 </span><span class='line'>    <span class="c1">// Insert code here to initialize your application</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">GrowlApplicationBridge</span> <span class="nl">setGrowlDelegate:</span><span class="n">self</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">GrowlApplicationBridge</span> <span class="nl">setGrowlDelegate</span><span class="p">:</span><span class="nb">self</span><span class="p">];</span>
 </span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">[</span><span class="n">GrowlApplicationBridge</span> <span class="n">isGrowlInstalled</span><span class="p">])</span> <span class="p">{</span>
 </span><span class='line'>        <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;not installed&quot;</span><span class="p">);</span>
 </span><span class='line'>    <span class="p">}</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">showGrowl:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">GrowlApplicationBridge</span> <span class="nl">notifyWithTitle:</span><span class="s">@&quot;The Title&quot;</span> <span class="nl">description:</span><span class="s">@&quot;This is a notification description.&quot;</span> <span class="nl">notificationName:</span><span class="s">@&quot;myNote&quot;</span> <span class="nl">iconData:</span><span class="nb">nil</span> <span class="nl">priority:</span><span class="mi">0</span> <span class="nl">isSticky:</span><span class="n">NO</span> <span class="nl">clickContext:</span><span class="s">@&quot;God&quot;</span><span class="p">];</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">showGrowl:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">GrowlApplicationBridge</span> <span class="nl">notifyWithTitle</span><span class="p">:</span><span class="s">@&quot;The Title&quot;</span> <span class="nl">description</span><span class="p">:</span><span class="s">@&quot;This is a notification description.&quot;</span> <span class="nl">notificationName</span><span class="p">:</span><span class="s">@&quot;myNote&quot;</span> <span class="nl">iconData</span><span class="p">:</span><span class="nb">nil</span> <span class="nl">priority</span><span class="p">:</span><span class="mi">0</span> <span class="nl">isSticky</span><span class="p">:</span><span class="nb">NO</span> <span class="nl">clickContext</span><span class="p">:</span><span class="s">@&quot;God&quot;</span><span class="p">];</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
 </span><span class='line'><span class="cp"># pragma mark - Growl Delegate</span>
@@ -345,35 +338,35 @@
 </span><span class='line'><span class="c1">//    return [NSDictionary dictionaryWithObjectsAndKeys:allNotes, GROWL_NOTIFICATIONS_ALL, defaultNotes, GROWL_NOTIFICATIONS_DEFAULT, nil];</span>
 </span><span class='line'><span class="c1">//}</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">growlIsReady</span> <span class="p">{</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">growlIsReady</span> <span class="p">{</span>
 </span><span class='line'>    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;Growl is up and running.&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">self</span> <span class="nl">showGrowl:</span><span class="nb">nil</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="nb">self</span> <span class="nl">showGrowl</span><span class="p">:</span><span class="nb">nil</span><span class="p">];</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">growlNotificationTimedOut:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">clickContext</span> <span class="p">{</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">growlNotificationTimedOut:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">clickContext</span> <span class="p">{</span>
 </span><span class='line'>    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%@, I&#39;m disappearing...&quot;</span><span class="p">,</span> <span class="n">clickContext</span><span class="p">);</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">growlNotificationWasClicked:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">clickContext</span> <span class="p">{</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">growlNotificationWasClicked:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">clickContext</span> <span class="p">{</span>
 </span><span class='line'>    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%@, I&#39;m clicked...&quot;</span><span class="p">,</span> <span class="n">clickContext</span><span class="p">);</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSData</span> <span class="o">*</span><span class="p">)</span> <span class="nf">applicationIconDataForGrowl</span> <span class="p">{</span>
-</span><span class='line'>    <span class="n">NSData</span> <span class="o">*</span><span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSData</span> <span class="nl">dataWithContentsOfFile:</span><span class="p">[[</span><span class="n">NSBundle</span> <span class="n">mainBundle</span><span class="p">]</span> <span class="nl">pathForImageResource:</span><span class="s">@&quot;lame&quot;</span><span class="p">]];</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="bp">NSData</span> <span class="o">*</span><span class="p">)</span> <span class="nf">applicationIconDataForGrowl</span> <span class="p">{</span>
+</span><span class='line'>    <span class="bp">NSData</span> <span class="o">*</span><span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSData</span> <span class="nl">dataWithContentsOfFile</span><span class="p">:[[</span><span class="bp">NSBundle</span> <span class="n">mainBundle</span><span class="p">]</span> <span class="nl">pathForImageResource</span><span class="p">:</span><span class="s">@&quot;lame&quot;</span><span class="p">]];</span>
 </span><span class='line'>    <span class="k">return</span> <span class="n">data</span><span class="p">;</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span> <span class="nf">applicationNameForGrowl</span> <span class="p">{</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span> <span class="nf">applicationNameForGrowl</span> <span class="p">{</span>
 </span><span class='line'>    <span class="k">return</span> <span class="s">@&quot;GrowlAppTest&quot;</span><span class="p">;</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
 </span><span class='line'><span class="cp"># pragma mark - Growl Installer Delegate</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nf">growlInstallationWindowTitle</span> <span class="p">{</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nf">growlInstallationWindowTitle</span> <span class="p">{</span>
 </span><span class='line'>    <span class="k">return</span> <span class="s">@&quot;Install Growl&quot;</span><span class="p">;</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nf">growlUpdateWindowTitle</span> <span class="p">{</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nf">growlUpdateWindowTitle</span> <span class="p">{</span>
 </span><span class='line'>    <span class="k">return</span> <span class="s">@&quot;Update Growl&quot;</span><span class="p">;</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
@@ -405,19 +398,12 @@
 
 
 
-
-
-
-
-  
-
-
-<time datetime="2011-05-26T21:07:00+08:00" pubdate data-updated="true">May 26<span>th</span>, 2011</time>
+<time class='entry-date' datetime='2011-05-26T21:07:00+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>26</span><span class='date-suffix'>th</span>, <span class='date-year'>2011</span></span> <span class='time'>9:07 pm</span></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/framework/'>Framework</a>, <a class='category' href='/blog/categories/growl/'>Growl</a>
+    <a class='category' href='/blog/categories/framework/'>framework</a>, <a class='category' href='/blog/categories/growl/'>growl</a>
   
 </span>
 
@@ -426,7 +412,7 @@
     
       <div class="sharing">
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://venj.github.io/blog/add-growl-support-in-your-apps-coding-growl/" data-via="" data-counturl="http://venj.github.io/blog/add-growl-support-in-your-apps-coding-growl/" >Tweet</a>
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://cocoa.venj.me/blog/add-growl-support-in-your-apps-coding-growl/" data-via="" data-counturl="http://cocoa.venj.me/blog/add-growl-support-in-your-apps-coding-growl/" >Tweet</a>
   
   
   
@@ -465,23 +451,23 @@
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
+        <a href="/blog/ios9-readable-content-guide/">iOS 9的TableView和Readable Content Guide</a>
       </li>
     
       <li class="post">
-        <a href="/blog/simple-uiimage-extension-to-create-rounded-corner-image/">一个简单的创建圆角图像的UIImage扩展实现</a>
+        <a href="/blog/openurl-on-ios9/">iOS 9下使用openURL:</a>
       </li>
     
       <li class="post">
-        <a href="/blog/push-viewcontroller-hide-buttom-bar/">推View Controller时隐藏TabBar</a>
+        <a href="/blog/app-transportation-security/">iOS 9中的App Transport Security</a>
       </li>
     
       <li class="post">
-        <a href="/blog/code-box-like-window-open-animation/">CodeBox风格的窗口打开动画</a>
+        <a href="/blog/alamofire-ssl/">让Alamofire使用自签名证书</a>
       </li>
     
       <li class="post">
-        <a href="/blog/localized-loading-screen/">本地化加载屏幕</a>
+        <a href="/blog/disable-corestorage-on-os-x-yosemite/">禁用OS X Yosemite上的Core Storage</a>
       </li>
     
   </ul>
@@ -530,7 +516,7 @@
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2011 - 2014 - venj -
+  Copyright &copy; 2011 - 2015 - venj -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> &amp; <a href="http://pages.github.com">Github Pages</a></span>
 </p>
 
@@ -542,8 +528,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://venj.github.io/blog/add-growl-support-in-your-apps-coding-growl/';
-        var disqus_url = 'http://venj.github.io/blog/add-growl-support-in-your-apps-coding-growl/';
+        var disqus_identifier = 'http://cocoa.venj.me/blog/add-growl-support-in-your-apps-coding-growl/';
+        var disqus_url = 'http://cocoa.venj.me/blog/add-growl-support-in-your-apps-coding-growl/';
         var disqus_script = 'embed.js';
       
     (function () {

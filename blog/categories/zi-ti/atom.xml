@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: 字体 | Cocoa学习]]></title>
-  <link href="http://venj.github.io/blog/categories/zi-ti/atom.xml" rel="self"/>
-  <link href="http://venj.github.io/"/>
-  <updated>2014-01-22T11:14:45+08:00</updated>
-  <id>http://venj.github.io/</id>
+  <link href="http://cocoa.venj.me/blog/categories/zi-ti/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[在iOS程序中使用自定义字体]]></title>
-    <link href="http://venj.github.io/blog/custom-fonts-in-ios-apps/"/>
+    <link href="http://cocoa.venj.me/blog/custom-fonts-in-ios-apps/"/>
     <updated>2012-01-10T10:58:00+08:00</updated>
-    <id>http://venj.github.io/blog/custom-fonts-in-ios-apps</id>
+    <id>http://cocoa.venj.me/blog/custom-fonts-in-ios-apps</id>
     <content type="html"><![CDATA[<p>好久没有更新这里了，今天开始慢慢恢复更新。好了，废话不多说，开始讲正题。今天的话题其实也很简单，那就是在iOS中使用自定义字体。</p>
 
 <p>虽然iOS自带的字体通常已经足够我们使用了，但是，对于某些特殊程序来说，比如，电子书程序，可能需要用到一些特殊的字体，或者需要用更好看的字体来达到我们想要的显示效果。不过，iOS是不支持系统级安装新字体的。不过在iOS 3.x中，我们已经可以用一个很简单的方法来使用自定义字体了。</p>
@@ -31,17 +31,13 @@
 <!-- more -->
 
 
-<p>``` objc
-&ndash; (void)viewDidLoad
-{</p>
-
-<pre><code>[super viewDidLoad];
-// 在viewDidLoad方法中设置字体。
-self.tv.font = [UIFont fontWithName:@"PT Sans" size:20];
+<pre><code class="objc">- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    // 在viewDidLoad方法中设置字体。
+    self.tv.font = [UIFont fontWithName:@"PT Sans" size:20];
+}
 </code></pre>
-
-<p>}
-```</p>
 
 <p>下面是在iOS模拟器中的显示效果：</p>
 

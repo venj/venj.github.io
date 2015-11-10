@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Sparkle | Cocoa学习]]></title>
-  <link href="http://venj.github.io/blog/categories/sparkle/atom.xml" rel="self"/>
-  <link href="http://venj.github.io/"/>
-  <updated>2014-01-22T11:14:45+08:00</updated>
-  <id>http://venj.github.io/</id>
+  <link href="http://cocoa.venj.me/blog/categories/sparkle/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[用Sparkle为Cocoa程序增加自动升级]]></title>
-    <link href="http://venj.github.io/blog/auto-update-apps-with-sparkle/"/>
+    <link href="http://cocoa.venj.me/blog/auto-update-apps-with-sparkle/"/>
     <updated>2011-05-27T12:52:00+08:00</updated>
-    <id>http://venj.github.io/blog/auto-update-apps-with-sparkle</id>
+    <id>http://cocoa.venj.me/blog/auto-update-apps-with-sparkle</id>
     <content type="html"><![CDATA[<p>Mac OS X上的绝大部分程序都使用<a href="http://sparkle.andymatuschak.org/">Sparkle</a>来作为程序的自动升级工具。利用Sparkle，用户无需对升级过程进行干涉，只需跟着升级指示做就可以了。而Sparkle对于程序开发人员来说，使用也是相当方便。其实<a href="https://github.com/andymatuschak/Sparkle/wiki">Sparkle的文档</a>已经写的相当好了，不过我还是来简单写一下Sparkle的使用，用于备忘。</p>
 
 <p>首先到Sparkle的首页下载Sparkle框架。</p>
@@ -65,7 +65,7 @@
 
 <p><img class="center" src="/images/posts/sparkle-7.png"></p>
 
-<p>现在，编译程序的第一个版本Product &ndash; Build For &ndash; Build For Archiving。</p>
+<p>现在，编译程序的第一个版本Product - Build For - Build For Archiving。</p>
 
 <p><img class="center" src="/images/posts/sparkle-8.png"></p>
 
@@ -77,11 +77,11 @@
 
 <p>然后，我们把对程序做一个简单修改，比如在界面上加一个按钮，修改程序版本号为2，再次编译。把这次生成的程序打包成zip。因为这个是升级包，因此我们要对升级包进行数字签名。方法很简单：</p>
 
-<p><code>
-$ ./sign_update.rb SparkleTest.zip ~/.ssh/dsa_priv.pem
+<pre><code>$ ./sign_update.rb SparkleTest.zip ~/.ssh/dsa_priv.pem
 MCwCFCV4IgyLAsp/zrg6mZXsoVRYwXsEAhQ+HKKhHzaEc3EcLOSc0X/PdKWfOA==
-</code>
-记录下返回的字符串——这是升级包的签名。后面马上就要用到。</p>
+</code></pre>
+
+<p>记录下返回的字符串——这是升级包的签名。后面马上就要用到。</p>
 
 <ol>
 <li>设置AppCast服务器</li>
@@ -94,29 +94,26 @@ MCwCFCV4IgyLAsp/zrg6mZXsoVRYwXsEAhQ+HKKhHzaEc3EcLOSc0X/PdKWfOA==
 
 <p>AppCast服务器主要提供两个页面：1. appcast.xml，2. release note的页面。这两种文件个格式在Sparkle的下载包中都有样例。位于Extras目录下。我们复制Sample Appcast.xml，重命名为appcast.xml，放到“站点”目录下（还记得第一步我们设置的SUFeedURL值吗？）。然后进行编辑，具体我就不说了，XML文件很容易读。修改后的appcast.xml内容如下：</p>
 
-<p>``` xml
-&lt;?xml version=&ldquo;1.0&rdquo; encoding=&ldquo;utf-8&rdquo;?>
-<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle"  xmlns:dc="http://purl.org/dc/elements/1.1/">
-   <channel></p>
-
-<pre><code>  &lt;title&gt;Your Great App's Changelog&lt;/title&gt;
-  &lt;link&gt;http://127.0.0.1/~venj/appcast.xml&lt;/link&gt;
-  &lt;description&gt;Most recent changes with links to updates for SparkleTest.&lt;/description&gt;
-  &lt;language&gt;en&lt;/language&gt;
-     &lt;item&gt;
-        &lt;title&gt;Version 2 (2 bugs fixed; 3 new features)&lt;/title&gt;
-    &lt;sparkle:releaseNotesLink&gt;
-        http://127.0.0.1/~venj/rnotes/rnotes2.0.html
-    &lt;/sparkle:releaseNotesLink&gt;
-        &lt;pubDate&gt;Thu, 19 May 2011 19:20:11 +0000&lt;/pubDate&gt;
-        &lt;enclosure url="http://127.0.0.1/~venj/spar.zip" sparkle:version="2.0" length="1623481" type="application/octet-stream" sparkle:dsaSignature="MCwCFCV4IgyLAsp/zrg6mZXsoVRYwXsEAhQ+HKKhHzaEc3EcLOSc0X/PdKWfOA==" /&gt;
-     &lt;/item&gt;
+<pre><code class="xml">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle"  xmlns:dc="http://purl.org/dc/elements/1.1/"&gt;
+   &lt;channel&gt;
+      &lt;title&gt;Your Great App's Changelog&lt;/title&gt;
+      &lt;link&gt;http://127.0.0.1/~venj/appcast.xml&lt;/link&gt;
+      &lt;description&gt;Most recent changes with links to updates for SparkleTest.&lt;/description&gt;
+      &lt;language&gt;en&lt;/language&gt;
+         &lt;item&gt;
+            &lt;title&gt;Version 2 (2 bugs fixed; 3 new features)&lt;/title&gt;
+        &lt;sparkle:releaseNotesLink&gt;
+            http://127.0.0.1/~venj/rnotes/rnotes2.0.html
+        &lt;/sparkle:releaseNotesLink&gt;
+            &lt;pubDate&gt;Thu, 19 May 2011 19:20:11 +0000&lt;/pubDate&gt;
+            &lt;enclosure url="http://127.0.0.1/~venj/spar.zip" sparkle:version="2.0" length="1623481" type="application/octet-stream" sparkle:dsaSignature="MCwCFCV4IgyLAsp/zrg6mZXsoVRYwXsEAhQ+HKKhHzaEc3EcLOSc0X/PdKWfOA==" /&gt;
+         &lt;/item&gt;
+   &lt;/channel&gt;
+&lt;/rss&gt;
 </code></pre>
 
-<p>   </channel>
-</rss>
-<code>``
-我们可以任意修改</code><title><code>和</code><description><code>。</code><link><code>的值为appcast.xml的路径；</code><item><code>里根据实际修改。需要注意的是，</code><enclosure><code>的</code>sparkle:dsaSigniture`的值要设置为上面签署升级包时返回的字符串。</p>
+<p>我们可以任意修改<code>&lt;title&gt;</code>和<code>&lt;description&gt;</code>。<code>&lt;link&gt;</code>的值为appcast.xml的路径；<code>&lt;item&gt;</code>里根据实际修改。需要注意的是，<code>&lt;enclosure&gt;</code>的<code>sparkle:dsaSigniture</code>的值要设置为上面签署升级包时返回的字符串。</p>
 
 <p>再复制Extras里的Release Notes Template文件夹到“站点”目录下，把rnote.html重命名为rnote2.0.html。你可以任意修改这个HTML文件，编写详细的发行注记。</p>
 

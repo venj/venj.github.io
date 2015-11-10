@@ -9,7 +9,7 @@
   <meta name="author" content="venj">
 
   
-  <meta name="description" content="昨天写过一个博文，介绍了创建圆角矩形图像的方法。现在，我再介绍一个“显示”圆角图像的方法。 这种方法利用的是UIImageView的layer的属性，实现把图像显示成圆角，而无需对图像本身进行处理。在开发中，大部分情况下，我们只需要“显示”圆角，而不是“得到”圆角图像。不是么。好了，先看代码： ">
+  <meta name="description" content="相信很多开发者在把应用迁移到iOS 9的时候发现了如下现象。那就是TableView在iOS 9的iPad或iPhone 6 Plus的横屏模式时，表格两边有巨大的空白边缘。 ">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,13 +18,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://venj.github.io">
+  <link rel="canonical" href="http://cocoa.venj.me/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Cocoa学习" type="application/atom+xml">
   <script src="/javascripts/modernizr-2.0.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
 <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
@@ -50,7 +50,7 @@
   
 <form action="http://google.com/search" method="get">
   <fieldset role="search">
-    <input type="hidden" name="q" value="site:venj.github.io" />
+    <input type="hidden" name="sitesearch" value="cocoa.venj.me">
     <input class="search" type="text" name="q" results="0" placeholder="Search"/>
   </fieldset>
 </form>
@@ -72,7 +72,7 @@
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a></h1>
+      <h1 class="entry-title"><a href="/blog/ios9-readable-content-guide/">iOS 9的TableView和Readable Content Guide</a></h1>
     
     
       <p class="meta">
@@ -81,29 +81,22 @@
 
 
 
-
-
-
-
-  
-
-
-<time datetime="2014-01-21T09:13:01+08:00" pubdate data-updated="true">Jan 21<span>st</span>, 2014</time>
+<time class='entry-date' datetime='2015-11-10T14:00:02+08:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>10</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>2:00 pm</span></time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>昨天写过一个<a href="/blog/simple-uiimage-extension-to-create-rounded-corner-image/">博文</a>，介绍了创建圆角矩形图像的方法。现在，我再介绍一个<strong>“显示”</strong>圆角图像的方法。</p>
+  <div class="entry-content"><p>相信很多开发者在把应用迁移到iOS 9的时候发现了如下现象。那就是TableView在iOS 9的iPad或iPhone 6 Plus的横屏模式时，表格两边有巨大的空白边缘。</p>
 
-<p>这种方法利用的是<code>UIImageView</code>的<code>layer</code>的属性，实现把图像显示成圆角，而无需对图像本身进行处理。在开发中，大部分情况下，我们只需要“显示”圆角，而不是“得到”圆角图像。不是么。好了，先看代码：</p>
+<p><img class="center" src="/images/posts/ios9_rcg.png"></p>
 
 </div>
   
   
     <footer>
-      <a rel="full-article" href="/blog/rounded-corner-image-with-layer-and-image-view/">继续阅读 &rarr;</a>
+      <a rel="full-article" href="/blog/ios9-readable-content-guide/">继续阅读 &rarr;</a>
     </footer>
   
 
@@ -115,7 +108,7 @@
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/simple-uiimage-extension-to-create-rounded-corner-image/">一个简单的创建圆角图像的UIImage扩展实现</a></h1>
+      <h1 class="entry-title"><a href="/blog/openurl-on-ios9/">iOS 9下使用openURL:</a></h1>
     
     
       <p class="meta">
@@ -124,27 +117,22 @@
 
 
 
-
-
-
-
-  
-
-
-<time datetime="2014-01-20T13:58:15+08:00" pubdate data-updated="true">Jan 20<span>th</span>, 2014</time>
+<time class='entry-date' datetime='2015-11-09T16:12:18+08:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>4:12 pm</span></time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>在iOS开发中经常需要用到圆角图像。简单搜索一下就能找到很多创建圆角图像的实现代码。我在<a href="http://stackoverflow.com/questions/10563986/uiimage-with-rounded-corners">Stack Overflow</a>上找到了一段代码，略微修改了一下，写了个简单的Category方法，可以用来创建圆角图像。代码如下：</p>
+  <div class="entry-content"><p>iOS 9在各方面增强了安全性，最明显的变化，除了<a href="/blog/app-transportation-security/">ATS</a>之外，那就是openURL的变化了。在iOS 9之前，应用可以使用<code>UIApplication</code>的<code>openURL:</code>方法，打开任意自定义Scheme的链接时（比如twitter://， fb://等）－－只要iOS支持。从iOS 9开始，相信很多人都见过这样的对话框：</p>
+
+<p><img class="center" src="/images/posts/open-url-ios-9.png"></p>
 
 </div>
   
   
     <footer>
-      <a rel="full-article" href="/blog/simple-uiimage-extension-to-create-rounded-corner-image/">继续阅读 &rarr;</a>
+      <a rel="full-article" href="/blog/openurl-on-ios9/">继续阅读 &rarr;</a>
     </footer>
   
 
@@ -156,7 +144,7 @@
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/push-viewcontroller-hide-buttom-bar/">推View Controller时隐藏TabBar</a></h1>
+      <h1 class="entry-title"><a href="/blog/app-transportation-security/">iOS 9中的App Transport Security</a></h1>
     
     
       <p class="meta">
@@ -165,31 +153,22 @@
 
 
 
-
-
-
-
-  
-
-
-<time datetime="2014-01-07T10:53:17+08:00" pubdate data-updated="true">Jan 7<span>th</span>, 2014</time>
+<time class='entry-date' datetime='2015-11-09T15:49:38+08:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>3:49 pm</span></time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>设想一个场景，RootViewController是一个TabBarController，里面的子Controller是一个NavigationController。NavigationController的子ViewController在执行<code>-pushViewController:animated:</code>的时候，默认情况下，这个新的ViewController将会被UITabBar覆盖。</p>
+  <div class="entry-content"><p>从iOS 9开始，系统默认已经不允许iOS应用访问不安全的链接（包括HTTP，以及被认为不安全的HTTPS请求）。很多开发者在把iOS应用迁移到iOS 9时，碰到的第一个问题，大致就是这个问题了。</p>
 
-<p>但是有时，我们希望推入这个新的ViewController的时候，TabBarController也被推走。要做到这一点其实很简单，只需要在这个新的ViewController上设置<code>hidesBottomBarWhenPushed</code>属性为<code>YES</code>。</p>
-
-<p>示例代码如下：</p>
+<p>虽然跳过iOS 9的这个默认安全设定并不是一个好的实践，但有时候免不了需要访问一些不安全的地址。要一劳永逸的全局跳过ATS，可以直接在Info.plist中加入以下值：</p>
 
 </div>
   
   
     <footer>
-      <a rel="full-article" href="/blog/push-viewcontroller-hide-buttom-bar/">继续阅读 &rarr;</a>
+      <a rel="full-article" href="/blog/app-transportation-security/">继续阅读 &rarr;</a>
     </footer>
   
 
@@ -201,7 +180,7 @@
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/code-box-like-window-open-animation/">CodeBox风格的窗口打开动画</a></h1>
+      <h1 class="entry-title"><a href="/blog/alamofire-ssl/">让Alamofire使用自签名证书</a></h1>
     
     
       <p class="meta">
@@ -210,29 +189,20 @@
 
 
 
-
-
-
-
-  
-
-
-<time datetime="2013-06-03T16:51:00+08:00" pubdate data-updated="true">Jun 3<span>rd</span>, 2013</time>
+<time class='entry-date' datetime='2015-11-09T15:35:05+08:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>3:35 pm</span></time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>一直觉得<a href="http://www.shpakovski.com/codebox/">CodeBox</a>的窗口呈现动画很帅气－－就是窗口Bounce了一下的那个效果。对了，就是<code>NSAlert</code>在OSX Lion下的显示的时候那个动画。我一直试图复刻那个动画，但是每次都灰头土脸的结束各种尝试。</p>
-
-<p>今天搜索网络，在StackOverflow上找到了<a href="http://stackoverflow.com/questions/14591785/how-to-open-a-nswindow-with-a-popup-animation">答案</a>－－事实上，我曾经多次无限接近正确答案，但最终还是没有成功。</p>
+  <div class="entry-content"><p>Alamofire每次大版本号更新，都会引入大量API更新。3.x版更新用Swift 2.0的新特征更新了很多接口。网上很多关于Alamofire如何使用自定义SSL证书的文章都已经过时。经过一番搜索，最后找到了一个靠谱的解决方案。</p>
 
 </div>
   
   
     <footer>
-      <a rel="full-article" href="/blog/code-box-like-window-open-animation/">继续阅读 &rarr;</a>
+      <a rel="full-article" href="/blog/alamofire-ssl/">继续阅读 &rarr;</a>
     </footer>
   
 
@@ -244,7 +214,7 @@
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/localized-loading-screen/">本地化加载屏幕</a></h1>
+      <h1 class="entry-title"><a href="/blog/disable-corestorage-on-os-x-yosemite/">禁用OS X Yosemite上的Core Storage</a></h1>
     
     
       <p class="meta">
@@ -253,73 +223,27 @@
 
 
 
-
-
-
-
-  
-
-
-<time datetime="2013-03-11T09:00:00+08:00" pubdate data-updated="true">Mar 11<span>th</span>, 2013</time>
+<time class='entry-date' datetime='2015-02-01T14:04:30+08:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>1</span><span class='date-suffix'>st</span>, <span class='date-year'>2015</span></span> <span class='time'>2:04 pm</span></time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>我一直有注意到“<a href="https://itunes.apple.com/app/da-ci-lin/id299029654?mt=8">大辞林</a>”程序针对不同的系统语言，加载屏幕（Loading Screen，也称Splash Screen）是不一样的。因为无可治愈的拖延症，导致我从来没有想着去研究一下为什么。今天闲来无事，简单的弄了个程序做了一下，解决了加载屏幕本地化的问题。问题的答案只有一句话：</p>
+  <div class="entry-content"><p>不管你发现没有，OS X Yosemite已经悄悄的把你的磁盘转成Core Storage了。做过Fusion Drive的同学一定知道Core Storage是实现Fusion Drive的核心技术。不过对于只有一个磁盘的MacBook来说，我有点不太理解苹果强制启用CoreStorage的理由。</p>
 
-<p>加载屏幕(Default.png)和其他的资源文件一样，可以在Xcode里直接设置本地化的！</p>
+<p><strong> 为什么要关闭Core Storage </strong></p>
 
-<p><del>（全文完）</del> 等等，既然写成博文了，怎么可以这么就结束了呢！好吧，那就略微详细一点，看一下在Xcode 4.6中如何一步一步地把加载屏幕本地化。</p>
+<p>当然，如果你在用Fusion Drive，那么Core Storage是你的好朋友。<span style="color:red;">如果你正在使用Fusion Drive，请无视本文！！！</span></p>
 
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/localized-loading-screen/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/refresh-control-gochas/">用代码触发下拉更新</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-20T14:55:00+08:00" pubdate data-updated="true">Dec 20<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><code>UIRefreshControl</code>是iOS 6中的一个新控件，这个控件就是大家熟悉的下拉更新控件。关于如何把<code>UIRefreshControl</code>集成至<code>UITableViewController</code>中相信大家都知道怎么做。至于用代码触发下拉更新，查看Apple的文档后，我们看到<code>UIRefreshControl</code>有一个方法：<code>- beginRefreshing</code>。写到这里，貌似问题依然解决，没什么好说的了。但是真是这样吗？让我们来创建一个测试项目进行验证：</p>
+<p>不过对于单磁盘的Mac来说，Core Storage有如下问题：</p>
 
 <ol>
-<li><p>创建一个Master-Detail Application项目，取名“RefreshControl”（你可以随便取），设备选iPhone，够上“Use Automatic Reference Counting”和“Use Storyboards”（你也可以不用Storyboard，反正差不多）。</p></li>
-<li><p>（可选）打开MainStoryboard.storyboard（或MasterViewController.xib，如果你在1中没有勾选Use Storyboards），启用Master View Controller的Refreshing。</p>
-
-<p><img class="center" src="/images/posts/master_refreshcontrol.png"></p></li>
-<li><p>打开MasterViewController.m，更改代码如下：</p></li>
+<li>按住Option开机，Recovery分区不见了；（当然，你可以按住Command + R启动，进Recovery。）</li>
+<li>无法随意调整Mac的分区了；</li>
+<li>磁盘实用工具尚未对Core Storage提供完整支持；</li>
+<li>Windows下无法挂载Core Storage分区，即使你装过BootCamp驱动；</li>
+<li>磁盘性能下降？（这个可能是个例。我升级OS X 10.10.2之后，明显感到系统卡顿，关闭Core Storage之后恢复正常。）</li>
 </ol>
 
 
@@ -327,8 +251,47 @@
   
   
     <footer>
-      <a rel="full-article" href="/blog/refresh-control-gochas/">继续阅读 &rarr;</a>
+      <a rel="full-article" href="/blog/disable-corestorage-on-os-x-yosemite/">继续阅读 &rarr;</a>
     </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/xcode-6-color-theme-path/">Xcode 6 Color Themes (颜色主题) 的路径</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-01-27T16:27:37+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>27</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>4:27 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>搜索引擎有时候并不能给你最好的结果，于是便有了这篇文章。今天为了找Xcode 6的配色主题路径，我搜了好久，结果找到的都是过时的信息。经过摸索终于找到正确答案，现贴在这里，希望能冲刷一下搜索引擎的旧信息。</p>
+
+<p>Xcode 6的颜色主题路径位于：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>~/Library/Developer/Xcode/UserData/FontAndColorThemes</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如果你下载了别人提供的漂亮的代码高亮颜色主题，比如<a href="https://github.com/tursunovic/xcode-themes">这个</a>，记得放到上面那个路径下。</p>
+
+<p>(全文完)</p>
+</div>
+  
   
 
 
@@ -336,7 +299,7 @@
   
   <div class="pagination">
     
-      <a class="prev" href="/blog/page/2/">&larr; Older</a>
+      <a class="prev" href="/page2">&larr; Older</a>
     
     <a href="/blog/archives">Blog Archives</a>
     
@@ -355,23 +318,23 @@
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
+        <a href="/blog/ios9-readable-content-guide/">iOS 9的TableView和Readable Content Guide</a>
       </li>
     
       <li class="post">
-        <a href="/blog/simple-uiimage-extension-to-create-rounded-corner-image/">一个简单的创建圆角图像的UIImage扩展实现</a>
+        <a href="/blog/openurl-on-ios9/">iOS 9下使用openURL:</a>
       </li>
     
       <li class="post">
-        <a href="/blog/push-viewcontroller-hide-buttom-bar/">推View Controller时隐藏TabBar</a>
+        <a href="/blog/app-transportation-security/">iOS 9中的App Transport Security</a>
       </li>
     
       <li class="post">
-        <a href="/blog/code-box-like-window-open-animation/">CodeBox风格的窗口打开动画</a>
+        <a href="/blog/alamofire-ssl/">让Alamofire使用自签名证书</a>
       </li>
     
       <li class="post">
-        <a href="/blog/localized-loading-screen/">本地化加载屏幕</a>
+        <a href="/blog/disable-corestorage-on-os-x-yosemite/">禁用OS X Yosemite上的Core Storage</a>
       </li>
     
   </ul>
@@ -380,7 +343,7 @@
 <section>
   <h1>GitHub Repos</h1>
   <ul id="gh_repos">
-    <li class="loading">Status updating&#8230;</li>
+    <li class="loading">Status updating...</li>
   </ul>
   
   <a href="https://github.com/venj">@venj</a> on GitHub
@@ -409,7 +372,7 @@
 <section>
   <h1>Blog Roll</h1>
   <ul>
-    <li><a href="http://blog.ilvelh.com">ilvelh&#8217;s blog</a></li>
+    <li><a href="http://blog.ilvelh.com">ilvelh's blog</a></li>
     <li><a href="http://rajna.github.io">GUWU DESIGNER</a></li>
   </ul>
 </section>
@@ -419,7 +382,7 @@
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2011 - 2014 - venj -
+  Copyright &copy; 2011 - 2015 - venj -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> &amp; <a href="http://pages.github.com">Github Pages</a></span>
 </p>
 

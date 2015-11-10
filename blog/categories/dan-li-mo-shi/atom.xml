@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: 单例模式 | Cocoa学习]]></title>
-  <link href="http://venj.github.io/blog/categories/dan-li-mo-shi/atom.xml" rel="self"/>
-  <link href="http://venj.github.io/"/>
-  <updated>2014-01-22T11:14:45+08:00</updated>
-  <id>http://venj.github.io/</id>
+  <link href="http://cocoa.venj.me/blog/categories/dan-li-mo-shi/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Objective-C中单例模式的实现]]></title>
-    <link href="http://venj.github.io/blog/singleton-in-objc/"/>
+    <link href="http://cocoa.venj.me/blog/singleton-in-objc/"/>
     <updated>2012-02-07T20:29:00+08:00</updated>
-    <id>http://venj.github.io/blog/singleton-in-objc</id>
+    <id>http://cocoa.venj.me/blog/singleton-in-objc</id>
     <content type="html"><![CDATA[<p>单例模式在Cocoa和Cocoa Touch中非常常见。比如这两个，<code>[UIApplication sharedApplication]</code>和<code>[NSApplication sharedApplication]</code>，大家应该都见过。但是我们应该如何在代码中实现一个单例模式呢？</p>
 
 <p>如果你对苹果的文档很熟悉的话，你一定知道，在<a href="https://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/CocoaFundamentals/Introduction/Introduction.html">Cocoa Foundamentals Guide</a>中有一段<a href="https://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/CocoaFundamentals/CocoaObjects/CocoaObjects.html#//apple_ref/doc/uid/TP40002974-CH4-SW32">实现单例模式的示例代码</a>。大致如下：</p>
@@ -25,67 +25,66 @@
 <!-- more -->
 
 
-<p>``` objc
-/<em> Singleton.h </em>/</p>
+<pre><code class="objc">/* Singleton.h */
+#import &amp;lt;Foundation/Foundation.h&amp;gt;
 
-<h1>import &lt;Foundation/Foundation.h&gt;</h1>
-
-<p>@interface Singleton : NSObject
+@interface Singleton : NSObject
 + (Singleton *)instance;
-@end</p>
+@end
 
-<p>/<em> Singleton.m </em>/</p>
+/* Singleton.m */
+#import "Singleton.h"
+static Singleton *instance = nil;
 
-<h1>import &ldquo;Singleton.h&rdquo;</h1>
+@implementation Singleton
 
-<p>static Singleton *instance = nil;</p>
++ (Singleton *)instance {
+    if (!instance) {
+        instance = [[super allocWithZone:NULL] init];
+    }
+    return instance;
+}
 
-<p>@implementation Singleton</p>
++ (id)allocWithZone:(NSZone *)zone {
+    return [self instance];
+}
 
-<ul>
-<li><p>(Singleton *)instance {
-  if (!instance) {
-      instance = [[super allocWithZone:NULL] init];
-  }
-  return instance;
-}</p></li>
-<li><p>(id)allocWithZone:(NSZone *)zone {
-  return [self instance];
-}</p></li>
-<li><p>(id)copyWithZone:(NSZone *)zone {
-  return self;
-}</p></li>
-<li><p>(id)init {
-  if (instance) {
-      return instance;
-  }
-  self = [super init];
-  return self;
-}</p></li>
-<li><p>(id)retain {
-  return self;
-}</p></li>
-<li><p>(oneway void)release {
-  // Do nothing
-}</p></li>
-<li><p>(id)autorelease {
-  return self;
-}</p></li>
-<li><p>(NSUInteger)retainCount {
-  return NSUIntegerMax;
-}</p></li>
-</ul>
+- (id)copyWithZone:(NSZone *)zone {
+    return self;
+}
 
+- (id)init {
+    if (instance) {
+        return instance;
+    }
+    self = [super init];
+    return self;
+}
 
-<p>@end
-```</p>
+- (id)retain {
+    return self;
+}
+
+- (oneway void)release {
+    // Do nothing
+}
+
+- (id)autorelease {
+    return self;
+}
+
+- (NSUInteger)retainCount {
+    return NSUIntegerMax;
+}
+
+@end
+</code></pre>
 
 <p>这是一种很标准的Singleton实现，中规中矩。不过这种实现并不是线程安全的。所以各路大神都各显神威，给出了多种单例模式的实现。</p>
 
 <p>Matt Gallagher在<a href="http://cocoawithlove.com/2008/11/singletons-appdelegates-and-top-level.html">博客</a>中放出了一个Macro，用来实现单例模式。虽然是一个宏定义的代码，但是具体实现还是很清楚的。代码如下：</p>
 
-<p>``` objc
-//
+<pre><code class="objc">//
 //  SynthesizeSingleton.h
 //  CocoaWithLove
 //
@@ -97,144 +96,117 @@
 //  that any redistribution (in part or whole) of source code must retain
 //  this copyright and permission notice. Attribution in compiled projects is
 //  appreciated but not required.
-//</p>
+//
 
-<h1>define SYNTHESIZE_SINGLETON_FOR_CLASS(classname) \</h1>
-
-<p> \
-static classname <em>shared##classname = nil; \
+#define SYNTHESIZE_SINGLETON_FOR_CLASS(classname) \
  \
-+ (classname </em>)shared##classname \
-{ \</p>
-
-<pre><code>@synchronized(self) \
+static classname *shared##classname = nil; \
+ \
++ (classname *)shared##classname \
 { \
-    if (shared##classname == nil) \
+    @synchronized(self) \
     { \
-        shared##classname = [[self alloc] init]; \
+        if (shared##classname == nil) \
+        { \
+            shared##classname = [[self alloc] init]; \
+        } \
     } \
+     \
+    return shared##classname; \
 } \
- \
-return shared##classname; \
-</code></pre>
-
-<p>} \
  \
 + (id)allocWithZone:(NSZone *)zone \
-{ \</p>
-
-<pre><code>@synchronized(self) \
 { \
-    if (shared##classname == nil) \
+    @synchronized(self) \
     { \
-        shared##classname = [super allocWithZone:zone]; \
-        return shared##classname; \
+        if (shared##classname == nil) \
+        { \
+            shared##classname = [super allocWithZone:zone]; \
+            return shared##classname; \
+        } \
     } \
+     \
+    return nil; \
 } \
  \
-return nil; \
-</code></pre>
-
-<p>} \
+- (id)copyWithZone:(NSZone *)zone \
+{ \
+    return self; \
+} \
  \
-&ndash; (id)copyWithZone:(NSZone *)zone \
-{ \</p>
-
-<pre><code>return self; \
-</code></pre>
-
-<p>} \
+- (id)retain \
+{ \
+    return self; \
+} \
  \
-&ndash; (id)retain \
-{ \</p>
-
-<pre><code>return self; \
-</code></pre>
-
-<p>} \
+- (NSUInteger)retainCount \
+{ \
+    return NSUIntegerMax; \
+} \
  \
-&ndash; (NSUInteger)retainCount \
-{ \</p>
-
-<pre><code>return NSUIntegerMax; \
-</code></pre>
-
-<p>} \
- \
-&ndash; (void)release \
+- (void)release \
 { \
 } \
  \
-&ndash; (id)autorelease \
-{ \</p>
-
-<pre><code>return self; \
+- (id)autorelease \
+{ \
+    return self; \
+}
 </code></pre>
-
-<p>}
-```</p>
 
 <p>然而，eschaton则觉得这些实现都太繁琐了，他给出的实现如下：</p>
 
-<p>``` objc
-@interface SomeManager : NSObject
+<pre><code class="objc">@interface SomeManager : NSObject
 + (id)sharedManager;
-@end</p>
+@end
 
-<p>/<em> 非线程安全的实现 </em>/
-@implementation SomeManager</p>
+/* 非线程安全的实现 */
+@implementation SomeManager
 
-<ul>
-<li><p>(id)sharedManager {
-  static id sharedManager = nil;</p>
++ (id)sharedManager {
+    static id sharedManager = nil;
 
-<p>  if (sharedManager == nil) {
-      sharedManager = [[self alloc] init];
-  }</p>
+    if (sharedManager == nil) {
+        sharedManager = [[self alloc] init];
+    }
 
-<p>  return sharedManager;
-}
-@end</p></li>
-</ul>
-
-
-<p>/<em> 线程安全的实现 </em>/
-@implementation SomeManager</p>
-
-<p>static id sharedManager = nil;</p>
-
-<ul>
-<li><p>(void)initialize {
-  if (self == [SomeManager class]) {
-      sharedManager = [[self alloc] init];
-  }
-}</p></li>
-<li><p>(id)sharedManager {
-  return sharedManager;
+    return sharedManager;
 }
 @end
-```
-关于为什么上述代码就能实现单例模式，以及关于线程安全问题的考量，请参考他的<a href="http://eschatologist.net/blog/?p=178">博客</a>。</p></li>
-</ul>
 
+/* 线程安全的实现 */
+@implementation SomeManager
+
+static id sharedManager = nil;
+
++ (void)initialize {
+    if (self == [SomeManager class]) {
+        sharedManager = [[self alloc] init];
+    }
+}
+
++ (id)sharedManager {
+    return sharedManager;
+}
+@end
+</code></pre>
+
+<p>关于为什么上述代码就能实现单例模式，以及关于线程安全问题的考量，请参考他的<a href="http://eschatologist.net/blog/?p=178">博客</a>。</p>
 
 <p>最后介绍一个比较<a href="http://lukeredpath.co.uk/blog/a-note-on-objective-c-singletons.html">现代的单例模式实现</a>。为什么说现代呢？因为这种实现利用了GCD（Grand Central Dispatch）和ARC（Automatic Reference Counting）。核心代码如下：</p>
 
-<p>``` objc
-+ (id)sharedInstance
+<pre><code class="objc">+ (id)sharedInstance
 {
   static dispatch_once_t pred = 0;
-  <em>_strong static id </em>sharedObject = nil;
-  dispatch_once(&amp;pred, ^{</p>
-
-<pre><code>_sharedObject = [[self alloc] init]; // or some other init method
-</code></pre>
-
-<p>  });
+  __strong static id _sharedObject = nil;
+  dispatch_once(&amp;pred, ^{
+    _sharedObject = [[self alloc] init]; // or some other init method
+  });
   return _sharedObject;
 }
-```
-作者还写了一个宏（<a href="https://gist.github.com/1057420">gist</a>）来方便使用，大家可以阅读作者的博文<a href="http://lukeredpath.co.uk/blog/a-note-on-objective-c-singletons.html">A note on Objective-C singletons</a>了解详情。</p>
+</code></pre>
+
+<p>作者还写了一个宏（<a href="https://gist.github.com/1057420">gist</a>）来方便使用，大家可以阅读作者的博文<a href="http://lukeredpath.co.uk/blog/a-note-on-objective-c-singletons.html">A note on Objective-C singletons</a>了解详情。</p>
 
 <p>大多数情况下，Apple官方文档里的单例模式的示例代码实现已经够用了。虽然它最繁琐，但是也是本文介绍的几种单例模式中最容易理解的一个。至于其他的实现就留给读者们根据需要选择和应用了。</p>
 

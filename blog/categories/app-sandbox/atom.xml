@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: App Sandbox | Cocoa学习]]></title>
-  <link href="http://venj.github.io/blog/categories/app-sandbox/atom.xml" rel="self"/>
-  <link href="http://venj.github.io/"/>
-  <updated>2014-01-22T11:14:45+08:00</updated>
-  <id>http://venj.github.io/</id>
+  <link href="http://cocoa.venj.me/blog/categories/app-sandbox/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[在Sandbox的程序中加入Growl支持]]></title>
-    <link href="http://venj.github.io/blog/add-growl-to-your-sandboxed-app/"/>
+    <link href="http://cocoa.venj.me/blog/add-growl-to-your-sandboxed-app/"/>
     <updated>2012-03-07T16:00:00+08:00</updated>
-    <id>http://venj.github.io/blog/add-growl-to-your-sandboxed-app</id>
+    <id>http://cocoa.venj.me/blog/add-growl-to-your-sandboxed-app</id>
     <content type="html"><![CDATA[<p>Growl是一个知名的第三方消息提示框架，几乎是Mac装机必备的软件。虽然从Growl 1.3开始，Growl变成了收费软件，但是它依然是Mac App Store收费榜名列前茅的软件。虽然从OS X 10.8 Mountain Lion开始，OS X将加入Notification Center的支持，但是现在距离OS X 10.8发布依然有一段时间，而且，OS X 10.8之前的Mac OS X要退出历史舞台还有很长的路。</p>
 
 <p>我曾经撰写过<a href="http://cocoa.venj.me/blog/add-growl-support-in-your-apps-add-growl-framework/">关于Growl的文章</a>，因此关于Growl.framework的基本使用的内容我在本文中不再赘述了，大家可以去<a href="http://cocoa.venj.me/blog/add-growl-support-in-your-apps-coding-growl/">回顾一下</a>。基本上就是：</p>
@@ -41,11 +41,10 @@
 
 <p>假设，我们把SDK里的<code>XPC Client</code>文件夹复制到项目目录中，在Build Phase中添加下列shell脚本：</p>
 
-<p><code>bash
-XPC_START="$BUILT_PRODUCTS_DIR"
+<pre><code class="bash">XPC_START="$BUILT_PRODUCTS_DIR"
 XPC_SCRIPT="$SRCROOT/XPC Client/xpc-rename-move.rb"
 ruby "$XPC_SCRIPT" "$SRCROOT/XPC Client/" "$BUILT_PRODUCTS_DIR/$WRAPPER_NAME" "$CODE_SIGN_IDENTITY"
-</code></p>
+</code></pre>
 
 <p><img class="center" src="/images/posts/growl-script-phase.png"></p>
 
@@ -53,14 +52,10 @@ ruby "$XPC_SCRIPT" "$SRCROOT/XPC Client/" "$BUILT_PRODUCTS_DIR/$WRAPPER_NAME" "$
 
 <p>要让Growl支持Sandbox的程序，你还要实现一个delegate方法，告诉Growl.framework程序是否有网络访问的Entitlement。我的示例程序中如下：</p>
 
-<p>``` objc
-&ndash; (BOOL) hasNetworkClientEntitlement {</p>
-
-<pre><code>return NO;
+<pre><code class="objc">- (BOOL) hasNetworkClientEntitlement {
+    return NO;
+}
 </code></pre>
-
-<p>}
-```</p>
 
 <p>完成之后，你就可以启用Entitlement，指定Code Sign的数字签名，开始编译了。</p>
 

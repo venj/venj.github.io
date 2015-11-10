@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: 代码高亮 | Cocoa学习]]></title>
+  <link href="http://cocoa.venj.me/blog/categories/dai-ma-gao-liang/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
+  <author>
+    <name><![CDATA[venj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Xcode 6 Color Themes (颜色主题) 的路径]]></title>
+    <link href="http://cocoa.venj.me/blog/xcode-6-color-theme-path/"/>
+    <updated>2015-01-27T16:27:37+08:00</updated>
+    <id>http://cocoa.venj.me/blog/xcode-6-color-theme-path</id>
+    <content type="html"><![CDATA[<p>搜索引擎有时候并不能给你最好的结果，于是便有了这篇文章。今天为了找Xcode 6的配色主题路径，我搜了好久，结果找到的都是过时的信息。经过摸索终于找到正确答案，现贴在这里，希望能冲刷一下搜索引擎的旧信息。</p>
+
+<p>Xcode 6的颜色主题路径位于：</p>
+
+<pre><code>~/Library/Developer/Xcode/UserData/FontAndColorThemes
+</code></pre>
+
+<p>如果你下载了别人提供的漂亮的代码高亮颜色主题，比如<a href="https://github.com/tursunovic/xcode-themes">这个</a>，记得放到上面那个路径下。</p>
+
+<p>(全文完)</p>
+]]></content>
+  </entry>
+  
+</feed>

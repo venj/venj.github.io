@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Ios 9 | Cocoa学习]]></title>
+  <link href="http://cocoa.venj.me/blog/categories/ios-9/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
+  <author>
+    <name><![CDATA[venj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[iOS 9下使用openURL:]]></title>
+    <link href="http://cocoa.venj.me/blog/openurl-on-ios9/"/>
+    <updated>2015-11-09T16:12:18+08:00</updated>
+    <id>http://cocoa.venj.me/blog/openurl-on-ios9</id>
+    <content type="html"><![CDATA[<p>iOS 9在各方面增强了安全性，最明显的变化，除了<a href="/blog/app-transportation-security/">ATS</a>之外，那就是openURL的变化了。在iOS 9之前，应用可以使用<code>UIApplication</code>的<code>openURL:</code>方法，打开任意自定义Scheme的链接时（比如twitter://， fb://等）－－只要iOS支持。从iOS 9开始，相信很多人都见过这样的对话框：</p>
+
+<p><img class="center" src="/images/posts/open-url-ios-9.png"></p>
+
+<!-- more -->
+
+
+<p>所有使用iOS 9以前的SDK作为Base SDK编译的应用，在使用<code>openURL:</code>打开其他应用时默认就会弹出这样的确认对话框，以防止未经用户授权的随意的应用转跳。而用iOS 9 SDK作为Base SDK编译的应用，调用<code>openURL:</code>就会出错。在Xcode的Console会出现类似如下的错误消息：</p>
+
+<pre><code>This app is not allowed to query for scheme xxx
+</code></pre>
+
+<p>要让你的App能打开某个自定义Scheme的链接，你需要在Info.plist中声明你的应用需要让<code>openURL:</code>支持的Scheme类型，如下：</p>
+
+<pre><code class="xml">&lt;key&gt;LSApplicationQueriesSchemes&lt;/key&gt;
+&lt;array&gt;
+    &lt;string&gt;twitter&lt;/string&gt;
+    &lt;string&gt;fb&lt;/string&gt;
+&lt;/array&gt;
+</code></pre>
+
+<p>这样，你就可以调用<code>openURL:</code>来打开自定义Scheme的链接了。</p>
+
+<p>参考：</p>
+
+<ol>
+<li><a href="https://forums.developer.apple.com/thread/3781">Apple Dev Forum</a></li>
+<li><a href="http://useyourloaf.com/blog/querying-url-schemes-with-canopenurl.html">Use Your Loaf</a></li>
+<li><a href="http://awkwardhare.com/post/121196006730/quick-take-on-ios-9-url-scheme-changes">Awkward Hare</a></li>
+</ol>
+
+
+<p>（全文完）</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[iOS 9中的App Transport Security]]></title>
+    <link href="http://cocoa.venj.me/blog/app-transportation-security/"/>
+    <updated>2015-11-09T15:49:38+08:00</updated>
+    <id>http://cocoa.venj.me/blog/app-transportation-security</id>
+    <content type="html"><![CDATA[<p>从iOS 9开始，系统默认已经不允许iOS应用访问不安全的链接（包括HTTP，以及被认为不安全的HTTPS请求）。很多开发者在把iOS应用迁移到iOS 9时，碰到的第一个问题，大致就是这个问题了。</p>
+
+<p>虽然跳过iOS 9的这个默认安全设定并不是一个好的实践，但有时候免不了需要访问一些不安全的地址。要一劳永逸的全局跳过ATS，可以直接在Info.plist中加入以下值：</p>
+
+<!-- more -->
+
+
+<pre><code class="xml">&lt;key&gt;NSAppTransportSecurity&lt;/key&gt;
+&lt;dict&gt;
+    &lt;key&gt;NSAllowsArbitraryLoads&lt;/key&gt;
+    &lt;true/&gt;
+&lt;/dict&gt;
+</code></pre>
+
+<p>如果你只需为部分域名跳过ATS检查，可以用类似如下的方式设置ATS。下面这个例子用于为example.com创建一个绕过ATP检查的特例，以允许iOS应用访问不安全的example.com连接。这里不对所有的Key做出一一解释，<a href="https://developer.apple.com/library/prerelease/ios/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW33">Apple文档</a>中对所有Key有详细说明。</p>
+
+<pre><code class="xml">&lt;key&gt;NSAppTransportSecurity&lt;/key&gt;
+&lt;dict&gt;
+    &lt;key&gt;NSExceptionDomains&lt;/key&gt;
+    &lt;dict&gt;
+        &lt;key&gt;example.com&lt;/key&gt;
+        &lt;dict&gt;
+            &lt;key&gt;NSExceptionAllowsInsecureHTTPLoads&lt;/key&gt;
+            &lt;true/&gt;
+            &lt;key&gt;NSExceptionRequiresForwardSecrecy&lt;/key&gt;
+            &lt;false/&gt;
+            &lt;key&gt;NSIncludesSubdomains&lt;/key&gt;
+            &lt;true/&gt;
+        &lt;/dict&gt;
+    &lt;/dict&gt;
+&lt;/dict&gt;
+</code></pre>
+
+<p>（全文完）</p>
+]]></content>
+  </entry>
+  
+</feed>

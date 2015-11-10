@@ -18,13 +18,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://venj.github.io/blog/popover-became-official-control-in-lion">
+  <link rel="canonical" href="http://cocoa.venj.me/blog/popover-became-official-control-in-lion/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Cocoa学习" type="application/atom+xml">
   <script src="/javascripts/modernizr-2.0.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
 <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
@@ -50,7 +50,7 @@
   
 <form action="http://google.com/search" method="get">
   <fieldset role="search">
-    <input type="hidden" name="q" value="site:venj.github.io" />
+    <input type="hidden" name="sitesearch" value="cocoa.venj.me">
     <input class="search" type="text" name="q" results="0" placeholder="Search"/>
   </fieldset>
 </form>
@@ -78,14 +78,7 @@
 
 
 
-
-
-
-
-  
-
-
-<time datetime="2011-06-02T11:38:00+08:00" pubdate data-updated="true">Jun 2<span>nd</span>, 2011</time>
+<time class='entry-date' datetime='2011-06-02T11:38:00+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2011</span></span> <span class='time'>11:38 am</span></time>
         
       </p>
     
@@ -158,9 +151,9 @@
 </span><span class='line'>    <span class="n">NSPopover</span> <span class="o">*</span><span class="n">popOver</span><span class="p">;</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="n">retain</span><span class="p">)</span> <span class="n">NSPopover</span> <span class="o">*</span><span class="n">popOver</span><span class="p">;</span>
+</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="k">retain</span><span class="p">)</span> <span class="n">NSPopover</span> <span class="o">*</span><span class="n">popOver</span><span class="p">;</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">dismissPopover:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span><span class="p">;</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">dismissPopover:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span><span class="p">;</span>
 </span><span class='line'><span class="k">@end</span>
 </span><span class='line'>
 </span><span class='line'><span class="cm">/* MyPopoverViewController.m */</span>
@@ -170,26 +163,26 @@
 </span><span class='line'><span class="k">@implementation</span> <span class="nc">MyPopoverViewController</span>
 </span><span class='line'><span class="k">@synthesize</span> <span class="n">popOver</span><span class="p">;</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nf">initWithNibName:</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">nibNameOrNil</span> <span class="nf">bundle:</span><span class="p">(</span><span class="n">NSBundle</span> <span class="o">*</span><span class="p">)</span><span class="nv">nibBundleOrNil</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nf">initWithNibName:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">nibNameOrNil</span> <span class="nf">bundle:</span><span class="p">(</span><span class="bp">NSBundle</span> <span class="o">*</span><span class="p">)</span><span class="nv">nibBundleOrNil</span>
 </span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="n">self</span> <span class="o">=</span> <span class="p">[</span><span class="n">super</span> <span class="nl">initWithNibName:</span><span class="n">nibNameOrNil</span> <span class="nl">bundle:</span><span class="n">nibBundleOrNil</span><span class="p">];</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nb">self</span> <span class="o">=</span> <span class="p">[</span><span class="nb">super</span> <span class="nl">initWithNibName</span><span class="p">:</span><span class="n">nibNameOrNil</span> <span class="nl">bundle</span><span class="p">:</span><span class="n">nibBundleOrNil</span><span class="p">];</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nb">self</span><span class="p">)</span> <span class="p">{</span>
 </span><span class='line'>        <span class="c1">// Initialization code here.</span>
-</span><span class='line'>        <span class="n">self</span><span class="p">.</span><span class="n">popOver</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSPopover</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
-</span><span class='line'>        <span class="n">self</span><span class="p">.</span><span class="n">popOver</span><span class="p">.</span><span class="n">contentViewController</span> <span class="o">=</span> <span class="n">self</span><span class="p">;</span>
+</span><span class='line'>        <span class="nb">self</span><span class="p">.</span><span class="n">popOver</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSPopover</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+</span><span class='line'>        <span class="nb">self</span><span class="p">.</span><span class="n">popOver</span><span class="p">.</span><span class="n">contentViewController</span> <span class="o">=</span> <span class="nb">self</span><span class="p">;</span>
 </span><span class='line'>    <span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="k">return</span> <span class="n">self</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nb">self</span><span class="p">;</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">dealloc</span> <span class="p">{</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">popOver</span> <span class="n">release</span><span class="p">];</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">dealloc</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">popOver</span> <span class="k">release</span><span class="p">];</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="p">[</span><span class="n">super</span> <span class="n">dealloc</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="nb">super</span> <span class="n">dealloc</span><span class="p">];</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">dismissPopover:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">popOver</span> <span class="nl">performClose:</span><span class="n">sender</span><span class="p">];</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">dismissPopover:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">popOver</span> <span class="nl">performClose</span><span class="p">:</span><span class="n">sender</span><span class="p">];</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'><span class="k">@end</span>
 </span></code></pre></td></tr></table></div></figure>
@@ -249,17 +242,17 @@
 </span><span class='line'><span class="cp">#import &lt;Cocoa/Cocoa.h&gt;</span>
 </span><span class='line'>
 </span><span class='line'><span class="k">@class</span> <span class="nc">MyPopoverViewController</span>;
-</span><span class='line'><span class="k">@interface</span> <span class="nc">TestAppAppDelegate</span> : <span class="nc">NSObject</span> <span class="o">&lt;</span><span class="n">NSApplicationDelegate</span><span class="o">&gt;</span> <span class="p">{</span>
+</span><span class='line'><span class="k">@interface</span> <span class="nc">TestAppAppDelegate</span> : <span class="bp">NSObject</span> <span class="o">&lt;</span><span class="n">NSApplicationDelegate</span><span class="o">&gt;</span> <span class="p">{</span>
 </span><span class='line'>    <span class="n">NSWindow</span> <span class="o">*</span><span class="n">window</span><span class="p">;</span>
 </span><span class='line'>    <span class="n">NSButton</span> <span class="o">*</span><span class="n">myButton</span><span class="p">;</span>
 </span><span class='line'>    <span class="n">MyPopoverViewController</span> <span class="o">*</span><span class="n">popControl</span><span class="p">;</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="n">assign</span><span class="p">)</span> <span class="kt">IBOutlet</span> <span class="n">NSWindow</span> <span class="o">*</span><span class="n">window</span><span class="p">;</span>
-</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="n">assign</span><span class="p">)</span> <span class="kt">IBOutlet</span> <span class="n">NSButton</span> <span class="o">*</span><span class="n">myButton</span><span class="p">;</span>
-</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="n">retain</span><span class="p">)</span> <span class="n">MyPopoverViewController</span> <span class="o">*</span><span class="n">popControl</span><span class="p">;</span>
+</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="k">assign</span><span class="p">)</span> <span class="kt">IBOutlet</span> <span class="n">NSWindow</span> <span class="o">*</span><span class="n">window</span><span class="p">;</span>
+</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="k">assign</span><span class="p">)</span> <span class="kt">IBOutlet</span> <span class="n">NSButton</span> <span class="o">*</span><span class="n">myButton</span><span class="p">;</span>
+</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="k">retain</span><span class="p">)</span> <span class="n">MyPopoverViewController</span> <span class="o">*</span><span class="n">popControl</span><span class="p">;</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">showPopover:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span><span class="p">;</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">showPopover:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span><span class="p">;</span>
 </span><span class='line'><span class="k">@end</span>
 </span><span class='line'>
 </span><span class='line'><span class="cm">/* TestAppAppDelegate.m */</span>
@@ -272,20 +265,20 @@
 </span><span class='line'><span class="k">@synthesize</span> <span class="n">myButton</span><span class="p">;</span>
 </span><span class='line'><span class="k">@synthesize</span> <span class="n">popControl</span><span class="p">;</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">applicationDidFinishLaunching:</span><span class="p">(</span><span class="n">NSNotification</span> <span class="o">*</span><span class="p">)</span><span class="nv">aNotification</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">applicationDidFinishLaunching:</span><span class="p">(</span><span class="bp">NSNotification</span> <span class="o">*</span><span class="p">)</span><span class="nv">aNotification</span>
 </span><span class='line'><span class="p">{</span>
 </span><span class='line'>    <span class="c1">// Insert code here to initialize your application</span>
-</span><span class='line'>    <span class="n">self</span><span class="p">.</span><span class="n">popControl</span> <span class="o">=</span> <span class="p">[[</span><span class="n">MyPopoverViewController</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+</span><span class='line'>    <span class="nb">self</span><span class="p">.</span><span class="n">popControl</span> <span class="o">=</span> <span class="p">[[</span><span class="n">MyPopoverViewController</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">showPopover:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">popControl</span><span class="p">.</span><span class="n">popOver</span> <span class="nl">showRelativeToRect:</span><span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">myButton</span> <span class="n">bounds</span><span class="p">]</span> <span class="nl">ofView:</span><span class="n">self</span><span class="p">.</span><span class="n">myButton</span> <span class="nl">preferredEdge:</span><span class="n">NSMaxXEdge</span><span class="p">];</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">showPopover:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">popControl</span><span class="p">.</span><span class="n">popOver</span> <span class="nl">showRelativeToRect</span><span class="p">:[</span><span class="nb">self</span><span class="p">.</span><span class="n">myButton</span> <span class="n">bounds</span><span class="p">]</span> <span class="nl">ofView</span><span class="p">:</span><span class="nb">self</span><span class="p">.</span><span class="n">myButton</span> <span class="nl">preferredEdge</span><span class="p">:</span><span class="n">NSMaxXEdge</span><span class="p">];</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">dealloc</span> <span class="p">{</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">popControl</span> <span class="n">release</span><span class="p">];</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">dealloc</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">popControl</span> <span class="k">release</span><span class="p">];</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="p">[</span><span class="n">super</span> <span class="n">dealloc</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="nb">super</span> <span class="n">dealloc</span><span class="p">];</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
 </span><span class='line'><span class="k">@end</span>
@@ -316,19 +309,12 @@
 
 
 
-
-
-
-
-  
-
-
-<time datetime="2011-06-02T11:38:00+08:00" pubdate data-updated="true">Jun 2<span>nd</span>, 2011</time>
+<time class='entry-date' datetime='2011-06-02T11:38:00+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2011</span></span> <span class='time'>11:38 am</span></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/lion/'>Lion</a>, <a class='category' href='/blog/categories/nspopover/'>NSPopover</a>, <a class='category' href='/blog/categories/nsviewcontroller/'>NSViewController</a>
+    <a class='category' href='/blog/categories/lion/'>lion</a>, <a class='category' href='/blog/categories/nspopover/'>nspopover</a>, <a class='category' href='/blog/categories/nsviewcontroller/'>nsviewcontroller</a>
   
 </span>
 
@@ -337,7 +323,7 @@
     
       <div class="sharing">
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://venj.github.io/blog/popover-became-official-control-in-lion/" data-via="" data-counturl="http://venj.github.io/blog/popover-became-official-control-in-lion/" >Tweet</a>
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://cocoa.venj.me/blog/popover-became-official-control-in-lion/" data-via="" data-counturl="http://cocoa.venj.me/blog/popover-became-official-control-in-lion/" >Tweet</a>
   
   
   
@@ -376,23 +362,23 @@
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
+        <a href="/blog/ios9-readable-content-guide/">iOS 9的TableView和Readable Content Guide</a>
       </li>
     
       <li class="post">
-        <a href="/blog/simple-uiimage-extension-to-create-rounded-corner-image/">一个简单的创建圆角图像的UIImage扩展实现</a>
+        <a href="/blog/openurl-on-ios9/">iOS 9下使用openURL:</a>
       </li>
     
       <li class="post">
-        <a href="/blog/push-viewcontroller-hide-buttom-bar/">推View Controller时隐藏TabBar</a>
+        <a href="/blog/app-transportation-security/">iOS 9中的App Transport Security</a>
       </li>
     
       <li class="post">
-        <a href="/blog/code-box-like-window-open-animation/">CodeBox风格的窗口打开动画</a>
+        <a href="/blog/alamofire-ssl/">让Alamofire使用自签名证书</a>
       </li>
     
       <li class="post">
-        <a href="/blog/localized-loading-screen/">本地化加载屏幕</a>
+        <a href="/blog/disable-corestorage-on-os-x-yosemite/">禁用OS X Yosemite上的Core Storage</a>
       </li>
     
   </ul>
@@ -441,7 +427,7 @@
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2011 - 2014 - venj -
+  Copyright &copy; 2011 - 2015 - venj -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> &amp; <a href="http://pages.github.com">Github Pages</a></span>
 </p>
 
@@ -453,8 +439,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://venj.github.io/blog/popover-became-official-control-in-lion/';
-        var disqus_url = 'http://venj.github.io/blog/popover-became-official-control-in-lion/';
+        var disqus_identifier = 'http://cocoa.venj.me/blog/popover-became-official-control-in-lion/';
+        var disqus_url = 'http://cocoa.venj.me/blog/popover-became-official-control-in-lion/';
         var disqus_script = 'embed.js';
       
     (function () {

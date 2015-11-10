@@ -18,13 +18,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://venj.github.io/blog/make-a-qq-mac-avatar-menu-clone">
+  <link rel="canonical" href="http://cocoa.venj.me/blog/make-a-qq-mac-avatar-menu-clone/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Cocoa学习" type="application/atom+xml">
   <script src="/javascripts/modernizr-2.0.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
 <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
@@ -50,7 +50,7 @@
   
 <form action="http://google.com/search" method="get">
   <fieldset role="search">
-    <input type="hidden" name="q" value="site:venj.github.io" />
+    <input type="hidden" name="sitesearch" value="cocoa.venj.me">
     <input class="search" type="text" name="q" results="0" placeholder="Search"/>
   </fieldset>
 </form>
@@ -78,14 +78,7 @@
 
 
 
-
-
-
-
-  
-
-
-<time datetime="2012-03-29T17:02:00+08:00" pubdate data-updated="true">Mar 29<span>th</span>, 2012</time>
+<time class='entry-date' datetime='2012-03-29T17:02:00+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>29</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>5:02 pm</span></time>
         
       </p>
     
@@ -128,21 +121,21 @@
 <span class='line-number'>21</span>
 </pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cp">#define IMAGES_COUNT 8</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">applicationDidFinishLaunching:</span><span class="p">(</span><span class="n">NSNotification</span> <span class="o">*</span><span class="p">)</span><span class="nv">aNotification</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">applicationDidFinishLaunching:</span><span class="p">(</span><span class="bp">NSNotification</span> <span class="o">*</span><span class="p">)</span><span class="nv">aNotification</span>
 </span><span class='line'><span class="p">{</span>
 </span><span class='line'>    <span class="c1">// 一些变量</span>
-</span><span class='line'>    <span class="n">NSInteger</span> <span class="n">sideMargin</span> <span class="o">=</span> <span class="mf">25.</span><span class="p">,</span> <span class="n">headMargin</span><span class="o">=</span><span class="mf">10.</span><span class="p">,</span> \
+</span><span class='line'>    <span class="bp">NSInteger</span> <span class="n">sideMargin</span> <span class="o">=</span> <span class="mf">25.</span><span class="p">,</span> <span class="n">headMargin</span><span class="o">=</span><span class="mf">10.</span><span class="p">,</span> \
 </span><span class='line'>    <span class="n">seperateMargin</span> <span class="o">=</span> <span class="mf">2.</span><span class="p">,</span> <span class="n">imageWidth</span> <span class="o">=</span> <span class="mf">44.</span><span class="p">,</span> \
 </span><span class='line'>    <span class="n">imagesPerLine</span> <span class="o">=</span> <span class="mf">4.</span><span class="p">,</span> <span class="n">menuTitleHeight</span> <span class="o">=</span> <span class="mf">20.</span><span class="p">,</span>\
 </span><span class='line'>    <span class="n">menuTitleLeftMargin</span> <span class="o">=</span> <span class="mf">20.</span><span class="p">,</span> <span class="n">menuTitleWidth</span> <span class="o">=</span> <span class="mf">180.</span><span class="p">;</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="c1">// 创建菜单</span>
-</span><span class='line'>    <span class="n">self</span><span class="p">.</span><span class="n">myMenuItem</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSMenuItem</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithTitle:</span><span class="s">@&quot;My Menu&quot;</span> <span class="nl">action:</span><span class="nb">nil</span> <span class="nl">keyEquivalent:</span><span class="s">@&quot;&quot;</span><span class="p">];</span>
-</span><span class='line'>    <span class="n">self</span><span class="p">.</span><span class="n">myMenuItem</span><span class="p">.</span><span class="n">target</span> <span class="o">=</span> <span class="n">self</span><span class="p">;</span>
-</span><span class='line'>    <span class="n">NSMenuItem</span> <span class="o">*</span><span class="n">otherMenu</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSMenuItem</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithTitle:</span><span class="s">@&quot;自定义头像...&quot;</span> <span class="nl">action:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">doSomething:</span><span class="p">)</span> <span class="nl">keyEquivalent:</span><span class="s">@&quot;&quot;</span><span class="p">];</span>
+</span><span class='line'>    <span class="nb">self</span><span class="p">.</span><span class="n">myMenuItem</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSMenuItem</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithTitle</span><span class="p">:</span><span class="s">@&quot;My Menu&quot;</span> <span class="nl">action</span><span class="p">:</span><span class="nb">nil</span> <span class="nl">keyEquivalent</span><span class="p">:</span><span class="s">@&quot;&quot;</span><span class="p">];</span>
+</span><span class='line'>    <span class="nb">self</span><span class="p">.</span><span class="n">myMenuItem</span><span class="p">.</span><span class="n">target</span> <span class="o">=</span> <span class="nb">self</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">NSMenuItem</span> <span class="o">*</span><span class="n">otherMenu</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSMenuItem</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithTitle</span><span class="p">:</span><span class="s">@&quot;自定义头像...&quot;</span> <span class="nl">action</span><span class="p">:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">doSomething</span><span class="p">:)</span> <span class="nl">keyEquivalent</span><span class="p">:</span><span class="s">@&quot;&quot;</span><span class="p">];</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="c1">// 创建菜单项的自定义视图</span>
-</span><span class='line'>    <span class="n">self</span><span class="p">.</span><span class="n">menuView</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSView</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFrame:</span><span class="n">NSMakeRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> \
+</span><span class='line'>    <span class="nb">self</span><span class="p">.</span><span class="n">menuView</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSView</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFrame</span><span class="p">:</span><span class="n">NSMakeRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> \
 </span><span class='line'>                                                                <span class="n">sideMargin</span><span class="o">*</span><span class="mi">2</span><span class="o">+</span><span class="n">seperateMargin</span><span class="o">*</span><span class="p">(</span><span class="n">imagesPerLine</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">imageWidth</span><span class="o">*</span><span class="n">imagesPerLine</span><span class="p">,</span> \
 </span><span class='line'>                                                                <span class="n">imageWidth</span><span class="o">*</span><span class="p">(</span><span class="n">IMAGES_COUNT</span><span class="o">/</span><span class="n">imagesPerLine</span><span class="p">)</span><span class="o">+</span><span class="n">seperateMargin</span><span class="o">*</span><span class="p">(</span><span class="n">IMAGES_COUNT</span><span class="o">/</span><span class="n">imagesPerLine</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">headMargin</span><span class="o">*</span><span class="mi">2</span><span class="o">+</span><span class="n">menuTitleHeight</span><span class="p">)];</span>
 </span><span class='line'>
@@ -165,15 +158,15 @@
 <span class='line-number'>11</span>
 </pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">...</span>
 </span><span class='line'>
-</span><span class='line'><span class="n">NSTextField</span> <span class="o">*</span><span class="n">menuViewTitle</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSTextField</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFrame:</span><span class="n">NSMakeRect</span><span class="p">(</span><span class="n">menuTitleLeftMargin</span><span class="p">,</span> <span class="n">headMargin</span><span class="o">+</span><span class="p">(</span><span class="n">seperateMargin</span> <span class="o">+</span> <span class="n">imageWidth</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">IMAGES_COUNT</span><span class="o">/</span><span class="n">imagesPerLine</span><span class="p">),</span> <span class="n">menuTitleWidth</span><span class="p">,</span> <span class="n">menuTitleHeight</span><span class="p">)];</span>
+</span><span class='line'><span class="bp">NSTextField</span> <span class="o">*</span><span class="n">menuViewTitle</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NSTextField</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFrame</span><span class="p">:</span><span class="n">NSMakeRect</span><span class="p">(</span><span class="n">menuTitleLeftMargin</span><span class="p">,</span> <span class="n">headMargin</span><span class="o">+</span><span class="p">(</span><span class="n">seperateMargin</span> <span class="o">+</span> <span class="n">imageWidth</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">IMAGES_COUNT</span><span class="o">/</span><span class="n">imagesPerLine</span><span class="p">),</span> <span class="n">menuTitleWidth</span><span class="p">,</span> <span class="n">menuTitleHeight</span><span class="p">)];</span>
 </span><span class='line'><span class="n">menuViewTitle</span><span class="p">.</span><span class="n">stringValue</span> <span class="o">=</span> <span class="s">@&quot;系统头像&quot;</span><span class="p">;</span>
 </span><span class='line'><span class="n">menuViewTitle</span><span class="p">.</span><span class="n">textColor</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSColor</span> <span class="n">grayColor</span><span class="p">];</span>
 </span><span class='line'><span class="n">menuViewTitle</span><span class="p">.</span><span class="n">backgroundColor</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSColor</span> <span class="n">controlColor</span><span class="p">];</span>
-</span><span class='line'><span class="n">menuViewTitle</span><span class="p">.</span><span class="n">font</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSFont</span> <span class="nl">systemFontOfSize:</span><span class="mi">15</span><span class="p">];</span>
-</span><span class='line'><span class="p">[</span><span class="n">menuViewTitle</span> <span class="nl">setEditable:</span><span class="n">NO</span><span class="p">];</span>
-</span><span class='line'><span class="p">[</span><span class="n">menuViewTitle</span> <span class="nl">setBordered:</span><span class="n">NO</span><span class="p">];</span>
+</span><span class='line'><span class="n">menuViewTitle</span><span class="p">.</span><span class="n">font</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSFont</span> <span class="nl">systemFontOfSize</span><span class="p">:</span><span class="mi">15</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="n">menuViewTitle</span> <span class="nl">setEditable</span><span class="p">:</span><span class="nb">NO</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="n">menuViewTitle</span> <span class="nl">setBordered</span><span class="p">:</span><span class="nb">NO</span><span class="p">];</span>
 </span><span class='line'>
-</span><span class='line'><span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">menuView</span> <span class="nl">addSubview:</span><span class="n">menuViewTitle</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">menuView</span> <span class="nl">addSubview</span><span class="p">:</span><span class="n">menuViewTitle</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -219,36 +212,36 @@
 </span><span class='line'>    <span class="n">NSRect</span> <span class="n">buttonRect</span> <span class="o">=</span> <span class="n">NSMakeRect</span><span class="p">(</span><span class="n">sideMargin</span> <span class="o">+</span> <span class="p">(</span><span class="n">imageWidth</span> <span class="o">+</span> <span class="n">seperateMargin</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">%</span> <span class="n">imagesPerLine</span><span class="p">),</span> \
 </span><span class='line'>                                    <span class="n">headMargin</span> <span class="o">+</span> <span class="p">((</span><span class="n">IMAGES_COUNT</span> <span class="o">/</span> <span class="n">imagesPerLine</span><span class="p">)</span> <span class="o">-</span> <span class="p">((</span><span class="n">i</span> <span class="o">/</span> <span class="n">imagesPerLine</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="n">imageWidth</span> <span class="o">+</span> <span class="n">seperateMargin</span><span class="p">),</span> \
 </span><span class='line'>                                    <span class="n">imageWidth</span><span class="p">,</span> <span class="n">imageWidth</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">NSButton</span> <span class="o">*</span><span class="n">button</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSButton</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFrame:</span><span class="n">buttonRect</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">button</span> <span class="nl">setButtonType:</span><span class="n">NSSwitchButton</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">button</span> <span class="nl">setImagePosition:</span><span class="n">NSImageOnly</span><span class="p">];</span>
-</span><span class='line'>    <span class="n">button</span><span class="p">.</span><span class="n">image</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSImage</span> <span class="nl">imageNamed:</span><span class="p">[[</span><span class="n">NSString</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFormat:</span><span class="s">@&quot;avatar_small_%d&quot;</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]]</span> <span class="nl">roundCornersImageCornerRadius:</span><span class="mi">4</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">NSButton</span> <span class="o">*</span><span class="n">button</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSButton</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFrame</span><span class="p">:</span><span class="n">buttonRect</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">button</span> <span class="nl">setButtonType</span><span class="p">:</span><span class="n">NSSwitchButton</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">button</span> <span class="nl">setImagePosition</span><span class="p">:</span><span class="n">NSImageOnly</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">button</span><span class="p">.</span><span class="n">image</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSImage</span> <span class="nl">imageNamed</span><span class="p">:[[</span><span class="bp">NSString</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFormat</span><span class="p">:</span><span class="s">@&quot;avatar_small_%d&quot;</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]]</span> <span class="nl">roundCornersImageCornerRadius</span><span class="p">:</span><span class="mi">4</span><span class="p">];</span>
 </span><span class='line'>    <span class="c1">// 用于实现FocusRing（并不是很好的方法）</span>
-</span><span class='line'>    <span class="n">button</span><span class="p">.</span><span class="n">alternateImage</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSImage</span> <span class="nl">imageNamed:</span><span class="p">[[</span><span class="n">NSString</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFormat:</span><span class="s">@&quot;avatar_small_%d_h&quot;</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]]</span> <span class="nl">roundCornersImageCornerRadius:</span><span class="mi">5</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">button</span><span class="p">.</span><span class="n">cell</span> <span class="nl">setHighlightsBy:</span><span class="n">NSNoCellMask</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">button</span><span class="p">.</span><span class="n">alternateImage</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSImage</span> <span class="nl">imageNamed</span><span class="p">:[[</span><span class="bp">NSString</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFormat</span><span class="p">:</span><span class="s">@&quot;avatar_small_%d_h&quot;</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]]</span> <span class="nl">roundCornersImageCornerRadius</span><span class="p">:</span><span class="mi">5</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">button</span><span class="p">.</span><span class="n">cell</span> <span class="nl">setHighlightsBy</span><span class="p">:</span><span class="n">NSNoCellMask</span><span class="p">];</span>
 </span><span class='line'>    <span class="n">button</span><span class="p">.</span><span class="n">tag</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
-</span><span class='line'>    <span class="n">button</span><span class="p">.</span><span class="n">target</span> <span class="o">=</span> <span class="n">self</span><span class="p">;</span>
-</span><span class='line'>    <span class="n">button</span><span class="p">.</span><span class="n">action</span> <span class="o">=</span> <span class="k">@selector</span><span class="p">(</span><span class="nl">buttonClicked:</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">button</span> <span class="nl">setBordered:</span><span class="n">NO</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">button</span><span class="p">.</span><span class="n">target</span> <span class="o">=</span> <span class="nb">self</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">button</span><span class="p">.</span><span class="n">action</span> <span class="o">=</span> <span class="k">@selector</span><span class="p">(</span><span class="nl">buttonClicked</span><span class="p">:);</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">button</span> <span class="nl">setBordered</span><span class="p">:</span><span class="nb">NO</span><span class="p">];</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="c1">// 增加鼠标跟踪区域</span>
 </span><span class='line'>    <span class="kt">int</span> <span class="n">options</span> <span class="o">=</span> <span class="n">NSTrackingMouseEnteredAndExited</span> <span class="o">|</span> <span class="n">NSTrackingActiveAlways</span> <span class="o">|</span> <span class="n">NSTrackingAssumeInside</span><span class="p">;</span>
 </span><span class='line'>    <span class="n">NSTrackingArea</span> <span class="o">*</span><span class="n">trackingArea</span><span class="p">;</span>
-</span><span class='line'>    <span class="n">NSDictionary</span> <span class="o">*</span><span class="n">userInfo</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSDictionary</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithObjectsAndKeys:</span><span class="n">button</span><span class="p">,</span><span class="s">@&quot;button&quot;</span><span class="p">,</span> <span class="nb">nil</span><span class="p">];</span>
-</span><span class='line'>    <span class="n">trackingArea</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSTrackingArea</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithRect:</span><span class="n">buttonRect</span>
-</span><span class='line'>                                      <span class="nl">options:</span><span class="n">options</span>
-</span><span class='line'>                                        <span class="nl">owner:</span><span class="n">self</span>
-</span><span class='line'>                                     <span class="nl">userInfo:</span><span class="n">userInfo</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">menuView</span> <span class="nl">addTrackingArea:</span><span class="n">trackingArea</span><span class="p">];</span>
+</span><span class='line'>    <span class="bp">NSDictionary</span> <span class="o">*</span><span class="n">userInfo</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NSDictionary</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithObjectsAndKeys</span><span class="p">:</span><span class="n">button</span><span class="p">,</span><span class="s">@&quot;button&quot;</span><span class="p">,</span> <span class="nb">nil</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">trackingArea</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSTrackingArea</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithRect</span><span class="p">:</span><span class="n">buttonRect</span>
+</span><span class='line'>                                      <span class="nl">options</span><span class="p">:</span><span class="n">options</span>
+</span><span class='line'>                                        <span class="nl">owner</span><span class="p">:</span><span class="nb">self</span>
+</span><span class='line'>                                     <span class="nl">userInfo</span><span class="p">:</span><span class="n">userInfo</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">menuView</span> <span class="nl">addTrackingArea</span><span class="p">:</span><span class="n">trackingArea</span><span class="p">];</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">menuView</span> <span class="nl">addSubview:</span><span class="n">button</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">menuView</span> <span class="nl">addSubview</span><span class="p">:</span><span class="n">button</span><span class="p">];</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'><span class="n">self</span><span class="p">.</span><span class="n">myMenuItem</span><span class="p">.</span><span class="n">view</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">menuView</span><span class="p">;</span>
+</span><span class='line'><span class="nb">self</span><span class="p">.</span><span class="n">myMenuItem</span><span class="p">.</span><span class="n">view</span> <span class="o">=</span> <span class="nb">self</span><span class="p">.</span><span class="n">menuView</span><span class="p">;</span>
 </span><span class='line'>
 </span><span class='line'><span class="c1">// 然后把菜单项加入菜单</span>
-</span><span class='line'><span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">attachedMenu</span> <span class="nl">addItem:</span><span class="n">self</span><span class="p">.</span><span class="n">myMenuItem</span><span class="p">];</span>
-</span><span class='line'><span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">attachedMenu</span> <span class="nl">addItem:</span><span class="n">otherMenu</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">attachedMenu</span> <span class="nl">addItem</span><span class="p">:</span><span class="nb">self</span><span class="p">.</span><span class="n">myMenuItem</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">attachedMenu</span> <span class="nl">addItem</span><span class="p">:</span><span class="n">otherMenu</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -273,22 +266,22 @@
 <span class='line-number'>15</span>
 <span class='line-number'>16</span>
 <span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">applicationDidFinishLaunching:</span><span class="p">(</span><span class="n">NSNotification</span> <span class="o">*</span><span class="p">)</span><span class="nv">aNotification</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">applicationDidFinishLaunching:</span><span class="p">(</span><span class="bp">NSNotification</span> <span class="o">*</span><span class="p">)</span><span class="nv">aNotification</span>
 </span><span class='line'><span class="p">{</span>
 </span><span class='line'>    <span class="c1">// Insert code here to initialize your application</span>
-</span><span class='line'>    <span class="p">[[</span><span class="n">self</span> <span class="n">window</span><span class="p">]</span> <span class="nl">setAcceptsMouseMovedEvents:</span><span class="n">YES</span><span class="p">];</span> <span class="c1">// 注册接受鼠标事件</span>
+</span><span class='line'>    <span class="p">[[</span><span class="nb">self</span> <span class="n">window</span><span class="p">]</span> <span class="nl">setAcceptsMouseMovedEvents</span><span class="p">:</span><span class="nb">YES</span><span class="p">];</span> <span class="c1">// 注册接受鼠标事件</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="p">...</span> <span class="p">(</span><span class="err">其他代码</span><span class="p">)</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">mouseEntered:</span><span class="p">(</span><span class="n">NSEvent</span> <span class="o">*</span><span class="p">)</span><span class="nv">theEvent</span> <span class="p">{</span>
-</span><span class='line'>    <span class="n">NSButton</span> <span class="o">*</span><span class="n">currentButton</span> <span class="o">=</span> <span class="p">[(</span><span class="n">NSDictionary</span> <span class="o">*</span><span class="p">)[</span><span class="n">theEvent</span> <span class="n">userData</span><span class="p">]</span> <span class="nl">objectForKey:</span><span class="s">@&quot;button&quot;</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">currentButton</span> <span class="nl">setState:</span><span class="n">NSOnState</span><span class="p">];</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">mouseEntered:</span><span class="p">(</span><span class="bp">NSEvent</span> <span class="o">*</span><span class="p">)</span><span class="nv">theEvent</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">NSButton</span> <span class="o">*</span><span class="n">currentButton</span> <span class="o">=</span> <span class="p">[(</span><span class="bp">NSDictionary</span> <span class="o">*</span><span class="p">)[</span><span class="n">theEvent</span> <span class="n">userData</span><span class="p">]</span> <span class="nl">objectForKey</span><span class="p">:</span><span class="s">@&quot;button&quot;</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">currentButton</span> <span class="nl">setState</span><span class="p">:</span><span class="n">NSOnState</span><span class="p">];</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">mouseExited:</span><span class="p">(</span><span class="n">NSEvent</span> <span class="o">*</span><span class="p">)</span><span class="nv">theEvent</span> <span class="p">{</span>
-</span><span class='line'>    <span class="n">NSButton</span> <span class="o">*</span><span class="n">currentButton</span> <span class="o">=</span> <span class="p">[(</span><span class="n">NSDictionary</span> <span class="o">*</span><span class="p">)[</span><span class="n">theEvent</span> <span class="n">userData</span><span class="p">]</span> <span class="nl">objectForKey:</span><span class="s">@&quot;button&quot;</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">currentButton</span> <span class="nl">setState:</span><span class="n">NSOffState</span><span class="p">];</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">mouseExited:</span><span class="p">(</span><span class="bp">NSEvent</span> <span class="o">*</span><span class="p">)</span><span class="nv">theEvent</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">NSButton</span> <span class="o">*</span><span class="n">currentButton</span> <span class="o">=</span> <span class="p">[(</span><span class="bp">NSDictionary</span> <span class="o">*</span><span class="p">)[</span><span class="n">theEvent</span> <span class="n">userData</span><span class="p">]</span> <span class="nl">objectForKey</span><span class="p">:</span><span class="s">@&quot;button&quot;</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">currentButton</span> <span class="nl">setState</span><span class="p">:</span><span class="n">NSOffState</span><span class="p">];</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
@@ -297,7 +290,7 @@
 
 <p><img class="center" src="/images/posts/qq-avatar-menu-clone.png"></p>
 
-<p>关于Focus Ring的实现我要说明一下，我这里用的方法比较粗糙，QQ应该是用Quartz绘制的Focus ring，而我是用了一张图片来“伪造”了一个Focus ring。我这里选择使用<code>NSSwitchButton</code>类型的按钮是为了利用<code>alternativeImage</code>来实现Focus ring效果。之所以这么做，是因为我一时间没有想到比较好的绘制Focus ring的方法 &mdash; 基础不过关啊 &mdash; 所以，如果谁知道怎么做，劳烦您能不吝赐教。</p>
+<p>关于Focus Ring的实现我要说明一下，我这里用的方法比较粗糙，QQ应该是用Quartz绘制的Focus ring，而我是用了一张图片来“伪造”了一个Focus ring。我这里选择使用<code>NSSwitchButton</code>类型的按钮是为了利用<code>alternativeImage</code>来实现Focus ring效果。之所以这么做，是因为我一时间没有想到比较好的绘制Focus ring的方法 &ndash; 基础不过关啊 &ndash; 所以，如果谁知道怎么做，劳烦您能不吝赐教。</p>
 
 <p>示例代码我已经推送到<a href="https://github.com/venj/Cocoa-blog-code/tree/master/Custom%20Menu">Github</a>上了，有兴趣的可以签出来看看，并提出宝贵意见。另外，我在示例代码中使用了QQ for Mac里面的头像图片，希望腾讯勿怪。</p>
 
@@ -317,19 +310,12 @@
 
 
 
-
-
-
-
-  
-
-
-<time datetime="2012-03-29T17:02:00+08:00" pubdate data-updated="true">Mar 29<span>th</span>, 2012</time>
+<time class='entry-date' datetime='2012-03-29T17:02:00+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>29</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>5:02 pm</span></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/mouse-event/'>Mouse Event</a>, <a class='category' href='/blog/categories/nsmenu/'>NSMenu</a>, <a class='category' href='/blog/categories/qq-for-mac/'>QQ for Mac</a>
+    <a class='category' href='/blog/categories/mouse-event/'>mouse event</a>, <a class='category' href='/blog/categories/nsmenu/'>nsmenu</a>, <a class='category' href='/blog/categories/qq-for-mac/'>qq for mac</a>
   
 </span>
 
@@ -338,7 +324,7 @@
     
       <div class="sharing">
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://venj.github.io/blog/make-a-qq-mac-avatar-menu-clone/" data-via="" data-counturl="http://venj.github.io/blog/make-a-qq-mac-avatar-menu-clone/" >Tweet</a>
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://cocoa.venj.me/blog/make-a-qq-mac-avatar-menu-clone/" data-via="" data-counturl="http://cocoa.venj.me/blog/make-a-qq-mac-avatar-menu-clone/" >Tweet</a>
   
   
   
@@ -377,23 +363,23 @@
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
+        <a href="/blog/ios9-readable-content-guide/">iOS 9的TableView和Readable Content Guide</a>
       </li>
     
       <li class="post">
-        <a href="/blog/simple-uiimage-extension-to-create-rounded-corner-image/">一个简单的创建圆角图像的UIImage扩展实现</a>
+        <a href="/blog/openurl-on-ios9/">iOS 9下使用openURL:</a>
       </li>
     
       <li class="post">
-        <a href="/blog/push-viewcontroller-hide-buttom-bar/">推View Controller时隐藏TabBar</a>
+        <a href="/blog/app-transportation-security/">iOS 9中的App Transport Security</a>
       </li>
     
       <li class="post">
-        <a href="/blog/code-box-like-window-open-animation/">CodeBox风格的窗口打开动画</a>
+        <a href="/blog/alamofire-ssl/">让Alamofire使用自签名证书</a>
       </li>
     
       <li class="post">
-        <a href="/blog/localized-loading-screen/">本地化加载屏幕</a>
+        <a href="/blog/disable-corestorage-on-os-x-yosemite/">禁用OS X Yosemite上的Core Storage</a>
       </li>
     
   </ul>
@@ -442,7 +428,7 @@
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2011 - 2014 - venj -
+  Copyright &copy; 2011 - 2015 - venj -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> &amp; <a href="http://pages.github.com">Github Pages</a></span>
 </p>
 
@@ -454,8 +440,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://venj.github.io/blog/make-a-qq-mac-avatar-menu-clone/';
-        var disqus_url = 'http://venj.github.io/blog/make-a-qq-mac-avatar-menu-clone/';
+        var disqus_identifier = 'http://cocoa.venj.me/blog/make-a-qq-mac-avatar-menu-clone/';
+        var disqus_url = 'http://cocoa.venj.me/blog/make-a-qq-mac-avatar-menu-clone/';
         var disqus_script = 'embed.js';
       
     (function () {

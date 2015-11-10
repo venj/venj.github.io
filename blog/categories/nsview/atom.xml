@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: NSView | Cocoa学习]]></title>
-  <link href="http://venj.github.io/blog/categories/nsview/atom.xml" rel="self"/>
-  <link href="http://venj.github.io/"/>
-  <updated>2014-01-22T11:14:45+08:00</updated>
-  <id>http://venj.github.io/</id>
+  <title><![CDATA[Category: Nsview | Cocoa学习]]></title>
+  <link href="http://cocoa.venj.me/blog/categories/nsview/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
     
@@ -15,13 +15,12 @@
   
   <entry>
     <title type="html"><![CDATA[动态改变窗口大小]]></title>
-    <link href="http://venj.github.io/blog/dynamically-change-window-size/"/>
+    <link href="http://cocoa.venj.me/blog/dynamically-change-window-size/"/>
     <updated>2011-04-02T16:28:00+08:00</updated>
-    <id>http://venj.github.io/blog/dynamically-change-window-size</id>
+    <id>http://cocoa.venj.me/blog/dynamically-change-window-size</id>
     <content type="html"><![CDATA[<p>根据SubView的大小动态的改变窗口大小的操作在Cocoa编程里很常用。记录方法如下。下面的代码假定通过一个Box容器，分别容纳不同大小的SubView，在切换SubView的时候，窗口的大小适应容器大小的变化。SubView的容器可以是任何<code>NSView</code>。这个代码通常放在<code>Controller</code>里。</p>
 
-<p><code>objc
-// 通过某个View获得需要改变大小的窗口
+<pre><code class="objc">// 通过某个View获得需要改变大小的窗口
 NSWindow *window = [self.box window];
 // 获取新View
 NSView *view = [viewController view];
@@ -47,7 +46,7 @@ windowFrame.origin.y -= deltaHeight;
 [window setFrame:windowFrame display:YES animate:YES];
 // 加入新View
 [self.box setContentView:view];
-</code></p>
+</code></pre>
 
 <p>（全文完）</p>
 ]]></content>

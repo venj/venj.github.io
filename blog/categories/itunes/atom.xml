@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: iTunes | Cocoa学习]]></title>
-  <link href="http://venj.github.io/blog/categories/itunes/atom.xml" rel="self"/>
-  <link href="http://venj.github.io/"/>
-  <updated>2014-01-22T11:14:45+08:00</updated>
-  <id>http://venj.github.io/</id>
+  <title><![CDATA[Category: Itunes | Cocoa学习]]></title>
+  <link href="http://cocoa.venj.me/blog/categories/itunes/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[让iOS App通过iTunes进行文件交换]]></title>
-    <link href="http://venj.github.io/blog/ios-and-pc-file-exchange-using-itunes/"/>
+    <link href="http://cocoa.venj.me/blog/ios-and-pc-file-exchange-using-itunes/"/>
     <updated>2011-08-07T13:04:00+08:00</updated>
-    <id>http://venj.github.io/blog/ios-and-pc-file-exchange-using-itunes</id>
+    <id>http://cocoa.venj.me/blog/ios-and-pc-file-exchange-using-itunes</id>
     <content type="html"><![CDATA[<p>有一些App需要通过使用iTunes让用户上传和下载文档。要让iOS程序支持iTunes文件交换其实很简单，只需要在程序的<code>Info.plist</code>里增加一个键：<code>UIFileSharingEnabled（Application supports iTunes file sharing）</code>，赋值<code>YES</code>。</p>
 
 <p><img class="center" src="/images/posts/file-exchange-xcode.png"></p>
@@ -36,23 +36,16 @@
 
 <p>然后在程序中测试文件有没有成功被程序识别：</p>
 
-<p>``` objc
-NSFileManager <em>manager = [NSFileManager defaultManager];
-NSString </em>dbPath = [[NSHomeDirectory() stringByAppendingPathComponent:@&ldquo;Documents&rdquo;] stringByAppendingPathComponent:@&ldquo;db.sqlite&rdquo;];</p>
+<pre><code class="objc">NSFileManager *manager = [NSFileManager defaultManager];
+NSString *dbPath = [[NSHomeDirectory() stringByAppendingPathComponent:@"Documents"] stringByAppendingPathComponent:@"db.sqlite"];
 
-<p>if ([manager fileExistsAtPath:dbPath]) {</p>
-
-<pre><code>self.navigationItem.title = @"Ready To Go";
+if ([manager fileExistsAtPath:dbPath]) {
+    self.navigationItem.title = @"Ready To Go";
+}
+else {
+    self.navigationItem.title = @"No DB File";
+}
 </code></pre>
-
-<p>}
-else {</p>
-
-<pre><code>self.navigationItem.title = @"No DB File";
-</code></pre>
-
-<p>}
-```</p>
 
 <p>下面是程序在添加文件前后的运行情况：</p>
 

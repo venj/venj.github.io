@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: UIImage | Cocoa学习]]></title>
-  <link href="http://venj.github.io/blog/categories/uiimage/atom.xml" rel="self"/>
-  <link href="http://venj.github.io/"/>
-  <updated>2014-01-22T11:14:45+08:00</updated>
-  <id>http://venj.github.io/</id>
+  <title><![CDATA[Category: Uiimage | Cocoa学习]]></title>
+  <link href="http://cocoa.venj.me/blog/categories/uiimage/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
     
@@ -15,55 +15,50 @@
   
   <entry>
     <title type="html"><![CDATA[一个简单的创建圆角图像的UIImage扩展实现]]></title>
-    <link href="http://venj.github.io/blog/simple-uiimage-extension-to-create-rounded-corner-image/"/>
+    <link href="http://cocoa.venj.me/blog/simple-uiimage-extension-to-create-rounded-corner-image/"/>
     <updated>2014-01-20T13:58:15+08:00</updated>
-    <id>http://venj.github.io/blog/simple-uiimage-extension-to-create-rounded-corner-image</id>
+    <id>http://cocoa.venj.me/blog/simple-uiimage-extension-to-create-rounded-corner-image</id>
     <content type="html"><![CDATA[<p>在iOS开发中经常需要用到圆角图像。简单搜索一下就能找到很多创建圆角图像的实现代码。我在<a href="http://stackoverflow.com/questions/10563986/uiimage-with-rounded-corners">Stack Overflow</a>上找到了一段代码，略微修改了一下，写了个简单的Category方法，可以用来创建圆角图像。代码如下：</p>
 
 <!-- more -->
 
 
-<p>```objc
-/<em> UIImage+RoundedRect.h</em>/</p>
+<pre><code class="objc">/* UIImage+RoundedRect.h*/
+#import &lt;UIKit/UIKit.h&gt;
 
-<h1>import &lt;UIKit/UIKit.h></h1>
+@interface UIImage (RoundedCorner)
+- (UIImage *)roundedCornerImageWithCornerRadius:(CGFloat)cornerRadius;
+@end
 
-<p>@interface UIImage (RoundedCorner)
-&ndash; (UIImage *)roundedCornerImageWithCornerRadius:(CGFloat)cornerRadius;
-@end</p>
+/* UIImage+RoundedRect.m*/
 
-<p>/<em> UIImage+RoundedRect.m</em>/</p>
+#import "UIImage+RoundedCorner.h"
 
-<h1>import &ldquo;UIImage+RoundedCorner.h&rdquo;</h1>
+@implementation UIImage (RoundedCorner)
 
-<p>@implementation UIImage (RoundedCorner)</p>
+- (UIImage *)roundedCornerImageWithCornerRadius:(CGFloat)cornerRadius {
+    CGFloat w = self.size.width;
+    CGFloat h = self.size.height;
+    CGFloat scale = [UIScreen mainScreen].scale;
+    // 防止圆角半径小于0，或者大于宽/高中较小值的一半。
+    if (cornerRadius &lt; 0)
+        cornerRadius = 0;
+    else if (cornerRadius &gt; MIN(w, h))
+        cornerRadius = MIN(w, h) / 2.;
 
-<ul>
-<li><p>(UIImage *)roundedCornerImageWithCornerRadius:(CGFloat)cornerRadius {
-  CGFloat w = self.size.width;
-  CGFloat h = self.size.height;
-  CGFloat scale = [UIScreen mainScreen].scale;
-  // 防止圆角半径小于0，或者大于宽/高中较小值的一半。
-  if (cornerRadius &lt; 0)
-      cornerRadius = 0;
-  else if (cornerRadius > MIN(w, h))
-      cornerRadius = MIN(w, h) / 2.;</p>
+    UIImage *image = nil;
+    CGRect imageFrame = CGRectMake(0., 0., w, h);
+    UIGraphicsBeginImageContextWithOptions(self.size, NO, scale);
+    [[UIBezierPath bezierPathWithRoundedRect:imageFrame cornerRadius:cornerRadius] addClip];
+    [self drawInRect:imageFrame];
+    image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
 
-<p>  UIImage *image = nil;
-  CGRect imageFrame = CGRectMake(0., 0., w, h);
-  UIGraphicsBeginImageContextWithOptions(self.size, NO, scale);
-  [[UIBezierPath bezierPathWithRoundedRect:imageFrame cornerRadius:cornerRadius] addClip];
-  [self drawInRect:imageFrame];
-  image = UIGraphicsGetImageFromCurrentImageContext();
-  UIGraphicsEndImageContext();</p>
+    return image;
+}
 
-<p>  return image;
-}</p></li>
-</ul>
-
-
-<p>@end
-```</p>
+@end
+</code></pre>
 
 <p>把这个Category添加到项目中之后，直接对<code>UIImage</code>对象调用<code>- roundedCornerImageWithCornerRadius:</code>方法即可。以上实现并非最高效，最佳的实现，但是有时候Quick and Dirty的方法已经足够好了，是吧。（天音：你就自我安慰吧。）</p>
 
@@ -73,19 +68,18 @@
   
   <entry>
     <title type="html"><![CDATA[获取NSImage图片的准确大小]]></title>
-    <link href="http://venj.github.io/blog/get-real-size-of-nsimage/"/>
+    <link href="http://cocoa.venj.me/blog/get-real-size-of-nsimage/"/>
     <updated>2011-08-19T23:58:00+08:00</updated>
-    <id>http://venj.github.io/blog/get-real-size-of-nsimage</id>
+    <id>http://cocoa.venj.me/blog/get-real-size-of-nsimage</id>
     <content type="html"><![CDATA[<p>今天在测试代码的时候发现了一个诡异的问题，那就是<code>NSImage</code>加载图片的时候无法准确获得图片的大小。</p>
 
 <p>最初的代码是这样的：</p>
 
-<p><code>objc
-NSImage *image = [NSImage imageNamed:@"image"];
+<pre><code class="objc">NSImage *image = [NSImage imageNamed:@"image"];
 NSLog(@"%f, %f", image.size.width, image.size.height);
 //终端Log到的图片的尺寸是：185.250000, 106.500000，而实际的大小是274.0, 142.0。
 //image.size = NSMakeSize(247.0, 142.0); //强制指定尺寸能够解决问题
-</code></p>
+</code></pre>
 
 <p>我用一个Image Well来显示图片的时候，发现图片居然比实际的要小！我试着<code>NSLog</code>图片的大小，发现<code>NSImage</code>加载的图片的<code>size</code>根本就是错的！我根据图片的实际大小，强制设置了图片的尺寸，图片就显示正常了，而且也没有被拉伸的痕迹。这说明图片数据在加载后并没有损耗，只是图片的<code>size</code>属性出错了，因此，强制设置<code>size</code>属性，图片就能正常显示了。</p>
 
@@ -97,21 +91,19 @@ NSLog(@"%f, %f", image.size.width, image.size.height);
 
 <p>虽然在这里，人肉设置图片大小能够解决问题，不过总不能在以后的代码中都人肉设置每张图片的尺寸吧。总有什么准确的方法来获取图片的真实像素尺寸的。然后就找到了<a href="http://stackoverflow.com/">Stack Overflow</a>里的<a href="http://stackoverflow.com/questions/2190027/nsimage-acting-weird">这个问题</a>，解决方法是这样的：</p>
 
-<p><code>objc
-// 不要用这个方法，这个方法并不一定总能成功。
+<pre><code class="objc">// 不要用这个方法，这个方法并不一定总能成功。
 NSBitmapImageRep *rep = [[image representations] objectAtIndex: 0];
 NSSize size = NSMakeSize([rep pixelsWide], [rep pixelsHigh]);
 [image setSize: size];
-</code></p>
+</code></pre>
 
 <p>我试了一下这个方法，确实能够解决我的问题。不过这个方法下面，两个开发人员的对话很有启发，其中一人提到了一个问题，那就是<code>NSImage</code>可能并不存在<code>NSBitmapImageRep</code>－－这并不稀奇，比如，用<a href="/blog/take-photo-with-isight-camera/">Mac的摄像头拍下的图片</a>就没有！因此，一定有更好的方法。于是，我顺藤摸瓜，又在Stack Overflow上找到了<a href="http://stackoverflow.com/questions/4748846/nsimage-dpi-question">另一个更加靠谱的方法</a>：</p>
 
-<p><code>objc
-NSImage *image = [NSImage imageNamed:@"image"];
+<pre><code class="objc">NSImage *image = [NSImage imageNamed:@"image"];
 NSBitmapImageRep *rep = [NSBitmapImageRep imageRepWithData:[image TIFFRepresentation]];
 NSSize size = NSMakeSize([rep pixelsWide], [rep pixelsHigh]);
 [image setSize: size];
-</code></p>
+</code></pre>
 
 <p>这种方法其实在原理上和之前说的那个有缺陷的方法并没有非常本质的不同。只是这种方法是创建了一个<code>NSBitmapImageRep</code>，而不是从图片中获取一个。这样，就不会存在图片对象中无法获取<code>NSBitmapImageRep</code>的问题了。</p>
 

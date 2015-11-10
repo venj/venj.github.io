@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: NSButton | Cocoa学习]]></title>
-  <link href="http://venj.github.io/blog/categories/nsbutton/atom.xml" rel="self"/>
-  <link href="http://venj.github.io/"/>
-  <updated>2014-01-22T11:14:45+08:00</updated>
-  <id>http://venj.github.io/</id>
+  <title><![CDATA[Category: Nsbutton | Cocoa学习]]></title>
+  <link href="http://cocoa.venj.me/blog/categories/nsbutton/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[用Cocoa实现点击按钮打开快捷菜单]]></title>
-    <link href="http://venj.github.io/blog/open-menu-with-a-button/"/>
+    <link href="http://cocoa.venj.me/blog/open-menu-with-a-button/"/>
     <updated>2011-04-16T11:41:00+08:00</updated>
-    <id>http://venj.github.io/blog/open-menu-with-a-button</id>
+    <id>http://cocoa.venj.me/blog/open-menu-with-a-button</id>
     <content type="html"><![CDATA[<p>用一个自定义按钮打开菜单已经是一个很常见的需求的。不过<code>NSPopupButton</code>对于我们的这种需求来说显得有点不合适。最终的结果如下所示：</p>
 
 <p><img class="center" src="/images/posts/image-button-menu.png" title="和自定义按钮关联的弹出菜单" ></p>
@@ -30,28 +30,47 @@
 
 
 <p>
-``` objc
-&ndash; (IBAction)showMenu:(id)sender {</p>
-
-<pre><code>NSRect frame = [(NSButton *)sender frame];
-NSPoint menuOrigin = [[(NSButton *)sender superview] convertPoint:NSMakePoint(frame.origin.x, frame.origin.y) toView:nil];
-
-NSEvent *event =  [NSEvent mouseEventWithType:NSLeftMouseDown
-                                     location:menuOrigin
-                                modifierFlags:NSLeftMouseDownMask
-                                    timestamp:0
-                                 windowNumber:[[(NSButton *)sender window] windowNumber]
-                                      context:[[(NSButton *)sender window] graphicsContext]
-                                  eventNumber:0
-                                   clickCount:1
-                                     pressure:1];
-
-// contextMenu可以直接在XIB里初始化一个菜单
-[NSMenu popUpContextMenu:contextMenu withEvent:event forView:(NSButton *)sender];
-</code></pre>
-
-<p>}
-```
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">showMenu:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">NSRect</span> <span class="n">frame</span> <span class="o">=</span> <span class="p">[(</span><span class="n">NSButton</span> <span class="o">*</span><span class="p">)</span><span class="n">sender</span> <span class="n">frame</span><span class="p">];</span>
+</span><span class='line'><span class="n">NSPoint</span> <span class="n">menuOrigin</span> <span class="o">=</span> <span class="p">[[(</span><span class="n">NSButton</span> <span class="o">*</span><span class="p">)</span><span class="n">sender</span> <span class="n">superview</span><span class="p">]</span> <span class="nl">convertPoint</span><span class="p">:</span><span class="n">NSMakePoint</span><span class="p">(</span><span class="n">frame</span><span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">frame</span><span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">y</span><span class="p">)</span> <span class="nl">toView</span><span class="p">:</span><span class="nb">nil</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="bp">NSEvent</span> <span class="o">*</span><span class="n">event</span> <span class="o">=</span>  <span class="p">[</span><span class="bp">NSEvent</span> <span class="nl">mouseEventWithType</span><span class="p">:</span><span class="n">NSLeftMouseDown</span>
+</span><span class='line'>                                     <span class="nl">location</span><span class="p">:</span><span class="n">menuOrigin</span>
+</span><span class='line'>                                <span class="nl">modifierFlags</span><span class="p">:</span><span class="n">NSLeftMouseDownMask</span>
+</span><span class='line'>                                    <span class="nl">timestamp</span><span class="p">:</span><span class="mi">0</span>
+</span><span class='line'>                                 <span class="nl">windowNumber</span><span class="p">:[[(</span><span class="n">NSButton</span> <span class="o">*</span><span class="p">)</span><span class="n">sender</span> <span class="n">window</span><span class="p">]</span> <span class="n">windowNumber</span><span class="p">]</span>
+</span><span class='line'>                                      <span class="nl">context</span><span class="p">:[[(</span><span class="n">NSButton</span> <span class="o">*</span><span class="p">)</span><span class="n">sender</span> <span class="n">window</span><span class="p">]</span> <span class="n">graphicsContext</span><span class="p">]</span>
+</span><span class='line'>                                  <span class="nl">eventNumber</span><span class="p">:</span><span class="mi">0</span>
+</span><span class='line'>                                   <span class="nl">clickCount</span><span class="p">:</span><span class="mi">1</span>
+</span><span class='line'>                                     <span class="nl">pressure</span><span class="p">:</span><span class="mi">1</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// contextMenu可以直接在XIB里初始化一个菜单</span>
+</span><span class='line'><span class="p">[</span><span class="n">NSMenu</span> <span class="nl">popUpContextMenu</span><span class="p">:</span><span class="n">contextMenu</span> <span class="nl">withEvent</span><span class="p">:</span><span class="n">event</span> <span class="nl">forView</span><span class="p">:(</span><span class="n">NSButton</span> <span class="o">*</span><span class="p">)</span><span class="n">sender</span><span class="p">];</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 啰嗦一句，关于自定义按钮的设定问题。截图中的自定义按钮就是一个普通的push button，在IB里作如下设置：</p>
 
 <p><img class="center" src="/images/posts/button-menu-xcode.png"></p>

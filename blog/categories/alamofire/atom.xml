@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Alamofire | Cocoa学习]]></title>
+  <link href="http://cocoa.venj.me/blog/categories/alamofire/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
+  <author>
+    <name><![CDATA[venj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[让Alamofire使用自签名证书]]></title>
+    <link href="http://cocoa.venj.me/blog/alamofire-ssl/"/>
+    <updated>2015-11-09T15:35:05+08:00</updated>
+    <id>http://cocoa.venj.me/blog/alamofire-ssl</id>
+    <content type="html"><![CDATA[<p>Alamofire每次大版本号更新，都会引入大量API更新。3.x版更新用Swift 2.0的新特征更新了很多接口。网上很多关于Alamofire如何使用自定义SSL证书的文章都已经过时。经过一番搜索，最后找到了一个靠谱的解决方案。</p>
+
+<!-- more -->
+
+
+<pre><code class="swift">// AppDelegate.swift
+func configureAlamofireManager() {
+    let manager = Manager.sharedInstance
+    manager.delegate.sessionDidReceiveChallenge = { session, challenge in
+        var disposition: NSURLSessionAuthChallengeDisposition = .PerformDefaultHandling
+        var credential: NSURLCredential?
+
+        if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust {
+            disposition = NSURLSessionAuthChallengeDisposition.UseCredential
+            credential = NSURLCredential(forTrust: challenge.protectionSpace.serverTrust!)
+        } else {
+            if challenge.previousFailureCount &gt; 0 {
+                disposition = .CancelAuthenticationChallenge
+            } else {
+                credential = manager.session.configuration.URLCredentialStorage?.defaultCredentialForProtectionSpace(challenge.protectionSpace)
+
+                if credential != nil {
+                    disposition = .UseCredential
+                }
+            }
+        }
+        return (disposition, credential)
+    }
+}
+</code></pre>
+
+<p>在AppDelegate.swift中创建上面这个方法，在<code>application(_:, didFinishLaunchingWithOptions:) -&gt; Bool</code>方法中调用一次这个方法，这样，后续的使用Alamofire默认的<code>request</code>方法发起的请求就可以使用自定义SSL证书了。</p>
+
+<p>如果不要全局跳过自定义SSL证书检查，你可以在需要跳过自定义SSL请求的时候，单独创建一个<code>Alamofire.Manager</code>对象，然后再调用上述方法中的<code>delegate.sessionDidReceiveChallenge</code>，然后用<code>manager.request</code>创建<code>request</code>进行Web请求。</p>
+
+<p>参考：<a href="http://stackoverflow.com/questions/30671029/alamofire-ssl-failure">StackOverflow</a></p>
+
+<p>（全文完）</p>
+]]></content>
+  </entry>
+  
+</feed>

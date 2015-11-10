@@ -18,13 +18,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://venj.github.io/blog/nsstring-height">
+  <link rel="canonical" href="http://cocoa.venj.me/blog/nsstring-height/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Cocoa学习" type="application/atom+xml">
   <script src="/javascripts/modernizr-2.0.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
 <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
@@ -50,7 +50,7 @@
   
 <form action="http://google.com/search" method="get">
   <fieldset role="search">
-    <input type="hidden" name="q" value="site:venj.github.io" />
+    <input type="hidden" name="sitesearch" value="cocoa.venj.me">
     <input class="search" type="text" name="q" results="0" placeholder="Search"/>
   </fieldset>
 </form>
@@ -78,14 +78,7 @@
 
 
 
-
-
-
-
-  
-
-
-<time datetime="2012-07-30T09:01:00+08:00" pubdate data-updated="true">Jul 30<span>th</span>, 2012</time>
+<time class='entry-date' datetime='2012-07-30T09:01:00+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>30</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>9:01 am</span></time>
         
       </p>
     
@@ -113,18 +106,18 @@
 <span class='line-number'>13</span>
 <span class='line-number'>14</span>
 <span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">UITableViewCell</span> <span class="o">*</span><span class="p">)</span><span class="nf">tableView:</span><span class="p">(</span><span class="n">UITableView</span> <span class="o">*</span><span class="p">)</span><span class="nv">tableView</span> <span class="nf">cellForRowAtIndexPath:</span><span class="p">(</span><span class="n">NSIndexPath</span> <span class="o">*</span><span class="p">)</span><span class="nv">indexPath</span> <span class="p">{</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="bp">UITableViewCell</span> <span class="o">*</span><span class="p">)</span><span class="nf">tableView:</span><span class="p">(</span><span class="bp">UITableView</span> <span class="o">*</span><span class="p">)</span><span class="nv">tableView</span> <span class="nf">cellForRowAtIndexPath:</span><span class="p">(</span><span class="bp">NSIndexPath</span> <span class="o">*</span><span class="p">)</span><span class="nv">indexPath</span> <span class="p">{</span>
 </span><span class='line'>    <span class="p">...</span>
 </span><span class='line'>    <span class="n">cell</span><span class="p">.</span><span class="n">textLabel</span><span class="p">.</span><span class="n">lineBreakMode</span> <span class="o">=</span> <span class="n">UILineBreakModeWordWrap</span><span class="p">;</span> <span class="c1">//设置换行模式</span>
 </span><span class='line'>    <span class="n">cell</span><span class="p">.</span><span class="n">textLabel</span><span class="p">.</span><span class="n">numberOfLines</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">//允许多行</span>
 </span><span class='line'>    <span class="p">...</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span><span class="nf">tableView:</span><span class="p">(</span><span class="n">UITableView</span> <span class="o">*</span><span class="p">)</span><span class="nv">tableView</span> <span class="nf">heightForRowAtIndexPath:</span><span class="p">(</span><span class="n">NSIndexPath</span> <span class="o">*</span><span class="p">)</span><span class="nv">indexPath</span> <span class="p">{</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span><span class="nf">tableView:</span><span class="p">(</span><span class="bp">UITableView</span> <span class="o">*</span><span class="p">)</span><span class="nv">tableView</span> <span class="nf">heightForRowAtIndexPath:</span><span class="p">(</span><span class="bp">NSIndexPath</span> <span class="o">*</span><span class="p">)</span><span class="nv">indexPath</span> <span class="p">{</span>
 </span><span class='line'>    <span class="p">...</span>
-</span><span class='line'>    <span class="n">NSString</span> <span class="n">cellText</span> <span class="o">=</span> <span class="p">...;</span>
-</span><span class='line'>    <span class="n">CGSize</span> <span class="n">maximumSize</span> <span class="o">=</span> <span class="n">CGSizeMake</span><span class="p">(</span><span class="mf">280.</span><span class="p">,</span> <span class="mf">9999.</span><span class="p">);</span> <span class="c1">//指定一个宽度为实际宽度，高度为极大指的尺寸</span>
-</span><span class='line'>    <span class="n">CGSize</span> <span class="n">labelSize</span> <span class="o">=</span> <span class="p">[</span><span class="n">cellText</span> <span class="nl">sizeWithFont:</span><span class="p">[</span><span class="n">UIFont</span> <span class="nl">systemFontOfSize:</span><span class="mf">14.</span><span class="p">]</span> <span class="nl">constrainedToSize:</span><span class="n">maximumSize</span> <span class="nl">lineBreakMode:</span><span class="n">UILineBreakModeWordWrap</span><span class="p">];</span> <span class="c1">//调用方法，获取字符串的尺寸</span>
+</span><span class='line'>    <span class="bp">NSString</span> <span class="n">cellText</span> <span class="o">=</span> <span class="p">...;</span>
+</span><span class='line'>    <span class="bp">CGSize</span> <span class="n">maximumSize</span> <span class="o">=</span> <span class="n">CGSizeMake</span><span class="p">(</span><span class="mf">280.</span><span class="p">,</span> <span class="mf">9999.</span><span class="p">);</span> <span class="c1">//指定一个宽度为实际宽度，高度为极大指的尺寸</span>
+</span><span class='line'>    <span class="bp">CGSize</span> <span class="n">labelSize</span> <span class="o">=</span> <span class="p">[</span><span class="n">cellText</span> <span class="nl">sizeWithFont</span><span class="p">:[</span><span class="bp">UIFont</span> <span class="nl">systemFontOfSize</span><span class="p">:</span><span class="mf">14.</span><span class="p">]</span> <span class="nl">constrainedToSize</span><span class="p">:</span><span class="n">maximumSize</span> <span class="nl">lineBreakMode</span><span class="p">:</span><span class="n">UILineBreakModeWordWrap</span><span class="p">];</span> <span class="c1">//调用方法，获取字符串的尺寸</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="k">return</span> <span class="n">labelSize</span><span class="p">.</span><span class="n">height</span> <span class="o">+</span> <span class="n">SOME_SPECE_FOR_OTHER_CONTROL</span><span class="p">;</span> <span class="c1">//返回字符串的高度，加上一些自由空间的高度或其他空间所占的高度。</span>
 </span><span class='line'><span class="p">}</span>
@@ -152,24 +145,24 @@
 <span class='line-number'>17</span>
 <span class='line-number'>18</span>
 <span class='line-number'>19</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span><span class="nf">tableView:</span><span class="p">(</span><span class="n">NSTableView</span> <span class="o">*</span><span class="p">)</span><span class="nv">tableView</span> <span class="nf">heightOfRow:</span><span class="p">(</span><span class="n">NSInteger</span><span class="p">)</span><span class="nv">row</span> <span class="p">{</span>
-</span><span class='line'>    <span class="n">NSString</span> <span class="o">*</span><span class="n">statusText</span> <span class="o">=</span> <span class="p">[[</span><span class="n">_statusMessages</span> <span class="nl">objectAtIndex:</span><span class="n">row</span><span class="p">]</span> <span class="n">text</span><span class="p">];</span>
-</span><span class='line'>    <span class="k">return</span> <span class="p">[</span><span class="n">self</span> <span class="nl">heightForStringDrawing:</span><span class="n">statusText</span> <span class="nl">font:</span><span class="p">[</span><span class="n">NSFont</span> <span class="nl">systemFontOfSize:</span><span class="mi">12</span><span class="p">]</span> <span class="nl">width:</span><span class="n">tableView</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">]</span> <span class="o">+</span> <span class="mi">8</span><span class="p">;</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span><span class="nf">tableView:</span><span class="p">(</span><span class="n">NSTableView</span> <span class="o">*</span><span class="p">)</span><span class="nv">tableView</span> <span class="nf">heightOfRow:</span><span class="p">(</span><span class="bp">NSInteger</span><span class="p">)</span><span class="nv">row</span> <span class="p">{</span>
+</span><span class='line'>    <span class="bp">NSString</span> <span class="o">*</span><span class="n">statusText</span> <span class="o">=</span> <span class="p">[[</span><span class="n">_statusMessages</span> <span class="nl">objectAtIndex</span><span class="p">:</span><span class="n">row</span><span class="p">]</span> <span class="n">text</span><span class="p">];</span>
+</span><span class='line'>    <span class="k">return</span> <span class="p">[</span><span class="nb">self</span> <span class="nl">heightForStringDrawing</span><span class="p">:</span><span class="n">statusText</span> <span class="nl">font</span><span class="p">:[</span><span class="n">NSFont</span> <span class="nl">systemFontOfSize</span><span class="p">:</span><span class="mi">12</span><span class="p">]</span> <span class="nl">width</span><span class="p">:</span><span class="n">tableView</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">]</span> <span class="o">+</span> <span class="mi">8</span><span class="p">;</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
 </span><span class='line'><span class="c1">//苹果官方文档中的示例方法</span>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span><span class="nf">heightForStringDrawing:</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">myString</span> <span class="nf">font:</span><span class="p">(</span><span class="n">NSFont</span> <span class="o">*</span><span class="p">)</span><span class="nv">myFont</span> <span class="nf">width:</span><span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span><span class="nv">myWidth</span> <span class="p">{</span>
-</span><span class='line'>    <span class="n">NSTextStorage</span> <span class="o">*</span><span class="n">textStorage</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSTextStorage</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithString:</span><span class="n">myString</span><span class="p">];</span>
-</span><span class='line'>    <span class="n">NSTextContainer</span> <span class="o">*</span><span class="n">textContainer</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSTextContainer</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithContainerSize:</span> <span class="n">NSMakeSize</span><span class="p">(</span><span class="n">myWidth</span><span class="p">,</span> <span class="n">FLT_MAX</span><span class="p">)];</span>
-</span><span class='line'>    <span class="n">NSLayoutManager</span> <span class="o">*</span><span class="n">layoutManager</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSLayoutManager</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span><span class="nf">heightForStringDrawing:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">myString</span> <span class="nf">font:</span><span class="p">(</span><span class="n">NSFont</span> <span class="o">*</span><span class="p">)</span><span class="nv">myFont</span> <span class="nf">width:</span><span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span><span class="nv">myWidth</span> <span class="p">{</span>
+</span><span class='line'>    <span class="bp">NSTextStorage</span> <span class="o">*</span><span class="n">textStorage</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NSTextStorage</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithString</span><span class="p">:</span><span class="n">myString</span><span class="p">];</span>
+</span><span class='line'>    <span class="bp">NSTextContainer</span> <span class="o">*</span><span class="n">textContainer</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NSTextContainer</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithContainerSize</span><span class="p">:</span> <span class="n">NSMakeSize</span><span class="p">(</span><span class="n">myWidth</span><span class="p">,</span> <span class="n">FLT_MAX</span><span class="p">)];</span>
+</span><span class='line'>    <span class="bp">NSLayoutManager</span> <span class="o">*</span><span class="n">layoutManager</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NSLayoutManager</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="p">[</span><span class="n">layoutManager</span> <span class="nl">addTextContainer:</span><span class="n">textContainer</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">textStorage</span> <span class="nl">addLayoutManager:</span><span class="n">layoutManager</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">textStorage</span> <span class="nl">addAttribute:</span><span class="n">NSFontAttributeName</span> <span class="nl">value:</span><span class="n">myFont</span> <span class="nl">range:</span><span class="n">NSMakeRange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">[</span><span class="n">textStorage</span> <span class="n">length</span><span class="p">])];</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">textContainer</span> <span class="nl">setLineFragmentPadding:</span><span class="mf">0.0</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">layoutManager</span> <span class="nl">addTextContainer</span><span class="p">:</span><span class="n">textContainer</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">textStorage</span> <span class="nl">addLayoutManager</span><span class="p">:</span><span class="n">layoutManager</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">textStorage</span> <span class="nl">addAttribute</span><span class="p">:</span><span class="n">NSFontAttributeName</span> <span class="nl">value</span><span class="p">:</span><span class="n">myFont</span> <span class="nl">range</span><span class="p">:</span><span class="n">NSMakeRange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">[</span><span class="n">textStorage</span> <span class="n">length</span><span class="p">])];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">textContainer</span> <span class="nl">setLineFragmentPadding</span><span class="p">:</span><span class="mf">0.0</span><span class="p">];</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="p">[</span><span class="n">layoutManager</span> <span class="nl">glyphRangeForTextContainer:</span><span class="n">textContainer</span><span class="p">];</span>
-</span><span class='line'>    <span class="k">return</span> <span class="p">[</span><span class="n">layoutManager</span> <span class="nl">usedRectForTextContainer:</span><span class="n">textContainer</span><span class="p">].</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">layoutManager</span> <span class="nl">glyphRangeForTextContainer</span><span class="p">:</span><span class="n">textContainer</span><span class="p">];</span>
+</span><span class='line'>    <span class="k">return</span> <span class="p">[</span><span class="n">layoutManager</span> <span class="nl">usedRectForTextContainer</span><span class="p">:</span><span class="n">textContainer</span><span class="p">].</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">;</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
@@ -194,19 +187,12 @@
 
 
 
-
-
-
-
-  
-
-
-<time datetime="2012-07-30T09:01:00+08:00" pubdate data-updated="true">Jul 30<span>th</span>, 2012</time>
+<time class='entry-date' datetime='2012-07-30T09:01:00+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>30</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>9:01 am</span></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/appkit/'>AppKit</a>, <a class='category' href='/blog/categories/nsstring/'>NSString</a>, <a class='category' href='/blog/categories/uikit/'>UIKit</a>
+    <a class='category' href='/blog/categories/appkit/'>appkit</a>, <a class='category' href='/blog/categories/nsstring/'>nsstring</a>, <a class='category' href='/blog/categories/uikit/'>uikit</a>
   
 </span>
 
@@ -215,7 +201,7 @@
     
       <div class="sharing">
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://venj.github.io/blog/nsstring-height/" data-via="" data-counturl="http://venj.github.io/blog/nsstring-height/" >Tweet</a>
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://cocoa.venj.me/blog/nsstring-height/" data-via="" data-counturl="http://cocoa.venj.me/blog/nsstring-height/" >Tweet</a>
   
   
   
@@ -254,23 +240,23 @@
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/rounded-corner-image-with-layer-and-image-view/">用ImageView和Layer实现图像的圆角显示</a>
+        <a href="/blog/ios9-readable-content-guide/">iOS 9的TableView和Readable Content Guide</a>
       </li>
     
       <li class="post">
-        <a href="/blog/simple-uiimage-extension-to-create-rounded-corner-image/">一个简单的创建圆角图像的UIImage扩展实现</a>
+        <a href="/blog/openurl-on-ios9/">iOS 9下使用openURL:</a>
       </li>
     
       <li class="post">
-        <a href="/blog/push-viewcontroller-hide-buttom-bar/">推View Controller时隐藏TabBar</a>
+        <a href="/blog/app-transportation-security/">iOS 9中的App Transport Security</a>
       </li>
     
       <li class="post">
-        <a href="/blog/code-box-like-window-open-animation/">CodeBox风格的窗口打开动画</a>
+        <a href="/blog/alamofire-ssl/">让Alamofire使用自签名证书</a>
       </li>
     
       <li class="post">
-        <a href="/blog/localized-loading-screen/">本地化加载屏幕</a>
+        <a href="/blog/disable-corestorage-on-os-x-yosemite/">禁用OS X Yosemite上的Core Storage</a>
       </li>
     
   </ul>
@@ -319,7 +305,7 @@
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2011 - 2014 - venj -
+  Copyright &copy; 2011 - 2015 - venj -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> &amp; <a href="http://pages.github.com">Github Pages</a></span>
 </p>
 
@@ -331,8 +317,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://venj.github.io/blog/nsstring-height/';
-        var disqus_url = 'http://venj.github.io/blog/nsstring-height/';
+        var disqus_identifier = 'http://cocoa.venj.me/blog/nsstring-height/';
+        var disqus_url = 'http://cocoa.venj.me/blog/nsstring-height/';
         var disqus_script = 'embed.js';
       
     (function () {

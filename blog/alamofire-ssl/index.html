@@ -1,0 +1,343 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>让Alamofire使用自签名证书 - Cocoa学习</title>
+  <meta name="author" content="venj">
+
+  
+  <meta name="description" content="Alamofire每次大版本号更新，都会引入大量API更新。3.x版更新用Swift 2.0的新特征更新了很多接口。网上很多关于Alamofire如何使用自定义SSL证书的文章都已经过时。经过一番搜索，最后找到了一个靠谱的解决方案。 1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://cocoa.venj.me/blog/alamofire-ssl/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Cocoa学习" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Cocoa学习</a></h1>
+  
+    <h2>我的Cocoa/Cocoa Touch学习笔记</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="cocoa.venj.me">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+  <li><a href="/about">关于本站</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">让Alamofire使用自签名证书</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-11-09T15:35:05+08:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>3:35 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Alamofire每次大版本号更新，都会引入大量API更新。3.x版更新用Swift 2.0的新特征更新了很多接口。网上很多关于Alamofire如何使用自定义SSL证书的文章都已经过时。经过一番搜索，最后找到了一个靠谱的解决方案。</p>
+
+<!-- more -->
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="c1">// AppDelegate.swift</span>
+</span><span class='line'><span class="k">func</span> <span class="nf">configureAlamofireManager</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">let</span> <span class="n">manager</span> <span class="o">=</span> <span class="n">Manager</span><span class="p">.</span><span class="n">sharedInstance</span>
+</span><span class='line'>    <span class="n">manager</span><span class="p">.</span><span class="n">delegate</span><span class="p">.</span><span class="n">sessionDidReceiveChallenge</span> <span class="o">=</span> <span class="p">{</span> <span class="n">session</span><span class="p">,</span> <span class="n">challenge</span> <span class="k">in</span>
+</span><span class='line'>        <span class="k">var</span> <span class="nl">disposition</span><span class="p">:</span> <span class="n">NSURLSessionAuthChallengeDisposition</span> <span class="o">=</span> <span class="p">.</span><span class="n">PerformDefaultHandling</span>
+</span><span class='line'>        <span class="k">var</span> <span class="nl">credential</span><span class="p">:</span> <span class="bp">NSURLCredential</span><span class="o">?</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">if</span> <span class="n">challenge</span><span class="p">.</span><span class="n">protectionSpace</span><span class="p">.</span><span class="n">authenticationMethod</span> <span class="o">==</span> <span class="n">NSURLAuthenticationMethodServerTrust</span> <span class="p">{</span>
+</span><span class='line'>            <span class="n">disposition</span> <span class="o">=</span> <span class="n">NSURLSessionAuthChallengeDisposition</span><span class="p">.</span><span class="n">UseCredential</span>
+</span><span class='line'>            <span class="n">credential</span> <span class="o">=</span> <span class="bp">NSURLCredential</span><span class="p">(</span><span class="nl">forTrust</span><span class="p">:</span> <span class="n">challenge</span><span class="p">.</span><span class="n">protectionSpace</span><span class="p">.</span><span class="n">serverTrust</span><span class="o">!</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">if</span> <span class="n">challenge</span><span class="p">.</span><span class="n">previousFailureCount</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">{</span>
+</span><span class='line'>                <span class="n">disposition</span> <span class="o">=</span> <span class="p">.</span><span class="n">CancelAuthenticationChallenge</span>
+</span><span class='line'>            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>                <span class="n">credential</span> <span class="o">=</span> <span class="n">manager</span><span class="p">.</span><span class="n">session</span><span class="p">.</span><span class="n">configuration</span><span class="p">.</span><span class="n">URLCredentialStorage</span><span class="o">?</span><span class="p">.</span><span class="n">defaultCredentialForProtectionSpace</span><span class="p">(</span><span class="n">challenge</span><span class="p">.</span><span class="n">protectionSpace</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="k">if</span> <span class="n">credential</span> <span class="o">!=</span> <span class="nb">nil</span> <span class="p">{</span>
+</span><span class='line'>                    <span class="n">disposition</span> <span class="o">=</span> <span class="p">.</span><span class="n">UseCredential</span>
+</span><span class='line'>                <span class="p">}</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>        <span class="k">return</span> <span class="p">(</span><span class="n">disposition</span><span class="p">,</span> <span class="n">credential</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>在AppDelegate.swift中创建上面这个方法，在<code>application(_:, didFinishLaunchingWithOptions:) -&gt; Bool</code>方法中调用一次这个方法，这样，后续的使用Alamofire默认的<code>request</code>方法发起的请求就可以使用自定义SSL证书了。</p>
+
+<p>如果不要全局跳过自定义SSL证书检查，你可以在需要跳过自定义SSL请求的时候，单独创建一个<code>Alamofire.Manager</code>对象，然后再调用上述方法中的<code>delegate.sessionDidReceiveChallenge</code>，然后用<code>manager.request</code>创建<code>request</code>进行Web请求。</p>
+
+<p>参考：<a href="http://stackoverflow.com/questions/30671029/alamofire-ssl-failure">StackOverflow</a></p>
+
+<p>（全文完）</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">venj</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-11-09T15:35:05+08:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>3:35 pm</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/alamofire/'>alamofire</a>, <a class='category' href='/blog/categories/ssl/'>ssl</a>, <a class='category' href='/blog/categories/swift/'>swift</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://cocoa.venj.me/blog/alamofire-ssl/" data-via="" data-counturl="http://cocoa.venj.me/blog/alamofire-ssl/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/disable-corestorage-on-os-x-yosemite/" title="Previous Post: 禁用OS X Yosemite上的Core Storage">&laquo; 禁用OS X Yosemite上的Core Storage</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/app-transportation-security/" title="Next Post: iOS 9中的App Transport Security">iOS 9中的App Transport Security &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Sample Code</h1>
+  <ul>
+    <li><a href="https://github.com/venj/Cocoa-blog-code">Clone on Github</a></li>
+    <li><a href="github-mac://openRepo/https://github.com/venj/Cocoa-blog-code"> Clone in Mac</a></li>
+  </ul>
+</section><section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/ios9-readable-content-guide/">iOS 9的TableView和Readable Content Guide</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/openurl-on-ios9/">iOS 9下使用openURL:</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/app-transportation-security/">iOS 9中的App Transport Security</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/alamofire-ssl/">让Alamofire使用自签名证书</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/disable-corestorage-on-os-x-yosemite/">禁用OS X Yosemite上的Core Storage</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/venj">@venj</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'venj',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+<section>
+  <h1>Blog Roll</h1>
+  <ul>
+    <li><a href="http://blog.ilvelh.com">ilvelh's blog</a></li>
+    <li><a href="http://rajna.github.io">GUWU DESIGNER</a></li>
+  </ul>
+</section>
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2011 - 2015 - venj -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> &amp; <a href="http://pages.github.com">Github Pages</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'venj';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://cocoa.venj.me/blog/alamofire-ssl/';
+        var disqus_url = 'http://cocoa.venj.me/blog/alamofire-ssl/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

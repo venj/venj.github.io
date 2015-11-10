@@ -1,0 +1,486 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Cocoa学习</title>
+  <meta name="author" content="venj">
+
+  
+  <meta name="description" content="Bezels是Mac OS X下，苹果私有的UI控件，用来提示用户某些信息。不过iOS下，就有很多第三方的Bezels风格的提示控件实现了。相信大家也见过很多了。下图左侧是OSX的提示音量变化的Bezels，右侧是iOS上的Bezels风格的进度提示。 在iOS上做Bezels的思路很简单， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://cocoa.venj.me/page8/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Cocoa学习" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Cocoa学习</a></h1>
+  
+    <h2>我的Cocoa/Cocoa Touch学习笔记</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="cocoa.venj.me">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+  <li><a href="/about">关于本站</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/draw-round-rectangle-with-quartz-on-ios/">在iOS上用Quartz绘制圆角矩形</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2011-08-06T00:28:00+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>6</span><span class='date-suffix'>th</span>, <span class='date-year'>2011</span></span> <span class='time'>12:28 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Bezels是Mac OS X下，苹果私有的UI控件，用来提示用户某些信息。不过iOS下，就有很多第三方的Bezels风格的提示控件实现了。相信大家也见过很多了。下图左侧是OSX的提示音量变化的Bezels，右侧是iOS上的Bezels风格的进度提示。</p>
+
+<p><img class="center" src="/images/posts/quartz-1.png"></p>
+
+<p>在iOS上做Bezels的思路很简单，无非就是在<code>UIView</code>里绘制一个半透明的圆角矩形，然后加入其他的<code>SubView</code>。因为没有现成的绘制圆角矩形的API可用，所以我们来自己绘制一个——反正是为了学习嘛。</p>
+
+<p>新建项目，添加一个<code>UIView</code>的子类，修改<code>drawRect</code>方法，如下：</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/draw-round-rectangle-with-quartz-on-ios/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/geocoding-in-ios-5/">iOS 5的Geocoding</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2011-07-06T23:44:00+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>6</span><span class='date-suffix'>th</span>, <span class='date-year'>2011</span></span> <span class='time'>11:44 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>很明显，本文有标题党的嫌疑。其实本文要说的是“<a href="http://www.bignerdranch.com/book/ios_programming_the_big_nerd_ranch_guide_nd_edition_">iPhone Programming: The Big Nerd Ranch Guide</a>”一书中第5章里的Whereami的例子。我照着书本做下来，但是感觉例子似乎有点问题。可能是我看书不仔细，不过这个例子要实现的功能很诡异——定位自己，然后自己用文本框加上一个Annotation(？)这太诡异了吧。</p>
+
+<p>我现在对这个例子小做修改，那就是，在文本框中输入任何地址字符串，然后地图自动定位到该位置——类似Google Map的搜索。我基于书本上的代码，做一些小修改。</p>
+
+<p>首先，注释掉<code>-locationManager:didUpdateToLocation:fromLocation:</code>这个方法里的所有代码。主要对<code>-findLocation</code>方法作出修改，实现地图搜索功能。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/geocoding-in-ios-5/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/talk-about-nsattributesstring-to-html-again/">再谈NSAttributedString转HTML</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2011-06-28T22:59:00+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>28</span><span class='date-suffix'>th</span>, <span class='date-year'>2011</span></span> <span class='time'>10:59 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>我之前曾经写过一篇<a href="/blog/a-not-so-good-way-to-convert-nsattributesstring-to-html/">关于NSAttributedString转HTML的文章</a>，因为没有得到理想的结果，而TextEdit的另存为HTML却非常漂亮，所以对此我一直耿耿于怀。今天又研究了一下TextEdit将文档另存为HTML的方法，总算能把这个问题画上一个圆满的句号了。</p>
+
+<p>在来回翻阅了TextEdit的源码后，我发现在<code>Document.m</code>里的<code>- (id)fileWrapperOfType:(NSString *)typeName error:(NSError **)outError</code>方法，就是苹果官方将<code>NSAttributedString</code>转HTML的方法（这个方法当然也包含了将富文本转成其他格式的方法，在此不详述了）。仔细阅读了这个方法之后，我发现原来苹果也是用的我在之前那篇文章中用到的那个方法：<code>- (NSData *)dataFromRange:(NSRange)range documentAttributes:(NSDictionary *)dict error:(NSError **)error</code>转的——我没把重点弄错。不错我的错误是错在调用的时候，设置的参数有问题。
+下面贴上源码，在注释了进行解释：</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/talk-about-nsattributesstring-to-html-again/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/remember-window-position/">记忆窗口位置</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2011-06-12T12:26:00+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>12</span><span class='date-suffix'>th</span>, <span class='date-year'>2011</span></span> <span class='time'>12:26 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>在程序中记忆窗口的位置，以便在下次打开的时候恢复记忆的位置。这对很多程序来说还是比较有必要的。方法很简单：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">windowDidMove:</span><span class="p">(</span><span class="bp">NSNotification</span> <span class="o">*</span><span class="p">)</span><span class="nv">notification</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">// 自动记忆和恢复位置</span>
+</span><span class='line'>    <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">window</span> <span class="nl">setFrameAutosaveName</span><span class="p">:</span><span class="s">@&quot;Position&quot;</span><span class="p">];</span>
+</span><span class='line'>    <span class="cm">/* 如果是基于文档的程序</span>
+</span><span class='line'><span class="cm">    [[self.window windowController] setShouldCascadeWindows:NO];</span>
+</span><span class='line'><span class="cm">    [self.window saveFrameUsingName:[window representedFilename]];</span>
+</span><span class='line'><span class="cm">    */</span>
+</span><span class='line'>    <span class="c1">// 手动记忆位置</span>
+</span><span class='line'>    <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">window</span> <span class="nl">setFrameUsingName</span><span class="p">:</span><span class="s">@&quot;Some name&quot;</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>// 如果是手动保存，则需要手动恢复</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">awakeFromNib</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">window</span> <span class="nl">setFrameAutosaveName</span><span class="p">:</span><span class="s">@&quot;Some name&quot;</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>// 清除记忆的位置</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">clearWindowPosition:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">NSWindow</span> <span class="nl">removeFrameUsingName</span><span class="p">:</span><span class="s">@&quot;Some name&quot;</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>很简单吧。更多可以参考<a href="http://developer.apple.com/library/mac/#documentation/Cocoa/Reference/ApplicationKit/Classes/NSWindow_Class/Reference/Reference.html">NSWindows Class Reference</a>和<a href="http://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/WinPanel/WinPanel.html">Window Programming Guide</a>文档。</p>
+
+<p>（全文完）</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/popover-became-official-control-in-lion/">Popover在Mac OS X Lion中已经成为正式控件</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2011-06-02T11:38:00+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2011</span></span> <span class='time'>11:38 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>昨天心血来潮又把Lion装上了。这次是装到了移动硬盘里。效果良好。这次只要是为了看看Lion里Cocoa的新变化，顺道学习一下——虽然我对已有的Cocoa框架还没有熟悉。</p>
+
+<p>打开最新的Xcode 4.1 DP5，很高兴的发现Popover已经成为一个标准控件。Popover在Xcode 4里用的很多。因为Popover现在非常流行，所以我就忍不住要测试以下。快速搜索了一下文档，发现Popover的文档暂时还没有进入Xcode的文档系统，所以只能硬着头皮，参考头文件里的文档，做了一个测试程序，感觉良好。 ：）</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/popover-became-official-control-in-lion/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/common-data-types-conversion/">Cocoa的几种内置数据类型之间的互转</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2011-05-28T09:42:00+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>28</span><span class='date-suffix'>th</span>, <span class='date-year'>2011</span></span> <span class='time'>9:42 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>因为Cocoa的数据类型之间的互转在实际程序中应用很广泛，而我经常都会忘记，因此在此记录一下常用的几个互转。以后将会补充更多。</p>
+
+<p>1 <code>NSData</code>和<code>NSString</code>之间互转：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cm">/* NSString to NSData */</span>
+</span><span class='line'><span class="bp">NSString</span> <span class="o">*</span><span class="n">theString</span> <span class="o">=</span> <span class="s">@&quot;This is a string&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="bp">NSData</span> <span class="o">*</span><span class="n">theStringData</span> <span class="o">=</span> <span class="p">[</span><span class="n">theString</span> <span class="nl">dataUsingEncoding</span><span class="p">:</span><span class="n">NSUTF8StringEncoding</span><span class="p">];</span>
+</span><span class='line'><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%@</span><span class="se">\n</span><span class="s">%@&quot;</span><span class="p">,</span> <span class="n">theString</span><span class="p">,</span> <span class="n">theStringData</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/* NSData to NSString */</span>
+</span><span class='line'><span class="bp">NSString</span> <span class="o">*</span><span class="n">theStringFromData</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NSString</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithData</span><span class="p">:</span><span class="n">theStringData</span> <span class="nl">encoding</span><span class="p">:</span><span class="n">NSUTF8StringEncoding</span><span class="p">];</span>
+</span><span class='line'><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%@&quot;</span><span class="p">,</span> <span class="n">theStringFromData</span><span class="p">);</span>
+</span><span class='line'><span class="p">[</span><span class="n">theStringFromData</span> <span class="k">release</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这里用<code>NSUTF8StringEncoding</code>作为例子，实际可以使用更多其它的编码类型，详情可以参考文档。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/common-data-types-conversion/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/page9">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/page7">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Sample Code</h1>
+  <ul>
+    <li><a href="https://github.com/venj/Cocoa-blog-code">Clone on Github</a></li>
+    <li><a href="github-mac://openRepo/https://github.com/venj/Cocoa-blog-code"> Clone in Mac</a></li>
+  </ul>
+</section><section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/ios9-readable-content-guide/">iOS 9的TableView和Readable Content Guide</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/openurl-on-ios9/">iOS 9下使用openURL:</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/app-transportation-security/">iOS 9中的App Transport Security</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/alamofire-ssl/">让Alamofire使用自签名证书</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/disable-corestorage-on-os-x-yosemite/">禁用OS X Yosemite上的Core Storage</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/venj">@venj</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'venj',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+<section>
+  <h1>Blog Roll</h1>
+  <ul>
+    <li><a href="http://blog.ilvelh.com">ilvelh's blog</a></li>
+    <li><a href="http://rajna.github.io">GUWU DESIGNER</a></li>
+  </ul>
+</section>
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2011 - 2015 - venj -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> &amp; <a href="http://pages.github.com">Github Pages</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'venj';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

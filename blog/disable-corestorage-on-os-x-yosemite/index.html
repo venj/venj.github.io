@@ -1,0 +1,333 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>禁用OS X Yosemite上的Core Storage - Cocoa学习</title>
+  <meta name="author" content="venj">
+
+  
+  <meta name="description" content="不管你发现没有，OS X Yosemite已经悄悄的把你的磁盘转成Core Storage了。做过Fusion Drive的同学一定知道Core Storage是实现Fusion Drive的核心技术。不过对于只有一个磁盘的MacBook来说，我有点不太理解苹果强制启用CoreStorage的理由 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://cocoa.venj.me/blog/disable-corestorage-on-os-x-yosemite/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Cocoa学习" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Cocoa学习</a></h1>
+  
+    <h2>我的Cocoa/Cocoa Touch学习笔记</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="cocoa.venj.me">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+  <li><a href="/about">关于本站</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">禁用OS X Yosemite上的Core Storage</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-02-01T14:04:30+08:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>1</span><span class='date-suffix'>st</span>, <span class='date-year'>2015</span></span> <span class='time'>2:04 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>不管你发现没有，OS X Yosemite已经悄悄的把你的磁盘转成Core Storage了。做过Fusion Drive的同学一定知道Core Storage是实现Fusion Drive的核心技术。不过对于只有一个磁盘的MacBook来说，我有点不太理解苹果强制启用CoreStorage的理由。</p>
+
+<p><strong> 为什么要关闭Core Storage </strong></p>
+
+<p>当然，如果你在用Fusion Drive，那么Core Storage是你的好朋友。<span style="color:red;">如果你正在使用Fusion Drive，请无视本文！！！</span></p>
+
+<p>不过对于单磁盘的Mac来说，Core Storage有如下问题：</p>
+
+<ol>
+<li>按住Option开机，Recovery分区不见了；（当然，你可以按住Command + R启动，进Recovery。）</li>
+<li>无法随意调整Mac的分区了；</li>
+<li>磁盘实用工具尚未对Core Storage提供完整支持；</li>
+<li>Windows下无法挂载Core Storage分区，即使你装过BootCamp驱动；</li>
+<li>磁盘性能下降？（这个可能是个例。我升级OS X 10.10.2之后，明显感到系统卡顿，关闭Core Storage之后恢复正常。）</li>
+</ol>
+
+
+<!-- more -->
+
+
+<p><strong> 如何知道是否已经启用了Core Storage </strong></p>
+
+<p>首先，确定你的系统是OS X Yosemite 10.10.x。然后，打开“磁盘实用工具”，如果你看到启动磁盘的显示为2个Macintosh HD（如下图），那么基本上你已经在用Core Storage了。</p>
+
+<p><img class="center" src="/images/posts/cs_du.png"></p>
+
+<p>打开“终端”，执行如下命令：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>diskutil cs list
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如果你看到一个逻辑磁盘阵列的树形结构，而不是：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>No CoreStorage logical volume groups found
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>那么，恭喜你，你正在使用Core Storage。耶。</p>
+
+<p><strong> 你需要关闭Core Storage吗？ </strong></p>
+
+<p>如果你不在意上面提到的1-4，并且，你也没有遇到磁盘性能下降的问题，那么你大可不必去禁用Core Storage。如果你仔细问过自己之后，还是决定要关掉Core Storage，那么请继续往下读。</p>
+
+<p><strong> 如何关闭Core Storage </strong></p>
+
+<p>首先，请备份好您重要的数据。如果你有Time Machine备份的话，那么请放心的继续进行下面的操作。</p>
+
+<p>我一再强调备份数据的重要性，倒并不是说这个操作有多大的风险；而是提醒你数据安全的重要性。如果一切就绪，那么我们开始把。</p>
+
+<p>打开终端，执行如下命令：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo diskutil cs revert /
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>输入密码，稍等片刻即可完成。命令执行完毕后提示你尽快重新启动系统。我的建议是立刻重启。重启完成后，检查一下Core Storage是否已经成功关闭。如果你在磁盘实用工具里，看到如下的状况，那么您已经成功了。副产品是，按住Option启动时，Recovery分区也回来了。</p>
+
+<p><img class="center" src="/images/posts/cs_du2.png"></p>
+
+<p><strong> 总结 </strong></p>
+
+<p>如果你搜索过这个话题，并且搜索到各种复杂的关闭Core Storage的方案，请千万不要尝试。关闭Core Storage只需1条命令，就这么简单！如果你执行失败，请进入恢复模式后尝试一次。最后祝你操作顺利。</p>
+
+<p>（全文完）</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">venj</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-02-01T14:04:30+08:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>1</span><span class='date-suffix'>st</span>, <span class='date-year'>2015</span></span> <span class='time'>2:04 pm</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/core-storage/'>core storage</a>, <a class='category' href='/blog/categories/os-x-yosemite/'>os x yosemite</a>, <a class='category' href='/blog/categories/recoveryfen-qu/'>recovery分区</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://cocoa.venj.me/blog/disable-corestorage-on-os-x-yosemite/" data-via="" data-counturl="http://cocoa.venj.me/blog/disable-corestorage-on-os-x-yosemite/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/xcode-6-color-theme-path/" title="Previous Post: Xcode 6 Color Themes (颜色主题) 的路径">&laquo; Xcode 6 Color Themes (颜色主题) 的路径</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/alamofire-ssl/" title="Next Post: 让Alamofire使用自签名证书">让Alamofire使用自签名证书 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Sample Code</h1>
+  <ul>
+    <li><a href="https://github.com/venj/Cocoa-blog-code">Clone on Github</a></li>
+    <li><a href="github-mac://openRepo/https://github.com/venj/Cocoa-blog-code"> Clone in Mac</a></li>
+  </ul>
+</section><section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/ios9-readable-content-guide/">iOS 9的TableView和Readable Content Guide</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/openurl-on-ios9/">iOS 9下使用openURL:</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/app-transportation-security/">iOS 9中的App Transport Security</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/alamofire-ssl/">让Alamofire使用自签名证书</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/disable-corestorage-on-os-x-yosemite/">禁用OS X Yosemite上的Core Storage</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/venj">@venj</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'venj',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+<section>
+  <h1>Blog Roll</h1>
+  <ul>
+    <li><a href="http://blog.ilvelh.com">ilvelh's blog</a></li>
+    <li><a href="http://rajna.github.io">GUWU DESIGNER</a></li>
+  </ul>
+</section>
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2011 - 2015 - venj -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> &amp; <a href="http://pages.github.com">Github Pages</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'venj';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://cocoa.venj.me/blog/disable-corestorage-on-os-x-yosemite/';
+        var disqus_url = 'http://cocoa.venj.me/blog/disable-corestorage-on-os-x-yosemite/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
