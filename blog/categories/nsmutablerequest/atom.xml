@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Nsmutablerequest | Cocoa学习]]></title>
-  <link href="http://venj.github.io/blog/categories/nsmutablerequest/atom.xml" rel="self"/>
-  <link href="http://venj.github.io/"/>
-  <updated>2015-11-10T14:23:46+08:00</updated>
-  <id>http://venj.github.io/</id>
+  <link href="http://cocoa.venj.me/blog/categories/nsmutablerequest/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[用NSMutableURLRequest发送图片]]></title>
-    <link href="http://venj.github.io/blog/send-image-with-nsmutableurlrequest/"/>
+    <link href="http://cocoa.venj.me/blog/send-image-with-nsmutableurlrequest/"/>
     <updated>2011-04-16T16:12:00+08:00</updated>
-    <id>http://venj.github.io/blog/send-image-with-nsmutableurlrequest</id>
+    <id>http://cocoa.venj.me/blog/send-image-with-nsmutableurlrequest</id>
     <content type="html"><![CDATA[<p>DragFan目前的网络连接使用了ASIHTTPRequest这个第三方库。<a href="http://allseeing-i.com/ASIHTTPRequest/"><code>ASIHTTPRequest</code></a>是一个相对非常庞大的库，在心理上我总觉得用在<a href="http://itunes.apple.com/app/dragfan/id441435736?mt=12">DragFan</a>里有点大材小用了。因此，我今天试着寻找了一下替代方案。很幸运，我找到了一个不错的替代方案，而且是利用现有的Cocoa API，而且在iOS下也是能使用的。</p>
 
 <p>尽管印象中看到过文章说用Cocoa的网络API的性能没有用CoreFoundation的性能好，但是目前我在写的程序并没有特别的需要高性能，而且用Cocoa的API，程序的可读性和内存管理也更加直观，应该说，是一个比较好的方案。</p>

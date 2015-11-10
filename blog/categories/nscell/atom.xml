@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Nscell | Cocoa学习]]></title>
-  <link href="http://venj.github.io/blog/categories/nscell/atom.xml" rel="self"/>
-  <link href="http://venj.github.io/"/>
-  <updated>2015-11-10T14:23:46+08:00</updated>
-  <id>http://venj.github.io/</id>
+  <link href="http://cocoa.venj.me/blog/categories/nscell/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[关于NSCell]]></title>
-    <link href="http://venj.github.io/blog/about-nscell/"/>
+    <link href="http://cocoa.venj.me/blog/about-nscell/"/>
     <updated>2011-04-28T22:29:00+08:00</updated>
-    <id>http://venj.github.io/blog/about-nscell</id>
+    <id>http://cocoa.venj.me/blog/about-nscell</id>
     <content type="html"><![CDATA[<p>作为一个初学者，我一直很弄不明白<code>NSCell</code>的子类，比如，<code>NSButtonCell</code>，<code>NSImageCell</code>及其对应的控件之间的关系。今天，在做一个TableView实现的时候，我终于开始有点悟了——好吧，你大可以鄙视我，我的脑袋是不灵光。尽管这是一个简单的问题，但是我还是简单的记录一下我的理解。</p>
 
 <p>问题的起源是“Cocoa Programming For Mac OS X”上一段关于<code>NSCell</code>的叙述：</p>

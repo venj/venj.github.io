@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Itunes | Cocoa学习]]></title>
-  <link href="http://venj.github.io/blog/categories/itunes/atom.xml" rel="self"/>
-  <link href="http://venj.github.io/"/>
-  <updated>2015-11-10T14:23:46+08:00</updated>
-  <id>http://venj.github.io/</id>
+  <link href="http://cocoa.venj.me/blog/categories/itunes/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[让iOS App通过iTunes进行文件交换]]></title>
-    <link href="http://venj.github.io/blog/ios-and-pc-file-exchange-using-itunes/"/>
+    <link href="http://cocoa.venj.me/blog/ios-and-pc-file-exchange-using-itunes/"/>
     <updated>2011-08-07T13:04:00+08:00</updated>
-    <id>http://venj.github.io/blog/ios-and-pc-file-exchange-using-itunes</id>
+    <id>http://cocoa.venj.me/blog/ios-and-pc-file-exchange-using-itunes</id>
     <content type="html"><![CDATA[<p>有一些App需要通过使用iTunes让用户上传和下载文档。要让iOS程序支持iTunes文件交换其实很简单，只需要在程序的<code>Info.plist</code>里增加一个键：<code>UIFileSharingEnabled（Application supports iTunes file sharing）</code>，赋值<code>YES</code>。</p>
 
 <p><img class="center" src="/images/posts/file-exchange-xcode.png"></p>

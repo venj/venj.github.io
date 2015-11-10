@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Nsmenu | Cocoa学习]]></title>
-  <link href="http://venj.github.io/blog/categories/nsmenu/atom.xml" rel="self"/>
-  <link href="http://venj.github.io/"/>
-  <updated>2015-11-10T14:23:46+08:00</updated>
-  <id>http://venj.github.io/</id>
+  <link href="http://cocoa.venj.me/blog/categories/nsmenu/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[山寨一下QQ for Mac样式的头像选择菜单]]></title>
-    <link href="http://venj.github.io/blog/make-a-qq-mac-avatar-menu-clone/"/>
+    <link href="http://cocoa.venj.me/blog/make-a-qq-mac-avatar-menu-clone/"/>
     <updated>2012-03-29T17:02:00+08:00</updated>
-    <id>http://venj.github.io/blog/make-a-qq-mac-avatar-menu-clone</id>
+    <id>http://cocoa.venj.me/blog/make-a-qq-mac-avatar-menu-clone</id>
     <content type="html"><![CDATA[<p>腾讯一直被大家吐槽山寨别人，这次我决定山寨一下腾讯，对象就是QQ for Mac的头像选择菜单。下面是原版的头像选择菜单：</p>
 
 <p><img class="center" src="/images/posts/qq-avatar-menu-original.png"></p>
@@ -145,9 +145,9 @@
   
   <entry>
     <title type="html"><![CDATA[在程序中动态设置是否显示Dock图标]]></title>
-    <link href="http://venj.github.io/blog/dynamically-show-and-hide-dock-icon/"/>
+    <link href="http://cocoa.venj.me/blog/dynamically-show-and-hide-dock-icon/"/>
     <updated>2011-08-06T21:50:00+08:00</updated>
-    <id>http://venj.github.io/blog/dynamically-show-and-hide-dock-icon</id>
+    <id>http://cocoa.venj.me/blog/dynamically-show-and-hide-dock-icon</id>
     <content type="html"><![CDATA[<p>关于如何隐藏Dock图标的方法，相信大家都知道——即使没有没有编程经验的老用户都知道。那就是，在Application Bundle里的<code>Info.plist</code>中增加一个<code>LSUIElement</code>的键，设置值为<code>YES</code>。但是，在程序中往往要让用户选择是否启用或禁用Dock图标。而程序是不能修改Application Bundle里的<code>Info.plist</code>的，因为这样会破坏程序的数字签名，所以只能在程序代码中动态的设置Dock图标的状态。</p>
 
 <p>其实动态设置Dock图标的方法很简单严格的说只有两行代码：</p>
@@ -256,9 +256,9 @@ TransformProcessType(&amp;psn, kProcessTransformToForegroundApplication);
   
   <entry>
     <title type="html"><![CDATA[用Cocoa实现点击按钮打开快捷菜单]]></title>
-    <link href="http://venj.github.io/blog/open-menu-with-a-button/"/>
+    <link href="http://cocoa.venj.me/blog/open-menu-with-a-button/"/>
     <updated>2011-04-16T11:41:00+08:00</updated>
-    <id>http://venj.github.io/blog/open-menu-with-a-button</id>
+    <id>http://cocoa.venj.me/blog/open-menu-with-a-button</id>
     <content type="html"><![CDATA[<p>用一个自定义按钮打开菜单已经是一个很常见的需求的。不过<code>NSPopupButton</code>对于我们的这种需求来说显得有点不合适。最终的结果如下所示：</p>
 
 <p><img class="center" src="/images/posts/image-button-menu.png" title="和自定义按钮关联的弹出菜单" ></p>

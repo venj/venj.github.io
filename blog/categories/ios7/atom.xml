@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Ios7 | Cocoa学习]]></title>
-  <link href="http://venj.github.io/blog/categories/ios7/atom.xml" rel="self"/>
-  <link href="http://venj.github.io/"/>
-  <updated>2015-11-10T14:23:46+08:00</updated>
-  <id>http://venj.github.io/</id>
+  <link href="http://cocoa.venj.me/blog/categories/ios7/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[UINavigationController和View Controller-based状态栏风格]]></title>
-    <link href="http://venj.github.io/blog/view-controller-based-status-bar-style-and-uinavigationcontroller/"/>
+    <link href="http://cocoa.venj.me/blog/view-controller-based-status-bar-style-and-uinavigationcontroller/"/>
     <updated>2014-07-24T10:30:22+08:00</updated>
-    <id>http://venj.github.io/blog/view-controller-based-status-bar-style-and-uinavigationcontroller</id>
+    <id>http://cocoa.venj.me/blog/view-controller-based-status-bar-style-and-uinavigationcontroller</id>
     <content type="html"><![CDATA[<p>从iOS 7开始， <code>UIViewController</code>有了一个新的方法：<code>- preferredStatusBarStyle</code>，可以让用户指定状态栏风格。但问题是这个方法只有在<code>ViewController</code>不包含在<code>UINavigationController</code>中时才起作用。大部分情况下，<code>ViewController</code>不会单独使用，一般都会嵌套在<code>UINavigationController</code>中的。因为不知道这一点，所以在很长一段时间内，我都很困惑，明明我已经在我的<code>ViewController</code>里写了<code>- preferredStatusBarStyle</code>, 却一点都不起作用。</p>
 
 <p>知道了原因，接下来就简单了。我们可以写一个<code>UINavigationController</code>的扩展，覆盖其默认实现，返回最上面的<code>ViewController</code>的<code>preferredStatusBarStyle</code>。</p>

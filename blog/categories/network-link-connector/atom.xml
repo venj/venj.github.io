@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Network Link Connector | Cocoa学习]]></title>
-  <link href="http://venj.github.io/blog/categories/network-link-connector/atom.xml" rel="self"/>
-  <link href="http://venj.github.io/"/>
-  <updated>2015-11-10T14:23:46+08:00</updated>
-  <id>http://venj.github.io/</id>
+  <link href="http://cocoa.venj.me/blog/categories/network-link-connector/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[模拟低速网络，测试iOS程序的表现]]></title>
-    <link href="http://venj.github.io/blog/simulate-low-speed-network-connection-for-ios-apps/"/>
+    <link href="http://cocoa.venj.me/blog/simulate-low-speed-network-connection-for-ios-apps/"/>
     <updated>2012-03-29T11:56:00+08:00</updated>
-    <id>http://venj.github.io/blog/simulate-low-speed-network-connection-for-ios-apps</id>
+    <id>http://cocoa.venj.me/blog/simulate-low-speed-network-connection-for-ios-apps</id>
     <content type="html"><![CDATA[<p>因为没有考虑程序在低速网络下的表现，昨天在测试公司的一个程序的时候出了点丑，于是痛定思痛，要解决模拟低速网络连接的问题。遗憾的是iOS Simulator并没有提供模拟低速网络的功能。</p>
 
 <p>经过一番STFW之后，发现原来苹果从Xcode 4.1开始提供了一款叫做“Network Link Connector”的工具。但是如今我已经升级到Xcode 4.3.2，用SpotLight搜索了一番之后也没有发现系统里已经安装了这样的一个工具。</p>

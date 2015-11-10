@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Nspopover | Cocoa学习]]></title>
-  <link href="http://venj.github.io/blog/categories/nspopover/atom.xml" rel="self"/>
-  <link href="http://venj.github.io/"/>
-  <updated>2015-11-10T14:23:46+08:00</updated>
-  <id>http://venj.github.io/</id>
+  <link href="http://cocoa.venj.me/blog/categories/nspopover/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Popover在Mac OS X Lion中已经成为正式控件]]></title>
-    <link href="http://venj.github.io/blog/popover-became-official-control-in-lion/"/>
+    <link href="http://cocoa.venj.me/blog/popover-became-official-control-in-lion/"/>
     <updated>2011-06-02T11:38:00+08:00</updated>
-    <id>http://venj.github.io/blog/popover-became-official-control-in-lion</id>
+    <id>http://cocoa.venj.me/blog/popover-became-official-control-in-lion</id>
     <content type="html"><![CDATA[<p>昨天心血来潮又把Lion装上了。这次是装到了移动硬盘里。效果良好。这次只要是为了看看Lion里Cocoa的新变化，顺道学习一下——虽然我对已有的Cocoa框架还没有熟悉。</p>
 
 <p>打开最新的Xcode 4.1 DP5，很高兴的发现Popover已经成为一个标准控件。Popover在Xcode 4里用的很多。因为Popover现在非常流行，所以我就忍不住要测试以下。快速搜索了一下文档，发现Popover的文档暂时还没有进入Xcode的文档系统，所以只能硬着头皮，参考头文件里的文档，做了一个测试程序，感觉良好。 ：）</p>

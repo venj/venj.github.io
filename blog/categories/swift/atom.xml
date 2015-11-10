@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Swift | Cocoa学习]]></title>
-  <link href="http://venj.github.io/blog/categories/swift/atom.xml" rel="self"/>
-  <link href="http://venj.github.io/"/>
-  <updated>2015-11-10T14:23:46+08:00</updated>
-  <id>http://venj.github.io/</id>
+  <link href="http://cocoa.venj.me/blog/categories/swift/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[让Alamofire使用自签名证书]]></title>
-    <link href="http://venj.github.io/blog/alamofire-ssl/"/>
+    <link href="http://cocoa.venj.me/blog/alamofire-ssl/"/>
     <updated>2015-11-09T15:35:05+08:00</updated>
-    <id>http://venj.github.io/blog/alamofire-ssl</id>
+    <id>http://cocoa.venj.me/blog/alamofire-ssl</id>
     <content type="html"><![CDATA[<p>Alamofire每次大版本号更新，都会引入大量API更新。3.x版更新用Swift 2.0的新特征更新了很多接口。网上很多关于Alamofire如何使用自定义SSL证书的文章都已经过时。经过一番搜索，最后找到了一个靠谱的解决方案。</p>
 
 <!-- more -->
@@ -61,9 +61,9 @@ func configureAlamofireManager() {
   
   <entry>
     <title type="html"><![CDATA[［更新］把Swift用作脚本语言]]></title>
-    <link href="http://venj.github.io/blog/scripty-swift/"/>
+    <link href="http://cocoa.venj.me/blog/scripty-swift/"/>
     <updated>2014-08-01T15:23:18+08:00</updated>
-    <id>http://venj.github.io/blog/scripty-swift</id>
+    <id>http://cocoa.venj.me/blog/scripty-swift</id>
     <content type="html"><![CDATA[<p>Swift是Apple开发的很酷的新语言。在看WWDC介绍Swift的时候，看到它有一个REPL交互界面，我当时就在想，Swift难道能像脚本语言一样用？如果可以的话，那岂不是一门非常有潜力的脚本语言了（当然，就跨平台而言，Swift完败）？性能优异，语法现代，REPL，还有Playground，简直无敌了！所以下载完Xcode 6 beta 1，我就试了一个简单的脚本：</p>
 
 <pre><code class="bash">#!/usr/bin/env xcrun swift

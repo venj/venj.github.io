@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Core Location | Cocoa学习]]></title>
-  <link href="http://venj.github.io/blog/categories/core-location/atom.xml" rel="self"/>
-  <link href="http://venj.github.io/"/>
-  <updated>2015-11-10T14:23:46+08:00</updated>
-  <id>http://venj.github.io/</id>
+  <link href="http://cocoa.venj.me/blog/categories/core-location/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[iOS 5的Geocoding]]></title>
-    <link href="http://venj.github.io/blog/geocoding-in-ios-5/"/>
+    <link href="http://cocoa.venj.me/blog/geocoding-in-ios-5/"/>
     <updated>2011-07-06T23:44:00+08:00</updated>
-    <id>http://venj.github.io/blog/geocoding-in-ios-5</id>
+    <id>http://cocoa.venj.me/blog/geocoding-in-ios-5</id>
     <content type="html"><![CDATA[<p>很明显，本文有标题党的嫌疑。其实本文要说的是“<a href="http://www.bignerdranch.com/book/ios_programming_the_big_nerd_ranch_guide_nd_edition_">iPhone Programming: The Big Nerd Ranch Guide</a>”一书中第5章里的Whereami的例子。我照着书本做下来，但是感觉例子似乎有点问题。可能是我看书不仔细，不过这个例子要实现的功能很诡异——定位自己，然后自己用文本框加上一个Annotation(？)这太诡异了吧。</p>
 
 <p>我现在对这个例子小做修改，那就是，在文本框中输入任何地址字符串，然后地图自动定位到该位置——类似Google Map的搜索。我基于书本上的代码，做一些小修改。</p>

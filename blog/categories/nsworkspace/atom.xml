@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Nsworkspace | Cocoa学习]]></title>
-  <link href="http://venj.github.io/blog/categories/nsworkspace/atom.xml" rel="self"/>
-  <link href="http://venj.github.io/"/>
-  <updated>2015-11-10T14:23:46+08:00</updated>
-  <id>http://venj.github.io/</id>
+  <link href="http://cocoa.venj.me/blog/categories/nsworkspace/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[在iOS程序中调用Mobile Safari打开网址]]></title>
-    <link href="http://venj.github.io/blog/open-webpage-with-mobile-safari-in-ios-apps/"/>
+    <link href="http://cocoa.venj.me/blog/open-webpage-with-mobile-safari-in-ios-apps/"/>
     <updated>2011-05-15T00:11:00+08:00</updated>
-    <id>http://venj.github.io/blog/open-webpage-with-mobile-safari-in-ios-apps</id>
+    <id>http://cocoa.venj.me/blog/open-webpage-with-mobile-safari-in-ios-apps</id>
     <content type="html"><![CDATA[<p>在Cocoa中，我们可以用<code>NSWorkspace</code>的<code>-openURL:</code>来来打开系统的默认浏览器。</p>
 
 <pre><code class="objc">- (IBAction)clickLink:(id)sender {

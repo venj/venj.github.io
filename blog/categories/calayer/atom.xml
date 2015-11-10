@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Calayer | Cocoa学习]]></title>
-  <link href="http://venj.github.io/blog/categories/calayer/atom.xml" rel="self"/>
-  <link href="http://venj.github.io/"/>
-  <updated>2015-11-10T14:23:46+08:00</updated>
-  <id>http://venj.github.io/</id>
+  <link href="http://cocoa.venj.me/blog/categories/calayer/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[用ImageView和Layer实现图像的圆角显示]]></title>
-    <link href="http://venj.github.io/blog/rounded-corner-image-with-layer-and-image-view/"/>
+    <link href="http://cocoa.venj.me/blog/rounded-corner-image-with-layer-and-image-view/"/>
     <updated>2014-01-21T09:13:01+08:00</updated>
-    <id>http://venj.github.io/blog/rounded-corner-image-with-layer-and-image-view</id>
+    <id>http://cocoa.venj.me/blog/rounded-corner-image-with-layer-and-image-view</id>
     <content type="html"><![CDATA[<p>昨天写过一个<a href="/blog/simple-uiimage-extension-to-create-rounded-corner-image/">博文</a>，介绍了创建圆角矩形图像的方法。现在，我再介绍一个<strong>“显示”</strong>圆角图像的方法。</p>
 
 <p>这种方法利用的是<code>UIImageView</code>的<code>layer</code>的属性，实现把图像显示成圆角，而无需对图像本身进行处理。在开发中，大部分情况下，我们只需要“显示”圆角，而不是“得到”圆角图像。不是么。好了，先看代码：</p>

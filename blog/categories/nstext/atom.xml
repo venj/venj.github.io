@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Nstext | Cocoa学习]]></title>
-  <link href="http://venj.github.io/blog/categories/nstext/atom.xml" rel="self"/>
-  <link href="http://venj.github.io/"/>
-  <updated>2015-11-10T14:23:46+08:00</updated>
-  <id>http://venj.github.io/</id>
+  <link href="http://cocoa.venj.me/blog/categories/nstext/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[点击按钮复制粘贴到文本框]]></title>
-    <link href="http://venj.github.io/blog/copy-and-paste-to-text-field/"/>
+    <link href="http://cocoa.venj.me/blog/copy-and-paste-to-text-field/"/>
     <updated>2012-02-13T14:47:00+08:00</updated>
-    <id>http://venj.github.io/blog/copy-and-paste-to-text-field</id>
+    <id>http://cocoa.venj.me/blog/copy-and-paste-to-text-field</id>
     <content type="html"><![CDATA[<p>相信很多读者看到标题肯定会疑惑，文本框本来就支持复制粘贴，为什么要专门写一篇日志来介绍文本框的复制粘贴呢？其实，本文要讲述的是，如何通过按下按钮，来复制粘贴文本到文本框 &ndash; 不是通过菜单操作，也不是通过快捷键cmd-c和cmd-v来完成。</p>
 
 <p>提到复制粘贴的菜单操作和快捷键操作，看过“Cocoa Programming for Mac OS X”的读者肯定知道，他们属于“nil-targeted action”，也就是说，他们的receive是在运行时被指定的。在Interface Builder中，<code>-copy:</code>，<code>-paste:</code>方法都是连接到一个占位对象“First Responder”上的。而First Responder到底是谁是在程序运行过程中动态变化着的。</p>

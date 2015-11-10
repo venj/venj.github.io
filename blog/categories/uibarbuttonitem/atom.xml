@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Uibarbuttonitem | Cocoa学习]]></title>
-  <link href="http://venj.github.io/blog/categories/uibarbuttonitem/atom.xml" rel="self"/>
-  <link href="http://venj.github.io/"/>
-  <updated>2015-11-10T14:23:46+08:00</updated>
-  <id>http://venj.github.io/</id>
+  <link href="http://cocoa.venj.me/blog/categories/uibarbuttonitem/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[在iOS 4中自定义BarButtonItem]]></title>
-    <link href="http://venj.github.io/blog/custom-barbuttomitem-for-ios4/"/>
+    <link href="http://cocoa.venj.me/blog/custom-barbuttomitem-for-ios4/"/>
     <updated>2012-02-29T15:08:00+08:00</updated>
-    <id>http://venj.github.io/blog/custom-barbuttomitem-for-ios4</id>
+    <id>http://cocoa.venj.me/blog/custom-barbuttomitem-for-ios4</id>
     <content type="html"><![CDATA[<p>在iOS 5中已经有了自定义<code>UIBarButtonItem</code>背景的API。但是在iOS 4中，自定义BarButtonItem背景就复杂很多了。其中最典型也最容易实现的一种是方法是试用<code>UIBarButtonItem</code>的<code>-initWithCustomView:</code>方法，传递一个自定义<code>UIButton</code>对象进去。</p>
 
 <p>在深入讨论自定义<code>UIBarButtonItem</code>，让我们来先解决自定义<code>UIButton</code>的一个问题：那就是Button的标题的长度是变化的，我们应该通过什么方法让背景图片适应标题长度的变化呢？</p>

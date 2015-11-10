@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: 单例模式 | Cocoa学习]]></title>
-  <link href="http://venj.github.io/blog/categories/dan-li-mo-shi/atom.xml" rel="self"/>
-  <link href="http://venj.github.io/"/>
-  <updated>2015-11-10T14:23:46+08:00</updated>
-  <id>http://venj.github.io/</id>
+  <link href="http://cocoa.venj.me/blog/categories/dan-li-mo-shi/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Objective-C中单例模式的实现]]></title>
-    <link href="http://venj.github.io/blog/singleton-in-objc/"/>
+    <link href="http://cocoa.venj.me/blog/singleton-in-objc/"/>
     <updated>2012-02-07T20:29:00+08:00</updated>
-    <id>http://venj.github.io/blog/singleton-in-objc</id>
+    <id>http://cocoa.venj.me/blog/singleton-in-objc</id>
     <content type="html"><![CDATA[<p>单例模式在Cocoa和Cocoa Touch中非常常见。比如这两个，<code>[UIApplication sharedApplication]</code>和<code>[NSApplication sharedApplication]</code>，大家应该都见过。但是我们应该如何在代码中实现一个单例模式呢？</p>
 
 <p>如果你对苹果的文档很熟悉的话，你一定知道，在<a href="https://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/CocoaFundamentals/Introduction/Introduction.html">Cocoa Foundamentals Guide</a>中有一段<a href="https://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/CocoaFundamentals/CocoaObjects/CocoaObjects.html#//apple_ref/doc/uid/TP40002974-CH4-SW32">实现单例模式的示例代码</a>。大致如下：</p>

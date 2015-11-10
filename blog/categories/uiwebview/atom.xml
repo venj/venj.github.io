@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Uiwebview | Cocoa学习]]></title>
-  <link href="http://venj.github.io/blog/categories/uiwebview/atom.xml" rel="self"/>
-  <link href="http://venj.github.io/"/>
-  <updated>2015-11-10T14:23:46+08:00</updated>
-  <id>http://venj.github.io/</id>
+  <link href="http://cocoa.venj.me/blog/categories/uiwebview/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[用Mobile Safari打开UIWebView里的链接]]></title>
-    <link href="http://venj.github.io/blog/open-uiwebview-link-in-mobile-safari/"/>
+    <link href="http://cocoa.venj.me/blog/open-uiwebview-link-in-mobile-safari/"/>
     <updated>2011-08-21T00:31:00+08:00</updated>
-    <id>http://venj.github.io/blog/open-uiwebview-link-in-mobile-safari</id>
+    <id>http://cocoa.venj.me/blog/open-uiwebview-link-in-mobile-safari</id>
     <content type="html"><![CDATA[<p><code>UIWebView</code>本身就是一个功能非常完整的浏览器。<code>UIWebView</code>经常被用来向用户展示打包在应用程序中的HTML帮助文档。有时，很多时候，帮助文档需要提供一些外链的链接。如果直接在<code>UIWebView</code>中打开这些链接，不仅会使显示帮助文档的<code>ViewController</code>变得臃肿，而且也没有Mobile Safari那么好的阅读体验。因此，大多数时候，在Mobile Safari中打开外链的链接是一个比较好的解决方法。</p>
 
 <p>方法很简单，如下：</p>

@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Storyboard | Cocoa学习]]></title>
-  <link href="http://venj.github.io/blog/categories/storyboard/atom.xml" rel="self"/>
-  <link href="http://venj.github.io/"/>
-  <updated>2015-11-10T14:23:46+08:00</updated>
-  <id>http://venj.github.io/</id>
+  <link href="http://cocoa.venj.me/blog/categories/storyboard/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[浅谈iOS 5的StoryBoard]]></title>
-    <link href="http://venj.github.io/blog/ios5-story-board-a-brief-discussion/"/>
+    <link href="http://cocoa.venj.me/blog/ios5-story-board-a-brief-discussion/"/>
     <updated>2011-08-24T00:34:00+08:00</updated>
-    <id>http://venj.github.io/blog/ios5-story-board-a-brief-discussion</id>
+    <id>http://cocoa.venj.me/blog/ios5-story-board-a-brief-discussion</id>
     <content type="html"><![CDATA[<p>StoryBoard是iOS 5的新特征，旨在代替历史悠久的NIB/XIB（其实<strong>StoryBoard还是基于NIB/XIB的</strong>，不过开发人员已经无需直接跟NIB打交道了）。目前关于StoryBoard的文档并不多，苹果的iOS 5的开发者文档里也仅有不多的介绍。所以，本文只是简单的谈谈本人对StoryBoard的一些粗浅的理解。（StoryBoard有时也叫做StoryBoarding，我不太注意这种细节，所以两个词经常会混用，如果你英语可以的话，能体会到两者的细微差别）</p>
 
 <p><img class="center" src="/images/posts/storyboard-1.png"></p>

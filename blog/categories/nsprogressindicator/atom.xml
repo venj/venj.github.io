@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Nsprogressindicator | Cocoa学习]]></title>
-  <link href="http://venj.github.io/blog/categories/nsprogressindicator/atom.xml" rel="self"/>
-  <link href="http://venj.github.io/"/>
-  <updated>2015-11-10T14:23:46+08:00</updated>
-  <id>http://venj.github.io/</id>
+  <link href="http://cocoa.venj.me/blog/categories/nsprogressindicator/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[强制Label(NSTextField)重绘]]></title>
-    <link href="http://venj.github.io/blog/force-label-nstextfield-redraw/"/>
+    <link href="http://cocoa.venj.me/blog/force-label-nstextfield-redraw/"/>
     <updated>2011-04-13T22:57:00+08:00</updated>
-    <id>http://venj.github.io/blog/force-label-nstextfield-redraw</id>
+    <id>http://cocoa.venj.me/blog/force-label-nstextfield-redraw</id>
     <content type="html"><![CDATA[<p>今天在码代码的时候遇到了标签在修改了内容后没有重绘的问题，试了n种办法，查了老半天，结果终于找到了比较好的解决方法。</p>
 
 <p>首先，要说明，下面这样的方法是不能让Label(<code>NSTextField</code>)立刻重绘的：</p>

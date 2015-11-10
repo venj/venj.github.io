@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Mapkit | Cocoa学习]]></title>
-  <link href="http://venj.github.io/blog/categories/mapkit/atom.xml" rel="self"/>
-  <link href="http://venj.github.io/"/>
-  <updated>2015-11-10T14:23:46+08:00</updated>
-  <id>http://venj.github.io/</id>
+  <link href="http://cocoa.venj.me/blog/categories/mapkit/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[iOS 6下的驾车导航]]></title>
-    <link href="http://venj.github.io/blog/drive-navigation-in-ios6/"/>
+    <link href="http://cocoa.venj.me/blog/drive-navigation-in-ios6/"/>
     <updated>2012-11-26T11:18:00+08:00</updated>
-    <id>http://venj.github.io/blog/drive-navigation-in-ios6</id>
+    <id>http://cocoa.venj.me/blog/drive-navigation-in-ios6</id>
     <content type="html"><![CDATA[<p>好久没有写Blog了，今天正好碰上了一个问题，于是决定写一写博客简单描述下。情况是这样的：之前，在iOS 5下，要显示一个从当前为止到目标位置的驾车导航可以使用如下的代码来搞定（<a href="http://developer.apple.com/library/ios/#featuredarticles/iPhoneURLScheme_Reference/Articles/MapLinks.html">参考这里</a>）：</p>
 
 <pre><code class="objc">//基于地名调用iOS自带的Google Maps导航
@@ -79,9 +79,9 @@ else { // For iOS 5 and before.
   
   <entry>
     <title type="html"><![CDATA[iOS 5的Geocoding]]></title>
-    <link href="http://venj.github.io/blog/geocoding-in-ios-5/"/>
+    <link href="http://cocoa.venj.me/blog/geocoding-in-ios-5/"/>
     <updated>2011-07-06T23:44:00+08:00</updated>
-    <id>http://venj.github.io/blog/geocoding-in-ios-5</id>
+    <id>http://cocoa.venj.me/blog/geocoding-in-ios-5</id>
     <content type="html"><![CDATA[<p>很明显，本文有标题党的嫌疑。其实本文要说的是“<a href="http://www.bignerdranch.com/book/ios_programming_the_big_nerd_ranch_guide_nd_edition_">iPhone Programming: The Big Nerd Ranch Guide</a>”一书中第5章里的Whereami的例子。我照着书本做下来，但是感觉例子似乎有点问题。可能是我看书不仔细，不过这个例子要实现的功能很诡异——定位自己，然后自己用文本框加上一个Annotation(？)这太诡异了吧。</p>
 
 <p>我现在对这个例子小做修改，那就是，在文本框中输入任何地址字符串，然后地图自动定位到该位置——类似Google Map的搜索。我基于书本上的代码，做一些小修改。</p>

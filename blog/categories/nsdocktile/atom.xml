@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Nsdocktile | Cocoa学习]]></title>
-  <link href="http://venj.github.io/blog/categories/nsdocktile/atom.xml" rel="self"/>
-  <link href="http://venj.github.io/"/>
-  <updated>2015-11-10T14:23:46+08:00</updated>
-  <id>http://venj.github.io/</id>
+  <link href="http://cocoa.venj.me/blog/categories/nsdocktile/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[在Cocoa里玩转Dock图标]]></title>
-    <link href="http://venj.github.io/blog/play-with-dock-icon/"/>
+    <link href="http://cocoa.venj.me/blog/play-with-dock-icon/"/>
     <updated>2011-09-03T00:35:00+08:00</updated>
-    <id>http://venj.github.io/blog/play-with-dock-icon</id>
+    <id>http://cocoa.venj.me/blog/play-with-dock-icon</id>
     <content type="html"><![CDATA[<p>今天我们来看一看如何在Cocoa程序中自定义Dock图标。Dock图标的自定义主要包括四方面：</p>
 
 <blockquote><ul>

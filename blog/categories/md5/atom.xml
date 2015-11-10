@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Md5 | Cocoa学习]]></title>
-  <link href="http://venj.github.io/blog/categories/md5/atom.xml" rel="self"/>
-  <link href="http://venj.github.io/"/>
-  <updated>2015-11-10T14:23:46+08:00</updated>
-  <id>http://venj.github.io/</id>
+  <link href="http://cocoa.venj.me/blog/categories/md5/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[计算字符串的MD5哈希]]></title>
-    <link href="http://venj.github.io/blog/calculate-md5-for-strings/"/>
+    <link href="http://cocoa.venj.me/blog/calculate-md5-for-strings/"/>
     <updated>2011-04-09T13:07:00+08:00</updated>
-    <id>http://venj.github.io/blog/calculate-md5-for-strings</id>
+    <id>http://cocoa.venj.me/blog/calculate-md5-for-strings</id>
     <content type="html"><![CDATA[<p>字符串或数据的MD5哈希值是非常常用的。在Cocoa里很容易实现。因为这类方法非常好用，因此可以做一个<code>NSString</code>或<code>NSData</code>的Catagory。如下：</p>
 
 <p><strong>NSString:</strong></p>

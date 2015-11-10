@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Appkit | Cocoa学习]]></title>
-  <link href="http://venj.github.io/blog/categories/appkit/atom.xml" rel="self"/>
-  <link href="http://venj.github.io/"/>
-  <updated>2015-11-10T14:23:46+08:00</updated>
-  <id>http://venj.github.io/</id>
+  <link href="http://cocoa.venj.me/blog/categories/appkit/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[关于多行NSString的高度]]></title>
-    <link href="http://venj.github.io/blog/nsstring-height/"/>
+    <link href="http://cocoa.venj.me/blog/nsstring-height/"/>
     <updated>2012-07-30T09:01:00+08:00</updated>
-    <id>http://venj.github.io/blog/nsstring-height</id>
+    <id>http://cocoa.venj.me/blog/nsstring-height</id>
     <content type="html"><![CDATA[<p>有时候，我们需要动态地得到一个多行字符串的高度。比如，在TableView中，如果我们允许<code>UILabel</code>/<code>NSTextField</code>多行显示，而TableView的Delegate就需要知道Cell的高度，这时，我们需要根据TableView呈现的内容，动态地计算多行字符串的高度，以确定Cell的高度。</p>
 
 <p>这样的需求，在UIKit中实现起来相对比较直观。我们就先看看UIKit中的情况。</p>
@@ -74,9 +74,9 @@
   
   <entry>
     <title type="html"><![CDATA[关于NSCell]]></title>
-    <link href="http://venj.github.io/blog/about-nscell/"/>
+    <link href="http://cocoa.venj.me/blog/about-nscell/"/>
     <updated>2011-04-28T22:29:00+08:00</updated>
-    <id>http://venj.github.io/blog/about-nscell</id>
+    <id>http://cocoa.venj.me/blog/about-nscell</id>
     <content type="html"><![CDATA[<p>作为一个初学者，我一直很弄不明白<code>NSCell</code>的子类，比如，<code>NSButtonCell</code>，<code>NSImageCell</code>及其对应的控件之间的关系。今天，在做一个TableView实现的时候，我终于开始有点悟了——好吧，你大可以鄙视我，我的脑袋是不灵光。尽管这是一个简单的问题，但是我还是简单的记录一下我的理解。</p>
 
 <p>问题的起源是“Cocoa Programming For Mac OS X”上一段关于<code>NSCell</code>的叙述：</p>

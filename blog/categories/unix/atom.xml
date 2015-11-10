@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Unix | Cocoa学习]]></title>
-  <link href="http://venj.github.io/blog/categories/unix/atom.xml" rel="self"/>
-  <link href="http://venj.github.io/"/>
-  <updated>2015-11-10T14:23:46+08:00</updated>
-  <id>http://venj.github.io/</id>
+  <link href="http://cocoa.venj.me/blog/categories/unix/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[在OS X Lion下编译APUE的示例代码]]></title>
-    <link href="http://venj.github.io/blog/compile-apue-example-code-under-lion/"/>
+    <link href="http://cocoa.venj.me/blog/compile-apue-example-code-under-lion/"/>
     <updated>2011-09-08T23:27:00+08:00</updated>
-    <id>http://venj.github.io/blog/compile-apue-example-code-under-lion</id>
+    <id>http://cocoa.venj.me/blog/compile-apue-example-code-under-lion</id>
     <content type="html"><![CDATA[<p>本文和Cocoa关系不大，不过UNIX开发也是OSX开发的一个重要组成部分，所以我就放在这里了。Advanced Programming in Unix Environment这本书的源码不能直接编译，网上也没有文章（除了这篇看不懂的<a href="http://opticaller.tistory.com/78">棒子写的文章</a>）详细说明这本书源码的用法，这里简单的说明一下：</p>
 
 <!-- more -->

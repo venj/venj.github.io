@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Ios 4 | Cocoa学习]]></title>
-  <link href="http://venj.github.io/blog/categories/ios-4/atom.xml" rel="self"/>
-  <link href="http://venj.github.io/"/>
-  <updated>2015-11-10T14:23:46+08:00</updated>
-  <id>http://venj.github.io/</id>
+  <link href="http://cocoa.venj.me/blog/categories/ios-4/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[再谈iOS 4下NavigationBar的自定义]]></title>
-    <link href="http://venj.github.io/blog/more-on-navigationbar-customization/"/>
+    <link href="http://cocoa.venj.me/blog/more-on-navigationbar-customization/"/>
     <updated>2012-02-29T10:30:00+08:00</updated>
-    <id>http://venj.github.io/blog/more-on-navigationbar-customization</id>
+    <id>http://cocoa.venj.me/blog/more-on-navigationbar-customization</id>
     <content type="html"><![CDATA[<p>iOS 5已经有了很方便的自定义<code>UINavigationBar</code>的方法，但是iOS 4现在还远未完全被iOS 5取代，因此，在做程序开发的时候必须要考虑对iOS 4的兼容。因此，要自定义<code>UINavigationBar</code>还不能简单的直接用iOS 5中才有的自定义API。</p>
 
 <p>关于这个话题，我曾经写过<a href="http://cocoa.venj.me/blog/custom-navbar-background/">一篇日志</a>，但是后来发现那篇日志里面的实现方法有诸多缺陷。因此我后来对那篇文章做过部分删改。这两天，我再次研究了一下NavigationBar的自定义，总算找到了一个近乎完美的解决方法，因此，我决定写出来和大家分享一下。</p>

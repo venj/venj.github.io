@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Twitter | Cocoa学习]]></title>
-  <link href="http://venj.github.io/blog/categories/twitter/atom.xml" rel="self"/>
-  <link href="http://venj.github.io/"/>
-  <updated>2015-11-10T14:23:46+08:00</updated>
-  <id>http://venj.github.io/</id>
+  <link href="http://cocoa.venj.me/blog/categories/twitter/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Twitter for Mac风格的Sheet定位]]></title>
-    <link href="http://venj.github.io/blog/twitter-style-sheet-positioning/"/>
+    <link href="http://cocoa.venj.me/blog/twitter-style-sheet-positioning/"/>
     <updated>2012-02-15T17:29:00+08:00</updated>
-    <id>http://venj.github.io/blog/twitter-style-sheet-positioning</id>
+    <id>http://cocoa.venj.me/blog/twitter-style-sheet-positioning</id>
     <content type="html"><![CDATA[<p>昨天在用Twitter的时候，突然意识到，在删除Twitter消息的时候弹出的Sheet是定位在要删除的那条消息的顶部，而不是窗口标题栏的下方。</p>
 
 <p><img class="center" src="/images/posts/twitter-sheet.png"></p>

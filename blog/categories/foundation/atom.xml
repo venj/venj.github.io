@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Foundation | Cocoa学习]]></title>
-  <link href="http://venj.github.io/blog/categories/foundation/atom.xml" rel="self"/>
-  <link href="http://venj.github.io/"/>
-  <updated>2015-11-10T14:23:46+08:00</updated>
-  <id>http://venj.github.io/</id>
+  <link href="http://cocoa.venj.me/blog/categories/foundation/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Cocoa的几种内置数据类型之间的互转]]></title>
-    <link href="http://venj.github.io/blog/common-data-types-conversion/"/>
+    <link href="http://cocoa.venj.me/blog/common-data-types-conversion/"/>
     <updated>2011-05-28T09:42:00+08:00</updated>
-    <id>http://venj.github.io/blog/common-data-types-conversion</id>
+    <id>http://cocoa.venj.me/blog/common-data-types-conversion</id>
     <content type="html"><![CDATA[<p>因为Cocoa的数据类型之间的互转在实际程序中应用很广泛，而我经常都会忘记，因此在此记录一下常用的几个互转。以后将会补充更多。</p>
 
 <p>1 <code>NSData</code>和<code>NSString</code>之间互转：</p>

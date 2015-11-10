@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Sparkle | Cocoa学习]]></title>
-  <link href="http://venj.github.io/blog/categories/sparkle/atom.xml" rel="self"/>
-  <link href="http://venj.github.io/"/>
-  <updated>2015-11-10T14:23:46+08:00</updated>
-  <id>http://venj.github.io/</id>
+  <link href="http://cocoa.venj.me/blog/categories/sparkle/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[用Sparkle为Cocoa程序增加自动升级]]></title>
-    <link href="http://venj.github.io/blog/auto-update-apps-with-sparkle/"/>
+    <link href="http://cocoa.venj.me/blog/auto-update-apps-with-sparkle/"/>
     <updated>2011-05-27T12:52:00+08:00</updated>
-    <id>http://venj.github.io/blog/auto-update-apps-with-sparkle</id>
+    <id>http://cocoa.venj.me/blog/auto-update-apps-with-sparkle</id>
     <content type="html"><![CDATA[<p>Mac OS X上的绝大部分程序都使用<a href="http://sparkle.andymatuschak.org/">Sparkle</a>来作为程序的自动升级工具。利用Sparkle，用户无需对升级过程进行干涉，只需跟着升级指示做就可以了。而Sparkle对于程序开发人员来说，使用也是相当方便。其实<a href="https://github.com/andymatuschak/Sparkle/wiki">Sparkle的文档</a>已经写的相当好了，不过我还是来简单写一下Sparkle的使用，用于备忘。</p>
 
 <p>首先到Sparkle的首页下载Sparkle框架。</p>

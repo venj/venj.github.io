@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Retain Cycle | Cocoa学习]]></title>
-  <link href="http://venj.github.io/blog/categories/retain-cycle/atom.xml" rel="self"/>
-  <link href="http://venj.github.io/"/>
-  <updated>2015-11-10T14:23:46+08:00</updated>
-  <id>http://venj.github.io/</id>
+  <link href="http://cocoa.venj.me/blog/categories/retain-cycle/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Block的Retain Cycle的解决方法]]></title>
-    <link href="http://venj.github.io/blog/prevent-block-instance-retain-cycle/"/>
+    <link href="http://cocoa.venj.me/blog/prevent-block-instance-retain-cycle/"/>
     <updated>2012-05-21T10:49:00+08:00</updated>
-    <id>http://venj.github.io/blog/prevent-block-instance-retain-cycle</id>
+    <id>http://cocoa.venj.me/blog/prevent-block-instance-retain-cycle</id>
     <content type="html"><![CDATA[<p>一个使用Block语法的实例变量，在引用另一个实例变量的时候，经常会引起retain cycle。这个问题在使用ASIHTTPRequest的block语法的时候会时不时的碰到。这个问题困扰了我这个小白很久。终于有一天，在Advanced Mac OS X Programming上，看到了这个问题的解决方案。</p>
 
 <p>先用代码描述一下症状：</p>

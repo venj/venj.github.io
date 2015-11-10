@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Letsmove | Cocoa学习]]></title>
-  <link href="http://venj.github.io/blog/categories/letsmove/atom.xml" rel="self"/>
-  <link href="http://venj.github.io/"/>
-  <updated>2015-11-10T14:23:46+08:00</updated>
-  <id>http://venj.github.io/</id>
+  <link href="http://cocoa.venj.me/blog/categories/letsmove/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[把程序移动到/Applications文件夹]]></title>
-    <link href="http://venj.github.io/blog/move-app-to-application-folder-at-runtime/"/>
+    <link href="http://cocoa.venj.me/blog/move-app-to-application-folder-at-runtime/"/>
     <updated>2011-09-10T15:46:00+08:00</updated>
-    <id>http://venj.github.io/blog/move-app-to-application-folder-at-runtime</id>
+    <id>http://cocoa.venj.me/blog/move-app-to-application-folder-at-runtime</id>
     <content type="html"><![CDATA[<p>OSX有一个非常好的文件系统结构，默认的文件系统职能明确。一个很典型的例子是<code>Applications</code>文件夹，专门用来存放Mac应用程序。不过有时用户在下载了你的应用程序之后并没有养成把程序放到<code>/Applications</code>的习惯，你可以选择不去干预，也可以通过一个友好的提示来帮助用户把程序移动到<code>/Application</code>文件夹中。</p>
 
 <p>要在程序中实现这样的功能其实很简单，因为已经有人帮我们实现了这样的一个方法：<a href="https://github.com/potionfactory/LetsMove">LetsMove</a>。使用方法也很简单，在<code>ApplicationDelegate</code>中的<code>-applicationDidFinishLaunching:</code>方法的最前面增加一行代码，如下：</p>

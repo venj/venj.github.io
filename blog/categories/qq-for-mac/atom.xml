@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Qq for Mac | Cocoa学习]]></title>
-  <link href="http://venj.github.io/blog/categories/qq-for-mac/atom.xml" rel="self"/>
-  <link href="http://venj.github.io/"/>
-  <updated>2015-11-10T14:23:46+08:00</updated>
-  <id>http://venj.github.io/</id>
+  <link href="http://cocoa.venj.me/blog/categories/qq-for-mac/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[山寨一下QQ for Mac样式的头像选择菜单]]></title>
-    <link href="http://venj.github.io/blog/make-a-qq-mac-avatar-menu-clone/"/>
+    <link href="http://cocoa.venj.me/blog/make-a-qq-mac-avatar-menu-clone/"/>
     <updated>2012-03-29T17:02:00+08:00</updated>
-    <id>http://venj.github.io/blog/make-a-qq-mac-avatar-menu-clone</id>
+    <id>http://cocoa.venj.me/blog/make-a-qq-mac-avatar-menu-clone</id>
     <content type="html"><![CDATA[<p>腾讯一直被大家吐槽山寨别人，这次我决定山寨一下腾讯，对象就是QQ for Mac的头像选择菜单。下面是原版的头像选择菜单：</p>
 
 <p><img class="center" src="/images/posts/qq-avatar-menu-original.png"></p>

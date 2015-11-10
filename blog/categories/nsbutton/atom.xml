@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Nsbutton | Cocoa学习]]></title>
-  <link href="http://venj.github.io/blog/categories/nsbutton/atom.xml" rel="self"/>
-  <link href="http://venj.github.io/"/>
-  <updated>2015-11-10T14:23:46+08:00</updated>
-  <id>http://venj.github.io/</id>
+  <link href="http://cocoa.venj.me/blog/categories/nsbutton/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[用Cocoa实现点击按钮打开快捷菜单]]></title>
-    <link href="http://venj.github.io/blog/open-menu-with-a-button/"/>
+    <link href="http://cocoa.venj.me/blog/open-menu-with-a-button/"/>
     <updated>2011-04-16T11:41:00+08:00</updated>
-    <id>http://venj.github.io/blog/open-menu-with-a-button</id>
+    <id>http://cocoa.venj.me/blog/open-menu-with-a-button</id>
     <content type="html"><![CDATA[<p>用一个自定义按钮打开菜单已经是一个很常见的需求的。不过<code>NSPopupButton</code>对于我们的这种需求来说显得有点不合适。最终的结果如下所示：</p>
 
 <p><img class="center" src="/images/posts/image-button-menu.png" title="和自定义按钮关联的弹出菜单" ></p>

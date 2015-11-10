@@ -1,4 +1,4 @@
 User-agent: *
 Disallow: 
 
-Sitemap: http://venj.github.io/sitemap.xml 
+Sitemap: http://cocoa.venj.me/sitemap.xml 

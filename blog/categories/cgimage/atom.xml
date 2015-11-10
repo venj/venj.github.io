@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Cgimage | Cocoa学习]]></title>
-  <link href="http://venj.github.io/blog/categories/cgimage/atom.xml" rel="self"/>
-  <link href="http://venj.github.io/"/>
-  <updated>2015-11-10T14:23:46+08:00</updated>
-  <id>http://venj.github.io/</id>
+  <link href="http://cocoa.venj.me/blog/categories/cgimage/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[用Quartz绘制NSImage圆角图像]]></title>
-    <link href="http://venj.github.io/blog/draw-rounded-rectangle-nsimage-with-quartz/"/>
+    <link href="http://cocoa.venj.me/blog/draw-rounded-rectangle-nsimage-with-quartz/"/>
     <updated>2011-08-20T00:42:00+08:00</updated>
-    <id>http://venj.github.io/blog/draw-rounded-rectangle-nsimage-with-quartz</id>
+    <id>http://cocoa.venj.me/blog/draw-rounded-rectangle-nsimage-with-quartz</id>
     <content type="html"><![CDATA[<p>今天偶尔看到了<a href="http://www.wattz.net/snippets/iphone_round_corners/">用Quartz绘制<code>UIImage</code>圆角图像的源码的Snippet</a>，因此心血来潮，简单的改了几行，把它移植到NSImage上了。也正是因为研究这个问题，我才发现了<a href="/blog/get-real-size-of-nsimage/"><code>NSImage</code>不能准确获得图片的实际像素大小的问题</a>。说实话，那个代码片断我也是一知半解，因此我只是依样画葫芦，也直接把源码附上，也不知道有没有更好的方法，仅供参考。</p>
 
 <!-- more -->

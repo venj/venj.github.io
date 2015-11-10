@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Xcode 4 | Cocoa学习]]></title>
-  <link href="http://venj.github.io/blog/categories/xcode-4/atom.xml" rel="self"/>
-  <link href="http://venj.github.io/"/>
-  <updated>2015-11-10T14:23:46+08:00</updated>
-  <id>http://venj.github.io/</id>
+  <link href="http://cocoa.venj.me/blog/categories/xcode-4/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[iOS项目的测试简介]]></title>
-    <link href="http://venj.github.io/blog/testing-ios-projects/"/>
+    <link href="http://cocoa.venj.me/blog/testing-ios-projects/"/>
     <updated>2011-08-17T15:06:00+08:00</updated>
-    <id>http://venj.github.io/blog/testing-ios-projects</id>
+    <id>http://cocoa.venj.me/blog/testing-ios-projects</id>
     <content type="html"><![CDATA[<p>记得有人说过，写不写测试代码是判断一个开发者是否成熟的标志。良好的测试代码能够让程序代码更健壮，使重构更加方便。虽然Objective-C是一种编译语言，但是在Xcode的帮助下，做测试和测试驱动开发（Test Driven Development, TDD）也非常方便。苹果官方有一个关于如何做为项目增加测试支持的文档，不过iOS 4.3的文档包的的<a href="http://developer.apple.com/library/iOS/#documentation/Xcode/Conceptual/iphone_development/135-Unit_Testing_Applications/unit_testing_applications.html">该文档</a>已经比较老了，如果你是付费iOS开发者，那么可以看看iOS 5.0的文档包的的<a href="https://developer.apple.com/library/prerelease/ios/#documentation/Xcode/Conceptual/ios_development_workflow/135-Unit_Testing_Applications/unit_testing_applications.html">该文档</a>，已经更新为Xcode 4的教程了。</p>
 
 <p>iOS的测试分两种，一种是逻辑测试（Logic Tests）；另一种是程序测试（Application Tests）。逻辑测试主要是用来测试模块的业务逻辑的；程序测试则是测试模块在整个应用程序中的行为是否正确。逻辑测试类似单元测试；而程序测试则类似集成测试。个人感觉，逻辑测试比较适合测试模型代码；而应用程序测试则比较适合测试控制器和视图代码，考虑到视图在iOS开发中主要是通过Interface Builder来实现，因此，应用测试实际上就是测试控制器代码的。</p>
@@ -268,9 +268,9 @@ Executed 2 tests, with 0 failures (0 unexpected) in 0.002 (0.086) seconds
   
   <entry>
     <title type="html"><![CDATA[用Sparkle为Cocoa程序增加自动升级]]></title>
-    <link href="http://venj.github.io/blog/auto-update-apps-with-sparkle/"/>
+    <link href="http://cocoa.venj.me/blog/auto-update-apps-with-sparkle/"/>
     <updated>2011-05-27T12:52:00+08:00</updated>
-    <id>http://venj.github.io/blog/auto-update-apps-with-sparkle</id>
+    <id>http://cocoa.venj.me/blog/auto-update-apps-with-sparkle</id>
     <content type="html"><![CDATA[<p>Mac OS X上的绝大部分程序都使用<a href="http://sparkle.andymatuschak.org/">Sparkle</a>来作为程序的自动升级工具。利用Sparkle，用户无需对升级过程进行干涉，只需跟着升级指示做就可以了。而Sparkle对于程序开发人员来说，使用也是相当方便。其实<a href="https://github.com/andymatuschak/Sparkle/wiki">Sparkle的文档</a>已经写的相当好了，不过我还是来简单写一下Sparkle的使用，用于备忘。</p>
 
 <p>首先到Sparkle的首页下载Sparkle框架。</p>
@@ -396,9 +396,9 @@ MCwCFCV4IgyLAsp/zrg6mZXsoVRYwXsEAhQ+HKKhHzaEc3EcLOSc0X/PdKWfOA==
   
   <entry>
     <title type="html"><![CDATA[为应用程序增加Growl支持（上）：在项目中加入Growl.Framework]]></title>
-    <link href="http://venj.github.io/blog/add-growl-support-in-your-apps-add-growl-framework/"/>
+    <link href="http://cocoa.venj.me/blog/add-growl-support-in-your-apps-add-growl-framework/"/>
     <updated>2011-05-26T10:12:00+08:00</updated>
-    <id>http://venj.github.io/blog/add-growl-support-in-your-apps-add-growl-framework</id>
+    <id>http://cocoa.venj.me/blog/add-growl-support-in-your-apps-add-growl-framework</id>
     <content type="html"><![CDATA[<p>Growl是啥，用来干什么的我就不介绍了。Growl的文档说实话，写的挺抽象的。不是Step by Step的文档，对我来说就有点困难了。所以，我决定把Growl支持写成几篇短文，简单介绍一下如何在程序中增加Growl支持。【为啥要分几篇？嘛，因为我自己也是边学边写文章的吗。。。Orz】</p>
 
 <p>首先，介绍一下原文是怎么写的。</p>

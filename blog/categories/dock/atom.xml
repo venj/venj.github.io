@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Dock | Cocoa学习]]></title>
-  <link href="http://venj.github.io/blog/categories/dock/atom.xml" rel="self"/>
-  <link href="http://venj.github.io/"/>
-  <updated>2015-11-10T14:23:46+08:00</updated>
-  <id>http://venj.github.io/</id>
+  <link href="http://cocoa.venj.me/blog/categories/dock/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[跳动Dock图标的实现]]></title>
-    <link href="http://venj.github.io/blog/bounce-dock-icon/"/>
+    <link href="http://cocoa.venj.me/blog/bounce-dock-icon/"/>
     <updated>2012-03-09T09:13:00+08:00</updated>
-    <id>http://venj.github.io/blog/bounce-dock-icon</id>
+    <id>http://cocoa.venj.me/blog/bounce-dock-icon</id>
     <content type="html"><![CDATA[<p>OS X程序，在执行后台任务的时候，有时需要通过跳动Dock图标来提示用户进行操作或某项操作已经执行完成。方法很简单，<code>NSApplication</code>有一个<code>-requestUserAttention:</code>的方法可以跳动Dock图标。</p>
 
 <p>下面是实例代码：</p>
@@ -40,9 +40,9 @@
   
   <entry>
     <title type="html"><![CDATA[在Cocoa里玩转Dock图标]]></title>
-    <link href="http://venj.github.io/blog/play-with-dock-icon/"/>
+    <link href="http://cocoa.venj.me/blog/play-with-dock-icon/"/>
     <updated>2011-09-03T00:35:00+08:00</updated>
-    <id>http://venj.github.io/blog/play-with-dock-icon</id>
+    <id>http://cocoa.venj.me/blog/play-with-dock-icon</id>
     <content type="html"><![CDATA[<p>今天我们来看一看如何在Cocoa程序中自定义Dock图标。Dock图标的自定义主要包括四方面：</p>
 
 <blockquote><ul>

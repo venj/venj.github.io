@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Ssl | Cocoa学习]]></title>
-  <link href="http://venj.github.io/blog/categories/ssl/atom.xml" rel="self"/>
-  <link href="http://venj.github.io/"/>
-  <updated>2015-11-10T14:23:46+08:00</updated>
-  <id>http://venj.github.io/</id>
+  <link href="http://cocoa.venj.me/blog/categories/ssl/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[让Alamofire使用自签名证书]]></title>
-    <link href="http://venj.github.io/blog/alamofire-ssl/"/>
+    <link href="http://cocoa.venj.me/blog/alamofire-ssl/"/>
     <updated>2015-11-09T15:35:05+08:00</updated>
-    <id>http://venj.github.io/blog/alamofire-ssl</id>
+    <id>http://cocoa.venj.me/blog/alamofire-ssl</id>
     <content type="html"><![CDATA[<p>Alamofire每次大版本号更新，都会引入大量API更新。3.x版更新用Swift 2.0的新特征更新了很多接口。网上很多关于Alamofire如何使用自定义SSL证书的文章都已经过时。经过一番搜索，最后找到了一个靠谱的解决方案。</p>
 
 <!-- more -->

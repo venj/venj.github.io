@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Nswindow | Cocoa学习]]></title>
-  <link href="http://venj.github.io/blog/categories/nswindow/atom.xml" rel="self"/>
-  <link href="http://venj.github.io/"/>
-  <updated>2015-11-10T14:23:46+08:00</updated>
-  <id>http://venj.github.io/</id>
+  <link href="http://cocoa.venj.me/blog/categories/nswindow/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[CodeBox风格的窗口打开动画]]></title>
-    <link href="http://venj.github.io/blog/code-box-like-window-open-animation/"/>
+    <link href="http://cocoa.venj.me/blog/code-box-like-window-open-animation/"/>
     <updated>2013-06-03T16:51:00+08:00</updated>
-    <id>http://venj.github.io/blog/code-box-like-window-open-animation</id>
+    <id>http://cocoa.venj.me/blog/code-box-like-window-open-animation</id>
     <content type="html"><![CDATA[<p>一直觉得<a href="http://www.shpakovski.com/codebox/">CodeBox</a>的窗口呈现动画很帅气－－就是窗口Bounce了一下的那个效果。对了，就是<code>NSAlert</code>在OSX Lion下的显示的时候那个动画。我一直试图复刻那个动画，但是每次都灰头土脸的结束各种尝试。</p>
 
 <p>今天搜索网络，在StackOverflow上找到了<a href="http://stackoverflow.com/questions/14591785/how-to-open-a-nswindow-with-a-popup-animation">答案</a>－－事实上，我曾经多次无限接近正确答案，但最终还是没有成功。</p>
@@ -50,9 +50,9 @@
   
   <entry>
     <title type="html"><![CDATA[在NSWindow窗口标题栏上绘制辅助视图]]></title>
-    <link href="http://venj.github.io/blog/draw-accessory-view-on-window-title-bar/"/>
+    <link href="http://cocoa.venj.me/blog/draw-accessory-view-on-window-title-bar/"/>
     <updated>2011-08-27T01:25:00+08:00</updated>
-    <id>http://venj.github.io/blog/draw-accessory-view-on-window-title-bar</id>
+    <id>http://cocoa.venj.me/blog/draw-accessory-view-on-window-title-bar</id>
     <content type="html"><![CDATA[<p>如果你用过<a href="http://flyingmeat.com/acorn/">Acorn</a>的试用版，你一定知道Acorn的试用版的文档窗口的标题栏上有一个提示过期的按钮。虽然标题栏不能被滥用来绘制控件，但是有时候，恰到好处的使用会改善用户体验。比如说，Lion的全屏按钮就是放在标题栏上的；<a href="http://chocolatapp.com/">Chocolat</a>文本编辑器也放了一个新建标签的按钮在标题栏上，Lion全屏按钮的旁边。</p>
 
 <!-- more -->
@@ -98,9 +98,9 @@
   
   <entry>
     <title type="html"><![CDATA[记忆窗口位置]]></title>
-    <link href="http://venj.github.io/blog/remember-window-position/"/>
+    <link href="http://cocoa.venj.me/blog/remember-window-position/"/>
     <updated>2011-06-12T12:26:00+08:00</updated>
-    <id>http://venj.github.io/blog/remember-window-position</id>
+    <id>http://cocoa.venj.me/blog/remember-window-position</id>
     <content type="html"><![CDATA[<p>在程序中记忆窗口的位置，以便在下次打开的时候恢复记忆的位置。这对很多程序来说还是比较有必要的。方法很简单：</p>
 
 <pre><code class="objc">- (void)windowDidMove:(NSNotification *)notification {
@@ -137,9 +137,9 @@
   
   <entry>
     <title type="html"><![CDATA[【更新】把程序窗口放在屏幕中央]]></title>
-    <link href="http://venj.github.io/blog/move-window-to-screen-center/"/>
+    <link href="http://cocoa.venj.me/blog/move-window-to-screen-center/"/>
     <updated>2011-04-09T12:55:00+08:00</updated>
-    <id>http://venj.github.io/blog/move-window-to-screen-center</id>
+    <id>http://cocoa.venj.me/blog/move-window-to-screen-center</id>
     <content type="html"><![CDATA[<p>在写程序的时候，我们往往需要把窗口放在屏幕中央。方法其实很简单，代码如下：</p>
 
 <pre><code class="objc">- (void)awakeFromNib {

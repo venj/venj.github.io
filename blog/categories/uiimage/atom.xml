@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Uiimage | Cocoa学习]]></title>
-  <link href="http://venj.github.io/blog/categories/uiimage/atom.xml" rel="self"/>
-  <link href="http://venj.github.io/"/>
-  <updated>2015-11-10T14:23:46+08:00</updated>
-  <id>http://venj.github.io/</id>
+  <link href="http://cocoa.venj.me/blog/categories/uiimage/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[一个简单的创建圆角图像的UIImage扩展实现]]></title>
-    <link href="http://venj.github.io/blog/simple-uiimage-extension-to-create-rounded-corner-image/"/>
+    <link href="http://cocoa.venj.me/blog/simple-uiimage-extension-to-create-rounded-corner-image/"/>
     <updated>2014-01-20T13:58:15+08:00</updated>
-    <id>http://venj.github.io/blog/simple-uiimage-extension-to-create-rounded-corner-image</id>
+    <id>http://cocoa.venj.me/blog/simple-uiimage-extension-to-create-rounded-corner-image</id>
     <content type="html"><![CDATA[<p>在iOS开发中经常需要用到圆角图像。简单搜索一下就能找到很多创建圆角图像的实现代码。我在<a href="http://stackoverflow.com/questions/10563986/uiimage-with-rounded-corners">Stack Overflow</a>上找到了一段代码，略微修改了一下，写了个简单的Category方法，可以用来创建圆角图像。代码如下：</p>
 
 <!-- more -->
@@ -68,9 +68,9 @@
   
   <entry>
     <title type="html"><![CDATA[获取NSImage图片的准确大小]]></title>
-    <link href="http://venj.github.io/blog/get-real-size-of-nsimage/"/>
+    <link href="http://cocoa.venj.me/blog/get-real-size-of-nsimage/"/>
     <updated>2011-08-19T23:58:00+08:00</updated>
-    <id>http://venj.github.io/blog/get-real-size-of-nsimage</id>
+    <id>http://cocoa.venj.me/blog/get-real-size-of-nsimage</id>
     <content type="html"><![CDATA[<p>今天在测试代码的时候发现了一个诡异的问题，那就是<code>NSImage</code>加载图片的时候无法准确获得图片的大小。</p>
 
 <p>最初的代码是这样的：</p>

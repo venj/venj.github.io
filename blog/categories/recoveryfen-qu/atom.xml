@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Recovery分区 | Cocoa学习]]></title>
-  <link href="http://venj.github.io/blog/categories/recoveryfen-qu/atom.xml" rel="self"/>
-  <link href="http://venj.github.io/"/>
-  <updated>2015-11-10T14:23:46+08:00</updated>
-  <id>http://venj.github.io/</id>
+  <link href="http://cocoa.venj.me/blog/categories/recoveryfen-qu/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[禁用OS X Yosemite上的Core Storage]]></title>
-    <link href="http://venj.github.io/blog/disable-corestorage-on-os-x-yosemite/"/>
+    <link href="http://cocoa.venj.me/blog/disable-corestorage-on-os-x-yosemite/"/>
     <updated>2015-02-01T14:04:30+08:00</updated>
-    <id>http://venj.github.io/blog/disable-corestorage-on-os-x-yosemite</id>
+    <id>http://cocoa.venj.me/blog/disable-corestorage-on-os-x-yosemite</id>
     <content type="html"><![CDATA[<p>不管你发现没有，OS X Yosemite已经悄悄的把你的磁盘转成Core Storage了。做过Fusion Drive的同学一定知道Core Storage是实现Fusion Drive的核心技术。不过对于只有一个磁盘的MacBook来说，我有点不太理解苹果强制启用CoreStorage的理由。</p>
 
 <p><strong> 为什么要关闭Core Storage </strong></p>

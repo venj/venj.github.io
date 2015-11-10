@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Url Scheme | Cocoa学习]]></title>
-  <link href="http://venj.github.io/blog/categories/url-scheme/atom.xml" rel="self"/>
-  <link href="http://venj.github.io/"/>
-  <updated>2015-11-10T14:23:46+08:00</updated>
-  <id>http://venj.github.io/</id>
+  <link href="http://cocoa.venj.me/blog/categories/url-scheme/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[检测iOS的网络可用性并打开网络设置]]></title>
-    <link href="http://venj.github.io/blog/warn-no-network-and-show-settings/"/>
+    <link href="http://cocoa.venj.me/blog/warn-no-network-and-show-settings/"/>
     <updated>2012-05-08T10:39:00+08:00</updated>
-    <id>http://venj.github.io/blog/warn-no-network-and-show-settings</id>
+    <id>http://cocoa.venj.me/blog/warn-no-network-and-show-settings</id>
     <content type="html"><![CDATA[<p>今天接到个需求，要求程序能够检测网络可用性，并在没有网络可用的时候能够弹出对话框，并允许用户点击按钮打开网络设置。</p>
 
 <p>这个问题，我首先想到的就是用一个方法检测网络可用性，然后用<code>UIApplication</code>的<code>openURL</code>方法打开某个特殊URL，就可以进入设置了。于是，我迅速地建了个测试项目，写了个简单的实现，如下：</p>
@@ -75,9 +75,9 @@
   
   <entry>
     <title type="html"><![CDATA[在Mac和iOS中注册自定义的URL Scheme]]></title>
-    <link href="http://venj.github.io/blog/custom-url-scheme-on-mac-and-ios/"/>
+    <link href="http://cocoa.venj.me/blog/custom-url-scheme-on-mac-and-ios/"/>
     <updated>2012-01-10T15:44:00+08:00</updated>
-    <id>http://venj.github.io/blog/custom-url-scheme-on-mac-and-ios</id>
+    <id>http://cocoa.venj.me/blog/custom-url-scheme-on-mac-and-ios</id>
     <content type="html"><![CDATA[<p>URL Scheme是类似<code>http://</code>，<code>ftp://</code>，<code>afp://</code>这样的东西，通常是用传输协议作为URL Scheme。不过事实上，你可以在iOS和Mac中注册任何类型的URL Scheme。当用户在浏览器中访问你的自定义URL Scheme的链接的时候，操作系统就会打开你的程序，响应这个请求。</p>
 
 <p>要在程序中注册自定义URL Scheme非常简单。主要分为两个步骤：在程序的Info.plist中加入你需要注册的URL Scheme，然后在你的应用程序中加入处理这类请求的代码。</p>

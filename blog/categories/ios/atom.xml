@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Ios | Cocoa学习]]></title>
-  <link href="http://venj.github.io/blog/categories/ios/atom.xml" rel="self"/>
-  <link href="http://venj.github.io/"/>
-  <updated>2015-11-10T14:23:46+08:00</updated>
-  <id>http://venj.github.io/</id>
+  <link href="http://cocoa.venj.me/blog/categories/ios/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[本地化加载屏幕]]></title>
-    <link href="http://venj.github.io/blog/localized-loading-screen/"/>
+    <link href="http://cocoa.venj.me/blog/localized-loading-screen/"/>
     <updated>2013-03-11T09:00:00+08:00</updated>
-    <id>http://venj.github.io/blog/localized-loading-screen</id>
+    <id>http://cocoa.venj.me/blog/localized-loading-screen</id>
     <content type="html"><![CDATA[<p>我一直有注意到“<a href="https://itunes.apple.com/app/da-ci-lin/id299029654?mt=8">大辞林</a>”程序针对不同的系统语言，加载屏幕（Loading Screen，也称Splash Screen）是不一样的。因为无可治愈的拖延症，导致我从来没有想着去研究一下为什么。今天闲来无事，简单的弄了个程序做了一下，解决了加载屏幕本地化的问题。问题的答案只有一句话：</p>
 
 <p>加载屏幕(Default.png)和其他的资源文件一样，可以在Xcode里直接设置本地化的！</p>
@@ -27,7 +27,7 @@
 <!-- more -->
 
 
-<p>首先，我们用图形编辑(PS, Pixelmator等)工具，做两套语言的加载屏幕。简单起见，我们就用白底加居中的黑字(“US”和“CN”)的两套图片好了（文件在示例代码中有），每套图片要三个尺寸：Default.png(320x480)，<a href="&#109;&#x61;&#105;&#108;&#x74;&#111;&#x3a;&#x44;&#101;&#x66;&#x61;&#117;&#108;&#116;&#64;&#x32;&#120;&#46;&#112;&#x6e;&#103;">&#x44;&#x65;&#x66;&#x61;&#x75;&#108;&#x74;&#64;&#x32;&#x78;&#x2e;&#x70;&#x6e;&#x67;</a>(640x960)以及<a href="&#109;&#97;&#x69;&#x6c;&#116;&#111;&#58;&#68;&#101;&#102;&#97;&#x75;&#x6c;&#116;&#45;&#53;&#x36;&#x38;&#x68;&#64;&#50;&#120;&#46;&#112;&#x6e;&#x67;">&#x44;&#101;&#102;&#x61;&#x75;&#x6c;&#x74;&#45;&#53;&#x36;&#56;&#x68;&#x40;&#x32;&#x78;&#x2e;&#112;&#110;&#x67;</a>(640x1136)。</p>
+<p>首先，我们用图形编辑(PS, Pixelmator等)工具，做两套语言的加载屏幕。简单起见，我们就用白底加居中的黑字(“US”和“CN”)的两套图片好了（文件在示例代码中有），每套图片要三个尺寸：Default.png(320x480)，<a href="&#109;&#97;&#x69;&#108;&#116;&#x6f;&#x3a;&#x44;&#101;&#x66;&#97;&#x75;&#108;&#x74;&#x40;&#x32;&#120;&#46;&#x70;&#110;&#103;">&#x44;&#x65;&#102;&#97;&#x75;&#108;&#116;&#x40;&#x32;&#x78;&#x2e;&#112;&#110;&#x67;</a>(640x960)以及<a href="&#109;&#x61;&#105;&#x6c;&#x74;&#x6f;&#x3a;&#x44;&#101;&#x66;&#97;&#x75;&#x6c;&#x74;&#x2d;&#x35;&#x36;&#56;&#104;&#x40;&#50;&#120;&#x2e;&#x70;&#x6e;&#x67;">&#68;&#101;&#x66;&#97;&#x75;&#x6c;&#x74;&#x2d;&#53;&#x36;&#56;&#104;&#64;&#50;&#x78;&#46;&#112;&#110;&#x67;</a>(640x1136)。</p>
 
 <p>做好图片之后，我们在Xcode里创建一个新项目名字可以叫做“Local Splash”，程序模板任意，简单起见，支持的设备只选iPhone。创建后，我们用“US”那套图片替换项目默认的纯黑色加载屏幕，作为默认语言的加载屏幕。</p>
 
@@ -60,9 +60,9 @@
   
   <entry>
     <title type="html"><![CDATA[检测iOS的网络可用性并打开网络设置]]></title>
-    <link href="http://venj.github.io/blog/warn-no-network-and-show-settings/"/>
+    <link href="http://cocoa.venj.me/blog/warn-no-network-and-show-settings/"/>
     <updated>2012-05-08T10:39:00+08:00</updated>
-    <id>http://venj.github.io/blog/warn-no-network-and-show-settings</id>
+    <id>http://cocoa.venj.me/blog/warn-no-network-and-show-settings</id>
     <content type="html"><![CDATA[<p>今天接到个需求，要求程序能够检测网络可用性，并在没有网络可用的时候能够弹出对话框，并允许用户点击按钮打开网络设置。</p>
 
 <p>这个问题，我首先想到的就是用一个方法检测网络可用性，然后用<code>UIApplication</code>的<code>openURL</code>方法打开某个特殊URL，就可以进入设置了。于是，我迅速地建了个测试项目，写了个简单的实现，如下：</p>
@@ -120,9 +120,9 @@
   
   <entry>
     <title type="html"><![CDATA[让iOS App通过iTunes进行文件交换]]></title>
-    <link href="http://venj.github.io/blog/ios-and-pc-file-exchange-using-itunes/"/>
+    <link href="http://cocoa.venj.me/blog/ios-and-pc-file-exchange-using-itunes/"/>
     <updated>2011-08-07T13:04:00+08:00</updated>
-    <id>http://venj.github.io/blog/ios-and-pc-file-exchange-using-itunes</id>
+    <id>http://cocoa.venj.me/blog/ios-and-pc-file-exchange-using-itunes</id>
     <content type="html"><![CDATA[<p>有一些App需要通过使用iTunes让用户上传和下载文档。要让iOS程序支持iTunes文件交换其实很简单，只需要在程序的<code>Info.plist</code>里增加一个键：<code>UIFileSharingEnabled（Application supports iTunes file sharing）</code>，赋值<code>YES</code>。</p>
 
 <p><img class="center" src="/images/posts/file-exchange-xcode.png"></p>

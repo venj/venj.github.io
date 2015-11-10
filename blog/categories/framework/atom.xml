@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Framework | Cocoa学习]]></title>
-  <link href="http://venj.github.io/blog/categories/framework/atom.xml" rel="self"/>
-  <link href="http://venj.github.io/"/>
-  <updated>2015-11-10T14:23:46+08:00</updated>
-  <id>http://venj.github.io/</id>
+  <link href="http://cocoa.venj.me/blog/categories/framework/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[为应用程序增加Growl支持（下）：在代码中应用Growl]]></title>
-    <link href="http://venj.github.io/blog/add-growl-support-in-your-apps-coding-growl/"/>
+    <link href="http://cocoa.venj.me/blog/add-growl-support-in-your-apps-coding-growl/"/>
     <updated>2011-05-26T21:07:00+08:00</updated>
-    <id>http://venj.github.io/blog/add-growl-support-in-your-apps-coding-growl</id>
+    <id>http://cocoa.venj.me/blog/add-growl-support-in-your-apps-coding-growl</id>
     <content type="html"><![CDATA[<p>在<a href="/blog/add-growl-support-in-your-apps-add-growl-framework/">之前一篇日志</a>里，我简单的介绍了一下如何在项目中增加Growl.framework。现在，我来介绍一下如何使用Growl。在之前的日志里，我演示的时候，是往项目中加入Growl.framework，这次，为了完整起见，我将使用Growl-WithInstaller.framework来演示。</p>
 
 <p>这两个框架的区别在于后者把Growl安装程序打包进了框架中。如果用户没有安装Growl，并且愿意安装，可以马上安装。但是很多人并不喜欢这种捆绑安装的方式，很多人把责任归咎于Growl，Growl甚至专门为此<a href="http://growl.info/thirdpartyinstallations.php">写了个网页</a>解释。其实Growl是出于好意，并且，选择哪个框架是开发人员的事情。作为用户，如果你真的不喜欢Growl，Growl能够很方便的删除；而作为开发人员，应该根据目标用户谨慎选择捆绑Growl安装程序的包。</p>
@@ -207,9 +207,9 @@
   
   <entry>
     <title type="html"><![CDATA[为应用程序增加Growl支持（上）：在项目中加入Growl.Framework]]></title>
-    <link href="http://venj.github.io/blog/add-growl-support-in-your-apps-add-growl-framework/"/>
+    <link href="http://cocoa.venj.me/blog/add-growl-support-in-your-apps-add-growl-framework/"/>
     <updated>2011-05-26T10:12:00+08:00</updated>
-    <id>http://venj.github.io/blog/add-growl-support-in-your-apps-add-growl-framework</id>
+    <id>http://cocoa.venj.me/blog/add-growl-support-in-your-apps-add-growl-framework</id>
     <content type="html"><![CDATA[<p>Growl是啥，用来干什么的我就不介绍了。Growl的文档说实话，写的挺抽象的。不是Step by Step的文档，对我来说就有点困难了。所以，我决定把Growl支持写成几篇短文，简单介绍一下如何在程序中增加Growl支持。【为啥要分几篇？嘛，因为我自己也是边学边写文章的吗。。。Orz】</p>
 
 <p>首先，介绍一下原文是怎么写的。</p>

@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Info Plist | Cocoa学习]]></title>
-  <link href="http://venj.github.io/blog/categories/info-plist/atom.xml" rel="self"/>
-  <link href="http://venj.github.io/"/>
-  <updated>2015-11-10T14:23:46+08:00</updated>
-  <id>http://venj.github.io/</id>
+  <link href="http://cocoa.venj.me/blog/categories/info-plist/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[检测iOS的网络可用性并打开网络设置]]></title>
-    <link href="http://venj.github.io/blog/warn-no-network-and-show-settings/"/>
+    <link href="http://cocoa.venj.me/blog/warn-no-network-and-show-settings/"/>
     <updated>2012-05-08T10:39:00+08:00</updated>
-    <id>http://venj.github.io/blog/warn-no-network-and-show-settings</id>
+    <id>http://cocoa.venj.me/blog/warn-no-network-and-show-settings</id>
     <content type="html"><![CDATA[<p>今天接到个需求，要求程序能够检测网络可用性，并在没有网络可用的时候能够弹出对话框，并允许用户点击按钮打开网络设置。</p>
 
 <p>这个问题，我首先想到的就是用一个方法检测网络可用性，然后用<code>UIApplication</code>的<code>openURL</code>方法打开某个特殊URL，就可以进入设置了。于是，我迅速地建了个测试项目，写了个简单的实现，如下：</p>

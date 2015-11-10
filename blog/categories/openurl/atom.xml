@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Openurl | Cocoa学习]]></title>
-  <link href="http://venj.github.io/blog/categories/openurl/atom.xml" rel="self"/>
-  <link href="http://venj.github.io/"/>
-  <updated>2015-11-10T14:23:46+08:00</updated>
-  <id>http://venj.github.io/</id>
+  <link href="http://cocoa.venj.me/blog/categories/openurl/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[iOS 9下使用openURL:]]></title>
-    <link href="http://venj.github.io/blog/openurl-on-ios9/"/>
+    <link href="http://cocoa.venj.me/blog/openurl-on-ios9/"/>
     <updated>2015-11-09T16:12:18+08:00</updated>
-    <id>http://venj.github.io/blog/openurl-on-ios9</id>
+    <id>http://cocoa.venj.me/blog/openurl-on-ios9</id>
     <content type="html"><![CDATA[<p>iOS 9在各方面增强了安全性，最明显的变化，除了<a href="/blog/app-transportation-security/">ATS</a>之外，那就是openURL的变化了。在iOS 9之前，应用可以使用<code>UIApplication</code>的<code>openURL:</code>方法，打开任意自定义Scheme的链接时（比如twitter://， fb://等）－－只要iOS支持。从iOS 9开始，相信很多人都见过这样的对话框：</p>
 
 <p><img class="center" src="/images/posts/open-url-ios-9.png"></p>

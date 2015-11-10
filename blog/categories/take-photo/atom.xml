@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Take Photo | Cocoa学习]]></title>
-  <link href="http://venj.github.io/blog/categories/take-photo/atom.xml" rel="self"/>
-  <link href="http://venj.github.io/"/>
-  <updated>2015-11-10T14:23:46+08:00</updated>
-  <id>http://venj.github.io/</id>
+  <link href="http://cocoa.venj.me/blog/categories/take-photo/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[用Cocoa实现用Mac的摄像头拍照]]></title>
-    <link href="http://venj.github.io/blog/take-photo-with-isight-camera/"/>
+    <link href="http://cocoa.venj.me/blog/take-photo-with-isight-camera/"/>
     <updated>2011-04-23T23:10:00+08:00</updated>
-    <id>http://venj.github.io/blog/take-photo-with-isight-camera</id>
+    <id>http://cocoa.venj.me/blog/take-photo-with-isight-camera</id>
     <content type="html"><![CDATA[<p>我一直有一种错觉，似乎在Mac上通过Cocoa API，用iSight拍照会有点困难。但是我彻底错了！用Cocoa拍照非常非常简单。甚至比Cocoa Touch拍照还简单！</p>
 
 <p>首先，我们来看看测试效果：</p>

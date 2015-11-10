@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Ios 5 | Cocoa学习]]></title>
-  <link href="http://venj.github.io/blog/categories/ios-5/atom.xml" rel="self"/>
-  <link href="http://venj.github.io/"/>
-  <updated>2015-11-10T14:23:46+08:00</updated>
-  <id>http://venj.github.io/</id>
+  <link href="http://cocoa.venj.me/blog/categories/ios-5/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[浅谈iOS 5的StoryBoard]]></title>
-    <link href="http://venj.github.io/blog/ios5-story-board-a-brief-discussion/"/>
+    <link href="http://cocoa.venj.me/blog/ios5-story-board-a-brief-discussion/"/>
     <updated>2011-08-24T00:34:00+08:00</updated>
-    <id>http://venj.github.io/blog/ios5-story-board-a-brief-discussion</id>
+    <id>http://cocoa.venj.me/blog/ios5-story-board-a-brief-discussion</id>
     <content type="html"><![CDATA[<p>StoryBoard是iOS 5的新特征，旨在代替历史悠久的NIB/XIB（其实<strong>StoryBoard还是基于NIB/XIB的</strong>，不过开发人员已经无需直接跟NIB打交道了）。目前关于StoryBoard的文档并不多，苹果的iOS 5的开发者文档里也仅有不多的介绍。所以，本文只是简单的谈谈本人对StoryBoard的一些粗浅的理解。（StoryBoard有时也叫做StoryBoarding，我不太注意这种细节，所以两个词经常会混用，如果你英语可以的话，能体会到两者的细微差别）</p>
 
 <p><img class="center" src="/images/posts/storyboard-1.png"></p>
@@ -80,9 +80,9 @@ StoryBoarding机制比之NIB/XIB的的优势何在呢？个人认为，StoryBoar
   
   <entry>
     <title type="html"><![CDATA[iOS项目的测试简介]]></title>
-    <link href="http://venj.github.io/blog/testing-ios-projects/"/>
+    <link href="http://cocoa.venj.me/blog/testing-ios-projects/"/>
     <updated>2011-08-17T15:06:00+08:00</updated>
-    <id>http://venj.github.io/blog/testing-ios-projects</id>
+    <id>http://cocoa.venj.me/blog/testing-ios-projects</id>
     <content type="html"><![CDATA[<p>记得有人说过，写不写测试代码是判断一个开发者是否成熟的标志。良好的测试代码能够让程序代码更健壮，使重构更加方便。虽然Objective-C是一种编译语言，但是在Xcode的帮助下，做测试和测试驱动开发（Test Driven Development, TDD）也非常方便。苹果官方有一个关于如何做为项目增加测试支持的文档，不过iOS 4.3的文档包的的<a href="http://developer.apple.com/library/iOS/#documentation/Xcode/Conceptual/iphone_development/135-Unit_Testing_Applications/unit_testing_applications.html">该文档</a>已经比较老了，如果你是付费iOS开发者，那么可以看看iOS 5.0的文档包的的<a href="https://developer.apple.com/library/prerelease/ios/#documentation/Xcode/Conceptual/ios_development_workflow/135-Unit_Testing_Applications/unit_testing_applications.html">该文档</a>，已经更新为Xcode 4的教程了。</p>
 
 <p>iOS的测试分两种，一种是逻辑测试（Logic Tests）；另一种是程序测试（Application Tests）。逻辑测试主要是用来测试模块的业务逻辑的；程序测试则是测试模块在整个应用程序中的行为是否正确。逻辑测试类似单元测试；而程序测试则类似集成测试。个人感觉，逻辑测试比较适合测试模型代码；而应用程序测试则比较适合测试控制器和视图代码，考虑到视图在iOS开发中主要是通过Interface Builder来实现，因此，应用测试实际上就是测试控制器代码的。</p>
@@ -333,9 +333,9 @@ Executed 2 tests, with 0 failures (0 unexpected) in 0.002 (0.086) seconds
   
   <entry>
     <title type="html"><![CDATA[iOS 5的Geocoding]]></title>
-    <link href="http://venj.github.io/blog/geocoding-in-ios-5/"/>
+    <link href="http://cocoa.venj.me/blog/geocoding-in-ios-5/"/>
     <updated>2011-07-06T23:44:00+08:00</updated>
-    <id>http://venj.github.io/blog/geocoding-in-ios-5</id>
+    <id>http://cocoa.venj.me/blog/geocoding-in-ios-5</id>
     <content type="html"><![CDATA[<p>很明显，本文有标题党的嫌疑。其实本文要说的是“<a href="http://www.bignerdranch.com/book/ios_programming_the_big_nerd_ranch_guide_nd_edition_">iPhone Programming: The Big Nerd Ranch Guide</a>”一书中第5章里的Whereami的例子。我照着书本做下来，但是感觉例子似乎有点问题。可能是我看书不仔细，不过这个例子要实现的功能很诡异——定位自己，然后自己用文本框加上一个Annotation(？)这太诡异了吧。</p>
 
 <p>我现在对这个例子小做修改，那就是，在文本框中输入任何地址字符串，然后地图自动定位到该位置——类似Google Map的搜索。我基于书本上的代码，做一些小修改。</p>

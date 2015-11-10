@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Nstask | Cocoa学习]]></title>
-  <link href="http://venj.github.io/blog/categories/nstask/atom.xml" rel="self"/>
-  <link href="http://venj.github.io/"/>
-  <updated>2015-11-10T14:23:46+08:00</updated>
-  <id>http://venj.github.io/</id>
+  <link href="http://cocoa.venj.me/blog/categories/nstask/atom.xml" rel="self"/>
+  <link href="http://cocoa.venj.me/"/>
+  <updated>2015-11-10T14:26:31+08:00</updated>
+  <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[在Cocoa程序中进行屏幕截图]]></title>
-    <link href="http://venj.github.io/blog/screenshot-in-cocoa-apps/"/>
+    <link href="http://cocoa.venj.me/blog/screenshot-in-cocoa-apps/"/>
     <updated>2011-09-01T21:10:00+08:00</updated>
-    <id>http://venj.github.io/blog/screenshot-in-cocoa-apps</id>
+    <id>http://cocoa.venj.me/blog/screenshot-in-cocoa-apps</id>
     <content type="html"><![CDATA[<p>用过QQ for Mac的都知道QQ能够直接截图发送。那么，我们如何在Cocoa程序中嵌入截图支持呢？有一个最简单的方法是使用OSX自带的<code>screencapture</code>命令行工具来进行截图。</p>
 
 <p><img class="center" src="/images/posts/cocoa-screenshot-1.png"></p>
