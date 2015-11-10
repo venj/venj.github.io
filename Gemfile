@@ -14,7 +14,6 @@ group :development do
   gem 'rb-fsevent', '~> 0.9'
   gem 'stringex', '~> 1.4.0'
   gem 'pygments.rb', '~> 0.6.0'
-  gem 'octopress-paginate', '~> 1.1.2' 
 end
 
 gem 'sinatra', '~> 1.4.2'

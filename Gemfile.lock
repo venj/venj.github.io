@@ -64,8 +64,6 @@ GEM
       octopress-hooks (~> 2.0)
     octopress-hooks (2.6.1)
       jekyll (>= 2.0)
-    octopress-paginate (1.1.2)
-      octopress-hooks
     parslet (1.5.0)
       blankslate (~> 2.0)
     posix-spawn (0.3.11)
@@ -106,7 +104,6 @@ DEPENDENCIES
   jekyll-sitemap
   octopress-date-format (~> 2.0)
   octopress-hooks (~> 2.2)
-  octopress-paginate (~> 1.1.2)
   pygments.rb (~> 0.6.0)
   rake (~> 10.0)
   rb-fsevent (~> 0.9)
