@@ -9,7 +9,7 @@
   <meta name="author" content="venj">
 
   
-  <meta name="description" content="从iOS 7开始， UIViewController有了一个新的方法：- preferredStatusBarStyle，可以让用户指定状态栏风格。但问题是这个方法只有在ViewController不包含在UINavigationController中时才起作用。大部分情况下， &hellip;">
+  <meta name="description" content="Swift是Apple开发的很酷的新语言。在看WWDC介绍Swift的时候，看到它有一个REPL交互界面，我当时就在想，Swift难道能像脚本语言一样用？如果可以的话，那岂不是一门非常有潜力的脚本语言了（当然，就跨平台而言，Swift完败）？性能优异，语法现代，REPL，还有Playground， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,13 +18,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://venj.github.io/page2">
+  <link rel="canonical" href="http://venj.github.io/page2/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Cocoa学习" type="application/atom+xml">
   <script src="/javascripts/modernizr-2.0.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
 <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
@@ -50,7 +50,7 @@
   
 <form action="http://google.com/search" method="get">
   <fieldset role="search">
-    <input type="hidden" name="q" value="site:venj.github.io" />
+    <input type="hidden" name="sitesearch" value="venj.github.io">
     <input class="search" type="text" name="q" results="0" placeholder="Search"/>
   </fieldset>
 </form>
@@ -72,6 +72,67 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/scripty-swift/">［更新］把Swift用作脚本语言</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-08-01T15:23:18+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>1</span><span class='date-suffix'>st</span>, <span class='date-year'>2014</span></span> <span class='time'>3:23 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Swift是Apple开发的很酷的新语言。在看WWDC介绍Swift的时候，看到它有一个REPL交互界面，我当时就在想，Swift难道能像脚本语言一样用？如果可以的话，那岂不是一门非常有潜力的脚本语言了（当然，就跨平台而言，Swift完败）？性能优异，语法现代，REPL，还有Playground，简直无敌了！所以下载完Xcode 6 beta 1，我就试了一个简单的脚本：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c">#!/usr/bin/env xcrun swift</span>
+</span><span class='line'>println<span class="o">(</span><span class="s2">&quot;Hello Swift.&quot;</span><span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如果装过命令行工具包，可以直接这么写：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c">#!/usr/bin/env swift</span>
+</span><span class='line'>println<span class="o">(</span><span class="s2">&quot;Hello Swift.&quot;</span><span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>保存为任意文件名，比如：<code>hello.swift</code>。然后在命令行执行：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>chmod +x hello.swift
+</span><span class='line'>./hello.swift
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>执行<code>./hello.swift</code>的时候，CPU飚了一下，终端光标停顿了一下之后，打印出了<code>Hello Swift.</code>。然后我就发现和脚本的同级目录下多了一个可执行文件，名为<code>hello</code>。敢情执行这段“脚本”实际上是编译了脚本，然后再执行编译的结果啊。当时我没有深究，只想着照这样，用Swift写脚本是不行了。然后我就把这件事丢下了。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/scripty-swift/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/view-controller-based-status-bar-style-and-uinavigationcontroller/">UINavigationController和View Controller-based状态栏风格</a></h1>
     
     
@@ -81,14 +142,7 @@
 
 
 
-
-
-
-
-  
-
-
-<time datetime="2014-07-24T10:30:22+08:00" pubdate data-updated="true"></time>
+<time class='entry-date' datetime='2014-07-24T10:30:22+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>24</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>10:30 am</span></time>
         
       </p>
     
@@ -126,14 +180,7 @@
 
 
 
-
-
-
-
-  
-
-
-<time datetime="2014-01-21T09:13:01+08:00" pubdate data-updated="true"></time>
+<time class='entry-date' datetime='2014-01-21T09:13:01+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>21</span><span class='date-suffix'>st</span>, <span class='date-year'>2014</span></span> <span class='time'>9:13 am</span></time>
         
       </p>
     
@@ -169,14 +216,7 @@
 
 
 
-
-
-
-
-  
-
-
-<time datetime="2014-01-20T13:58:15+08:00" pubdate data-updated="true"></time>
+<time class='entry-date' datetime='2014-01-20T13:58:15+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>20</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>1:58 pm</span></time>
         
       </p>
     
@@ -210,14 +250,7 @@
 
 
 
-
-
-
-
-  
-
-
-<time datetime="2014-01-07T10:53:17+08:00" pubdate data-updated="true"></time>
+<time class='entry-date' datetime='2014-01-07T10:53:17+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>7</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>10:53 am</span></time>
         
       </p>
     
@@ -255,14 +288,7 @@
 
 
 
-
-
-
-
-  
-
-
-<time datetime="2013-06-03T16:51:00+08:00" pubdate data-updated="true"></time>
+<time class='entry-date' datetime='2013-06-03T16:51:00+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>3</span><span class='date-suffix'>rd</span>, <span class='date-year'>2013</span></span> <span class='time'>4:51 pm</span></time>
         
       </p>
     
@@ -284,58 +310,13 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/localized-loading-screen/">本地化加载屏幕</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-03-11T09:00:00+08:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>我一直有注意到“<a href="https://itunes.apple.com/app/da-ci-lin/id299029654?mt=8">大辞林</a>”程序针对不同的系统语言，加载屏幕（Loading Screen，也称Splash Screen）是不一样的。因为无可治愈的拖延症，导致我从来没有想着去研究一下为什么。今天闲来无事，简单的弄了个程序做了一下，解决了加载屏幕本地化的问题。问题的答案只有一句话：</p>
-
-<p>加载屏幕(Default.png)和其他的资源文件一样，可以在Xcode里直接设置本地化的！</p>
-
-<p><del>（全文完）</del> 等等，既然写成博文了，怎么可以这么就结束了呢！好吧，那就略微详细一点，看一下在Xcode 4.6中如何一步一步地把加载屏幕本地化。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/localized-loading-screen/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
-      <a class="prev" href="3">&larr; Older</a>
+      <a class="prev" href="/page3">&larr; Older</a>
     
     <a href="/blog/archives">Blog Archives</a>
     
-    <a class="next" href="1">Newer &rarr;</a>
+    <a class="next" href="/index.html">Newer &rarr;</a>
     
   </div>
 </div>
@@ -352,6 +333,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/ios9-readable-content-guide/">iOS 9的TableView和Readable Content Guide</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/openurl-on-ios9/">iOS 9下使用openURL:</a>
       </li>
     
@@ -365,10 +350,6 @@
     
       <li class="post">
         <a href="/blog/disable-corestorage-on-os-x-yosemite/">禁用OS X Yosemite上的Core Storage</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/xcode-6-color-theme-path/">Xcode 6 Color Themes (颜色主题) 的路径</a>
       </li>
     
   </ul>

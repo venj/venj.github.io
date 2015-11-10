@@ -4,7 +4,7 @@
   <title><![CDATA[Cocoa学习]]></title>
   <link href="http://venj.github.io/atom.xml" rel="self"/>
   <link href="http://venj.github.io/"/>
-  <updated>2015-11-09T20:47:16+08:00</updated>
+  <updated>2015-11-10T14:23:46+08:00</updated>
   <id>http://venj.github.io/</id>
   <author>
     <name><![CDATA[venj]]></name>
@@ -12,6 +12,41 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[iOS 9的TableView和Readable Content Guide]]></title>
+    <link href="http://venj.github.io/blog/ios9-readable-content-guide/"/>
+    <updated>2015-11-10T14:00:02+08:00</updated>
+    <id>http://venj.github.io/blog/ios9-readable-content-guide</id>
+    <content type="html"><![CDATA[<p>相信很多开发者在把应用迁移到iOS 9的时候发现了如下现象。那就是TableView在iOS 9的iPad或iPhone 6 Plus的横屏模式时，表格两边有巨大的空白边缘。</p>
+
+<p><img class="center" src="http://venj.github.io/images/posts/ios9_rcg.png"></p>
+
+<!-- more -->
+
+
+<p>这是因为iOS 9为<code>UIView</code>引入了一个新的属性<code>readableContentGuide</code>，这个属性为View定义了一个可以放置用于阅读的内容的最佳区域。如果启用<code>readableContentGuide</code>的话，那么View就会把它作为边缘进行布局。但是这可能并不是我们想要的效果，要关闭TableView的Readable Content Guide，可以在<code>viewDidLoad:</code>中调用下面这段代码：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="c1">// 在viewDidLoad:中调用：</span>
+</span><span class='line'><span class="k">if</span> <span class="err">#</span><span class="n">available</span><span class="p">(</span><span class="n">iOS</span> <span class="mf">9.0</span><span class="p">,</span> <span class="o">*</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">tableView</span><span class="p">.</span><span class="n">cellLayoutMarginsFollowReadableWidth</span> <span class="o">=</span> <span class="nb">false</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如果你用的是Interface Builder，你可以通过选中TableView，在Size Inspector中，通过勾选“Follow Readable Width”来启用Readable Content Guide（或取消选中来禁用它）。</p>
+
+<p><img class="center" src="http://venj.github.io/images/posts/ios9_rcg_ib.png"></p>
+
+<p>当然，你可以为TableView重新设置<code>readableContentGuide</code>，以对这个属性进行更加精确的控制。上面介绍的方法对于一般的应用场景，保持iOS 8以下系统的兼容性已经足够了。而<code>readableContentGuide</code>实际上是一个<code>UILayoutGuide</code>对象，它是Auto Layout中一个重要的对象，具体就不在本文中详述了。</p>
+
+<p>（全文完）</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[iOS 9下使用openURL:]]></title>
@@ -706,7 +741,7 @@
 <!-- more -->
 
 
-<p>首先，我们用图形编辑(PS, Pixelmator等)工具，做两套语言的加载屏幕。简单起见，我们就用白底加居中的黑字(“US”和“CN”)的两套图片好了（文件在示例代码中有），每套图片要三个尺寸：Default.png(320x480)，<a href="&#109;&#97;&#105;&#108;&#116;&#x6f;&#x3a;&#68;&#101;&#102;&#97;&#x75;&#x6c;&#116;&#x40;&#50;&#x78;&#46;&#112;&#x6e;&#x67;">&#68;&#101;&#x66;&#x61;&#117;&#x6c;&#116;&#x40;&#50;&#120;&#x2e;&#112;&#110;&#x67;</a>(640x960)以及<a href="&#109;&#x61;&#x69;&#108;&#x74;&#x6f;&#x3a;&#x44;&#101;&#x66;&#97;&#117;&#108;&#116;&#45;&#53;&#x36;&#56;&#104;&#x40;&#50;&#120;&#46;&#112;&#110;&#103;">&#68;&#x65;&#102;&#97;&#x75;&#108;&#x74;&#45;&#x35;&#54;&#x38;&#104;&#x40;&#50;&#x78;&#46;&#112;&#x6e;&#103;</a>(640x1136)。</p>
+<p>首先，我们用图形编辑(PS, Pixelmator等)工具，做两套语言的加载屏幕。简单起见，我们就用白底加居中的黑字(“US”和“CN”)的两套图片好了（文件在示例代码中有），每套图片要三个尺寸：Default.png(320x480)，<a href="&#109;&#x61;&#105;&#x6c;&#116;&#x6f;&#58;&#68;&#101;&#x66;&#97;&#117;&#x6c;&#116;&#x40;&#50;&#x78;&#46;&#112;&#110;&#103;">&#x44;&#101;&#102;&#x61;&#x75;&#108;&#116;&#x40;&#x32;&#x78;&#46;&#112;&#x6e;&#x67;</a>(640x960)以及<a href="&#109;&#x61;&#x69;&#108;&#x74;&#111;&#x3a;&#x44;&#101;&#x66;&#97;&#117;&#108;&#x74;&#45;&#x35;&#x36;&#56;&#x68;&#x40;&#x32;&#120;&#x2e;&#x70;&#x6e;&#103;">&#68;&#x65;&#x66;&#97;&#x75;&#x6c;&#x74;&#45;&#53;&#54;&#x38;&#x68;&#64;&#x32;&#120;&#46;&#x70;&#110;&#x67;</a>(640x1136)。</p>
 
 <p>做好图片之后，我们在Xcode里创建一个新项目名字可以叫做“Local Splash”，程序模板任意，简单起见，支持的设备只选iPhone。创建后，我们用“US”那套图片替换项目默认的纯黑色加载屏幕，作为默认语言的加载屏幕。</p>
 
@@ -1505,40 +1540,6 @@
 <p>虽然这个工具已经足够我使用了，但是如果您有更好的工具的话，可以留言推荐给我。 :)</p>
 
 <p>(全文完)</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[跳动Dock图标的实现]]></title>
-    <link href="http://venj.github.io/blog/bounce-dock-icon/"/>
-    <updated>2012-03-09T09:13:00+08:00</updated>
-    <id>http://venj.github.io/blog/bounce-dock-icon</id>
-    <content type="html"><![CDATA[<p>OS X程序，在执行后台任务的时候，有时需要通过跳动Dock图标来提示用户进行操作或某项操作已经执行完成。方法很简单，<code>NSApplication</code>有一个<code>-requestUserAttention:</code>的方法可以跳动Dock图标。</p>
-
-<p>下面是实例代码：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">//跳动一次</span>
-</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">bounceOnce:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">NSApp</span> <span class="nl">requestUserAttention</span><span class="p">:</span><span class="n">NSInformationalRequest</span><span class="p">];</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="c1">//总是跳动，直到用户干预为止</span>
-</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">bounceAlways:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">NSApp</span> <span class="nl">requestUserAttention</span><span class="p">:</span><span class="n">NSCriticalRequest</span><span class="p">];</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>FYI: <code>NSApp</code>是一个指向当前运行的程序实例的全局变量，等同于调用：<code>[NSApplication sharedApplication]</code>。</p>
-
-<p>示例代码已经上传到<a href="https://github.com/venj/Cocoa-blog-code/tree/master/Bounce%20Icon">github</a>，有兴趣的可以看看。不过记得在测试示例程序的时候，点击按钮后就让程序进入后台运行。5秒钟后就能看到效果了。</p>
 ]]></content>
   </entry>
   
