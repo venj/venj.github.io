@@ -36,7 +36,7 @@ categories: [iOS7, UINavigationController, "Status Bar Style"]
 ```
 extension UINavigationController {
     override public func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return self.topViewController.preferredStatusBarStyle();
+        return self.topViewController.preferredStatusBarStyle()
     }
 }
 ```
