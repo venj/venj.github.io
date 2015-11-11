@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Status Bar | Cocoa学习]]></title>
   <link href="http://cocoa.venj.me/blog/categories/status-bar/atom.xml" rel="self"/>
   <link href="http://cocoa.venj.me/"/>
-  <updated>2015-11-11T01:02:58+08:00</updated>
+  <updated>2015-11-11T09:29:09+08:00</updated>
   <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
@@ -18,7 +18,7 @@
     <link href="http://cocoa.venj.me/blog/more-on-status-bar-style/"/>
     <updated>2015-11-10T23:53:38+08:00</updated>
     <id>http://cocoa.venj.me/blog/more-on-status-bar-style</id>
-    <content type="html"><![CDATA[<p>在<a href="/blog/view-controller-based-status-bar-style-and-uinavigationcontroller/">去年的博文</a>中，我们曾经探讨过关于<code>UINavigationController</code>的状态栏样式（Status Bar Style）行为。当时也给出了一个较为理想的解决<code>UINavigationController</code>的Status Bar Style不与子<code>UIViewController</code>同步的问题。但是这个问题并没有结束，事实上，除了<code>UINavigationController</code>之外，还有很多场景下你需要使用文章中提及的Hack。比如，<code>UITabBarController</code>就是一个典型的例子。</p>
+    <content type="html"><![CDATA[<p>在<a href="/blog/view-controller-based-status-bar-style-and-uinavigationcontroller/">去年的博文</a>中，我们曾经探讨过关于<code>UINavigationController</code>的状态栏样式（Status Bar Style）行为。当时也给出了一个较为理想的解决<code>UINavigationController</code>的Status Bar Style与子<code>UIViewController</code>不同步的问题。但是这个问题并没有结束，事实上，除了<code>UINavigationController</code>之外，还有很多场景下你需要使用文章中提及的Hack。比如，<code>UITabBarController</code>就是一个典型的例子。</p>
 
 <!-- more -->
 
@@ -27,9 +27,9 @@
 
 <p><code>UITabBarController</code>并不会像<code>UINavigationController</code>一样用<code>.Default</code>风格覆盖子ViewController的<code>preferedStatusBarStyle</code>。一般情况下<code>UITabBarController</code>是很正常的。然而在某些特殊的情况下，问题就来了。比如使用<a href="https://github.com/pkluz/PKHUD">PKHUD</a>的时候。</p>
 
-<p>PKHUD会在应用默认的<code>window</code>上蒙一层新的<code>UIWindow</code>，用来显示HUD提示。而这个新的window，似乎这个Window会使用默认Window的<code>rootViewController</code>的<code>preferedStatusBarStyle</code>。于是，当<code>UITabBarController</code>的自ViewController的<code>preferedStatusBarStyle</code>用<code>.LightContent</code>的时候，PKHUD出现时，系统的Status Bar会变成<code>.Default</code>样式，HUD消失后再变回去。</p>
+<p>PKHUD会在应用默认的<code>window</code>上蒙一层新的<code>UIWindow</code>，用来显示HUD提示。而这个新的window应该是根据默认window的<code>rootViewController</code>的<code>preferedStatusBarStyle</code>来作为其状态栏样式。于是，当<code>UITabBarController</code>的自ViewController的<code>preferedStatusBarStyle</code>用<code>.LightContent</code>，在PKHUD出现时，系统的状态栏会变成<code>.Default</code>样式（因为UITabbarController未特别指定状态栏样式，所以使用了默认的样式），HUD消失后再变回去。</p>
 
-<p>这样的效果非常诡异。于是，只要如<code>UINavigationController</code>一样，也为<code>UITabBarController</code>设置<code>preferedStatusBarStyle</code>。</p>
+<p>这样的效果非常诡异。不过知道了问题的根源，解决起来也很简单。只要像<code>UINavigationController</code>一样，为<code>UITabBarController</code>设置<code>preferedStatusBarStyle</code>即可。</p>
 
 <pre><code class="swift">extension UITabBarController {
     override public func preferredStatusBarStyle() -&gt; UIStatusBarStyle {
@@ -39,13 +39,13 @@
 }
 </code></pre>
 
-<p>这样，PKHUD的显示又正常了。虽然PKHUD是目前我发现的第一个例子，但是很可能其他使用<code>UIWindow</code>对象的控件在与<code>UITabBarController</code>一起使用的时候，也会有同样的问题。而上面这个代码片段就是解决方法。</p>
+<p>这样，PKHUD的显示就正常了。虽然PKHUD是目前我发现的第一个例子，但是很可能其他使用<code>UIWindow</code>对象的控件在与<code>UITabBarController</code>一起使用的时候，也会有同样的问题。而上面这个代码片段就是解决方法。</p>
 
 <h4>二. <code>UINavigationController</code>在全屏Modal中显示时</h4>
 
 <p>如果你要在全屏Modal中显示一个<code>UINavigationController</code>，而它的<code>rootViewController</code>来自第三方框架，你无法直接修改该ViewController的<code>preferedStatusBarStyle</code>方法。为了UINavigationController也能使用<code>.LightContent</code>，你也可以像上面一部分中，扩展第三方类。</p>
 
-<p>但是这么做的缺点也很明显，如果你在同一个应用中的其它部分需要用到这个第三方ViewController，而使用时你并不需要<code>.LightContent</code>，这时候就又陷入了困境。</p>
+<p>但是这么做的缺点也很明显，如果你在同一个应用中的其它部分需要用到这个第三方ViewController，但此时你并不需要<code>.LightContent</code>，这时候就又陷入了困境。</p>
 
 <p>考虑到作为Modal出现的<code>UINavigationController</code>的Status Bar Style通常与呈现它的ViewController一致，而非和其子ViewController一致，因此，我们把之前的<code>UINavigationController</code>的扩展，修改成如下：</p>
 
