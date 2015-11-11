@@ -39,13 +39,15 @@ extension UITabBarController {
 
 ``` swift
 extension UINavigationController {
-    if self.isBeingPresented() {
-        // 当它被显示时，presentingViewController通常不会为nil。
-        return self.presentingViewController!.preferredStatusBarStyle()
-    }
-    else {
-        guard self.topViewController != nil else { return .Default }
-        return (self.topViewController!.preferredStatusBarStyle());
+    func preferredStatusBarStyle() -> UIStatusBarStyle {
+        if self.isBeingPresented() {
+            // 当它被显示时，presentingViewController通常不会为nil。
+            return self.presentingViewController!.preferredStatusBarStyle()
+        }
+        else {
+            guard self.topViewController != nil else { return .Default }
+            return (self.topViewController!.preferredStatusBarStyle());
+        }
     }
 }
 ```
