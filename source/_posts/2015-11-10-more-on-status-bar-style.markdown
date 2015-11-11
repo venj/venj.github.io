@@ -41,7 +41,7 @@ extension UITabBarController {
 extension UINavigationController {
     func preferredStatusBarStyle() -> UIStatusBarStyle {
         if self.presentingViewController != nil {
-            // 当它被显示时，presentingViewController通常不会为nil。
+            // NavigationController的presentingViewController不会为nil时，通常意味着Modal
             return self.presentingViewController!.preferredStatusBarStyle()
         }
         else {
