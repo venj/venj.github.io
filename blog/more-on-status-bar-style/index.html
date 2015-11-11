@@ -137,7 +137,7 @@
 <span class='line-number'>12</span>
 </pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">extension</span> <span class="bp">UINavigationController</span> <span class="p">{</span>
 </span><span class='line'>    <span class="k">func</span> <span class="n">preferredStatusBarStyle</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">UIStatusBarStyle</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">if</span> <span class="nb">self</span><span class="p">.</span><span class="n">isBeingPresented</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="nb">self</span><span class="p">.</span><span class="n">presentingViewController</span> <span class="o">!=</span> <span class="nb">nil</span> <span class="p">{</span>
 </span><span class='line'>            <span class="c1">// 当它被显示时，presentingViewController通常不会为nil。</span>
 </span><span class='line'>            <span class="k">return</span> <span class="nb">self</span><span class="p">.</span><span class="n">presentingViewController</span><span class="o">!</span><span class="p">.</span><span class="n">preferredStatusBarStyle</span><span class="p">()</span>
 </span><span class='line'>        <span class="p">}</span>
