@@ -4,7 +4,7 @@
   <title><![CDATA[Cocoa学习]]></title>
   <link href="http://cocoa.venj.me/atom.xml" rel="self"/>
   <link href="http://cocoa.venj.me/"/>
-  <updated>2015-11-11T10:35:36+08:00</updated>
+  <updated>2015-11-11T10:36:55+08:00</updated>
   <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
@@ -71,7 +71,7 @@
 </pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">extension</span> <span class="bp">UINavigationController</span> <span class="p">{</span>
 </span><span class='line'>    <span class="k">func</span> <span class="n">preferredStatusBarStyle</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">UIStatusBarStyle</span> <span class="p">{</span>
 </span><span class='line'>        <span class="k">if</span> <span class="nb">self</span><span class="p">.</span><span class="n">presentingViewController</span> <span class="o">!=</span> <span class="nb">nil</span> <span class="p">{</span>
-</span><span class='line'>            <span class="c1">// 当它被显示时，presentingViewController通常不会为nil。</span>
+</span><span class='line'>            <span class="c1">// NavigationController的presentingViewController不会为nil时，通常意味着Modal</span>
 </span><span class='line'>            <span class="k">return</span> <span class="nb">self</span><span class="p">.</span><span class="n">presentingViewController</span><span class="o">!</span><span class="p">.</span><span class="n">preferredStatusBarStyle</span><span class="p">()</span>
 </span><span class='line'>        <span class="p">}</span>
 </span><span class='line'>        <span class="k">else</span> <span class="p">{</span>
@@ -817,7 +817,7 @@
 <!-- more -->
 
 
-<p>首先，我们用图形编辑(PS, Pixelmator等)工具，做两套语言的加载屏幕。简单起见，我们就用白底加居中的黑字(“US”和“CN”)的两套图片好了（文件在示例代码中有），每套图片要三个尺寸：Default.png(320x480)，<a href="&#109;&#x61;&#105;&#x6c;&#x74;&#111;&#x3a;&#x44;&#x65;&#102;&#97;&#117;&#x6c;&#116;&#x40;&#x32;&#x78;&#46;&#112;&#110;&#103;">&#68;&#x65;&#102;&#97;&#117;&#x6c;&#x74;&#64;&#x32;&#x78;&#46;&#112;&#x6e;&#x67;</a>(640x960)以及<a href="&#x6d;&#x61;&#105;&#x6c;&#116;&#x6f;&#x3a;&#68;&#101;&#x66;&#97;&#x75;&#x6c;&#116;&#x2d;&#x35;&#x36;&#56;&#x68;&#x40;&#50;&#x78;&#x2e;&#x70;&#x6e;&#103;">&#x44;&#x65;&#102;&#97;&#117;&#x6c;&#116;&#45;&#53;&#54;&#x38;&#104;&#x40;&#x32;&#x78;&#x2e;&#112;&#110;&#x67;</a>(640x1136)。</p>
+<p>首先，我们用图形编辑(PS, Pixelmator等)工具，做两套语言的加载屏幕。简单起见，我们就用白底加居中的黑字(“US”和“CN”)的两套图片好了（文件在示例代码中有），每套图片要三个尺寸：Default.png(320x480)，<a href="&#x6d;&#x61;&#x69;&#108;&#x74;&#111;&#x3a;&#x44;&#x65;&#x66;&#97;&#117;&#108;&#116;&#64;&#50;&#120;&#46;&#x70;&#x6e;&#103;">&#x44;&#101;&#x66;&#x61;&#117;&#x6c;&#116;&#x40;&#x32;&#x78;&#46;&#112;&#110;&#103;</a>(640x960)以及<a href="&#x6d;&#x61;&#x69;&#x6c;&#116;&#111;&#x3a;&#68;&#101;&#x66;&#97;&#117;&#x6c;&#116;&#45;&#x35;&#x36;&#x38;&#x68;&#64;&#x32;&#x78;&#x2e;&#x70;&#110;&#103;">&#68;&#101;&#x66;&#97;&#117;&#108;&#x74;&#x2d;&#x35;&#x36;&#56;&#104;&#64;&#50;&#120;&#46;&#x70;&#x6e;&#x67;</a>(640x1136)。</p>
 
 <p>做好图片之后，我们在Xcode里创建一个新项目名字可以叫做“Local Splash”，程序模板任意，简单起见，支持的设备只选iPhone。创建后，我们用“US”那套图片替换项目默认的纯黑色加载屏幕，作为默认语言的加载屏幕。</p>
 

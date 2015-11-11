@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Uiviewcontroller | Cocoa学习]]></title>
   <link href="http://cocoa.venj.me/blog/categories/uiviewcontroller/atom.xml" rel="self"/>
   <link href="http://cocoa.venj.me/"/>
-  <updated>2015-11-11T10:35:36+08:00</updated>
+  <updated>2015-11-11T10:36:55+08:00</updated>
   <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
@@ -52,7 +52,7 @@
 <pre><code class="swift">extension UINavigationController {
     func preferredStatusBarStyle() -&gt; UIStatusBarStyle {
         if self.presentingViewController != nil {
-            // 当它被显示时，presentingViewController通常不会为nil。
+            // NavigationController的presentingViewController不会为nil时，通常意味着Modal
             return self.presentingViewController!.preferredStatusBarStyle()
         }
         else {
