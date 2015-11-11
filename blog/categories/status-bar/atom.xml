@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Status Bar | Cocoa学习]]></title>
   <link href="http://cocoa.venj.me/blog/categories/status-bar/atom.xml" rel="self"/>
   <link href="http://cocoa.venj.me/"/>
-  <updated>2015-11-11T09:29:09+08:00</updated>
+  <updated>2015-11-11T10:28:08+08:00</updated>
   <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
@@ -50,13 +50,15 @@
 <p>考虑到作为Modal出现的<code>UINavigationController</code>的Status Bar Style通常与呈现它的ViewController一致，而非和其子ViewController一致，因此，我们把之前的<code>UINavigationController</code>的扩展，修改成如下：</p>
 
 <pre><code class="swift">extension UINavigationController {
-    if self.isBeingPresented() {
-        // 当它被显示时，presentingViewController通常不会为nil。
-        return self.presentingViewController!.preferredStatusBarStyle()
-    }
-    else {
-        guard self.topViewController != nil else { return .Default }
-        return (self.topViewController!.preferredStatusBarStyle());
+    func preferredStatusBarStyle() -&gt; UIStatusBarStyle {
+        if self.isBeingPresented() {
+            // 当它被显示时，presentingViewController通常不会为nil。
+            return self.presentingViewController!.preferredStatusBarStyle()
+        }
+        else {
+            guard self.topViewController != nil else { return .Default }
+            return (self.topViewController!.preferredStatusBarStyle());
+        }
     }
 }
 </code></pre>
