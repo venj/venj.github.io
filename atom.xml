@@ -4,7 +4,7 @@
   <title><![CDATA[Cocoa学习]]></title>
   <link href="http://cocoa.venj.me/atom.xml" rel="self"/>
   <link href="http://cocoa.venj.me/"/>
-  <updated>2015-11-11T10:36:55+08:00</updated>
+  <updated>2015-11-12T20:54:37+08:00</updated>
   <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
@@ -12,6 +12,30 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Using Swift With Cocoa and Objective-C中文版]]></title>
+    <link href="http://cocoa.venj.me/blog/translation-of-using-swift-with-cocoa-and-objc/"/>
+    <updated>2015-11-12T20:37:21+08:00</updated>
+    <id>http://cocoa.venj.me/blog/translation-of-using-swift-with-cocoa-and-objc</id>
+    <content type="html"><![CDATA[<p>最初其实是打算翻译"Swift Programming Language"的，而且也<a href="https://github.com/venj/Swift_2_CN">翻译了十几页</a>了。但是一直三天打鱼两天晒网的，一直没翻译下去（希望我能有时间，也能有兴致继续把那本书翻译下去）。</p>
+
+<p>后来因为要转一个Objective-C项目，所以又重读了一下“Using Swift with Cocoa and Objective-C”。因为觉得这本书比较短，所以就又挖了新的坑。和“Swift Programming Language”一样，最初的热情之后，中间又停了一段时间。幸好后来赶上很长的一段时间空闲，就一鼓作气把它翻译完了。这是我最近翻译的一个较大的文档，所以翻译的不太好，请见谅。不过总体上应该能读一下了。</p>
+
+<p><img class="center" src="http://cocoa.venj.me/images/posts/usco.png"></p>
+
+<!-- more -->
+
+
+<p>我知道，绝大多数开发者并不需要这种翻译的资料，因为开发者都是勤学的人－－特别是iOS开发者（每年iOS API，以及Swift发布一年多来的变化是巨大的）－－你们都会自己去阅读第一手的英文资料。不过我想总是会有一些读者需要这个文档的翻译的，所以决定在Blog里公布一下。地址在这里：</p>
+
+<p><a href="https://github.com/venj/Swift_Cocoa_ObjC_CN">Using Swift with Cocoa and Objective-C中文版</a></p>
+
+<p>想阅读的读者可以直接在Github里阅读，希望会给需要的读者带来些帮助。目前本书是根据最新的Swift 2.1版进行了翻译和较对，后续我会继续跟踪本书的更新。</p>
+
+<p>（全文完）</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[再说说iOS的Status Bar Style]]></title>
@@ -817,7 +841,7 @@
 <!-- more -->
 
 
-<p>首先，我们用图形编辑(PS, Pixelmator等)工具，做两套语言的加载屏幕。简单起见，我们就用白底加居中的黑字(“US”和“CN”)的两套图片好了（文件在示例代码中有），每套图片要三个尺寸：Default.png(320x480)，<a href="&#x6d;&#x61;&#x69;&#108;&#x74;&#111;&#x3a;&#x44;&#x65;&#x66;&#97;&#117;&#108;&#116;&#64;&#50;&#120;&#46;&#x70;&#x6e;&#103;">&#x44;&#101;&#x66;&#x61;&#117;&#x6c;&#116;&#x40;&#x32;&#x78;&#46;&#112;&#110;&#103;</a>(640x960)以及<a href="&#x6d;&#x61;&#x69;&#x6c;&#116;&#111;&#x3a;&#68;&#101;&#x66;&#97;&#117;&#x6c;&#116;&#45;&#x35;&#x36;&#x38;&#x68;&#64;&#x32;&#x78;&#x2e;&#x70;&#110;&#103;">&#68;&#101;&#x66;&#97;&#117;&#108;&#x74;&#x2d;&#x35;&#x36;&#56;&#104;&#64;&#50;&#120;&#46;&#x70;&#x6e;&#x67;</a>(640x1136)。</p>
+<p>首先，我们用图形编辑(PS, Pixelmator等)工具，做两套语言的加载屏幕。简单起见，我们就用白底加居中的黑字(“US”和“CN”)的两套图片好了（文件在示例代码中有），每套图片要三个尺寸：Default.png(320x480)，<a href="&#x6d;&#97;&#105;&#108;&#116;&#x6f;&#58;&#x44;&#x65;&#x66;&#97;&#x75;&#x6c;&#x74;&#64;&#x32;&#x78;&#46;&#x70;&#110;&#103;">&#x44;&#x65;&#102;&#x61;&#x75;&#108;&#x74;&#64;&#50;&#x78;&#46;&#112;&#x6e;&#103;</a>(640x960)以及<a href="&#109;&#97;&#105;&#108;&#x74;&#111;&#58;&#x44;&#x65;&#102;&#x61;&#117;&#x6c;&#116;&#x2d;&#x35;&#54;&#56;&#104;&#64;&#50;&#120;&#46;&#x70;&#110;&#x67;">&#68;&#101;&#x66;&#x61;&#117;&#108;&#116;&#x2d;&#53;&#x36;&#x38;&#104;&#64;&#50;&#120;&#46;&#112;&#110;&#103;</a>(640x1136)。</p>
 
 <p>做好图片之后，我们在Xcode里创建一个新项目名字可以叫做“Local Splash”，程序模板任意，简单起见，支持的设备只选iPhone。创建后，我们用“US”那套图片替换项目默认的纯黑色加载屏幕，作为默认语言的加载屏幕。</p>
 
@@ -1354,224 +1378,6 @@
 <p>经过这次乌龙，我只有再次感叹，Cocoa (Touch)深似海，而我的脚才刚踩上沙滩。</p>
 
 <p>顺道：我真的用软件检测了高德地图是否用了Private API。答案当然是否定的。【我这个白痴】</p>
-
-<p>(全文完)</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[山寨一下QQ for Mac样式的头像选择菜单]]></title>
-    <link href="http://cocoa.venj.me/blog/make-a-qq-mac-avatar-menu-clone/"/>
-    <updated>2012-03-29T17:02:00+08:00</updated>
-    <id>http://cocoa.venj.me/blog/make-a-qq-mac-avatar-menu-clone</id>
-    <content type="html"><![CDATA[<p>腾讯一直被大家吐槽山寨别人，这次我决定山寨一下腾讯，对象就是QQ for Mac的头像选择菜单。下面是原版的头像选择菜单：</p>
-
-<p><img class="center" src="http://cocoa.venj.me/images/posts/qq-avatar-menu-original.png"></p>
-
-<!-- more -->
-
-
-<p>这个菜单，一眼望过去，基本上就是一个有自定义View的菜单项加上一个普通菜单项。菜单附着在一个“头像”上。“头像”本身也是一个自定义按钮，这里不多深究；我们实现的时候，可以把菜单作为一个快捷菜单附着在一个按钮上。</p>
-
-<p>菜单的自定义View，由一个Label（<code>NSTextField</code>），8个头像（行为类似<code>NSButton</code>）组成。另外，在鼠标悬停在头像上的时候还有一个Focus Ring。</p>
-
-<p>问题分析到这里，我们就可以开始实现了。首先，我们先来创建两个菜单项：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cp">#define IMAGES_COUNT 8</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">applicationDidFinishLaunching:</span><span class="p">(</span><span class="bp">NSNotification</span> <span class="o">*</span><span class="p">)</span><span class="nv">aNotification</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="c1">// 一些变量</span>
-</span><span class='line'>    <span class="bp">NSInteger</span> <span class="n">sideMargin</span> <span class="o">=</span> <span class="mf">25.</span><span class="p">,</span> <span class="n">headMargin</span><span class="o">=</span><span class="mf">10.</span><span class="p">,</span> \
-</span><span class='line'>    <span class="n">seperateMargin</span> <span class="o">=</span> <span class="mf">2.</span><span class="p">,</span> <span class="n">imageWidth</span> <span class="o">=</span> <span class="mf">44.</span><span class="p">,</span> \
-</span><span class='line'>    <span class="n">imagesPerLine</span> <span class="o">=</span> <span class="mf">4.</span><span class="p">,</span> <span class="n">menuTitleHeight</span> <span class="o">=</span> <span class="mf">20.</span><span class="p">,</span>\
-</span><span class='line'>    <span class="n">menuTitleLeftMargin</span> <span class="o">=</span> <span class="mf">20.</span><span class="p">,</span> <span class="n">menuTitleWidth</span> <span class="o">=</span> <span class="mf">180.</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">// 创建菜单</span>
-</span><span class='line'>    <span class="nb">self</span><span class="p">.</span><span class="n">myMenuItem</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSMenuItem</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithTitle</span><span class="p">:</span><span class="s">@&quot;My Menu&quot;</span> <span class="nl">action</span><span class="p">:</span><span class="nb">nil</span> <span class="nl">keyEquivalent</span><span class="p">:</span><span class="s">@&quot;&quot;</span><span class="p">];</span>
-</span><span class='line'>    <span class="nb">self</span><span class="p">.</span><span class="n">myMenuItem</span><span class="p">.</span><span class="n">target</span> <span class="o">=</span> <span class="nb">self</span><span class="p">;</span>
-</span><span class='line'>    <span class="n">NSMenuItem</span> <span class="o">*</span><span class="n">otherMenu</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSMenuItem</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithTitle</span><span class="p">:</span><span class="s">@&quot;自定义头像...&quot;</span> <span class="nl">action</span><span class="p">:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">doSomething</span><span class="p">:)</span> <span class="nl">keyEquivalent</span><span class="p">:</span><span class="s">@&quot;&quot;</span><span class="p">];</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">// 创建菜单项的自定义视图</span>
-</span><span class='line'>    <span class="nb">self</span><span class="p">.</span><span class="n">menuView</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSView</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFrame</span><span class="p">:</span><span class="n">NSMakeRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> \
-</span><span class='line'>                                                                <span class="n">sideMargin</span><span class="o">*</span><span class="mi">2</span><span class="o">+</span><span class="n">seperateMargin</span><span class="o">*</span><span class="p">(</span><span class="n">imagesPerLine</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">imageWidth</span><span class="o">*</span><span class="n">imagesPerLine</span><span class="p">,</span> \
-</span><span class='line'>                                                                <span class="n">imageWidth</span><span class="o">*</span><span class="p">(</span><span class="n">IMAGES_COUNT</span><span class="o">/</span><span class="n">imagesPerLine</span><span class="p">)</span><span class="o">+</span><span class="n">seperateMargin</span><span class="o">*</span><span class="p">(</span><span class="n">IMAGES_COUNT</span><span class="o">/</span><span class="n">imagesPerLine</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">headMargin</span><span class="o">*</span><span class="mi">2</span><span class="o">+</span><span class="n">menuTitleHeight</span><span class="p">)];</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>接着，在<code>-applicationDidFinishLaunching:</code>方法中继续加入Lebel：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">...</span>
-</span><span class='line'>
-</span><span class='line'><span class="bp">NSTextField</span> <span class="o">*</span><span class="n">menuViewTitle</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NSTextField</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFrame</span><span class="p">:</span><span class="n">NSMakeRect</span><span class="p">(</span><span class="n">menuTitleLeftMargin</span><span class="p">,</span> <span class="n">headMargin</span><span class="o">+</span><span class="p">(</span><span class="n">seperateMargin</span> <span class="o">+</span> <span class="n">imageWidth</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">IMAGES_COUNT</span><span class="o">/</span><span class="n">imagesPerLine</span><span class="p">),</span> <span class="n">menuTitleWidth</span><span class="p">,</span> <span class="n">menuTitleHeight</span><span class="p">)];</span>
-</span><span class='line'><span class="n">menuViewTitle</span><span class="p">.</span><span class="n">stringValue</span> <span class="o">=</span> <span class="s">@&quot;系统头像&quot;</span><span class="p">;</span>
-</span><span class='line'><span class="n">menuViewTitle</span><span class="p">.</span><span class="n">textColor</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSColor</span> <span class="n">grayColor</span><span class="p">];</span>
-</span><span class='line'><span class="n">menuViewTitle</span><span class="p">.</span><span class="n">backgroundColor</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSColor</span> <span class="n">controlColor</span><span class="p">];</span>
-</span><span class='line'><span class="n">menuViewTitle</span><span class="p">.</span><span class="n">font</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSFont</span> <span class="nl">systemFontOfSize</span><span class="p">:</span><span class="mi">15</span><span class="p">];</span>
-</span><span class='line'><span class="p">[</span><span class="n">menuViewTitle</span> <span class="nl">setEditable</span><span class="p">:</span><span class="nb">NO</span><span class="p">];</span>
-</span><span class='line'><span class="p">[</span><span class="n">menuViewTitle</span> <span class="nl">setBordered</span><span class="p">:</span><span class="nb">NO</span><span class="p">];</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">menuView</span> <span class="nl">addSubview</span><span class="p">:</span><span class="n">menuViewTitle</span><span class="p">];</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>然后是8个头像按钮，这里我尽量地模仿QQ的大小尺寸，使用了一些变量来指定尺寸，以方便修改。对于尺寸的大小，如果你有疑问，可以简单的在纸上画一下就清楚了：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// 头像按钮</span>
-</span><span class='line'><span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">IMAGES_COUNT</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="n">NSRect</span> <span class="n">buttonRect</span> <span class="o">=</span> <span class="n">NSMakeRect</span><span class="p">(</span><span class="n">sideMargin</span> <span class="o">+</span> <span class="p">(</span><span class="n">imageWidth</span> <span class="o">+</span> <span class="n">seperateMargin</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">%</span> <span class="n">imagesPerLine</span><span class="p">),</span> \
-</span><span class='line'>                                    <span class="n">headMargin</span> <span class="o">+</span> <span class="p">((</span><span class="n">IMAGES_COUNT</span> <span class="o">/</span> <span class="n">imagesPerLine</span><span class="p">)</span> <span class="o">-</span> <span class="p">((</span><span class="n">i</span> <span class="o">/</span> <span class="n">imagesPerLine</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="n">imageWidth</span> <span class="o">+</span> <span class="n">seperateMargin</span><span class="p">),</span> \
-</span><span class='line'>                                    <span class="n">imageWidth</span><span class="p">,</span> <span class="n">imageWidth</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">NSButton</span> <span class="o">*</span><span class="n">button</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSButton</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFrame</span><span class="p">:</span><span class="n">buttonRect</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">button</span> <span class="nl">setButtonType</span><span class="p">:</span><span class="n">NSSwitchButton</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">button</span> <span class="nl">setImagePosition</span><span class="p">:</span><span class="n">NSImageOnly</span><span class="p">];</span>
-</span><span class='line'>    <span class="n">button</span><span class="p">.</span><span class="n">image</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSImage</span> <span class="nl">imageNamed</span><span class="p">:[[</span><span class="bp">NSString</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFormat</span><span class="p">:</span><span class="s">@&quot;avatar_small_%d&quot;</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]]</span> <span class="nl">roundCornersImageCornerRadius</span><span class="p">:</span><span class="mi">4</span><span class="p">];</span>
-</span><span class='line'>    <span class="c1">// 用于实现FocusRing（并不是很好的方法）</span>
-</span><span class='line'>    <span class="n">button</span><span class="p">.</span><span class="n">alternateImage</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSImage</span> <span class="nl">imageNamed</span><span class="p">:[[</span><span class="bp">NSString</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFormat</span><span class="p">:</span><span class="s">@&quot;avatar_small_%d_h&quot;</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]]</span> <span class="nl">roundCornersImageCornerRadius</span><span class="p">:</span><span class="mi">5</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">button</span><span class="p">.</span><span class="n">cell</span> <span class="nl">setHighlightsBy</span><span class="p">:</span><span class="n">NSNoCellMask</span><span class="p">];</span>
-</span><span class='line'>    <span class="n">button</span><span class="p">.</span><span class="n">tag</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
-</span><span class='line'>    <span class="n">button</span><span class="p">.</span><span class="n">target</span> <span class="o">=</span> <span class="nb">self</span><span class="p">;</span>
-</span><span class='line'>    <span class="n">button</span><span class="p">.</span><span class="n">action</span> <span class="o">=</span> <span class="k">@selector</span><span class="p">(</span><span class="nl">buttonClicked</span><span class="p">:);</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">button</span> <span class="nl">setBordered</span><span class="p">:</span><span class="nb">NO</span><span class="p">];</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">// 增加鼠标跟踪区域</span>
-</span><span class='line'>    <span class="kt">int</span> <span class="n">options</span> <span class="o">=</span> <span class="n">NSTrackingMouseEnteredAndExited</span> <span class="o">|</span> <span class="n">NSTrackingActiveAlways</span> <span class="o">|</span> <span class="n">NSTrackingAssumeInside</span><span class="p">;</span>
-</span><span class='line'>    <span class="n">NSTrackingArea</span> <span class="o">*</span><span class="n">trackingArea</span><span class="p">;</span>
-</span><span class='line'>    <span class="bp">NSDictionary</span> <span class="o">*</span><span class="n">userInfo</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NSDictionary</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithObjectsAndKeys</span><span class="p">:</span><span class="n">button</span><span class="p">,</span><span class="s">@&quot;button&quot;</span><span class="p">,</span> <span class="nb">nil</span><span class="p">];</span>
-</span><span class='line'>    <span class="n">trackingArea</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSTrackingArea</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithRect</span><span class="p">:</span><span class="n">buttonRect</span>
-</span><span class='line'>                                      <span class="nl">options</span><span class="p">:</span><span class="n">options</span>
-</span><span class='line'>                                        <span class="nl">owner</span><span class="p">:</span><span class="nb">self</span>
-</span><span class='line'>                                     <span class="nl">userInfo</span><span class="p">:</span><span class="n">userInfo</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">menuView</span> <span class="nl">addTrackingArea</span><span class="p">:</span><span class="n">trackingArea</span><span class="p">];</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">menuView</span> <span class="nl">addSubview</span><span class="p">:</span><span class="n">button</span><span class="p">];</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="nb">self</span><span class="p">.</span><span class="n">myMenuItem</span><span class="p">.</span><span class="n">view</span> <span class="o">=</span> <span class="nb">self</span><span class="p">.</span><span class="n">menuView</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// 然后把菜单项加入菜单</span>
-</span><span class='line'><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">attachedMenu</span> <span class="nl">addItem</span><span class="p">:</span><span class="nb">self</span><span class="p">.</span><span class="n">myMenuItem</span><span class="p">];</span>
-</span><span class='line'><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">attachedMenu</span> <span class="nl">addItem</span><span class="p">:</span><span class="n">otherMenu</span><span class="p">];</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>关于如何将菜单附着到按钮上，我过去曾写过<a href="http://cocoa.venj.me/blog/open-menu-with-a-button/">文章</a>讲述了，这里就不赘述了。另外，头像的图片有圆角显示，关于如何实现，我过去也曾写过<a href="http://cocoa.venj.me/blog/draw-rounded-rectangle-nsimage-with-quartz/">介绍文章</a>。</p>
-
-<p>问题差不多解决了，最后用两个鼠标事件回调函数来处理鼠标悬停时的Focus Ring效果：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">applicationDidFinishLaunching:</span><span class="p">(</span><span class="bp">NSNotification</span> <span class="o">*</span><span class="p">)</span><span class="nv">aNotification</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="c1">// Insert code here to initialize your application</span>
-</span><span class='line'>    <span class="p">[[</span><span class="nb">self</span> <span class="n">window</span><span class="p">]</span> <span class="nl">setAcceptsMouseMovedEvents</span><span class="p">:</span><span class="nb">YES</span><span class="p">];</span> <span class="c1">// 注册接受鼠标事件</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="p">...</span> <span class="p">(</span><span class="err">其他代码</span><span class="p">)</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">mouseEntered:</span><span class="p">(</span><span class="bp">NSEvent</span> <span class="o">*</span><span class="p">)</span><span class="nv">theEvent</span> <span class="p">{</span>
-</span><span class='line'>    <span class="n">NSButton</span> <span class="o">*</span><span class="n">currentButton</span> <span class="o">=</span> <span class="p">[(</span><span class="bp">NSDictionary</span> <span class="o">*</span><span class="p">)[</span><span class="n">theEvent</span> <span class="n">userData</span><span class="p">]</span> <span class="nl">objectForKey</span><span class="p">:</span><span class="s">@&quot;button&quot;</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">currentButton</span> <span class="nl">setState</span><span class="p">:</span><span class="n">NSOnState</span><span class="p">];</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">mouseExited:</span><span class="p">(</span><span class="bp">NSEvent</span> <span class="o">*</span><span class="p">)</span><span class="nv">theEvent</span> <span class="p">{</span>
-</span><span class='line'>    <span class="n">NSButton</span> <span class="o">*</span><span class="n">currentButton</span> <span class="o">=</span> <span class="p">[(</span><span class="bp">NSDictionary</span> <span class="o">*</span><span class="p">)[</span><span class="n">theEvent</span> <span class="n">userData</span><span class="p">]</span> <span class="nl">objectForKey</span><span class="p">:</span><span class="s">@&quot;button&quot;</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">currentButton</span> <span class="nl">setState</span><span class="p">:</span><span class="n">NSOffState</span><span class="p">];</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>山寨的效果效果如下：</p>
-
-<p><img class="center" src="http://cocoa.venj.me/images/posts/qq-avatar-menu-clone.png"></p>
-
-<p>关于Focus Ring的实现我要说明一下，我这里用的方法比较粗糙，QQ应该是用Quartz绘制的Focus ring，而我是用了一张图片来“伪造”了一个Focus ring。我这里选择使用<code>NSSwitchButton</code>类型的按钮是为了利用<code>alternativeImage</code>来实现Focus ring效果。之所以这么做，是因为我一时间没有想到比较好的绘制Focus ring的方法 &ndash; 基础不过关啊 &ndash; 所以，如果谁知道怎么做，劳烦您能不吝赐教。</p>
-
-<p>示例代码我已经推送到<a href="https://github.com/venj/Cocoa-blog-code/tree/master/Custom%20Menu">Github</a>上了，有兴趣的可以签出来看看，并提出宝贵意见。另外，我在示例代码中使用了QQ for Mac里面的头像图片，希望腾讯勿怪。</p>
 
 <p>(全文完)</p>
 ]]></content>

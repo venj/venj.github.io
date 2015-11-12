@@ -9,7 +9,7 @@
   <meta name="author" content="venj">
 
   
-  <meta name="description" content="在去年的博文中，我们曾经探讨过关于UINavigationController的状态栏样式（Status Bar Style）行为。当时也给出了一个较为理想的解决UINavigationController的Status Bar Style与子UIViewController不同步的问题。 &hellip;">
+  <meta name="description" content="最初其实是打算翻译"Swift Programming Language"的，而且也翻译了十几页了。但是一直三天打鱼两天晒网的，一直没翻译下去（希望我能有时间，也能有兴致继续把那本书翻译下去）。 后来因为要转一个Objective-C项目，所以又重读了一下“Using Swift with &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -66,6 +66,44 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/translation-of-using-swift-with-cocoa-and-objc/">Using Swift With Cocoa and Objective-C中文版</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-11-12T20:37:21+08:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>12</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>8:37 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>最初其实是打算翻译"Swift Programming Language"的，而且也<a href="https://github.com/venj/Swift_2_CN">翻译了十几页</a>了。但是一直三天打鱼两天晒网的，一直没翻译下去（希望我能有时间，也能有兴致继续把那本书翻译下去）。</p>
+
+<p>后来因为要转一个Objective-C项目，所以又重读了一下“Using Swift with Cocoa and Objective-C”。因为觉得这本书比较短，所以就又挖了新的坑。和“Swift Programming Language”一样，最初的热情之后，中间又停了一段时间。幸好后来赶上很长的一段时间空闲，就一鼓作气把它翻译完了。这是我最近翻译的一个较大的文档，所以翻译的不太好，请见谅。不过总体上应该能读一下了。</p>
+
+<p><img class="center" src="/images/posts/usco.png"></p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/translation-of-using-swift-with-cocoa-and-objc/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -243,55 +281,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/disable-corestorage-on-os-x-yosemite/">禁用OS X Yosemite上的Core Storage</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-02-01T14:04:30+08:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>1</span><span class='date-suffix'>st</span>, <span class='date-year'>2015</span></span> <span class='time'>2:04 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>不管你发现没有，OS X Yosemite已经悄悄的把你的磁盘转成Core Storage了。做过Fusion Drive的同学一定知道Core Storage是实现Fusion Drive的核心技术。不过对于只有一个磁盘的MacBook来说，我有点不太理解苹果强制启用CoreStorage的理由。</p>
-
-<p><strong> 为什么要关闭Core Storage </strong></p>
-
-<p>当然，如果你在用Fusion Drive，那么Core Storage是你的好朋友。<span style="color:red;">如果你正在使用Fusion Drive，请无视本文！！！</span></p>
-
-<p>不过对于单磁盘的Mac来说，Core Storage有如下问题：</p>
-
-<ol>
-<li>按住Option开机，Recovery分区不见了；（当然，你可以按住Command + R启动，进Recovery。）</li>
-<li>无法随意调整Mac的分区了；</li>
-<li>磁盘实用工具尚未对Core Storage提供完整支持；</li>
-<li>Windows下无法挂载Core Storage分区，即使你装过BootCamp驱动；</li>
-<li>磁盘性能下降？（这个可能是个例。我升级OS X 10.10.2之后，明显感到系统卡顿，关闭Core Storage之后恢复正常。）</li>
-</ol>
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/disable-corestorage-on-os-x-yosemite/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -313,6 +302,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/translation-of-using-swift-with-cocoa-and-objc/">Using Swift With Cocoa and Objective-C中文版</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/more-on-status-bar-style/">再说说iOS的Status Bar Style</a>
       </li>
     
@@ -326,10 +319,6 @@
     
       <li class="post">
         <a href="/blog/app-transportation-security/">iOS 9中的App Transport Security</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/alamofire-ssl/">让Alamofire使用自签名证书</a>
       </li>
     
   </ul>

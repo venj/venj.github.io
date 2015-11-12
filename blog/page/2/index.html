@@ -9,8 +9,7 @@
   <meta name="author" content="venj">
 
   
-  <meta name="description" content="搜索引擎有时候并不能给你最好的结果，于是便有了这篇文章。今天为了找Xcode 6的配色主题路径，我搜了好久，结果找到的都是过时的信息。经过摸索终于找到正确答案，现贴在这里，希望能冲刷一下搜索引擎的旧信息。 Xcode 6的颜色主题路径位于： 1
-~/Library/Developer/Xcode/ &hellip;">
+  <meta name="description" content="不管你发现没有，OS X Yosemite已经悄悄的把你的磁盘转成Core Storage了。做过Fusion Drive的同学一定知道Core Storage是实现Fusion Drive的核心技术。不过对于只有一个磁盘的MacBook来说，我有点不太理解苹果强制启用CoreStorage的理由 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -67,6 +66,55 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/disable-corestorage-on-os-x-yosemite/">禁用OS X Yosemite上的Core Storage</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-02-01T14:04:30+08:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>1</span><span class='date-suffix'>st</span>, <span class='date-year'>2015</span></span> <span class='time'>2:04 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>不管你发现没有，OS X Yosemite已经悄悄的把你的磁盘转成Core Storage了。做过Fusion Drive的同学一定知道Core Storage是实现Fusion Drive的核心技术。不过对于只有一个磁盘的MacBook来说，我有点不太理解苹果强制启用CoreStorage的理由。</p>
+
+<p><strong> 为什么要关闭Core Storage </strong></p>
+
+<p>当然，如果你在用Fusion Drive，那么Core Storage是你的好朋友。<span style="color:red;">如果你正在使用Fusion Drive，请无视本文！！！</span></p>
+
+<p>不过对于单磁盘的Mac来说，Core Storage有如下问题：</p>
+
+<ol>
+<li>按住Option开机，Recovery分区不见了；（当然，你可以按住Command + R启动，进Recovery。）</li>
+<li>无法随意调整Mac的分区了；</li>
+<li>磁盘实用工具尚未对Core Storage提供完整支持；</li>
+<li>Windows下无法挂载Core Storage分区，即使你装过BootCamp驱动；</li>
+<li>磁盘性能下降？（这个可能是个例。我升级OS X 10.10.2之后，明显感到系统卡顿，关闭Core Storage之后恢复正常。）</li>
+</ol>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/disable-corestorage-on-os-x-yosemite/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -276,44 +324,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/push-viewcontroller-hide-buttom-bar/">推View Controller时隐藏TabBar</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-01-07T10:53:17+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>7</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>10:53 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>设想一个场景，RootViewController是一个TabBarController，里面的子Controller是一个NavigationController。NavigationController的子ViewController在执行<code>-pushViewController:animated:</code>的时候，默认情况下，这个新的ViewController将会被UITabBar覆盖。</p>
-
-<p>但是有时，我们希望推入这个新的ViewController的时候，TabBarController也被推走。要做到这一点其实很简单，只需要在这个新的ViewController上设置<code>hidesBottomBarWhenPushed</code>属性为<code>YES</code>。</p>
-
-<p>示例代码如下：</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/push-viewcontroller-hide-buttom-bar/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -337,6 +347,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/translation-of-using-swift-with-cocoa-and-objc/">Using Swift With Cocoa and Objective-C中文版</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/more-on-status-bar-style/">再说说iOS的Status Bar Style</a>
       </li>
     
@@ -350,10 +364,6 @@
     
       <li class="post">
         <a href="/blog/app-transportation-security/">iOS 9中的App Transport Security</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/alamofire-ssl/">让Alamofire使用自签名证书</a>
       </li>
     
   </ul>

@@ -9,7 +9,7 @@
   <meta name="author" content="venj">
 
   
-  <meta name="description" content="今天接到个需求，要求程序能够检测网络可用性，并在没有网络可用的时候能够弹出对话框，并允许用户点击按钮打开网络设置。 这个问题，我首先想到的就是用一个方法检测网络可用性，然后用UIApplication的openURL方法打开某个特殊URL，就可以进入设置了。于是，我迅速地建了个测试项目， &hellip;">
+  <meta name="description" content="一个使用Block语法的实例变量，在引用另一个实例变量的时候，经常会引起retain cycle。这个问题在使用ASIHTTPRequest的block语法的时候会时不时的碰到。这个问题困扰了我这个小白很久。终于有一天，在Advanced Mac OS X Programming上， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -66,6 +66,42 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/prevent-block-instance-retain-cycle/">Block的Retain Cycle的解决方法</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2012-05-21T10:49:00+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>21</span><span class='date-suffix'>st</span>, <span class='date-year'>2012</span></span> <span class='time'>10:49 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>一个使用Block语法的实例变量，在引用另一个实例变量的时候，经常会引起retain cycle。这个问题在使用ASIHTTPRequest的block语法的时候会时不时的碰到。这个问题困扰了我这个小白很久。终于有一天，在Advanced Mac OS X Programming上，看到了这个问题的解决方案。</p>
+
+<p>先用代码描述一下症状：</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/prevent-block-instance-retain-cycle/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -277,44 +313,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/custom-barbuttomitem-for-ios4/">在iOS 4中自定义BarButtonItem</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2012-02-29T15:08:00+08:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>29</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>3:08 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>在iOS 5中已经有了自定义<code>UIBarButtonItem</code>背景的API。但是在iOS 4中，自定义BarButtonItem背景就复杂很多了。其中最典型也最容易实现的一种是方法是试用<code>UIBarButtonItem</code>的<code>-initWithCustomView:</code>方法，传递一个自定义<code>UIButton</code>对象进去。</p>
-
-<p>在深入讨论自定义<code>UIBarButtonItem</code>，让我们来先解决自定义<code>UIButton</code>的一个问题：那就是Button的标题的长度是变化的，我们应该通过什么方法让背景图片适应标题长度的变化呢？</p>
-
-<p>下面是解决方案：</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/custom-barbuttomitem-for-ios4/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/5/">&larr; Older</a>
@@ -338,6 +336,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/translation-of-using-swift-with-cocoa-and-objc/">Using Swift With Cocoa and Objective-C中文版</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/more-on-status-bar-style/">再说说iOS的Status Bar Style</a>
       </li>
     
@@ -351,10 +353,6 @@
     
       <li class="post">
         <a href="/blog/app-transportation-security/">iOS 9中的App Transport Security</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/alamofire-ssl/">让Alamofire使用自签名证书</a>
       </li>
     
   </ul>

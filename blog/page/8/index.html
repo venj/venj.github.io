@@ -9,7 +9,7 @@
   <meta name="author" content="venj">
 
   
-  <meta name="description" content="关于如何隐藏Dock图标的方法，相信大家都知道——即使没有没有编程经验的老用户都知道。那就是，在Application Bundle里的Info.plist中增加一个LSUIElement的键，设置值为YES。但是，在程序中往往要让用户选择是否启用或禁用Dock图标。 &hellip;">
+  <meta name="description" content="有一些App需要通过使用iTunes让用户上传和下载文档。要让iOS程序支持iTunes文件交换其实很简单，只需要在程序的Info.plist里增加一个键：UIFileSharingEnabled（Application supports iTunes file sharing），赋值YES。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -66,6 +66,44 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/ios-and-pc-file-exchange-using-itunes/">让iOS App通过iTunes进行文件交换</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2011-08-07T13:04:00+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>7</span><span class='date-suffix'>th</span>, <span class='date-year'>2011</span></span> <span class='time'>1:04 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>有一些App需要通过使用iTunes让用户上传和下载文档。要让iOS程序支持iTunes文件交换其实很简单，只需要在程序的<code>Info.plist</code>里增加一个键：<code>UIFileSharingEnabled（Application supports iTunes file sharing）</code>，赋值<code>YES</code>。</p>
+
+<p><img class="center" src="/images/posts/file-exchange-xcode.png"></p>
+
+<p>这样，编译之后进行机上运行的时候，连接设备到iTunes，就能进行文件交换了。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/ios-and-pc-file-exchange-using-itunes/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -309,42 +347,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/popover-became-official-control-in-lion/">Popover在Mac OS X Lion中已经成为正式控件</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2011-06-02T11:38:00+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2011</span></span> <span class='time'>11:38 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>昨天心血来潮又把Lion装上了。这次是装到了移动硬盘里。效果良好。这次只要是为了看看Lion里Cocoa的新变化，顺道学习一下——虽然我对已有的Cocoa框架还没有熟悉。</p>
-
-<p>打开最新的Xcode 4.1 DP5，很高兴的发现Popover已经成为一个标准控件。Popover在Xcode 4里用的很多。因为Popover现在非常流行，所以我就忍不住要测试以下。快速搜索了一下文档，发现Popover的文档暂时还没有进入Xcode的文档系统，所以只能硬着头皮，参考头文件里的文档，做了一个测试程序，感觉良好。 ：）</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/popover-became-official-control-in-lion/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/9/">&larr; Older</a>
@@ -368,6 +370,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/translation-of-using-swift-with-cocoa-and-objc/">Using Swift With Cocoa and Objective-C中文版</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/more-on-status-bar-style/">再说说iOS的Status Bar Style</a>
       </li>
     
@@ -381,10 +387,6 @@
     
       <li class="post">
         <a href="/blog/app-transportation-security/">iOS 9中的App Transport Security</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/alamofire-ssl/">让Alamofire使用自签名证书</a>
       </li>
     
   </ul>

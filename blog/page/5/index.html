@@ -9,7 +9,7 @@
   <meta name="author" content="venj">
 
   
-  <meta name="description" content="iOS 5已经有了很方便的自定义UINavigationBar的方法，但是iOS 4现在还远未完全被iOS 5取代，因此，在做程序开发的时候必须要考虑对iOS 4的兼容。因此，要自定义UINavigationBar还不能简单的直接用iOS 5中才有的自定义API。 关于这个话题，我曾经写过一篇日志 &hellip;">
+  <meta name="description" content="在iOS 5中已经有了自定义UIBarButtonItem背景的API。但是在iOS 4中，自定义BarButtonItem背景就复杂很多了。其中最典型也最容易实现的一种是方法是试用UIBarButtonItem的-initWithCustomView:方法，传递一个自定义UIButton对象进去 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -66,6 +66,44 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/custom-barbuttomitem-for-ios4/">在iOS 4中自定义BarButtonItem</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2012-02-29T15:08:00+08:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>29</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>3:08 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>在iOS 5中已经有了自定义<code>UIBarButtonItem</code>背景的API。但是在iOS 4中，自定义BarButtonItem背景就复杂很多了。其中最典型也最容易实现的一种是方法是试用<code>UIBarButtonItem</code>的<code>-initWithCustomView:</code>方法，传递一个自定义<code>UIButton</code>对象进去。</p>
+
+<p>在深入讨论自定义<code>UIBarButtonItem</code>，让我们来先解决自定义<code>UIButton</code>的一个问题：那就是Button的标题的长度是变化的，我们应该通过什么方法让背景图片适应标题长度的变化呢？</p>
+
+<p>下面是解决方案：</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/custom-barbuttomitem-for-ios4/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -259,44 +297,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/custom-url-scheme-on-mac-and-ios/">在Mac和iOS中注册自定义的URL Scheme</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2012-01-10T15:44:00+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>10</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>3:44 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>URL Scheme是类似<code>http://</code>，<code>ftp://</code>，<code>afp://</code>这样的东西，通常是用传输协议作为URL Scheme。不过事实上，你可以在iOS和Mac中注册任何类型的URL Scheme。当用户在浏览器中访问你的自定义URL Scheme的链接的时候，操作系统就会打开你的程序，响应这个请求。</p>
-
-<p>要在程序中注册自定义URL Scheme非常简单。主要分为两个步骤：在程序的Info.plist中加入你需要注册的URL Scheme，然后在你的应用程序中加入处理这类请求的代码。</p>
-
-<p>其中，第一个步骤对于iOS和Mac应用程序来说是完全相同的。方法如下：</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/custom-url-scheme-on-mac-and-ios/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/6/">&larr; Older</a>
@@ -320,6 +320,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/translation-of-using-swift-with-cocoa-and-objc/">Using Swift With Cocoa and Objective-C中文版</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/more-on-status-bar-style/">再说说iOS的Status Bar Style</a>
       </li>
     
@@ -333,10 +337,6 @@
     
       <li class="post">
         <a href="/blog/app-transportation-security/">iOS 9中的App Transport Security</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/alamofire-ssl/">让Alamofire使用自签名证书</a>
       </li>
     
   </ul>
