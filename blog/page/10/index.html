@@ -9,7 +9,10 @@
   <meta name="author" content="venj">
 
   
-  <meta name="description" content="作为一个初学者，我一直很弄不明白NSCell的子类，比如，NSButtonCell，NSImageCell及其对应的控件之间的关系。今天，在做一个TableView实现的时候，我终于开始有点悟了——好吧，你大可以鄙视我，我的脑袋是不灵光。尽管这是一个简单的问题，但是我还是简单的记录一下我的理解。 &hellip;">
+  <meta name="description" content="在Cocoa中，我们可以用NSWorkspace的-openURL:来来打开系统的默认浏览器。 1
+2
+3
+- (IBAction)clickLink:(id)sender { [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -66,6 +69,59 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/open-webpage-with-mobile-safari-in-ios-apps/">在iOS程序中调用Mobile Safari打开网址</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2011-05-15T00:11:00+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>15</span><span class='date-suffix'>th</span>, <span class='date-year'>2011</span></span> <span class='time'>12:11 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>在Cocoa中，我们可以用<code>NSWorkspace</code>的<code>-openURL:</code>来来打开系统的默认浏览器。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">clickLink:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[[</span><span class="n">NSWorkspace</span> <span class="n">sharedWorkspace</span><span class="p">]</span> <span class="nl">openURL</span><span class="p">:[</span><span class="bp">NSURL</span> <span class="nl">URLWithString</span><span class="p">:</span><span class="s">@&quot;http://google.com&quot;</span><span class="p">]];</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>不过Cocoa Touch没有这个<code>NSWorkspace</code>。那么应该怎么做呢？事实上<code>UIApplication</code>提供了同样的方法：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">clickLink:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[[</span><span class="bp">UIApplication</span> <span class="n">sharedApplication</span><span class="p">]</span> <span class="nl">openURL</span><span class="p">:[</span><span class="bp">NSURL</span> <span class="nl">URLWithString</span><span class="p">:</span><span class="s">@&quot;http://google.com&quot;</span><span class="p">]];</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>很简单吧！<code>NSWorkspace</code>和<code>UIApplication</code>真是异曲同工啊。事实上，因为iOS独占式的程序运行方式，用<code>UIApplication</code>来取代<code>NSWorkspace</code>来执行这个任务其实是很贴切的。不是吗？</p>
+
+<p>（全文完）</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -263,49 +319,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/force-label-nstextfield-redraw/">强制Label(NSTextField)重绘</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2011-04-13T22:57:00+08:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>13</span><span class='date-suffix'>th</span>, <span class='date-year'>2011</span></span> <span class='time'>10:57 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>今天在码代码的时候遇到了标签在修改了内容后没有重绘的问题，试了n种办法，查了老半天，结果终于找到了比较好的解决方法。</p>
-
-<p>首先，要说明，下面这样的方法是不能让Label(<code>NSTextField</code>)立刻重绘的：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[</span><span class="n">someLabel</span> <span class="nl">setStringValue</span><span class="p">:</span><span class="s">@&quot;Some new text&quot;</span><span class="p">];</span>
-</span><span class='line'><span class="p">[</span><span class="n">someLabel</span> <span class="nl">setNeedsDisplay</span><span class="p">:</span><span class="nb">YES</span><span class="p">];</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/force-label-nstextfield-redraw/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/11/">&larr; Older</a>
@@ -329,6 +342,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/a-trap-in-using-framework-in-playground/">在Xcode Playground中使用Framework时的一个小坑</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/translation-of-using-swift-with-cocoa-and-objc/">Using Swift With Cocoa and Objective-C中文版</a>
       </li>
     
@@ -342,10 +359,6 @@
     
       <li class="post">
         <a href="/blog/openurl-on-ios9/">iOS 9下使用openURL:</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/app-transportation-security/">iOS 9中的App Transport Security</a>
       </li>
     
   </ul>

@@ -9,7 +9,17 @@
   <meta name="author" content="venj">
 
   
-  <meta name="description" content="昨天心血来潮又把Lion装上了。这次是装到了移动硬盘里。效果良好。这次只要是为了看看Lion里Cocoa的新变化，顺道学习一下——虽然我对已有的Cocoa框架还没有熟悉。 打开最新的Xcode 4.1 DP5，很高兴的发现Popover已经成为一个标准控件。Popover在Xcode 4里用的很多 &hellip;">
+  <meta name="description" content="在程序中记忆窗口的位置，以便在下次打开的时候恢复记忆的位置。这对很多程序来说还是比较有必要的。方法很简单： 1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+- (void)windowDidMove:(NSNotification *)notification { // 自动记忆和恢复位置 [self. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -66,6 +76,84 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/remember-window-position/">记忆窗口位置</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2011-06-12T12:26:00+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>12</span><span class='date-suffix'>th</span>, <span class='date-year'>2011</span></span> <span class='time'>12:26 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>在程序中记忆窗口的位置，以便在下次打开的时候恢复记忆的位置。这对很多程序来说还是比较有必要的。方法很简单：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">windowDidMove:</span><span class="p">(</span><span class="bp">NSNotification</span> <span class="o">*</span><span class="p">)</span><span class="nv">notification</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">// 自动记忆和恢复位置</span>
+</span><span class='line'>    <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">window</span> <span class="nl">setFrameAutosaveName</span><span class="p">:</span><span class="s">@&quot;Position&quot;</span><span class="p">];</span>
+</span><span class='line'>    <span class="cm">/* 如果是基于文档的程序</span>
+</span><span class='line'><span class="cm">    [[self.window windowController] setShouldCascadeWindows:NO];</span>
+</span><span class='line'><span class="cm">    [self.window saveFrameUsingName:[window representedFilename]];</span>
+</span><span class='line'><span class="cm">    */</span>
+</span><span class='line'>    <span class="c1">// 手动记忆位置</span>
+</span><span class='line'>    <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">window</span> <span class="nl">setFrameUsingName</span><span class="p">:</span><span class="s">@&quot;Some name&quot;</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>// 如果是手动保存，则需要手动恢复</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">awakeFromNib</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">window</span> <span class="nl">setFrameAutosaveName</span><span class="p">:</span><span class="s">@&quot;Some name&quot;</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>// 清除记忆的位置</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">clearWindowPosition:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">NSWindow</span> <span class="nl">removeFrameUsingName</span><span class="p">:</span><span class="s">@&quot;Some name&quot;</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>很简单吧。更多可以参考<a href="http://developer.apple.com/library/mac/#documentation/Cocoa/Reference/ApplicationKit/Classes/NSWindow_Class/Reference/Reference.html">NSWindows Class Reference</a>和<a href="http://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/WinPanel/WinPanel.html">Window Programming Guide</a>文档。</p>
+
+<p>（全文完）</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -291,59 +379,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/open-webpage-with-mobile-safari-in-ios-apps/">在iOS程序中调用Mobile Safari打开网址</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2011-05-15T00:11:00+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>15</span><span class='date-suffix'>th</span>, <span class='date-year'>2011</span></span> <span class='time'>12:11 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>在Cocoa中，我们可以用<code>NSWorkspace</code>的<code>-openURL:</code>来来打开系统的默认浏览器。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">clickLink:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
-</span><span class='line'>    <span class="p">[[</span><span class="n">NSWorkspace</span> <span class="n">sharedWorkspace</span><span class="p">]</span> <span class="nl">openURL</span><span class="p">:[</span><span class="bp">NSURL</span> <span class="nl">URLWithString</span><span class="p">:</span><span class="s">@&quot;http://google.com&quot;</span><span class="p">]];</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>不过Cocoa Touch没有这个<code>NSWorkspace</code>。那么应该怎么做呢？事实上<code>UIApplication</code>提供了同样的方法：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">clickLink:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
-</span><span class='line'>    <span class="p">[[</span><span class="bp">UIApplication</span> <span class="n">sharedApplication</span><span class="p">]</span> <span class="nl">openURL</span><span class="p">:[</span><span class="bp">NSURL</span> <span class="nl">URLWithString</span><span class="p">:</span><span class="s">@&quot;http://google.com&quot;</span><span class="p">]];</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>很简单吧！<code>NSWorkspace</code>和<code>UIApplication</code>真是异曲同工啊。事实上，因为iOS独占式的程序运行方式，用<code>UIApplication</code>来取代<code>NSWorkspace</code>来执行这个任务其实是很贴切的。不是吗？</p>
-
-<p>（全文完）</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/10/">&larr; Older</a>
@@ -367,6 +402,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/a-trap-in-using-framework-in-playground/">在Xcode Playground中使用Framework时的一个小坑</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/translation-of-using-swift-with-cocoa-and-objc/">Using Swift With Cocoa and Objective-C中文版</a>
       </li>
     
@@ -380,10 +419,6 @@
     
       <li class="post">
         <a href="/blog/openurl-on-ios9/">iOS 9下使用openURL:</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/app-transportation-security/">iOS 9中的App Transport Security</a>
       </li>
     
   </ul>

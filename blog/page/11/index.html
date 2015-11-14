@@ -9,7 +9,9 @@
   <meta name="author" content="venj">
 
   
-  <meta name="description" content="Gravatar是一个非常流行的头像服务，可以根据用户的Email获取头像。下面一段简单的代码展示了如何在Cocoa里使用Gravatar。简单的界面测试： ">
+  <meta name="description" content="今天在码代码的时候遇到了标签在修改了内容后没有重绘的问题，试了n种办法，查了老半天，结果终于找到了比较好的解决方法。 首先，要说明，下面这样的方法是不能让Label(NSTextField)立刻重绘的： 1
+2
+[someLabel setStringValue:@&quot;Some new &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -66,6 +68,49 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/force-label-nstextfield-redraw/">强制Label(NSTextField)重绘</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2011-04-13T22:57:00+08:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>13</span><span class='date-suffix'>th</span>, <span class='date-year'>2011</span></span> <span class='time'>10:57 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>今天在码代码的时候遇到了标签在修改了内容后没有重绘的问题，试了n种办法，查了老半天，结果终于找到了比较好的解决方法。</p>
+
+<p>首先，要说明，下面这样的方法是不能让Label(<code>NSTextField</code>)立刻重绘的：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[</span><span class="n">someLabel</span> <span class="nl">setStringValue</span><span class="p">:</span><span class="s">@&quot;Some new text&quot;</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="n">someLabel</span> <span class="nl">setNeedsDisplay</span><span class="p">:</span><span class="nb">YES</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/force-label-nstextfield-redraw/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -459,6 +504,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/a-trap-in-using-framework-in-playground/">在Xcode Playground中使用Framework时的一个小坑</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/translation-of-using-swift-with-cocoa-and-objc/">Using Swift With Cocoa and Objective-C中文版</a>
       </li>
     
@@ -472,10 +521,6 @@
     
       <li class="post">
         <a href="/blog/openurl-on-ios9/">iOS 9下使用openURL:</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/app-transportation-security/">iOS 9中的App Transport Security</a>
       </li>
     
   </ul>

@@ -4,7 +4,7 @@
   <title><![CDATA[Cocoa学习]]></title>
   <link href="http://cocoa.venj.me/atom.xml" rel="self"/>
   <link href="http://cocoa.venj.me/"/>
-  <updated>2015-11-12T20:54:37+08:00</updated>
+  <updated>2015-11-14T21:29:22+08:00</updated>
   <id>http://cocoa.venj.me/</id>
   <author>
     <name><![CDATA[venj]]></name>
@@ -12,6 +12,27 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[在Xcode Playground中使用Framework时的一个小坑]]></title>
+    <link href="http://cocoa.venj.me/blog/a-trap-in-using-framework-in-playground/"/>
+    <updated>2015-11-14T21:02:47+08:00</updated>
+    <id>http://cocoa.venj.me/blog/a-trap-in-using-framework-in-playground</id>
+    <content type="html"><![CDATA[<p>在项目开发的过程中，Playground是一个很好的测试开发思路的地方。独立的Playground只能使用平台自带的框架，但是如果在项目中添加了Playground，它就可以使用项目包含的所有框架－－无论是第三方框架还是自己开发的框架。</p>
+
+<p>但是今天一不小心碰到了一个坑。最初我在一台电脑上用的好好的Playground，在另一台电脑上，签出同样的代码之后，Xcode的控制台居然一直报错，提示找不到方法。</p>
+
+<p><img class="center" src="http://cocoa.venj.me/images/posts/framework_playground_0.png"></p>
+
+<p>经过一番检查之后发现两台电脑上的代码并没有任何差异，gitignore也没有ignore错任何文件。郁闷一番之后，只好请教搜索引擎了。搜索了关于如何在Playground中引入框架的文章之后，其中的一句话点醒了我：Playground运行的是64位代码。果然，看了两边的差别，就是选择的iOS模拟器不同：一边正常的是iPhone 6S Plus；另一边不正常的是iPhone 5。仔细一想，iPhone 5好像不是64位的。于是，把模拟器选择为iPhone 5S之后，一切正常了。</p>
+
+<p><img class="center" src="http://cocoa.venj.me/images/posts/framework_playground_1.png"></p>
+
+<p>至此，问题解决。虽然只是个小坑，但是考虑到问题的隐蔽性，所以我还是决定简单写几句记录下来，给自己备忘，也希望能通过搜索引擎帮助遇到同样问题的人。</p>
+
+<p>（全文完）</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Using Swift With Cocoa and Objective-C中文版]]></title>
@@ -841,7 +862,7 @@
 <!-- more -->
 
 
-<p>首先，我们用图形编辑(PS, Pixelmator等)工具，做两套语言的加载屏幕。简单起见，我们就用白底加居中的黑字(“US”和“CN”)的两套图片好了（文件在示例代码中有），每套图片要三个尺寸：Default.png(320x480)，<a href="&#x6d;&#97;&#105;&#108;&#116;&#x6f;&#58;&#x44;&#x65;&#x66;&#97;&#x75;&#x6c;&#x74;&#64;&#x32;&#x78;&#46;&#x70;&#110;&#103;">&#x44;&#x65;&#102;&#x61;&#x75;&#108;&#x74;&#64;&#50;&#x78;&#46;&#112;&#x6e;&#103;</a>(640x960)以及<a href="&#109;&#97;&#105;&#108;&#x74;&#111;&#58;&#x44;&#x65;&#102;&#x61;&#117;&#x6c;&#116;&#x2d;&#x35;&#54;&#56;&#104;&#64;&#50;&#120;&#46;&#x70;&#110;&#x67;">&#68;&#101;&#x66;&#x61;&#117;&#108;&#116;&#x2d;&#53;&#x36;&#x38;&#104;&#64;&#50;&#120;&#46;&#112;&#110;&#103;</a>(640x1136)。</p>
+<p>首先，我们用图形编辑(PS, Pixelmator等)工具，做两套语言的加载屏幕。简单起见，我们就用白底加居中的黑字(“US”和“CN”)的两套图片好了（文件在示例代码中有），每套图片要三个尺寸：Default.png(320x480)，<a href="&#x6d;&#97;&#105;&#x6c;&#116;&#x6f;&#x3a;&#68;&#101;&#x66;&#97;&#x75;&#x6c;&#116;&#x40;&#50;&#x78;&#x2e;&#x70;&#x6e;&#103;">&#x44;&#101;&#102;&#x61;&#117;&#108;&#116;&#x40;&#50;&#x78;&#46;&#112;&#x6e;&#x67;</a>(640x960)以及<a href="&#109;&#97;&#105;&#108;&#116;&#x6f;&#58;&#68;&#x65;&#102;&#x61;&#x75;&#x6c;&#116;&#45;&#53;&#54;&#x38;&#104;&#64;&#x32;&#120;&#46;&#x70;&#x6e;&#103;">&#68;&#x65;&#102;&#x61;&#117;&#108;&#x74;&#45;&#53;&#x36;&#56;&#104;&#x40;&#x32;&#120;&#46;&#112;&#x6e;&#103;</a>(640x1136)。</p>
 
 <p>做好图片之后，我们在Xcode里创建一个新项目名字可以叫做“Local Splash”，程序模板任意，简单起见，支持的设备只选iPhone。创建后，我们用“US”那套图片替换项目默认的纯黑色加载屏幕，作为默认语言的加载屏幕。</p>
 
@@ -1290,94 +1311,6 @@
 <p>这么修改之后，<code>blockSelf</code>是本地变量，是弱引用，因此在<code>_block</code>被<code>retain</code>的时候，并不会增加retain count，所以retain cycle就解除了，Xcode也不再出现警告了，问题解决。</p>
 
 <p>注：本文并非原创，详情请参阅<a href="http://www.amazon.com/Advanced-Mac-OS-Programming-Guides/dp/0321706250">Advanced Mac OS X Programming</a>，第92页“Block Retain Cycles”。</p>
-
-<p>(全文完)</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[检测iOS的网络可用性并打开网络设置]]></title>
-    <link href="http://cocoa.venj.me/blog/warn-no-network-and-show-settings/"/>
-    <updated>2012-05-08T10:39:00+08:00</updated>
-    <id>http://cocoa.venj.me/blog/warn-no-network-and-show-settings</id>
-    <content type="html"><![CDATA[<p>今天接到个需求，要求程序能够检测网络可用性，并在没有网络可用的时候能够弹出对话框，并允许用户点击按钮打开网络设置。</p>
-
-<p>这个问题，我首先想到的就是用一个方法检测网络可用性，然后用<code>UIApplication</code>的<code>openURL</code>方法打开某个特殊URL，就可以进入设置了。于是，我迅速地建了个测试项目，写了个简单的实现，如下：</p>
-
-<!-- more -->
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// 注意：这个方法仅对iOS 5.0.x有效</span>
-</span><span class='line'><span class="p">+</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span> <span class="nf">isNetworkAvailable</span> <span class="p">{</span> <span class="c1">//Via Stackoverflow</span>
-</span><span class='line'>    <span class="bp">NSURL</span> <span class="o">*</span><span class="n">url</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSURL</span> <span class="nl">URLWithString</span><span class="p">:</span><span class="s">@&quot;http://www.baidu.com&quot;</span><span class="p">];</span>
-</span><span class='line'>    <span class="bp">NSURLRequest</span> <span class="o">*</span><span class="n">request</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSMutableURLRequest</span> <span class="nl">requestWithURL</span><span class="p">:</span><span class="n">url</span><span class="p">];</span>
-</span><span class='line'>    <span class="bp">NSHTTPURLResponse</span> <span class="o">*</span><span class="n">response</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">[</span><span class="bp">NSURLConnection</span> <span class="nl">sendSynchronousRequest</span><span class="p">:</span><span class="n">request</span>
-</span><span class='line'>                          <span class="nl">returningResponse</span><span class="p">:</span><span class="o">&amp;</span><span class="n">response</span> <span class="nl">error</span><span class="p">:</span><span class="nb">NULL</span><span class="p">];</span>
-</span><span class='line'>    <span class="k">return</span> <span class="p">(</span><span class="n">response</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">viewDidLoad</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="p">[</span><span class="nb">super</span> <span class="n">viewDidLoad</span><span class="p">];</span>
-</span><span class='line'>    <span class="c1">// Do any additional setup after loading the view, typically from a nib.</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">[[</span><span class="nb">self</span> <span class="k">class</span><span class="p">]</span> <span class="n">isNetworkAvailable</span><span class="p">])</span> <span class="p">{</span>
-</span><span class='line'>        <span class="p">[[[</span><span class="bp">UIAlertView</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithTitle</span><span class="p">:</span><span class="s">@&quot;No network&quot;</span> <span class="nl">message</span><span class="p">:</span><span class="s">@&quot;No networkNetwork unavailable!!!&quot;</span> <span class="nl">delegate</span><span class="p">:</span><span class="nb">self</span> <span class="nl">cancelButtonTitle</span><span class="p">:</span><span class="s">@&quot;OK&quot;</span> <span class="nl">otherButtonTitles</span><span class="p">:</span><span class="s">@&quot;Settings&quot;</span><span class="p">,</span> <span class="nb">nil</span><span class="p">]</span> <span class="n">show</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">alertView:</span><span class="p">(</span><span class="bp">UIAlertView</span> <span class="o">*</span><span class="p">)</span><span class="nv">alertView</span> <span class="nf">didDismissWithButtonIndex:</span><span class="p">(</span><span class="bp">NSInteger</span><span class="p">)</span><span class="nv">buttonIndex</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">buttonIndex</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="p">[[</span><span class="bp">UIApplication</span> <span class="n">sharedApplication</span><span class="p">]</span> <span class="nl">openURL</span><span class="p">:[</span><span class="bp">NSURL</span> <span class="nl">URLWithString</span><span class="p">:</span><span class="s">@&quot;prefs:root=General&amp;path=Network&quot;</span><span class="p">]];</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>编译运行之后，网络不可用倒是顺利提示了，但是我很杯具的发现，点了提示框里的“Settings”按钮之后完全没有反应。于是STFW，然后悲催的发现“特殊URL”在iOS 5.1里已经失效。多方搜索基于<code>openURL</code>的方法无果。</p>
-
-<p>正当我快放弃的时候，我发现高德地图在iOS 5.1下居然有类似的功能！（难道高德地图用了Private API，而且没有被苹果发现？我偷偷的这么想。）我对着高德地图又研究了好久，发现高德地图居然能够判断有无蜂窝网络和飞行模式！（嗯，肯定是Private API无误了！【误！】）</p>
-
-<p>然后突然灵光一闪，是不是<code>Info.plist</code>在作祟呢？因为<code>Info.plist</code>可以检测有无摄像头啥的，检测网络应该也没问题吧。于是，我解包了高德地图，打开<code>Info.plist</code>一看，果然有一条名为<code>SBUsesNetwork</code>的<code>Boolean</code>类型的记录。</p>
-
-<p>然后我就注释了自己的代码，在<code>Info.plist</code>里增加了一条：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;key&gt;</span>SBUsesNetwork<span class="nt">&lt;/key&gt;</span>
-</span><span class='line'><span class="nt">&lt;true/&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>编译运行，终于出现了高德地图一样的提示对话框。按下“设置”按钮，顺利转跳到了“设置”程序里，问题解决。</p>
-
-<p>经过这次乌龙，我只有再次感叹，Cocoa (Touch)深似海，而我的脚才刚踩上沙滩。</p>
-
-<p>顺道：我真的用软件检测了高德地图是否用了Private API。答案当然是否定的。【我这个白痴】</p>
 
 <p>(全文完)</p>
 ]]></content>

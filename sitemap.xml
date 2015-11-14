@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://cocoa.venj.me/blog/a-trap-in-using-framework-in-playground/</loc>
+    <lastmod>2015-11-14T21:02:47+08:00</lastmod>
+  </url>
+  <url>
     <loc>http://cocoa.venj.me/blog/translation-of-using-swift-with-cocoa-and-objc/</loc>
     <lastmod>2015-11-12T20:37:21+08:00</lastmod>
   </url>
@@ -613,6 +617,9 @@
   </url>
   <url>
     <loc>http://cocoa.venj.me/blog/categories/uiviewcontroller/</loc>
+  </url>
+  <url>
+    <loc>http://cocoa.venj.me/blog/categories/playground/</loc>
   </url>
   <url>
     <loc>http://cocoa.venj.me/blog/page/2/</loc>
